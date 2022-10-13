@@ -129,7 +129,7 @@ The Branching Strategy I have chosen is configured automatically as part of the 
 -   Feature Branch merged to Main Branch: resource deployment to Development environment 
 -   Merge Request from Main Branch to Release Branch: deploy to UAT environment
 -   Merge Request Approval from Main Branch to Release Branch: deploy to Pre-Production environment
--   Tag Release Branch with Stable Version: deploy to Production environment. 
+-   Tag Release Branch with Stable Version: deploy to Production environment
 
 
 ---
@@ -140,7 +140,7 @@ The Branching Strategy I have chosen is configured automatically as part of the 
 <summary>Click Dropdown... </summary>
 <br>
   
-- Fork this repository, ensuring the project name is DatabricksAutomation
+- Fork this repository
 - In your Forked Repo, click on 'Actions' and then 'Enable'
 - Within your VS Code , "View" --> "Command Pallette" --> "Git: Clone" --> Select <yourUserName>/DatabricksAutomation
 </details>
@@ -149,7 +149,7 @@ The Branching Strategy I have chosen is configured automatically as part of the 
 ---
  
 ## Login To Azure
-- All Code Throughout To Go Into VS Code PowerShell Terminal 
+- All Code Throughout To Go Into VS Code **PowerShell Terminal** 
 
  ```ps
 az login
@@ -158,12 +158,11 @@ az login
 
 ## Provide SubscriptionID 
 ```ps
- 
 $SubscriptionId=( az account show --query id -o tsv )
 ```
 
 ## Create Main Service Principal 
-**Why**: You will need to assign RBAC permissions to Azure Resources created on the fly. See JSON document "RBAC_Assignment" section.
+**Why**: You will need to assign RBAC permissions to Azure Resources created on the fly.
 
 ```ps
 echo "Create The Service Principal"
