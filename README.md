@@ -28,7 +28,7 @@
 - [Create Main Service Principal](#Create-Main-Service-Principal)
 - [Create Databricks Service Principal](#Create-Databricks-Service-Principal)
 - [Final Snapshot of Github Secrets](#Final-Snapshot-of-Github-Secrets)
-- [Retrieve Object Id's](#Retrieve-Object-Ids)
+- [Retrieve Object ID's](#Retrieve-Object-IDs)
 - [Update Yaml Pipeline Parameters Files](#Update-Yaml-Pipeline-Parameters-Files)
 - [Deploy the Azure Environments](#Deploy-The-Azure-Environments)
 - [Run Machine Learning Scripts](#Run-Machine-Learning-Scripts)
@@ -153,6 +153,7 @@ The Branching Strategy I have chosen is configured automatically as part of the 
 
  ```ps
 az login
+
 ```
 
 
@@ -225,7 +226,7 @@ Secrets in GitHub should look exactly like below. The secrets are case sensitive
 ---
 ---
  
-## Retrieve Object Ids 
+## Retrieve Object IDs 
 
 **Why**: The Object IDs will be used when assigning RBAC permissions at a later stage. 
 
@@ -258,7 +259,7 @@ if ($User_ObjID -eq "None" ) { $User_ObjID=( az ad sp show --id $AZ_ACCOUNT_ALIA
 ## Update Yaml Pipeline Parameters Files
 
 - The Parameters file can be thought of as a quasi ARM Template for Databricks
-- Parameters files can be found at: /.github/workflows/Pipeline_Param/<environment-file-name>
+- Parameters files can be found at: /.github/workflows/Pipeline_Param/<environment-file-name> [a relative link](.github/workflows/Pipeline_Param/)
 
 
 We will update the parameters files ( Development.json, UAT.json, PreProduction.json, Production.json). Enter script below into VS Code PowerShell Terminal to update files automatically.
