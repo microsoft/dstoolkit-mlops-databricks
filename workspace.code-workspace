@@ -1,0 +1,49 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.venvPath": "/usr/local/lib/python3.7/site-packages/pyspark/jars",
+		"python.testing.pytestArgs": [
+			"src"
+		],
+		"python.testing.unittestEnabled": false,
+		"python.testing.nosetestsEnabled": false,
+		"python.testing.pytestEnabled": true,
+		"python.envFile":  "${workspaceFolder}/.env",
+		"python.analysis.extraPaths": [
+			"src/modules"
+		],
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#93fcdc",
+			"activityBar.activeBorder": "#fa45d4",
+			"activityBar.background": "#93e6fc",
+			"activityBar.foreground": "#15202b",
+			"activityBar.inactiveForeground": "#15202b99",
+			"activityBarBadge.background": "#fa45d4",
+			"activityBarBadge.foreground": "#15202b",
+			"statusBar.background": "#93fcdc",
+			"statusBar.foreground": "#15202b",
+			"statusBarItem.hoverBackground": "#2fd0fa",
+			"titleBar.activeBackground": "#93fcdc",
+			"titleBar.activeForeground": "#15202b",
+			"titleBar.inactiveBackground": "#93fcdc99",
+			"titleBar.inactiveForeground": "#15202b99"
+		},
+		"peacock.remoteColor": "#93fcdc",
+		"githubPullRequests.ignoredPullRequestBranches": [
+			"main"
+		]
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-python.python",
+			"visualstudioexptteam.vscodeintellicode",
+			"ms-python.vscode-pylance",
+			"ms-azuretools.vscode-docker",
+			"ms-vscode-remote.remote-containers"
+		]
+	}
+}
