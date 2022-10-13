@@ -1,2 +1,0 @@
-databricks-cli==0.9.1
-databricks-connect==7.*
