@@ -142,7 +142,7 @@ The Branching Strategy I have chosen is configured automatically as part of the 
   
 - Fork this repository [here](https://github.com/microsoft/dstoolkit-mlops-databricks/fork) 
 - In your Forked Repo, click on 'Actions' and then 'Enable'
-- Within your VS Code click, "View", then "Command Pallette", "Git: Clone", and finally select your repo
+- Within your VS Code click, "View", then "Command Pallette", "Git: Clone", and finally select your Repo
 </details>
 
 ---
@@ -304,6 +304,7 @@ Foreach($file in $files)
     $JsonData | ConvertTo-Json -Depth 4  | set-content .github\workflows\Pipeline_Param\$file -NoNewline
 
 }
+
 ```
 
 
@@ -331,7 +332,7 @@ git push
  
 ## Deploy The Azure Environments 
 
-- In GitHub you can manually run the pipeline to deploy the environments to Azure using "1-Big-Bang-Databricks-CICD-Deployment.yml" found [here](.github/workflows/1-Big-Bang-Databricks-CICD-Deployment.yml)
+- In GitHub you can manually run the pipeline to deploy the environments to Azure using "1-Big-Bang-Databricks-CICD-Deployment.yml" found [here](.github/workflows/1-Big-Bang-Databricks-CICD-Deployment.yml). Use the instructions below to run the workflow.
 
 <img width="1172" alt="image" src="https://user-images.githubusercontent.com/108273509/186510528-29448e4d-1a0e-41b9-a37f-0cd89d226d57.png">
 
