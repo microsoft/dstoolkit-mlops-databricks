@@ -17,14 +17,13 @@
 
 ## Section 1: DevOps Agent Deployment of CI/CD Databricks Environments
 - [Youtube Demo](#Youtube-Demo)
-- [About This Repository](#1.About-This-Repository)
+- [About This Repository](#About-This-Repository)
 - [Prerequisites](#Prerequisites)
 - [Details of The Solution Accelerator](#Details-of-The-Solution-Accelerator)
 - [Databricks as Infrastructure](#Databricks-as-Infrastructure)
 - [Continuous Deployment and Branching Strategy](#Continuous-Deployment-And-Branching-Strategy)
 - [Create Repository](#Create-Repository)
 - [Login to Azure](#Login-To-Azure)
-- [Create Random String Values ](#Create-Random-String-Values ) 
 - [Provide SubscriptionID ](#Provide-SubscriptionID)
 - [Create Main Service Principal](#Create-Main-Service-Principal)
 - [Create Databricks Service Principal](#Create-Databricks-Service-Principal)
@@ -40,7 +39,7 @@
 ---
 ---
 
-## 1.Youtube Demo 
+## Youtube Demo 
 
 [![Youtube Demo](docs/images/YoutubeThumbNail.png)](https://www.youtube.com/embed/Q3DNOgIu6rk)
 ---
