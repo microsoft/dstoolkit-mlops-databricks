@@ -266,14 +266,15 @@ We will update the parameters files ( Development.json, UAT.json, PreProduction.
   
 ```ps
 echo "Enter Your Git Username... "
-  
-$Git_Configuration = "Ciaran28"
+# Example: "Ciaran28"
+$Git_Configuration = "Enter your GitHub Username"
 ```
   
   ```ps
 echo "Enter Your Git Repo Url... "
+# Example: "https://github.com/ciaran28/DatabricksAutomation"
   
-$Repo_ConfigurationURL = "https://github.com/ciaran28/DatabricksAutomation"
+$Repo_ConfigurationURL = "Enter Git Repo URL"
 ```
   
   

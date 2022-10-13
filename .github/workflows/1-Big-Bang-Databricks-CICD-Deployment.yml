@@ -99,15 +99,16 @@ jobs:
         - name:                 Save Databricks SP Credentials Within Secret Scopes
           run:                  bash ./.github/workflows/Utilities/Utils-Create-Scope.sh
 
-# 12.   Create Databricks Jobs (Linked To Git Repo)
-        - name:                 Create Databricks Jobs
-          run:                  bash ./.github/workflows/Utilities/Utils-Create-Job.sh
+
+# 12. Databricks Clusters
+        - name:                 Create Databricks Clusters
+          run:                  bash ./.github/workflows/Utilities/Utils-Create-Cluster.sh
           env:
             environment:        ${{ matrix.environments }}
 
-# 13. Databricks Clusters
-        - name:                 Create Databricks Clusters
-          run:                  bash ./.github/workflows/Utilities/Utils-Create-Cluster.sh
+# 13.   Create Databricks Jobs (Linked To Git Repo)
+        - name:                 Create Databricks Jobs
+          run:                  bash ./.github/workflows/Utilities/Utils-Create-Job.sh
           env:
             environment:        ${{ matrix.environments }}
 
