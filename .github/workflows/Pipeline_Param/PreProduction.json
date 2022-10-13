@@ -1,0 +1,75 @@
+{
+    "SubscriptionId":  "4f1bc772-7792-4285-99d9-3463b8d7f994",
+    "Location":  "uksouth",
+    "TemplateParamFilePath":  "Infrastructure/DBX_CICD_Deployment/Bicep_Params/PreProduction/Bicep.parameters.json",
+    "TemplateFilePath":  "Infrastructure/DBX_CICD_Deployment/Main_DBX_CICD.bicep",
+    "AZURE_DATABRICKS_APP_ID":  "2ff814a6-3304-4ab8-85cb-cd0e6f879c1d",
+    "MANAGEMENT_RESOURCE_ENDPOINT":  "https://management.core.windows.net/",
+    "RBAC_Assignments":  [
+                             {
+                                 "roles":  [
+                                               "Key Vault Administrator"
+                                           ],
+                                 "roleBeneficiaryObjID":  "3fb6e2d3-7734-43fc-be9e-af8671acf605",
+                                 "Description":  "You Object ID",
+                                 "principalType":  "User"
+                             },
+                             {
+                                 "roles":  [
+                                               "Contributor",
+                                               "DBX_Custom_Role_DSToolkit",
+                                               "Key Vault Administrator"
+                                           ],
+                                 "roleBeneficiaryObjID":  "a7f82f2b-93ea-4453-81e7-004b22c521e8",
+                                 "Description":  "Databricks SPN",
+                                 "principalType":  "ServicePrincipal"
+                             }
+                         ],
+    "Clusters":  [
+                     {
+                         "cluster_name":  "dbx-sp-cluster",
+                         "spark_version":  "10.4.x-scala2.12",
+                         "node_type_id":  "Standard_D3_v2",
+                         "spark_conf":  {
+
+                                        },
+                         "autotermination_minutes":  30,
+                         "runtime_engine":  "STANDARD",
+                         "autoscale":  {
+                                           "min_workers":  2,
+                                           "max_workers":  4
+                                       }
+                     }
+                 ],
+    "Jobs":  [
+                 {
+                     "name":  "Remote_Analysis_Main_Branch",
+                     "cluster_name":  "dbx-sp-cluster",
+                     "notebook_task":  {
+                                           "notebook_path":  "src/tutorial/scripts/framework_testing/remote_analysis",
+                                           "source":  "GIT"
+                                       },
+                     "git_branch":  "release-1.0.x"
+                 }
+             ],
+    "Git_Configuration":  [
+                              {
+                                  "git_username":  "Ciaran28",
+                                  "git_provider":  "gitHub"
+                              }
+                          ],
+    "WheelFiles":  [
+                       {
+                           "setup_py_file_path":  "src/pipelines/dbkframework/setup.py",
+                           "wheel_cluster":  "dbx-sp-cluster",
+                           "upload_to_cluster?":  true
+                       }
+                   ],
+    "Repo_Configuration":  [
+                               {
+                                   "url":  "https://github.com/ciaran28/DatabricksAutomation",
+                                   "provider":  "gitHub",
+                                   "path":  "PreProductionFolder"
+                               }
+                           ]
+}
