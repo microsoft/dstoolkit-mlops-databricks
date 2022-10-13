@@ -106,9 +106,9 @@ There are many ways that a User may create Databricks Jobs, Notebooks, Clusters,
 <br>
 For example, they may interact with the Databricks API/CLI by using: <br>
 <br>
-1. VS Code on their local machine, <br>
-2. the Databricks GUI online; or <br>
-3. a YAML Pipeline deployment on a DevOps Agent (e.g. GitHub Actions or Azure DevOps etc). <br>
+i. VS Code on their local machine, <br>
+ii. the Databricks GUI online; or <br>
+iii. a YAML Pipeline deployment on a DevOps Agent (e.g. GitHub Actions or Azure DevOps etc). <br>
 <br>
  
 The programmatic way in which the first two scenarios allow us to interact with the Databricks API is akin to "Continuous **Development**", as opposed to "Continuous **Deployment**". The former is strong on flexibility, however, it is somewhat weak on governance, accountability and reproducibility. <br>
