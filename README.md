@@ -140,9 +140,12 @@ The Branching Strategy I have chosen is configured automatically as part of the 
 <summary>Click Dropdown... </summary>
 <br>
   
-- Fork this repository
+- Fork this repository [here](https://github.com/microsoft/dstoolkit-mlops-databricks/fork) 
 - In your Forked Repo, click on 'Actions' and then 'Enable'
-- Within your VS Code , "View" --> "Command Pallette" --> "Git: Clone" --> Select <yourUserName>/DatabricksAutomation
+- Within your VS Code:
+i.  "View"
+ii. "Command Pallette"
+iii. "Git: Clone" --> Select <yourUserName>/<foldername>
 </details>
 
 ---
