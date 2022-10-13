@@ -17,13 +17,13 @@
 
 ## Section 1: DevOps Agent Deployment of CI/CD Databricks Environments
 - [Youtube Demo](#Youtube-Demo)
-- [About This Repository](#About-This-Repository)
+- [About This Repository](#1.About-This-Repository)
 - [Prerequisites](#Prerequisites)
 - [Details of The Solution Accelerator](#Details-of-The-Solution-Accelerator)
 - [Databricks as Infrastructure](#Databricks-as-Infrastructure)
-- [Continuous Deployment And Branching Strategy](#Continuous-Deployment-And-Branching-Strategy)
+- [Continuous Deployment and Branching Strategy](#Continuous-Deployment-And-Branching-Strategy)
 - [Create Repository](#Create-Repository)
-- [Login To Azure](#Login-To-Azure)
+- [Login to Azure](#Login-To-Azure)
 - [Create Random String Values ](#Create-Random-String-Values ) 
 - [Provide SubscriptionID ](#Provide-SubscriptionID)
 - [Create Main Service Principal](#Create-Main-Service-Principal)
@@ -31,7 +31,7 @@
 - [Final Snapshot of Github Secrets](#Final-Snapshot-of-Github-Secrets)
 - [Retrieve Object Id's](#Retrieve-Object-Ids)
 - [Update Yaml Pipeline Parameters Files](#Update-Yaml-Pipeline-Parameters-Files)
-- [Deploy The Azure Environments](#Deploy-The-Azure-Environments)
+- [Deploy the Azure Environments](#Deploy-The-Azure-Environments)
 - [Run Machine Learning Scripts](#Run-Machine-Learning-Scripts)
 
 
@@ -40,7 +40,7 @@
 ---
 ---
 
-## Youtube Demo 
+## 1.Youtube Demo 
 
 [![Youtube Demo](docs/images/YoutubeThumbNail.png)](https://www.youtube.com/embed/Q3DNOgIu6rk)
 ---
