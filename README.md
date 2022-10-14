@@ -87,8 +87,8 @@ The net effect is a disproportionate amount of the Data Scientist/Engineers time
   - Production
 - Full CI/CD between environments
 - Infrastructure-as-Code for interacting with Databricks API and also CLI
-- Logging framework using the [Opensensus Azure Monitor Exporters](https://github.com/census-instrumentation/opencensus-python/tree/master/contrib/opencensus-ext-azure)
-- Databricks Continuous Development from VS Code IDE using the [Databricks Connect](https://docs.microsoft.com/en-us/azure/databricks/dev-tools/databricks-connect#visual-studio-code) feature
+- Logging framework using the [Opensensus Azure Monitor Exporters](https://github.com/census-instrumentation/opencensus-python/tree/master/contrib/opencensus-ext-azure) (Section 2)
+- Databricks Continuous Development from VS Code IDE using the [Databricks Connect](https://docs.microsoft.com/en-us/azure/databricks/dev-tools/databricks-connect#visual-studio-code) feature (Section 2)
 - Azure Service Principal Authentication
 - Azure resource deployment using BICEP
 - Examples given within Development Framework using the Python SDK for Databricks
