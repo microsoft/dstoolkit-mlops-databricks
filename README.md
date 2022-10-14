@@ -272,8 +272,7 @@ $Git_Configuration = "Enter your GitHub Username"
   
   ```ps
 echo "Enter Your Git Repo Url... "
-# Example: "https://github.com/ciaran28/DatabricksAutomation"
-  
+# Example: "https://github.com/ciaran28/DatabricksAutomation"  
 $Repo_ConfigurationURL = "Enter Git Repo URL"
 ```
   
