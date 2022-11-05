@@ -220,7 +220,7 @@ titanic_features_lookups = [
     FeatureLookup( 
       table_name = titanic_features_table,
       feature_names = "Title",
-      lookup_key = ["Name"],
+      lookup_key = ["Name", "Cabin"],
     ),
     FeatureLookup( 
       table_name = titanic_features_table,
@@ -309,5 +309,3 @@ fs.log_model(
   training_set = training_set,
   registered_model_name = "titanic_packaged"
 )
-
-# COMMAND ----------
