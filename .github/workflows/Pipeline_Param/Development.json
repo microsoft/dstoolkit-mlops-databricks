@@ -28,9 +28,12 @@
     "Clusters":  [
                      {
                          "cluster_name":  "dbx-sp-cluster",
-                         "spark_version":  "10.4.x-scala2.12",
+                         "spark_version":  "10.4.x-cpu-ml-scala2.12",
                          "node_type_id":  "Standard_D3_v2",
                          "spark_conf":  {
+                                            "spark.databricks.cluster.profile": "singleNode",
+                                            "spark.master": "local[*, 4]",
+                                            "spark.databricks.delta.preview.enabled": "true"
 
                                         },
                          "autotermination_minutes":  30,
