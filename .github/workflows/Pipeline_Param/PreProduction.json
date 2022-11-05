@@ -20,7 +20,7 @@
                                                "DBX_Custom_Role_DSToolkit",
                                                "Key Vault Administrator"
                                            ],
-                                 "roleBeneficiaryObjID":  "a7f82f2b-93ea-4453-81e7-004b22c521e8",
+                                 "roleBeneficiaryObjID":  "76e523fc-1ab5-4b5d-b4c3-08cba9d40f86",
                                  "Description":  "Databricks SPN",
                                  "principalType":  "ServicePrincipal"
                              }
@@ -67,7 +67,7 @@
                    ],
     "Repo_Configuration":  [
                                {
-                                   "url":  "https://github.com/ciaran28/DatabricksAutomation",
+                                   "url":  "https://github.com/ciaran28/dstoolkit-mlops-databricks",
                                    "provider":  "gitHub",
                                    "path":  "PreProductionFolder"
                                }
