@@ -1,4 +1,3 @@
-
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Titanic 👋🛳️ Ahoy!
@@ -312,5 +311,3 @@ fs.log_model(
 )
 
 # COMMAND ----------
-
-
