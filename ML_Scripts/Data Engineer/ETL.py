@@ -45,14 +45,19 @@ spark.conf.set("fs.azure.createRemoteFileSystemDuringInitialization", "false")
 
 
 
+dbfs_path = 'abfss://raw@adlsdevgayt.dfs.core.windows.net/train.csv'
+df_train = spark.read.csv(dbfs_path, header = "True", inferSchema="True")
 
+df_train.display()
 
 
 
 # COMMAND ----------
 
-# MAGIC %fs
-# MAGIC ls "mnt/csvFiles"
+dbutils.fs.mount(
+source = "abfss://raw@adlsdevgayt.dfs.core.windows.net/training_data",
+mount_point = "/mnt/flightdata",
+extra_configs = configs)
 
 # COMMAND ----------
 
@@ -60,7 +65,8 @@ display(dbutils.fs.mounts())
 
 # COMMAND ----------
 
-df = spark.read.format("text").load("/mnt/test/train.csv")
+df = spark.read.format("csv").load("/mnt/flightdata/train.csv")
+df.display()
 
 # COMMAND ----------
 
