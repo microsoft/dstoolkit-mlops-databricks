@@ -30,7 +30,8 @@ dbutils = DBUtils(spark)
 print(dbutils.fs.ls('dbfs:/FileStore/'))
 
 print(dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret"))
-exit()
+
+
 # COMMAND ----------
 
 # MAGIC %md
@@ -86,8 +87,8 @@ spark.conf.set("fs.azure.createRemoteFileSystemDuringInitialization", "false")
 
 configs = {"fs.azure.account.auth.type": "OAuth",
            "fs.azure.account.oauth.provider.type": "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
-           "fs.azure.account.oauth2.client.id": "7e83398e-8440-4d0c-8533-44c8b90bfa83",
-           "fs.azure.account.oauth2.client.secret": "kCq8Q~P2Do0CET~h8zauDNKMULVZ3uuZu~bsXah8",
+           "fs.azure.account.oauth2.client.id": DBX_SP_ClientID,
+           "fs.azure.account.oauth2.client.secret": DBX_SP_Client_Secret,
            "fs.azure.account.oauth2.client.endpoint": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/token"}
 
 #display(dbutils.fs.ls("abfss://raw@adlsdevgayt.dfs.core.windows.net"))
