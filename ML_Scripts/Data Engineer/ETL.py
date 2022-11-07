@@ -10,7 +10,7 @@ from databricks import feature_store
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC # Authenticate To Service Principal
+# MAGIC # Authenticate To Service Principal - Automated DBFS Mount to ADLS
 
 # COMMAND ----------
 
