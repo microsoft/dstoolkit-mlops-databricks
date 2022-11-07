@@ -3,6 +3,9 @@
 # Raw Data Container --> ETL --> Feature Data Container 
 
 
+# DATABRICKS SP NEEDS TO HAVE BLOB STORAGE CONTRIBUTOR ACCESS TO THE CONTAINER (OR POSSIBLY JUST THE SA)
+
+
 # Test - 16:48 - NEW
 
 import numpy as np
@@ -25,6 +28,8 @@ print('spark session created.')
 dbutils = DBUtils(spark)
 
 print(dbutils.fs.ls('dbfs:/FileStore/'))
+
+print(dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret"))
 exit()
 # COMMAND ----------
 
