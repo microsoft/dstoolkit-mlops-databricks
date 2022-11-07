@@ -57,10 +57,10 @@ jobs:
 
 
 # 5.  Deploy Azure Resources    (BICEP) 
-        #- name:                 Deploy DBX CICD Azure Resources
-        #  run:                  bash ./.github/workflows/Utilities/Utils-Azure-Resources.sh
-        #  env:
-        #    environment:        ${{ matrix.environments }}
+        - name:                 Deploy DBX CICD Azure Resources
+          run:                  bash ./.github/workflows/Utilities/Utils-Azure-Resources.sh
+          env:
+            environment:        ${{ matrix.environments }}
 
 
 # 6.  __Order Important__ Asign RBAC Permission
