@@ -5,6 +5,11 @@ APP_INSIGHT_INSTRUMENT_KEY=$(az resource show \
                             --resource-type "microsoft.insights/components" \
                             --query properties.ConnectionString -o tsv)
 
+echo "Test"
+
+echo $ARM_CLIENT_ID
+echo $ARM_TENANT_ID
+echo $ARM_CLIENT_SECRET
 
 echo "Creating Secret Scopes...."
 
