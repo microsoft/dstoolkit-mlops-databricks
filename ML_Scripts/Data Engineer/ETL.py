@@ -17,10 +17,14 @@ from databricks import feature_store
 # Python code to mount and access Azure Data Lake Storage Gen2 Account to Azure Databricks with Service Principal and OAuth
 # Author: Dhyanendra Singh Rathore
 
-
+STORAGE_ACC_NAME = "adlsdevgayt"
 DBX_SP_Client_Secret = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret")
 DBX_SP_ClientID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_ClientID")
 DBX_SP_TenantID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_TenantID")
+
+print(f"Test: {DBX_SP_ClientID}")
+print(f"Test: {DBX_SP_Client_Secret}")
+print(DBX_SP_TenantID)
 
 
 # Ensure container access is set to public access
@@ -37,13 +41,13 @@ DBX_SP_TenantID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Ten
 #spark.conf.set("fs.azure.createRemoteFileSystemDuringInitialization", "false")
 
 
-spark.conf.set("fs.azure.account.auth.type.adlsdevgayt.dfs.core.windows.net", "OAuth")
-spark.conf.set("fs.azure.account.oauth.provider.type.adlsdevgayt.dfs.core.windows.net", "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider")
-spark.conf.set("fs.azure.account.oauth2.client.id.adlsdevgayt.dfs.core.windows.net", dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_ClientID") )
-spark.conf.set("fs.azure.account.oauth2.client.secret.adlsdevgayt.dfs.core.windows.net", dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret") )   
-spark.conf.set("fs.azure.account.oauth2.client.endpoint.adlsdevgayt.dfs.core.windows.net", "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/token")
+spark.conf.set("fs.azure.account.auth.type."+ STORAGE_ACC_NAME +".dfs.core.windows.net", "OAuth")
+spark.conf.set("fs.azure.account.oauth.provider.type."+ STORAGE_ACC_NAME +".dfs.core.windows.net", "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider")
+spark.conf.set("fs.azure.account.oauth2.client.id."+ STORAGE_ACC_NAME +".dfs.core.windows.net", DBX_SP_ClientID )
+spark.conf.set("fs.azure.account.oauth2.client.secret."+ STORAGE_ACC_NAME +".dfs.core.windows.net", DBX_SP_Client_Secret )   
+spark.conf.set("fs.azure.account.oauth2.client.endpoint."+ STORAGE_ACC_NAME +".dfs.core.windows.net", "https://login.microsoftonline.com/"+ DBX_SP_TenantID + "/oauth2/token")
 spark.conf.set("fs.azure.createRemoteFileSystemDuringInitialization", "true")
-display(dbutils.fs.ls("abfss://raw@adlsdevgayt.dfs.core.windows.net"))
+display(dbutils.fs.ls("abfss://raw@"+ STORAGE_ACC_NAME +".dfs.core.windows.net"))
 spark.conf.set("fs.azure.createRemoteFileSystemDuringInitialization", "false")
 
 #spark.conf.set("fs.azure.account.auth.type.adlsdevgayt.dfs.core.windows.net", "OAuth")
