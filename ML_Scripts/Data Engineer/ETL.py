@@ -19,17 +19,52 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from datetime import date
 
+ 
+
 from pyspark.sql import SparkSession
 spark = SparkSession.builder.getOrCreate()
 print(spark.version)
 print('spark session created.')
 
 
-dbutils = DBUtils(spark)
+#dbutils = DBUtils(spark)
+#print(dbutils.fs.ls('dbfs:/FileStore/'))
+#print(dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret"))
+#dbutils.fs.mounts()
 
-print(dbutils.fs.ls('dbfs:/FileStore/'))
 
-print(dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret"))
+
+
+#import subprocess
+#import sys
+##subprocess.check_call([sys.executable, "-m", "pip", "install", 'azure-storage-blob'])
+#subprocess.check_call([sys.executable, "-m", "pip", "install", 'azure-keyvault'])
+#subprocess.check_call([sys.executable, "-m", "pip", "install", 'azure-keyvault-secrets'])
+
+
+# IMPORTANT : https://learn.microsoft.com/en-us/python/api/overview/azure/identity-readme?view=azure-python#authenticate-via-visual-studio-code
+from azure.identity import DefaultAzureCredential
+from azure.storage.blob import BlobServiceClient
+from azure.storage.blob import ContainerClient
+#from azure.keyvault.secrets import SecretClient
+
+account_url = "https://adlsdevgayt.blob.core.windows.net"
+default_credential = DefaultAzureCredential()
+
+#client = SecretClient(vault_url="https://keyvault-dev-gayt.vault.azure.net", credential=default_credential)
+#print(client)
+
+# Create the BlobServiceClient object
+blob_service_client = BlobServiceClient(account_url, credential=default_credential)
+print(blob_service_client)
+
+
+new_container = blob_service_client.create_container("containerfromblobservice")
+
+exit()
+
+
+
 
 
 # COMMAND ----------
