@@ -48,7 +48,7 @@ Create_DBX_Client_Secret=$(curl -X POST -H "Authorization: Bearer $TOKEN" \
 
 
 
-JSON_STRING=$( jq -n -c 
+JSON_STRING=$( jq -n -c \
                 --arg scope "DBX_SP_Credentials" \
                 --arg key "DBX_SP_ClientID" \
                 --arg value "$ARM_CLIENT_ID"  \
