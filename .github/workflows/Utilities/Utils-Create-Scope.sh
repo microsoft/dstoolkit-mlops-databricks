@@ -22,12 +22,17 @@ Create_Secret_Scope=$(curl -X POST -H "Authorization: Bearer $TOKEN" \
 echo "Inserting Service Principal + Other Secrets Into Scope.... "
 
 
-JSON_STRING=$( jq -n -c --arg scope "DBX_SP_Credentials" --arg key "DBX_SP_Client_Secret" --arg value "$ARM_CLIENT_SECRET"  \
-                            '{
-                                scope: $scope,
-                                key: $key,
-                                string_value: $value
-                            }' )
+JSON_STRING=$( jq -n -c \
+                --arg scope "DBX_SP_Credentials" \
+                --arg key "DBX_SP_Client_Secret" \
+                --arg value "$ARM_CLIENT_SECRET"  \
+                '{
+                    scope: $scope,
+                    key: $key,
+                    string_value: $value
+                }' )
+
+echo $JSON_STRING
 
 Create_DBX_Client_Secret=$(curl -X POST -H "Authorization: Bearer $TOKEN" \
                             -H "X-Databricks-Azure-SP-Management-Token: $MGMT_ACCESS_TOKEN" \
@@ -38,12 +43,16 @@ Create_DBX_Client_Secret=$(curl -X POST -H "Authorization: Bearer $TOKEN" \
 
 
 
-JSON_STRING=$( jq -n -c --arg scope "DBX_SP_Credentials" --arg key "DBX_SP_Client_Secret" --arg value "$ARM_CLIENT_ID"  \
-                            '{
-                                scope: $scope,
-                                key: $key,
-                                string_value: $value
-                            }' )
+JSON_STRING=$( jq -n -c 
+                --arg scope "DBX_SP_Credentials" \
+                --arg key "DBX_SP_ClientID" \
+                --arg value "$ARM_CLIENT_ID"  \
+                '{
+                    scope: $scope,
+                    key: $key,
+                    string_value: $value
+                }' )
+echo $JSON_STRING
                                         
 Create_DBX_ClientID_Secret=$(curl -X POST \
                             -H "Authorization: Bearer $TOKEN" \
@@ -55,12 +64,14 @@ Create_DBX_ClientID_Secret=$(curl -X POST \
 
 
 
-JSON_STRING=$( jq -n -c --arg scope "DBX_SP_Credentials" --arg key "DBX_SP_Client_Secret" --arg value "$ARM_TENANT_ID"  \
+JSON_STRING=$( jq -n -c --arg scope "DBX_SP_Credentials" --arg key "DBX_SP_TenantID" --arg value "$ARM_TENANT_ID"  \
                             '{
                                 scope: $scope,
                                 key: $key,
                                 string_value: $value
                             }' )
+
+echo $JSON_STRING
 
 Create_DBX_TenantID_Secret=$(curl -X POST -H "Authorization: Bearer $TOKEN" \
                             -H "X-Databricks-Azure-SP-Management-Token: $MGMT_ACCESS_TOKEN" \
