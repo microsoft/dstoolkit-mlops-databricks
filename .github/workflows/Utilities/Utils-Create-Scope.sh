@@ -1,3 +1,4 @@
+# hard coded app insight name FIX !!!
 APP_INSIGHT_INSTRUMENT_KEY=$(az resource show \
                             -g databricks-dev-rg \
                             -n dbxappinsightsdev \
@@ -31,7 +32,7 @@ JSON_STRING=$( jq -n -c --arg scope "DBX_SP_Credentials" --arg key "DBX_SP_Clien
 Create_DBX_Client_Secret=$(curl -X POST -H "Authorization: Bearer $TOKEN" \
                             -H "X-Databricks-Azure-SP-Management-Token: $MGMT_ACCESS_TOKEN" \
                             -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
-                            -H 'Content-Type: application/json' -d \
+                            -H 'Content-Type: application/json' \
                             -d $JSON_STRING \
                             https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
 
@@ -48,7 +49,7 @@ Create_DBX_ClientID_Secret=$(curl -X POST \
                             -H "Authorization: Bearer $TOKEN" \
                             -H "X-Databricks-Azure-SP-Management-Token: $MGMT_ACCESS_TOKEN" \
                             -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
-                            -H 'Content-Type: application/json' -d \
+                            -H 'Content-Type: application/json' \
                             -d $JSON_STRING \
                             https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
 
@@ -64,7 +65,7 @@ JSON_STRING=$( jq -n -c --arg scope "DBX_SP_Credentials" --arg key "DBX_SP_Clien
 Create_DBX_TenantID_Secret=$(curl -X POST -H "Authorization: Bearer $TOKEN" \
                             -H "X-Databricks-Azure-SP-Management-Token: $MGMT_ACCESS_TOKEN" \
                             -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
-                            -H 'Content-Type: application/json' -d \
+                            -H 'Content-Type: application/json' \
                             -d $JSON_STRING \
                             https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
 
