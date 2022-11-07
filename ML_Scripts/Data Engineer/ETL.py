@@ -8,8 +8,24 @@
 import numpy as np
 import pandas as pd 
 from pyspark.sql.functions import *
-from databricks import feature_store
+#from databricks import feature_store
+from pyspark.dbutils import DBUtils
 
+
+from pyspark.sql import SparkSession
+from pyspark.sql.types import *
+from datetime import date
+
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.getOrCreate()
+print(spark.version)
+print('spark session created.')
+
+
+dbutils = DBUtils(spark)
+
+print(dbutils.fs.ls('dbfs:/FileStore/'))
+exit()
 # COMMAND ----------
 
 # MAGIC %md
