@@ -1,3 +1,9 @@
+# ISSUE -  There seems to be a delay for the DBFS Folders to Propagate through - Which is therefore leaving no home for the python wheel file. 
+
+# Wait until DBFS Folder is created. And then Upload. Keep iterating etc. 
+
+
+
 # The Script Will Ingest Parameters File In Order To Determine Location Of Setup.py Files.
 # Each Setup.py Relates To The Creation Of A New Wheel File, Which Will Be Saved In 
 # DBFS In A Folder Corresponding To The Cluster The Wheel File Is To Be Uploaded To. 
