@@ -18,9 +18,10 @@
                                  "roles":  [
                                                "Contributor",
                                                "DBX_Custom_Role_DSToolkit",
-                                               "Key Vault Administrator"
+                                               "Key Vault Administrator",
+                                               "Storage Blob Data Contributor"
                                            ],
-                                 "roleBeneficiaryObjID":  "a7f82f2b-93ea-4453-81e7-004b22c521e8",
+                                 "roleBeneficiaryObjID":  "76efac2c-ea53-4a08-9c5f-9d7664b300e2",
                                  "Description":  "Databricks SPN",
                                  "principalType":  "ServicePrincipal"
                              }
@@ -28,20 +29,6 @@
     "Clusters":  [
                      {
                          "cluster_name":  "dbx-sp-cluster",
-                         "spark_version":  "10.4.x-scala2.12",
-                         "node_type_id":  "Standard_D3_v2",
-                         "spark_conf":  {
-
-                                        },
-                         "autotermination_minutes":  30,
-                         "runtime_engine":  "STANDARD",
-                         "autoscale":  {
-                                           "min_workers":  2,
-                                           "max_workers":  4
-                                       }
-                     },
-                     {
-                         "cluster_name":  "dbx-sp-cluster2",
                          "spark_version":  "10.4.x-scala2.12",
                          "node_type_id":  "Standard_D3_v2",
                          "spark_conf":  {
@@ -81,7 +68,7 @@
                           ],
     "Repo_Configuration":  [
                                {
-                                   "url":  "https://github.com/ciaran28/DatabricksAutomation",
+                                   "url":  "https://github.com/ciaran28/dstoolkit-mlops-databricks",
                                    "provider":  "gitHub",
                                    "path":  "DevelopmentFolder"
                                }

@@ -35,7 +35,7 @@ jobs:
           with:
             filters: |
               workflows:
-                - 'src/**'    
+                - 'ML_Scripts/**'    
 
 
 # 1.  Checkout Branch

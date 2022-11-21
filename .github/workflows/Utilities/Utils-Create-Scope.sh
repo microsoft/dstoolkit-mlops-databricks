@@ -1,9 +1,15 @@
+# hard coded app insight name FIX !!!
 APP_INSIGHT_INSTRUMENT_KEY=$(az resource show \
                             -g databricks-dev-rg \
                             -n dbxappinsightsdev \
                             --resource-type "microsoft.insights/components" \
                             --query properties.ConnectionString -o tsv)
 
+echo "Test"
+
+echo $ARM_CLIENT_ID
+echo $ARM_TENANT_ID
+echo $ARM_CLIENT_SECRET
 
 echo "Creating Secret Scopes...."
 
@@ -20,36 +26,64 @@ Create_Secret_Scope=$(curl -X POST -H "Authorization: Bearer $TOKEN" \
 
 echo "Inserting Service Principal + Other Secrets Into Scope.... "
 
+
+JSON_STRING=$( jq -n -c \
+                --arg scope "DBX_SP_Credentials" \
+                --arg key "DBX_SP_Client_Secret" \
+                --arg value "$ARM_CLIENT_SECRET"  \
+                '{
+                    scope: $scope,
+                    key: $key,
+                    string_value: $value
+                }' )
+
+echo $JSON_STRING
+
 Create_DBX_Client_Secret=$(curl -X POST -H "Authorization: Bearer $TOKEN" \
                             -H "X-Databricks-Azure-SP-Management-Token: $MGMT_ACCESS_TOKEN" \
                             -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
-                            -H 'Content-Type: application/json' -d \
-                            '{
-                                "scope": "DBX_SP_Credentials", 
-                                "key": "DBX_SP_Client_Secret",
-                                "string_value": "$ARM_CLIENT_SECRET"
-                            }' https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
-                            
+                            -H 'Content-Type: application/json' \
+                            -d $JSON_STRING \
+                            https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
+
+
+
+JSON_STRING=$( jq -n -c \
+                --arg scope "DBX_SP_Credentials" \
+                --arg key "DBX_SP_ClientID" \
+                --arg value "$ARM_CLIENT_ID"  \
+                '{
+                    scope: $scope,
+                    key: $key,
+                    string_value: $value
+                }' )
+echo $JSON_STRING
+                                        
 Create_DBX_ClientID_Secret=$(curl -X POST \
                             -H "Authorization: Bearer $TOKEN" \
                             -H "X-Databricks-Azure-SP-Management-Token: $MGMT_ACCESS_TOKEN" \
                             -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
-                            -H 'Content-Type: application/json' -d \
+                            -H 'Content-Type: application/json' \
+                            -d $JSON_STRING \
+                            https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
+
+
+
+JSON_STRING=$( jq -n -c --arg scope "DBX_SP_Credentials" --arg key "DBX_SP_TenantID" --arg value "$ARM_TENANT_ID"  \
                             '{
-                                "scope": "DBX_SP_Credentials", 
-                                "key": "DBX_SP_ClientID",
-                                "string_value": "$ARM_CLIENT_ID"
-                            }' https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
+                                scope: $scope,
+                                key: $key,
+                                string_value: $value
+                            }' )
+
+echo $JSON_STRING
 
 Create_DBX_TenantID_Secret=$(curl -X POST -H "Authorization: Bearer $TOKEN" \
                             -H "X-Databricks-Azure-SP-Management-Token: $MGMT_ACCESS_TOKEN" \
                             -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
-                            -H 'Content-Type: application/json' -d \
-                            '{
-                                "scope": "DBX_SP_Credentials", 
-                                "key": "DBX_SP_TenantID",
-                                "string_value": "$ARM_TENANT_ID"
-                            }' https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
+                            -H 'Content-Type: application/json' \
+                            -d $JSON_STRING \
+                            https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
 
 
 echo "Create Azure Resources Secrets Scope...."
