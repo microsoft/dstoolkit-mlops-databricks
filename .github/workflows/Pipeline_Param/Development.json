@@ -18,7 +18,8 @@
                                  "roles":  [
                                                "Contributor",
                                                "DBX_Custom_Role_DSToolkit",
-                                               "Key Vault Administrator"
+                                               "Key Vault Administrator",
+                                               "Storage Blob Data Contributor"
                                            ],
                                  "roleBeneficiaryObjID":  "76efac2c-ea53-4a08-9c5f-9d7664b300e2",
                                  "Description":  "Databricks SPN",
