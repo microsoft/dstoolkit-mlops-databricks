@@ -21,7 +21,7 @@
                                                "Key Vault Administrator",
                                                "Storage Blob Data Contributor"
                                            ],
-                                 "roleBeneficiaryObjID":  "76efac2c-ea53-4a08-9c5f-9d7664b300e2",
+                                 "roleBeneficiaryObjID":  "b5feae3d-15e3-4627-a222-dcddccc6b8b9",
                                  "Description":  "Databricks SPN",
                                  "principalType":  "ServicePrincipal"
                              }
@@ -62,7 +62,7 @@
              ],
     "Git_Configuration":  [
                               {
-                                  "git_username":  "Ciaran28",
+                                  "git_username":  "ciaran28",
                                   "git_provider":  "gitHub"
                               }
                           ],
