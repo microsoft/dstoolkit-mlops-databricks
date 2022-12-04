@@ -95,7 +95,7 @@ def manageClusterState():
 
 
 if __name__ == "__main__":
-    with open('MLOps_Engineer/1-DevOps_Pipeline_Layer/Variables/' + ENVIRONMENT + '/DBX_Clusters/Clusters.json', 'r') as f:
+    with open('.github/MLOps_Engineer/Variables/' + ENVIRONMENT + '/DBX_Clusters/Clusters.json', 'r') as f:
         buildClusters = json.load(f)
     
     # Extract array from Json object
