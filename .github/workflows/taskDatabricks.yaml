@@ -217,15 +217,9 @@ jobs:
       - shell: bash
         name:  DBX Launch
         run: |
-          echo $enableInfraDeploy
-          az upgrade
-          sudo apt update && sudo apt install jq
-          #pip3 install requests
-          # Do A python pip install so that modules can be found from python tasks
-          python -m pip install requests
-          pip3 install  azure-databricks-sdk-python
-        env:
-          Test3:                  ${{ secrets.AZURE_CREDENTIALS }}
+          echo $DATABRICKS_TOKEN
+          pip install dbx
+          dbx deploy --deployment-file conf/deployment.yaml --jobs=e2e-mlops-sandbox --environment=$ENVIRONMENT
 
 
 # 16. Databricks Wheel File Creation + DBFS/Cluster Upload
