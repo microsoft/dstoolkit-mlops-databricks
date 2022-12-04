@@ -5,9 +5,6 @@ on:
       ENVIRONMENT:
         required: true
         type: string
-      AZURE_CREDENTIALS:
-        required: false
-        type: string
     secrets:
       AZURE_CREDENTIALS:
         required: true
@@ -29,11 +26,9 @@ jobs:
       - shell: bash
         run: |
             echo Test1
-            echo Test2
             echo Test3
         env:
           Test1: ${{ inputs.ENVIRONMENT }}
-          Test2: ${{ inputs.AZURE_CREDENTIALS }}
           Test3: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name:                     Azure Login - ${{ inputs.environments }}
@@ -45,7 +40,7 @@ jobs:
         shell:                    bash
         run:                      ./MLOps_Engineer/1-DevOps_Pipeline_Layer/Utilities/Bash/utilsCreateAzureResources.sh
         env:
-          ENVIRONMENT:            ${{ secrets.AZURE_CREDENTIALS }} 
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 
