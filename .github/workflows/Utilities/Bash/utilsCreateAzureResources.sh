@@ -5,14 +5,14 @@ echo "Ingest JSON File"
 JSON=$( jq '.' MLOps_Engineer/2-Infrastructure_Layer/DBX_CICD_Deployment/Bicep_Params/$ENVIRONMENT/Bicep.parameters.json)
 
 TemplateParamFilePath=$( jq -r '.parameters.TemplateParamFilePath.value' <<< "$JSON")
-echo "Resource Group Name: $TemplateParamFilePath"
+echo "Parm File Path: $TemplateParamFilePath"
 
 
 TemplateFilePath=$( jq -r '.parameters.TemplateFilePath.value' <<< "$JSON")
-echo "Resource Group Name: $TemplateFilePath"
+echo "File Path: $TemplateFilePath"
 
 location=$( jq -r '.parameters.location.value' <<< "$JSON")
-echo "Resource Group Name: $location"
+echo "Location: $location"
 
 
 echo "environment variable: $TemplateParamFilePath"
