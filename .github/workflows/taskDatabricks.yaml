@@ -170,8 +170,7 @@ jobs:
 # 12. Databricks Clusters
       - name:                 Create Databricks Clusters
         run:                  python .github/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
-        env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+
 
 
 
