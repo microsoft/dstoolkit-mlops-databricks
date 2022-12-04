@@ -6,6 +6,9 @@ inputs:
   environment: 
     required: true
     description: "Environment"
+  secrets:
+    required: true
+    description: "Environment Parameters"
   #namespace:
   #  required: true
   #  description: "Test"
@@ -30,6 +33,6 @@ runs:
         echo $Development_Env_File
       shell: bash
       env:
-        Development_Env_File: ${{ secrets.Development }}
+        Development_Env_File: ${{ inputs.secrets }}
       
 
