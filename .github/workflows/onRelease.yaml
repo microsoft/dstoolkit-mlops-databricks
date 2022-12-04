@@ -4,8 +4,9 @@ name: CI/CD Pipelines
 on: 
   pull_request:
     branches:
-      #- main
+      - main
       - dev
+      - feature/**
       #- release-**
     types:
       - opened
@@ -26,7 +27,7 @@ jobs:
 
 
   prApprovedOnMain:
-    if:   github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if:   github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == 'main'
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
       ENVIRONMENT: Development
