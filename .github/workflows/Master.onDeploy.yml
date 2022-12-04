@@ -14,10 +14,13 @@ jobs:
     
     steps:
     # We need this because GitHub needs to clone the branch to pipeline
-
+      - name:                     Checkout
+        uses:                     actions/checkout@v2
+      
       - name:                     Job_Create_Environments
         uses:                     "./.github/actions/taskDatabricks" #Just need to pass the path from action
         # Defining the variables required in our action
+
         with:
           version:                v1.0.0
           namespace:              "stage"
