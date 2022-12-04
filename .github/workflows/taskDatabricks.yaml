@@ -9,7 +9,7 @@ on:
       AZURE_CREDENTIALS:
         required: true
       ARM_TENANT_ID:
-        required:true
+        required: true
       ARM_CLIENT_ID:
         required: true
       ARM_CLIENT_SECRET:
