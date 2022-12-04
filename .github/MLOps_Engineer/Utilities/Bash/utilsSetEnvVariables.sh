@@ -42,5 +42,5 @@ echo "DATABRICKS_HOST=https://$DATABRICKS_INSTANCE" >> $GITHUB_ENV
 echo "Set Databricks Token ID As Environment Variable..."
 echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
 
-echo "Set Python Path"
-echo "PYTHONPATH=src/modules" >> $GITHUB_ENV
+#echo "Set Python Path"
+#echo "PYTHONPATH=src/modules" >> $GITHUB_ENV
