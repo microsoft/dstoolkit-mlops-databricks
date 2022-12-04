@@ -30,6 +30,6 @@ runs:
         echo $Development_Env_File
       shell: bash
       env:
-        Development_Env_File: ${{ secrets.${{ inputs.environment }} }}
+        Development_Env_File: ${{ secrets.Development }}
       
 
