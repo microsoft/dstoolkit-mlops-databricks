@@ -60,7 +60,7 @@ jobs:
           az upgrade
           sudo apt update && sudo apt install jq
           pip3 install requests
-          python pip install requests
+          python -m pip install requests
           pip3 install  azure-databricks-sdk-python
         env:
           Test1:                  ${{ inputs.ENVIRONMENT }}
