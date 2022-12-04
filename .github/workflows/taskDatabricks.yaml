@@ -104,9 +104,9 @@ jobs:
 ###################################################################################################################################################################//
 # 6.  __Order Important__ Asign RBAC Permission
       - name:                     Assign RBAC Permissions 
-        run:                      bash ./.github/workflows/Utilities/Utils-Assign-RBAC.sh
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRoleBasedAccess.sh
         env:
-          environment:            ${{ inputs.ENVIRONMENT }}
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 
