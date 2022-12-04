@@ -19,7 +19,6 @@ jobs:
       
       - name:                     Job_Create_Environments
         uses:                     "./MLOps_Engineer/1-DevOps_Pipeline_Layer/taskDatabricks"
-
         with:
           ENVIRONMENT:             ${{ matrix.environments }}
           SUBSCRIPTIONID:          ${{ secrets.SUBSCRIPTIONID}}

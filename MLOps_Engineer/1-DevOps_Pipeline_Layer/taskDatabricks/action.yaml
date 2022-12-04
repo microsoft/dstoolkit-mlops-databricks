@@ -17,8 +17,7 @@ inputs:
 runs:
   using: "composite"
 
-  steps:
-  
+  steps: 
     - name:                     Checkout
       uses:                     actions/checkout@v2
 
@@ -26,6 +25,12 @@ runs:
       uses:                     azure/login@v1
       with:
         creds:                  ${{inputs.AZURE_CREDENTIALS}} 
+
+    - name:                     Deploy DBX CICD Azure Resources
+      shell:                    bash
+      run:                      ./MLOps_Engineer/1-DevOps_Pipeline_Layer/Utilities/Bash/utilsCreateAzureResources.sh
+      env:
+        ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
       
 
