@@ -3,12 +3,16 @@ description: taskDatabricks
 
 # Were we can define the inputs that our action will accept
 inputs:
-  environment: 
+  ENVIRONMENT: 
     required: true
     description: "Environment"
   SUBSCRIPTIONID:
     required: true
     description: "Environment Parameters"
+  AZURE_CREDENTIALS:
+    required: true
+    description: "Service Principal Credentials"
+
 
 runs:
   using: "composite"
@@ -21,7 +25,7 @@ runs:
     - name:                     Azure Login - ${{ matrix.environments }}
       uses:                     azure/login@v1
       with:
-        creds:                  ${{secrets.AZURE_CREDENTIALS}} 
+        creds:                  ${{inputs.AZURE_CREDENTIALS}} 
 
       
 
