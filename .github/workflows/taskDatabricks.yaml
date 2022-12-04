@@ -61,7 +61,7 @@ jobs:
 ##                                                                      Authenticate/Login To Azure                                               
 ###################################################################################################################################################################//
       - name:                     Service Principal Login
-        run:                      bash .github/workflows/Utilities/Bash/utilsAzureLogin.sh
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsAzureLogin.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
