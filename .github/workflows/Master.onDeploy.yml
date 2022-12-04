@@ -18,15 +18,15 @@ jobs:
         uses:                     actions/checkout@v2
       
       - name:                     Job_Create_Environments
-        uses:                     "./.github/actions/taskDatabricks" #Just need to pass the path from action
+        uses:                     "./MLOps_Engineer/1-DevOps_Pipeline_Layer/taskDatabricks" #Just need to pass the path from action
         # Defining the variables required in our action
 
         with:
-          version:                v1.0.0
-          namespace:              "stage"
+          #version:                v1.0.0
+          #namespace:              "stage"
           environment:            ${{ matrix.environments }}
-          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
+          #ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
+          #ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
+          #ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
   
   
