@@ -3,7 +3,6 @@ name:                           onDeploy Databricks
 
 on:                             
   workflow_dispatch:
-    environment: ${{ matrix.target }}
 jobs:
   ReuseableMatrixJobForDeployment:
     strategy:
@@ -14,7 +13,7 @@ jobs:
       ENVIRONMENT: ${{ matrix.target }}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_}}
-
+    
 
   
 

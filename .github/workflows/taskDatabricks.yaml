@@ -15,9 +15,9 @@ on:
 
 jobs:
   build:
-    name: ${{ inputs.target }} Environment Deployment
+    name: ${{ inputs.ENVIRONMENT }} Environment Deployment
     runs-on: ubuntu-latest
-    environment:  ${{ inputs.target }}
+    environment:  ${{ inputs.ENVIRONMENT }}
 
     steps:      
       - name:                     Checkout
