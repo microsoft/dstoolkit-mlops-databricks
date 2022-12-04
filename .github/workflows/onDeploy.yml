@@ -26,7 +26,7 @@ jobs:
           #version:                v1.0.0
           #namespace:              "stage"
           environment:            ${{ matrix.environments }}
-          secrets:                ${{ secrets.Development}}
+          SUBSCRIPTIONID:                ${{ secrets.SUBSCRIPTIONID}}
           #ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
           #ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
           #ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}

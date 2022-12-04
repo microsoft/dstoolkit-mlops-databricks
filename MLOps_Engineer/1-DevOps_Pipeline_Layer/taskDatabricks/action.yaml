@@ -6,7 +6,7 @@ inputs:
   environment: 
     required: true
     description: "Environment"
-  secrets:
+  SUBSCRIPTIONID:
     required: true
     description: "Environment Parameters"
   #namespace:
@@ -32,9 +32,9 @@ runs:
       run: |
         echo "Test"
         echo ${{ inputs.environment }}
-        echo $Development_Env_File.
+        echo $SUBSCRIPTIONID
       shell: bash
       env:
-        Development_Env_File: ${{ inputs.secrets }}
+        SUBSCRIPTIONID: ${{ inputs.SUBSCRIPTIONID }}
       
 
