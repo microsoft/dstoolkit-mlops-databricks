@@ -61,9 +61,10 @@ if __name__ == "__main__":
     print("DBRKS_BEARER_TOKEN",os.environ['DBRKS_BEARER_TOKEN'])
     print("DBRKS_MANAGEMENT_TOKEN",os.environ['DBRKS_MANAGEMENT_TOKEN'])
 
+    with open(os.getenv('GITHUB_ENV'), 'a') as env:
+        print(f'DBRKS_BEARER_TOKEN={bearerToken}', file=env)
+        print(f'DBRKS_MANAGEMENT_TOKEN={managementToken}', file=env)
 
-    os.system('"echo DBRKS_BEARER_TOKEN={bearerToken}" >> $GITHUB_ENV"' )
-    os.system('"echo DBRKS_MANAGEMENT_TOKEN={managementToken}" >> $GITHUB_ENV"' )
 
     
     #print("##vso[task.setvariable variable=DBRKS_BEARER_TOKEN;isOutput=true;]{b}".format(b=bearerToken))
