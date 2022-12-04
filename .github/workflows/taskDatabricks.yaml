@@ -203,9 +203,12 @@ jobs:
 
 
 
+###################################################################################################################################################################//
+##                                                                      Configure CLI                                           
+###################################################################################################################################################################//
 # 15. Databricks CLI Config
       - name:                   Install + Configure Databricks CLI
-        run:                    bash ./.github/workflows/Utilities/Utils-DBX-CLI-Configure.sh
+        run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsDatabricksCLIConfig.sh
 
 
 # 16. Databricks Wheel File Creation + DBFS/Cluster Upload
