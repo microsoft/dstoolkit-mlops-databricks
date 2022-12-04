@@ -1,4 +1,5 @@
 # Databricks notebook source
+print("test")
 
 # COMMAND ----------
 
@@ -7,7 +8,9 @@
 a =[1,2]
 for i in a:
     print(i)
+
 # COMMAND ----------
+
 from azure.identity import ClientSecretCredential
 
 DBX_SP_Client_Secret = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret")
