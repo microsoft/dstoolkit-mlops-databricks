@@ -5,7 +5,9 @@ on:
       ENVIRONMENT:
         required: true
         type: string
-
+      AZURE_CREDENTIALS:
+        required: true
+        type: string
     secrets:
       AZURE_CREDENTIALS:
         required: true
@@ -19,9 +21,20 @@ jobs:
     runs-on: ubuntu-latest
     environment:  ${{ inputs.ENVIRONMENT }}
 
+
     steps:      
       - name:                     Checkout
         uses:                     actions/checkout@v2
+
+      - shell: bash
+        run: |
+            echo Test1
+            echo Test2
+            echo Test3
+        env:
+          Test1: ${{ inputs.ENVIRONMENT }}
+          Test2: ${{ inputs.AZURE_CREDENTIALS }}
+          Test3: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name:                     Azure Login - ${{ inputs.environments }}
         uses:                     azure/login@v1
