@@ -1,4 +1,6 @@
 #!/bin/bash
+
+echo $ENVIRONMENT
 echo "Ingest JSON File"
 JSON=$( jq '.' MLOps_Engineer/2-Infrastructure_Layer/DBX_CICD_Deployment/Bicep_Params/$ENVIRONMENT/Bicep.parameters.json)
 
