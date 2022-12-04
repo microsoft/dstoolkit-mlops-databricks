@@ -211,9 +211,26 @@ jobs:
         run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsDatabricksCLIConfig.sh
 
 
+###################################################################################################################################################################//
+##                                                                      DBX Launch                                             
+###################################################################################################################################################################//
+      - shell: bash
+        name:  DBX Launch
+        run: |
+          echo $enableInfraDeploy
+          az upgrade
+          sudo apt update && sudo apt install jq
+          #pip3 install requests
+          # Do A python pip install so that modules can be found from python tasks
+          python -m pip install requests
+          pip3 install  azure-databricks-sdk-python
+        env:
+          Test3:                  ${{ secrets.AZURE_CREDENTIALS }}
+
+
 # 16. Databricks Wheel File Creation + DBFS/Cluster Upload
-      - name:                   Create Wheel Files & Upload To DBFS
-        run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsWheelUpload.sh
+      #- name:                   Create Wheel Files & Upload To DBFS
+      #  run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsWheelUpload.sh
 
 
 
