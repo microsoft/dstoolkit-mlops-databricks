@@ -3,12 +3,12 @@ description: tasks
 
 # Were we can define the inputs that our action will accept
 inputs:
-  version: 
+  environment: 
     required: true
-    description: "Test"
-  namespace:
-    required: true
-    description: "Test"
+    description: "Environment"
+  #namespace:
+  #  required: true
+  #  description: "Test"
 
 runs:
   using: "composite"
@@ -18,14 +18,15 @@ runs:
     - name:                     Checkout
       uses:                     actions/checkout@v2
 
-    - name:                     Azure Login - ${{ matrix.environments }}
-      uses:                     azure/login@v1
-      with:
-        creds:                  ${{secrets.AZURE_CREDENTIALS}} 
+    #- name:                     Azure Login - ${{ matrix.environments }}
+    #  uses:                     azure/login@v1
+    #  with:
+    #    creds:                  ${{secrets.AZURE_CREDENTIALS}} 
 
     - name: Run script file
       run: |
         echo "Test"
+        echo ${{ inputs.environment }}
       shell: bash
       
 
