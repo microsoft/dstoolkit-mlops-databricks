@@ -73,7 +73,7 @@ def createJobs(tokenRequestHeaders, existingClusters, buildJob, existingJobs, da
 
 if __name__ == "__main__":
 
-    with open('MLOps_Engineer/1-DevOps_Pipeline_Layer/Variables/'+  os.environ['Environment'] +'/DBX_Jobs/Jobs.json', 'r') as f:
+    with open('.github/MLOps_Engineer/Variables/' +  os.environ['ENVIRONMENT'] +'/DBX_Jobs/Jobs.json', 'r') as f:
         buildJobs = json.load(f)
 
 
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     DATABRICKS_INSTANCE = os.environ['DATABRICKS_INSTANCE']
     DBRKS_BEARER_TOKEN = os.environ['DBRKS_BEARER_TOKEN']
     DBRKS_MANAGEMENT_TOKEN = os.environ['DBRKS_MANAGEMENT_TOKEN']
-    ENVIRONMENT = os.environ['Environment']
+    ENVIRONMENT = os.environ['ENVIRONMENT']
 
     tokenRequestHeaders = {
         'Authorization': f'Bearer {DBRKS_BEARER_TOKEN}',
