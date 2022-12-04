@@ -19,7 +19,7 @@ jobs:
         uses:                     actions/checkout@v2
       
       - name:                     Job_Create_Environments
-        uses:                     "ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml"
+        uses:                     ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
         with:
           ENVIRONMENT:             ${{ matrix.environments }}
           SUBSCRIPTIONID:          ${{ secrets.SUBSCRIPTIONID}}
