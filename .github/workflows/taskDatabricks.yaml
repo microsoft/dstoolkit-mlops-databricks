@@ -14,6 +14,8 @@ on:
         required: true
       ARM_CLIENT_SECRET:
         required: true
+      PAT_GITHUB:
+        required: true
 
 
 # Were we can define the inputs that our action will accept
@@ -163,7 +165,6 @@ jobs:
           ARM_TENANT_ID:      ${{ secrets.ARM_TENANT_ID }}
 
 
-
 ###################################################################################################################################################################//
 ##                                                                      Create Cluster                                           
 ###################################################################################################################################################################//
@@ -172,26 +173,34 @@ jobs:
         run:                  python .github/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
 
 
-
-
-
-
-
-
+###################################################################################################################################################################//
+##                                                                      Create Jobs                                           
+###################################################################################################################################################################//
 # 13.   Create Databricks Jobs (Linked To Git Repo)
       - name:                 Create Databricks Jobs
         run:                  python .github/MLOps_Engineer/Utilities/Python/utilsCreateJob.py
-        env:
-          ENVIRONMENT:        ${{ inputs.environments }}
 
 
-# 14. Databricks Git Config
+
+###################################################################################################################################################################//
+##                                                                      Create Repos                                           
+###################################################################################################################################################################//
+# 14. 
       - name:                 Create Databricks Repos
-        run:                  bash ./.github/workflows/Utilities/Utils-Create-Repo-Folders.sh
+        run:                  bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRepoFolder.sh
+
+
+
+###################################################################################################################################################################//
+##                                                                      Git Config                                           
+###################################################################################################################################################################//
+# 13.   
+      - name:                 Git Config
+        run:                  python .github/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
         env:
-          environment:        ${{ matrix.environments }}
           PAT_GITHUB:         ${{ secrets.PAT_GITHUB }}
-          ARM_CLIENT_ID:      ${{ secrets.ARM_CLIENT_ID }}
+
+
 
 
 # 15. Databricks CLI Config
