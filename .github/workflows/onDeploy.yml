@@ -1,5 +1,5 @@
 
-name:                           master
+name:                           onDeploy Databricks
 
 on:                             [workflow_dispatch] 
 
