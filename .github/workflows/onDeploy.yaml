@@ -15,8 +15,8 @@ jobs:
     
     steps:
     
-      #- name:                     Checkout
-      #  uses:                     actions/checkout@v2
+      - name:                     Checkout
+        uses:                     actions/checkout@v2
       
       - name:                     Job_Create_Environments
         uses:                     "ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml"
