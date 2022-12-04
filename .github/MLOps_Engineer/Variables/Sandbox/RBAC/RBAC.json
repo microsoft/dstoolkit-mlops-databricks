@@ -14,7 +14,7 @@
                           "DBX_Custom_Role_DSToolkit",
                           "Key Vault Administrator"
                       ],
-            "roleBeneficiaryObjID":  "08395c91-558f-45b4-a343-d598d4423796",
+            "roleBeneficiaryObjID":  "0a3c03de-0285-4765-b791-ad13e70291a3",
             "Description":  "Databricks SPN",
             "principalType":  "ServicePrincipal"
         }
