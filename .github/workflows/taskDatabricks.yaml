@@ -1,0 +1,35 @@
+name: Reusable workflow example
+on:
+  workflow_call:
+    inputs:
+      ENVIRONMENT:
+        required: true
+        type: string
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+
+
+# Were we can define the inputs that our action will accept
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:      
+      - name:                     Checkout
+        uses:                     actions/checkout@v2
+
+      - name:                     Azure Login - ${{ matrix.environments }}
+        uses:                     azure/login@v1
+        with:
+          creds:                  ${{inputs.AZURE_CREDENTIALS}} 
+
+      - name:                     Deploy DBX CICD Azure Resources
+        shell:                    bash
+        run:                      ./MLOps_Engineer/1-DevOps_Pipeline_Layer/Utilities/Bash/utilsCreateAzureResources.sh
+        env:
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 
+
+
+
