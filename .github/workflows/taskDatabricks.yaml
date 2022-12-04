@@ -116,6 +116,11 @@ jobs:
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
 
+      - shell: bash
+        name:  Tests
+        run: |
+          echo $DBRKS_BEARER_TOKEN
+          echo $DBRKS_MANAGEMENT_TOKEN
 
 
 ###################################################################################################################################################################//
