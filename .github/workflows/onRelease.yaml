@@ -4,9 +4,9 @@ name: CI/CD Pipelines
 on: 
   pull_request:
     branches:
-      - main
+      #- main
       - dev
-      - release-**
+      #- release-**
     types:
       - opened
       - closed
