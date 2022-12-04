@@ -123,9 +123,6 @@ jobs:
         run: |
           echo $DBRKS_BEARER_TOKEN
           echo $DBRKS_MANAGEMENT_TOKEN
-        env:
-          DBRKS_BEARER_TOKEN: $DBRKS_BEARER_TOKEN
-          DBRKS_MANAGEMENT_TOKEN: $DBRKS_MANAGEMENT_TOKEN
 
 
 
