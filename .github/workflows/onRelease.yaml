@@ -30,6 +30,7 @@ jobs:
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
       ENVIRONMENT: Development
+      UPDATE_FOLDER: DevelopmentFolder
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS}}
   

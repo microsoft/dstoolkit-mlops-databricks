@@ -5,6 +5,9 @@ on:
       ENVIRONMENT:
         required: true
         type: string
+      UPDATE_FOLDER:
+        required: false
+        type: string
     secrets:
       AZURE_CREDENTIALS:
         required: true
@@ -58,6 +61,13 @@ jobs:
       - shell: bash
         name:  Tests and Dependency Install
         run: |
+          echo echo github.event_name
+          echo github.event.action
+          echo github.base_ref
+          echo github.head_ref
+
+
+
           echo $enableInfraDeploy
           az upgrade
           sudo apt update && sudo apt install jq
@@ -207,6 +217,18 @@ jobs:
           echo $DATABRICKS_TOKEN
           pip install dbx
           dbx deploy --deployment-file conf/deployment.yaml --jobs=e2e-MLOps-$ENVIRONMENT --environment=$ENVIRONMENT
+
+
+###################################################################################################################################################################//
+##                                                                      Repo Pull                                           
+###################################################################################################################################################################//
+# 15. Databricks CLI Config
+      - name:                   Repo Pull
+        if:                     ${{ inputs.UPDATE_FOLDER}} 
+        run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
+        env:
+          UPDATE_FOLDER:        ${{ inputs.UPDATE_FOLDER}}   
+
 
 
 # 16. Databricks Wheel File Creation + DBFS/Cluster Upload

@@ -11,11 +11,11 @@ echo "Display Repos In DBX With Manage Permissions...."
 echo $REPOS_WITH_MANAGEMENT_PERMISSIONS
 
 echo "Retrieve Repo ID For ..."
-REPO_ID=$( jq -r --arg updateFolder "$updateFolder" ' .repos[] | select( .path | contains($updateFolder)) | .id ' <<< "$REPOS_WITH_MANAGEMENT_PERMISSIONS")
+REPO_ID=$( jq -r --arg UPDATE_FOLDER "$UPDATE_FOLDER" ' .repos[] | select( .path | contains($UPDATE_FOLDER)) | .id ' <<< "$REPOS_WITH_MANAGEMENT_PERMISSIONS")
 
 echo "Repo ID: $REPO_ID"
 
-echo "Git Pull on DBX Repo $updateFolder With $branchName Branch "
+echo "Git Pull on DBX Repo $UPDATE_FOLDER With $branchName Branch "
 
 JSON_STRING=$( jq -n -c --arg tb "$branchName" \
         '{branch: $tb}' )
