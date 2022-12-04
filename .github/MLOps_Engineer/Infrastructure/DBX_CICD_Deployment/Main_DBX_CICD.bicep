@@ -11,6 +11,10 @@ param ShouldCreateContainers bool = true
 param loganalyticswsname string 
 param appInsightswsname string 
 param storageAccountName string 
+param TemplateParamFilePath string
+param TemplateFilePath string
+param AZURE_DATABRICKS_APP_ID string
+param MANAGEMENT_RESOURCE_ENDPOINT string 
 
 // ################################################################################################################################################################//
 //                                                                       Create Resource Group                                                                    

@@ -110,31 +110,6 @@ jobs:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-# 7.  __Order Important__ Authenticate to DBX Service Principal + Set AAD Tokens As Env Variable
-      - name:                     Authenticate to DBX Service Principal + Set AAD Tokens As Env Variables
-        run:                      bash ./.github/workflows/Utilities/Utils-DBX-AAD-Token-Autentication.sh
-        env:
-          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
-
-
-# 8.  __Order Important__ Set Environment Variables For Resources Created On The Fly.
-      - name:                     Set Environment Variables For Resources Created On The Fly.
-        run:                      bash ./.github/workflows/Utilities/Utils-Env-Variables-For-Azure-Resources-Created.sh
-
 # 9.  Set Up Python
       - name:                     Setup Python
         uses:                     actions/setup-python@v4
