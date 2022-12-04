@@ -172,7 +172,7 @@ jobs:
       - name:                 Create Databricks Clusters
         run:                  python .github/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
         env:
-          ENVIRONMENT:        ${{ inputs.environments }}
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 

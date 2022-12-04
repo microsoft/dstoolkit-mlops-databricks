@@ -95,6 +95,7 @@ def manageClusterState():
 
 
 if __name__ == "__main__":
+    ENVIRONMENT = os.environ['ENVIRONMENT']
     with open('.github/MLOps_Engineer/Variables/' + ENVIRONMENT + '/DBX_Clusters/Clusters.json', 'r') as f:
         buildClusters = json.load(f)
     
