@@ -34,7 +34,7 @@ jobs:
 ##                                                                      Git File Changes Check                                               
 ###################################################################################################################################################################//
       - name:                     Check Infra Git Path Change
-        run:                      bash .github\MLOps_Engineer\Utilities\Bash\utilsGitFileChanges.sh
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsGitFileChanges.sh
         env:
             PATH_FILTER:                      '.github/MLOps_Engineer/Infrastructure'
             VAR_NAME:                          enableInfraDeploy
