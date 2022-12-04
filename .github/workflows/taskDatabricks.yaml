@@ -39,7 +39,7 @@ jobs:
           Test3:                  ${{ secrets.AZURE_CREDENTIALS }}
 
 
-      - name:                     Deploy DBX CICD Azure Resources
+      - name:                     Service Principal Login
         run:                      bash .github/workflows/Utilities/Bash/utilsAzureLogin.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
