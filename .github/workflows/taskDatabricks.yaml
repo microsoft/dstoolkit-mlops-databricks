@@ -95,7 +95,7 @@ jobs:
       - name:                     Set Env Variables 
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsSetEnvVariables.sh
         env:
-          environment:            ${{ inputs.ENVIRONMENT }}
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 

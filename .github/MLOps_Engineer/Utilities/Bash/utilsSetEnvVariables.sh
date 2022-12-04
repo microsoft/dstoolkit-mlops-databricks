@@ -1,10 +1,8 @@
 
 ### Lets Retrieve Important Variables That Are Important For Later Steps
 
-echo $Environment
-
-
 echo $ENVIRONMENT
+
 echo "Ingest JSON File"
 JSON=$( jq '.' .github/MLOps_Engineer/Infrastructure/DBX_CICD_Deployment/Bicep_Params/$ENVIRONMENT/Bicep.parameters.json)
 
@@ -23,26 +21,26 @@ AZ_KEYVAULT_NAME=$(az keyvault list -g $RESOURCE_GROUP_NAME --query "[].name" -o
 # Creation Of Important Environment Variables For Later Steps.
 echo "Set Environment Variables For Later Stages..."
 
-echo "Resource Group Name As Environment Variable..."
-echo "##vso[task.setvariable variable="RESOURCE_GROUP_NAME";isOutput=true;]$RESOURCE_GROUP_NAME"
+echo "Set Resource Group Name Name As Environment Variable..."
+echo "RESOURCE_GROUP_NAME=$RESOURCE_GROUP_NAME" >> $GITHUB_ENV
 
 echo "Set Key Vault Name As Environment Variable..."
-echo "##vso[task.setvariable variable="AZ_KEYVAULT_NAME";isOutput=true;]$AZ_KEYVAULT_NAME"
+echo "AZ_KEYVAULT_NAME=$AZ_KEYVAULT_NAME" >> $GITHUB_ENV
 
 echo "Set Databricks OrgID As Environment Variable..."
-echo "##vso[task.setvariable variable="DATABRICKS_ORDGID";isOutput=true;]$DATABRICKS_ORDGID"
+echo "DATABRICKS_ORDGID=$DATABRICKS_ORDGID" >> $GITHUB_ENV
 
 echo "Set Workspace ID As Environment Variable..."
-echo "##vso[task.setvariable variable="WORKSPACE_ID";isOutput=true;]$WORKSPACE_ID"
+echo "WORKSPACE_ID=$WORKSPACE_ID" >> $GITHUB_ENV
 
 echo "Set Datbricks Instance As Environment Variable..."
-echo "##vso[task.setvariable variable="DATABRICKS_INSTANCE";isOutput=true;]$DATABRICKS_INSTANCE"
+echo "DATABRICKS_INSTANCE=$DATABRICKS_INSTANCE" >> $GITHUB_ENV
 
 echo "Set Databricks Host As Environment Variable..."
-echo "##vso[task.setvariable variable="DATABRICKS_HOST";isOutput=true;]https://$DATABRICKS_INSTANCE"
+echo "DATABRICKS_HOST=https://$DATABRICKS_INSTANCE" >> $GITHUB_ENV
 
+echo "Set Databricks Token ID As Environment Variable..."
+echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
 
-# MORE RESEARCH -- Seems important to configure the python path for wheel file creation later on.
 echo "Set Python Path"
-echo "##vso[task.setvariable variable="PYTHONPATH";isOutput=true;]src/modules"
-#echo "PYTHONPATH=src/modules" >> $GITHUB_ENV
+echo "PYTHONPATH=src/modules" >> $GITHUB_ENV
