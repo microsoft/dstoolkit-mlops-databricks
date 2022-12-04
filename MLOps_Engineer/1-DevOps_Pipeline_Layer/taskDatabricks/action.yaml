@@ -15,8 +15,10 @@ inputs:
 
 runs:
   using: "composite"
+
   # Defining the action steps(Just one step to be simple)
   steps:
+    
 
     - name:                     Checkout
       uses:                     actions/checkout@v2
@@ -30,7 +32,7 @@ runs:
       run: |
         echo "Test"
         echo ${{ inputs.environment }}
-        echo $Development_Env_File
+        echo $Development_Env_File.
       shell: bash
       env:
         Development_Env_File: ${{ inputs.secrets }}
