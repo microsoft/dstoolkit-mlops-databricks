@@ -25,4 +25,5 @@ az deployment sub create \
     --location $location \
     --template-file $TemplateFilePath \
     --parameters $TemplateParamFilePath \
-    --name "$ENVIRONMENT"
+    --name "$ENVIRONMENT" \
+    --no-prompt true
