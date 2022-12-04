@@ -1,0 +1,139 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+#https://github.com/marketplace/actions/run-databricks-notebook
+# TO DO: Write A New Package For Setting Environment Variables From A Parameters File
+
+name: DBX_CICD-DEPLOY2
+
+on: [workflow_dispatch] 
+
+permissions:
+      id-token:               write
+      contents:               read
+
+jobs:
+
+  DBX_CICD_Deployment:
+      name:                     DBX_CICD_Deployment
+      runs-on:                  ubuntu-latest
+      strategy:
+        matrix:
+          # Aligns To Environment Parameter File Names 
+          environments:          [Development, UAT, PreProduction, Production] 
+      steps:
+
+# 1.  Checkout Branch
+        - uses:                  actions/checkout@v3       
+        # Federated connections (below).
+        # https://goodworkaround.com/2021/12/21/another-deep-dive-into-azure-ad-workload-identity-federation-using-github-actions/
+
+
+# 2.  __Order Important__Login To Main Service Principal
+        - name:                 Azure Login - ${{ matrix.environments }}
+          uses:                 azure/login@v1
+          with:
+            creds:              ${{secrets.AZURE_CREDENTIALS}} 
+      
+
+# 3.  __Order Important__ Create Env Variables From Parameters Files 
+        - name:                 .github/workflows/Pipeline_Param --> Env Variables
+          uses:                 antifree/json-to-variables@v1.0.1
+          with:
+            filename:           '.github/workflows/Pipeline_Param/${{ matrix.environments }}.json'
+            prefix:             param
+        
+        - name:                 Infrastructure/DBX_CICD_Deployment/BICEP_Params --> Env Variables
+          uses:                 antifree/json-to-variables@v1.0.1
+          with:
+            filename:           'Infrastructure/DBX_CICD_Deployment/Bicep_Params/${{ matrix.environments }}/Bicep.parameters.json'
+            prefix:             param
+
+
+# 4.  __Order Important__ Create Custom Role
+        - name:                 Create Databricks Custom Role
+          continue-on-error:    true
+          run:                  bash ./.github/workflows/Utilities/Utils-Databricks-Create-Custom-Role.sh
+          env:
+            environment:        ${{ matrix.environments }}
+
+
+# 5.  Deploy Azure Resources    (BICEP) 
+        - name:                 Deploy DBX CICD Azure Resources
+          run:                  bash ./.github/workflows/Utilities/Utils-Azure-Resources.sh
+          env:
+            environment:        ${{ matrix.environments }}
+
+
+# 6.  __Order Important__ Asign RBAC Permission
+        - name:                 Assign RBAC Permissions 
+          run:                  bash ./.github/workflows/Utilities/Utils-Assign-RBAC.sh
+          env:
+            environment:        ${{ matrix.environments }}
+
+
+# 7.  __Order Important__ Authenticate to DBX Service Principal + Set AAD Tokens As Env Variable
+        - name:                 Authenticate to DBX Service Principal + Set AAD Tokens As Env Variables
+          run:                  bash ./.github/workflows/Utilities/Utils-DBX-AAD-Token-Autentication.sh
+          env:
+            ARM_CLIENT_ID:      ${{ secrets.ARM_CLIENT_ID }}
+            ARM_CLIENT_SECRET:  ${{ secrets.ARM_CLIENT_SECRET }}
+            ARM_TENANT_ID:      ${{ secrets.ARM_TENANT_ID }}
+
+
+# 8.  __Order Important__ Set Environment Variables For Resources Created On The Fly.
+        - name:                 Set Environment Variables For Resources Created On The Fly.
+          run:                  bash ./.github/workflows/Utilities/Utils-Env-Variables-For-Azure-Resources-Created.sh
+
+# 9.  Set Up Python
+        - name:                 Setup Python
+          uses:                 actions/setup-python@v4
+          with:
+            python-version:     '3.8'
+
+
+# 10.  PAT Token --> Key Vault
+        - name:                 Create And Store PAT Token In Key Vault
+          run:                  bash ./.github/workflows/Utilities/Utils-Create-PAToken.sh
+
+
+# 11.  Secret Scopes
+        - name:                 Save Databricks SP Credentials Within Secret Scopes
+          run:                  bash ./.github/workflows/Utilities/Utils-Create-Scope.sh
+          env:
+            ARM_CLIENT_ID:      ${{ secrets.ARM_CLIENT_ID }}
+            ARM_CLIENT_SECRET:  ${{ secrets.ARM_CLIENT_SECRET }}
+            ARM_TENANT_ID:      ${{ secrets.ARM_TENANT_ID }}
+
+
+# 12. Databricks Clusters
+        - name:                 Create Databricks Clusters
+          run:                  bash ./.github/workflows/Utilities/Utils-Create-Cluster.sh
+          env:
+            environment:        ${{ matrix.environments }}
+
+
+# 13.   Create Databricks Jobs (Linked To Git Repo)
+        - name:                 Create Databricks Jobs
+          run:                  bash ./.github/workflows/Utilities/Utils-Create-Job.sh
+          env:
+            environment:        ${{ matrix.environments }}
+
+
+# 14. Databricks Git Config
+        - name:                 Create Databricks Repos
+          run:                  bash ./.github/workflows/Utilities/Utils-Create-Repo-Folders.sh
+          env:
+            environment:        ${{ matrix.environments }}
+            PAT_GITHUB:         ${{ secrets.PAT_GITHUB }}
+            ARM_CLIENT_ID:      ${{ secrets.ARM_CLIENT_ID }}
+
+
+# 15. Databricks CLI Config
+        - name:                   Install + Configure Databricks CLI
+          run:                    bash ./.github/workflows/Utilities/Utils-DBX-CLI-Configure.sh
+
+
+# 16. Databricks Wheel File Creation + DBFS/Cluster Upload
+        - name:                   Create Wheel Files & Upload To DBFS
+          run:                    bash ./.github/workflows/Utilities/Utils-Create-Wheels-DBFS-Cluster-Upload.sh
+          env:
+            environment:          ${{ matrix.environments }}
