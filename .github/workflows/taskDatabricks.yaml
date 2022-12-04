@@ -81,7 +81,7 @@ jobs:
 ###################################################################################################################################################################//
 
       - name:                     Deploy DBX CICD Azure Resources
-        run:                      bash .github/workflows/Utilities/Bash/utilsCreateAzureResources.sh
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
@@ -92,8 +92,8 @@ jobs:
 ###################################################################################################################################################################//
 
 # 6.  __Order Important__ Save env variable
-      - name:                     Assign RBAC Permissions 
-        run:                      bash ./.github/workflows/Utilities/utilsSetEnvVariables.sh
+      - name:                     Set Env Variables 
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsSetEnvVariables.sh
         env:
           environment:            ${{ inputs.ENVIRONMENT }}
 
