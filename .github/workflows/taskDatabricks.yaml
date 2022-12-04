@@ -36,11 +36,8 @@ jobs:
       - name:                     Check Infra Git Path Change
         run:                      bash .github/workflows/Utilities/Bash/utilsGitFileChanges.sh
         env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
-          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
-          ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
-
+            PATH_FILTER:                      '.github/MLOps_Engineer/Infrastructure'
+            VAR_NAME:                          enableInfraDeploy
 
 
 ###################################################################################################################################################################//
@@ -49,6 +46,7 @@ jobs:
       - shell: bash
         name:  Tests and Dependency Install
         run: |
+          echo $enableInfraDeploy
           az upgrade
           sudo apt update && sudo apt install jq
           pip3 install requests
