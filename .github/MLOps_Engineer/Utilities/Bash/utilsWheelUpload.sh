@@ -17,7 +17,7 @@ sudo apt-get install pandoc
 
 
 echo "Ingest JSON Environment File"
-JSON=$( jq '.' MLOps_Engineer/1-DevOps_Pipeline_Layer/Variables/$Environment/DBX_PyWheel/PyWheel.json)
+JSON=$( jq '.' .github/MLOps_Engineer/Variables/$ENVIRONMENT/DBX_PyWheel/PyWheel.json)
 #echo "${JSON}" | jq
 
 
