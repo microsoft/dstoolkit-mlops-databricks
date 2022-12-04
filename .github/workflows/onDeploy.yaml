@@ -11,7 +11,6 @@ jobs:
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
       ENVIRONMENT: ${{ matrix.target }}
-      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS}}
     
