@@ -36,9 +36,8 @@ jobs:
         with:
           creds:                  ${{ secrets.AZURE_CREDENTIALS }} 
 
-      - name:                     Deploy DBX CICD Azure Resources
-        shell:                    bash
-        run:                      ./MLOps_Engineer/1-DevOps_Pipeline_Layer/Utilities/Bash/utilsCreateAzureResources.sh
+      - name:                 Deploy DBX CICD Azure Resources
+        run:                  bash .github/workflows/Utilities/Bash/utilsCreateAzureResources.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
