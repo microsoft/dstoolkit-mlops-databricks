@@ -64,7 +64,6 @@ jobs:
           python -m pip install requests
           pip3 install  azure-databricks-sdk-python
         env:
-          Test1:                  ${{ inputs.ENVIRONMENT }}
           Test3:                  ${{ secrets.AZURE_CREDENTIALS }}
 
 
@@ -173,6 +172,7 @@ jobs:
         run:                  python .github/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+
 
 
 

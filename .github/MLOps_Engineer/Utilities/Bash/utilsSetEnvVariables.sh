@@ -21,6 +21,9 @@ AZ_KEYVAULT_NAME=$(az keyvault list -g $RESOURCE_GROUP_NAME --query "[].name" -o
 # Creation Of Important Environment Variables For Later Steps.
 echo "Set Environment Variables For Later Stages..."
 
+echo "Set Environment Name As Environment Variable..."
+echo "ENVIRONMENT=$ENVIRONMENT" >> $GITHUB_ENV
+
 echo "Set Resource Group Name Name As Environment Variable..."
 echo "RESOURCE_GROUP_NAME=$RESOURCE_GROUP_NAME" >> $GITHUB_ENV
 
