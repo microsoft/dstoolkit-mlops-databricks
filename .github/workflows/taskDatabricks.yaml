@@ -59,7 +59,7 @@ jobs:
           echo $enableInfraDeploy
           az upgrade
           sudo apt update && sudo apt install jq
-          pip3 install requests
+          #pip3 install requests
           python -m pip install requests
           pip3 install  azure-databricks-sdk-python
         env:
@@ -123,6 +123,11 @@ jobs:
         run: |
           echo $DBRKS_BEARER_TOKEN
           echo $DBRKS_MANAGEMENT_TOKEN
+        env:
+          DBRKS_BEARER_TOKEN: $DBRKS_BEARER_TOKEN
+          DBRKS_MANAGEMENT_TOKEN: $DBRKS_MANAGEMENT_TOKEN
+
+
 
 
 ###################################################################################################################################################################//
