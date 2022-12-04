@@ -6,6 +6,10 @@ on:
         required: true
         type: string
 
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+
 
 # Were we can define the inputs that our action will accept
 
@@ -19,7 +23,7 @@ jobs:
       - name:                     Checkout
         uses:                     actions/checkout@v2
 
-      - name:                     Azure Login - ${{ matrix.environments }}
+      - name:                     Azure Login - ${{ inputs.environments }}
         uses:                     azure/login@v1
         with:
           creds:                  ${{ secrets.AZURE_CREDENTIALS }} 
