@@ -4,23 +4,18 @@ name:                           onDeploy Databricks
 on:                             
   workflow_dispatch:
 
-jobs:
-  merge:
-    runs-on:                     ubuntu-latest
-    environment:                 ${{ matrix.environments }}
-    strategy:
-        matrix:
-          environments:          [Development, UAT] 
-  Job_Create_Environments:
 
-    uses:                     ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
+jobs:
+  ReuseableMatrixJobForDeployment:
     strategy:
       matrix:
-        environments:          [Development, UAT] 
+        target: [dev, stage, prod]
+    uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
-      ENVIRONMENT:             ${{ matrix.environments }}
-      SUBSCRIPTIONID:          ${{ secrets.SUBSCRIPTIONID}}
-      AZURE_CREDENTIALS:       ${{ secrets.AZURE_CREDENTIALS}}
+      target: ${{ matrix.target }}
+
+
+  
 
 
 
