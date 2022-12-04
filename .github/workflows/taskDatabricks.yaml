@@ -60,6 +60,7 @@ jobs:
           az upgrade
           sudo apt update && sudo apt install jq
           #pip3 install requests
+          # Do A python pip install so that modules can be found from python tasks
           python -m pip install requests
           pip3 install  azure-databricks-sdk-python
         env:
@@ -156,18 +157,22 @@ jobs:
 ###################################################################################################################################################################//
 # 11.  Secret Scopes
       - name:                 Save Databricks SP Credentials Within Secret Scopes
-        run:                  bash ./.github/workflows/Utilities/Utils-Create-Scope.sh
+        run:                  bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateSecretScopes.sh
         env:
           ARM_CLIENT_ID:      ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET:  ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID:      ${{ secrets.ARM_TENANT_ID }}
 
 
+
+###################################################################################################################################################################//
+##                                                                      Create Cluster                                           
+###################################################################################################################################################################//
 # 12. Databricks Clusters
       - name:                 Create Databricks Clusters
-        run:                  bash ./.github/workflows/Utilities/Utils-Create-Cluster.sh
+        run:                  python .github/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
         env:
-          environment:        ${{ matrix.environments }}
+          ENVIRONMENT:        ${{ matrix.environments }}
 
 
 # 13.   Create Databricks Jobs (Linked To Git Repo)
