@@ -1,3 +1,4 @@
+#!/bin/bash
 
 az upgrade
 echo $ARM_CLIENT_ID
