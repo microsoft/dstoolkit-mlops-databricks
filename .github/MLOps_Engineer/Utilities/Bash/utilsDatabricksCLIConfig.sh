@@ -11,7 +11,7 @@ echo $DATABRICKS_TOKEN
 
 # Change absolutely NOTHING.
 # DATABRICKS_HOST : It Must Start As https:// : It Must Not End In '/'
-# DATABRICKS_TOKEN : It Must Not Be Expired. 
+# DATABRICKS_TOKEN : It Must Not Be Expired..
 
 
 databricks configure --token <<EOF
