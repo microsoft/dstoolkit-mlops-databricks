@@ -26,16 +26,22 @@ jobs:
           echo "${{ github.base_ref }}"
 
 
+
   prApprovedOnMain:
     if:   github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == 'main'
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
       ENVIRONMENT: Development
       UPDATE_FOLDER: DevelopmentFolder
+      AZURE_CREDENTIALS:      ${{ secrets.AZURE_CREDENTIALS}}
+      ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
+      ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
+      PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS}}
-  
 
+  
 
   prOnRelease_CI_Test:
 
@@ -55,6 +61,12 @@ jobs:
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
       ENVIRONMENT: UAT
+      UPDATE_FOLDER: UATFolder
+      AZURE_CREDENTIALS:      ${{ secrets.AZURE_CREDENTIALS}}
+      ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
+      ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
+      PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS}}
     
