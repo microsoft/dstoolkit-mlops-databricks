@@ -25,6 +25,7 @@ jobs:
           #version:                v1.0.0
           #namespace:              "stage"
           environment:            ${{ matrix.environments }}
+          param_file:             "./MLOps_Engineer/1-DevOps_Pipeline_Layer/params/test.yaml"
           #ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
           #ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
           #ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}

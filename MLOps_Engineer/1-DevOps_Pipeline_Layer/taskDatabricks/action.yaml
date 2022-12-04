@@ -1,5 +1,5 @@
-name: task
-description: tasks
+name: taskDatabricks
+description: taskDatabricks
 
 # Were we can define the inputs that our action will accept
 inputs:
