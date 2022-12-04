@@ -73,7 +73,7 @@ if namespace.env is not None:
     mlflow.set_experiment(experiment_name=experiment_name) 
 else:
     print("Set The Parameters Manually, As We Are Deploying From UI")
-    mlflow.set_experiment("/Shared/dbx/projects/dstoolkit-mlops-databricks-AzDevOps") 
+    mlflow.set_experiment("/Shared/e2e_mlops/staging/dbx/e2e_mlops_staging") 
 # COMMAND ----------
 
 
