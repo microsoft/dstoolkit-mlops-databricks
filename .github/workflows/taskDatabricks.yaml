@@ -8,6 +8,12 @@ on:
     secrets:
       AZURE_CREDENTIALS:
         required: true
+      ARM_TENANT_ID:
+        required:true
+      ARM_CLIENT_ID:
+        required: true
+      ARM_CLIENT_SECRET:
+        required: true
 
 
 # Were we can define the inputs that our action will accept
@@ -30,17 +36,31 @@ jobs:
             echo Test3
         env:
           Test1:                  ${{ inputs.ENVIRONMENT }}
-          Test3:                  ${{ secrets.AZURE_CREDENTIALS.clientId }}
+          Test3:                  ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name:                     Azure Login - ${{ inputs.environments }}
-        uses:                     azure/login@v1
-        with:
-          creds:                  ${{ secrets.AZURE_CREDENTIALS }} 
+
+      - name:                     Deploy DBX CICD Azure Resources
+        run:                      bash .github/workflows/Utilities/Bash/utilsAzureLogin.sh
+        env:
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
+          ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
+
+        
+      #- name:                     Azure Login - ${{ inputs.ENVIRONMENT }}
+      #  uses:                     azure/login@v1
+      #  with:
+      #    creds:                  ${{ secrets.AZURE_CREDENTIALS }} 
+
 
       - name:                     Deploy DBX CICD Azure Resources
         run:                      bash .github/workflows/Utilities/Bash/utilsCreateAzureResources.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+
+
+    
 
 
 # 6.  __Order Important__ Asign RBAC Permission
