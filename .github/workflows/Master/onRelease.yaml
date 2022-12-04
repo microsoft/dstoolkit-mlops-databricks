@@ -1,0 +1,64 @@
+
+
+name: CI/CD Pipelines
+on: 
+  pull_request:
+    branches:
+      - main
+      - dev
+      - release-**
+    types:
+      - opened
+      - closed
+
+jobs:
+  prOnMain_CI_Test:
+
+    if:   github.event_name == 'pull_request' && github.event.action == 'opened' && github.base_ref == 'main'
+    name:                       Checks
+    runs-on:                    ubuntu-latest
+    steps:
+      - run: |
+          echo "Checks Test!!!"
+      - run: |
+          echo "${{ github.head_ref }}"
+          echo "${{ github.base_ref }}"
+
+
+  prApprovedOnMain:
+    if:   github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
+    with:
+      ENVIRONMENT: Development
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS}}
+  
+
+
+  prOnRelease_CI_Test:
+
+    if:   github.event_name == 'pull_request' && github.event.action == 'opened' && github.head_ref == 'main'
+    name:                       Checks
+    runs-on:                    ubuntu-latest
+    steps:
+      - run: |
+          echo "Checks Test!!!"
+      - run: |
+          echo "${{ github.head_ref }}"
+          echo "${{ github.base_ref }}"
+
+
+  prApprovedOnRelease:
+    if:   github.event_name == 'pull_request' && github.event.action == 'closed' && github.head_ref == 'main'
+    uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
+    with:
+      ENVIRONMENT: UAT
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS}}
+    
+
+  
+
+
+
+      

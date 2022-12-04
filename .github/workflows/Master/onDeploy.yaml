@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 jobs:
   ReuseableMatrixJobForDeployment:
+    name: Master Deployment
     strategy:
       matrix:
         target: [ UAT, Development ]
