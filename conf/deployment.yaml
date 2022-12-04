@@ -52,7 +52,7 @@ environments:
         #  ]
   Development:
     workflows:
-      - name: "e2e-mlops-development"
+      - name: "e2e-MLOps-Development"
         <<: *dev-cluster-config
         spark_python_task:
           python_file: "file://Data_Scientist/featureStoreTaxiMLOps.py"
@@ -63,7 +63,7 @@ environments:
         #  ]
   UAT:
     workflows:
-      - name: "e2e-mlops-uat"
+      - name: "e2e-MLOps-UAT"
         <<: *dev-cluster-config
         spark_python_task:
           python_file: "file://Data_Scientist/featureStoreTaxiMLOps.py"

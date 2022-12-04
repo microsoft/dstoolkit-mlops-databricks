@@ -219,7 +219,7 @@ jobs:
         run: |
           echo $DATABRICKS_TOKEN
           pip install dbx
-          dbx deploy --deployment-file conf/deployment.yaml --jobs=e2e-mlops-$ENVIRONMENT --environment=$ENVIRONMENT
+          dbx deploy --deployment-file conf/deployment.yaml --jobs=e2e-MLOps-$ENVIRONMENT --environment=$ENVIRONMENT
 
 
 # 16. Databricks Wheel File Creation + DBFS/Cluster Upload
