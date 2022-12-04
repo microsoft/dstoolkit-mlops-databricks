@@ -15,7 +15,7 @@ runs:
   # Defining the action steps(Just one step to be simple)
   steps:
   - name: deploy stack
-    uses: "MLOps_Engineer/1-DevOps_Pipeline_Layer/Tasks/taskDatabricks.yaml"
+    uses: "./MLOps_Engineer/1-DevOps_Pipeline_Layer/Tasks/taskDatabricks.yaml"
     with:
       version: ${{ inputs.version }}
       namespace: ${{ inputs.namespace}}
