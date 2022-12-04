@@ -41,4 +41,4 @@ if __name__ == "__main__":
                                 bearerToken=os.environ['DBRKS_BEARER_TOKEN'], 
                                 managementToken=os.environ['DBRKS_MANAGEMENT_TOKEN'], 
                                 githubToken=os.environ['PAT_GITHUB'], 
-                                environment=os.environ['Environment'])       
+                                environment=os.environ['ENVIRONMENT'])       
