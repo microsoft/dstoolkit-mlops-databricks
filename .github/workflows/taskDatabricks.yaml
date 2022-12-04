@@ -5,9 +5,6 @@ on:
       ENVIRONMENT:
         required: true
         type: string
-    secrets:
-      AZURE_CREDENTIALS:
-        required: true
 
 
 # Were we can define the inputs that our action will accept
@@ -15,6 +12,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:  ${{ matrix.target }}
 
     steps:      
       - name:                     Checkout
@@ -23,13 +21,13 @@ jobs:
       - name:                     Azure Login - ${{ matrix.environments }}
         uses:                     azure/login@v1
         with:
-          creds:                  ${{inputs.AZURE_CREDENTIALS}} 
+          creds:                  ${{ secrets.AZURE_CREDENTIALS }} 
 
       - name:                     Deploy DBX CICD Azure Resources
         shell:                    bash
         run:                      ./MLOps_Engineer/1-DevOps_Pipeline_Layer/Utilities/Bash/utilsCreateAzureResources.sh
         env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 
+          ENVIRONMENT:            ${{ secrets.AZURE_CREDENTIALS }} 
 
 
 

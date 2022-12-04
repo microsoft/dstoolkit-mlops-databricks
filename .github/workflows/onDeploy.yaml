@@ -9,10 +9,10 @@ jobs:
   ReuseableMatrixJobForDeployment:
     strategy:
       matrix:
-        target: [dev, stage, prod]
+        target: [ UAT, Development ]
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
-      target: ${{ matrix.target }}
+      ENVIRONMENT: ${{ matrix.target }}
 
 
   
