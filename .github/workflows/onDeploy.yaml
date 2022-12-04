@@ -10,14 +10,18 @@ jobs:
     environment:                 ${{ matrix.environments }}
     strategy:
         matrix:
-          # Aligns To Environment Parameter File Names 
           environments:          [Development, UAT] 
   Job_Create_Environments:
+
     uses:                     ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
+    strategy:
+      matrix:
+        environments:          [Development, UAT] 
     with:
       ENVIRONMENT:             ${{ matrix.environments }}
       SUBSCRIPTIONID:          ${{ secrets.SUBSCRIPTIONID}}
       AZURE_CREDENTIALS:       ${{ secrets.AZURE_CREDENTIALS}}
+
 
 
       
