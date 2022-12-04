@@ -16,7 +16,7 @@ jobs:
     # We need this because GitHub needs to clone the branch to pipeline
 
       - name:                     Job_Create_Environments
-        uses:                     "./MLOps_Engineer/1-DevOps_Pipeline_Layer/taskDatabricks" #Just need to pass the path from action
+        uses:                     "./.github/actions/taskDatabricks" #Just need to pass the path from action
         # Defining the variables required in our action
         with:
           version:                v1.0.0
