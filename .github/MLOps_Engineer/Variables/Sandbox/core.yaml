@@ -1,0 +1,10 @@
+variables:
+  TemplateFilePath:               '$(Build.SourcesDirectory)/MLOps_Engineer/2-Infrastructure_Layer/DBX_CICD_Deployment/Main_DBX_CICD.bicep'
+  TemplateParamFilePath:          '$(Build.SourcesDirectory)/MLOps_Engineer/2-Infrastructure_Layer/DBX_CICD_Deployment/Bicep_Params/Sandbox/Bicep.parameters.json'
+  AZURE_DATABRICKS_APP_ID:        '2ff814a6-3304-4ab8-85cb-cd0e6f879c1d'
+  MANAGEMENT_RESOURCE_ENDPOINT:   'https://management.core.windows.net/'
+  Location:                       'uksouth'
+  Environment:                    'Sandbox'
+  SubscriptionId:                 '4f1bc772-7792-4285-99d9-3463b8d7f994'
+  #enableInfraDeploy:               'true'
+

@@ -3,7 +3,7 @@
 ---
  <br>
 
- 
+ # SIGNIFICANT UPDATES TO CODE BASE - UPDATED INSTRUCTIONS / VIDEO WILL FOLLOW SHORTLY 
  # Section 1: DevOps Agent Deployment of CI/CD Databricks Environments
 ---
  

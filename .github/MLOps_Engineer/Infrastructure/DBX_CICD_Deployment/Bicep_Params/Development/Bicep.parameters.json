@@ -1,0 +1,63 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "TemplateParamFilePath": {
+      "value": ".github/MLOps_Engineer/Infrastructure/DBX_CICD_Deployment/Bicep_Params/Development/Bicep.parameters.json"
+    },
+    "TemplateFilePath": {
+      "value": ".github/MLOps_Engineer/Infrastructure/DBX_CICD_Deployment/Main_DBX_CICD.bicep"
+    },
+    "AZURE_DATABRICKS_APP_ID": {
+      "value": "2ff814a6-3304-4ab8-85cb-cd0e6f879c1d"
+    },
+    "MANAGEMENT_RESOURCE_ENDPOINT": {
+      "value": "https://management.core.windows.net/"
+    },
+    "location": {
+        "value": "eastus"
+    },
+    "environment": {
+        "value": "dev"
+    },
+
+    "containerNames": {
+        "value": [
+          "bronze",
+          "silver",
+          "gold"
+        ]
+    },
+    "storageConfig": {
+      "value": {
+        "kind": "StorageV2",
+        "sku_name": "Standard_LRS",
+        "allowBlobPublicAccess": true,
+        "isHnsEnabled": true,
+        "accessTier": "Hot"
+      }
+    },
+    "resourceGroupName" :{
+      "value": "databricks-dev-rg"
+    },
+    "workspaceName" : {
+      "value": "dbxwsdev"
+    },
+    "pricingTier": {
+      "value": "premium"
+    },
+    "ShouldCreateContainers": {
+      "value": true
+    },
+    "loganalyticswsname": {
+      "value": "loganalyticsdev"
+    },
+    "appInsightswsname": {
+      "value": "appinsightsdev"
+    },
+    "storageAccountName": {
+      "value": "adlsdev"
+    }
+  }
+}
+  

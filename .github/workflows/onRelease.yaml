@@ -1,0 +1,73 @@
+
+
+name: CI/CD Pipelines
+on: 
+  pull_request:
+    branches:
+      #- main
+      - dev
+      #- feature/**
+      #- release-**
+    types:
+      - opened
+      - closed
+
+jobs:
+  prOnMain_CI_Test:
+
+    if:   github.event_name == 'pull_request' && github.event.action == 'opened' && github.base_ref == 'main'
+    name:                       Checks
+    runs-on:                    ubuntu-latest
+    steps:
+      - run: |
+          echo "Checks Test!!!"
+      - run: |
+          echo "${{ github.head_ref }}"
+          echo "${{ github.base_ref }}"
+
+
+
+  prApprovedOnMain:
+    if:   github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == 'main'
+    uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
+    with:
+      ENVIRONMENT: Development
+      UPDATE_FOLDER: DevelopmentFolder
+    secrets:
+      ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
+      ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
+      PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
+
+
+  prOnRelease_CI_Test:
+
+    if:   github.event_name == 'pull_request' && github.event.action == 'opened' && github.head_ref == 'main'
+    name:                       Checks
+    runs-on:                    ubuntu-latest
+    steps:
+      - run: |
+          echo "Checks Test!!!"
+      - run: |
+          echo "${{ github.head_ref }}"
+          echo "${{ github.base_ref }}"
+
+
+  prApprovedOnRelease:
+    if:   github.event_name == 'pull_request' && github.event.action == 'closed' && github.head_ref == 'main'
+    uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
+    with:
+      ENVIRONMENT: UAT
+      UPDATE_FOLDER: UATFolder
+    secrets:
+      ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
+      ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
+      PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
+    
+
+  
+
+
+
+      
