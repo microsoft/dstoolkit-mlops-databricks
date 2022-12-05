@@ -5,7 +5,7 @@
             "storage_type": "mlflow",
             "properties": {
                 "workspace_directory": "/Shared/dbx/projects/dstoolkit-mlops-databricks-AzDevOps",
-                "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks-AzDevOps"  dbfs:/FileStore/tables
+                "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks-AzDevOps" 
             }
         },
         "Sandbox": {
