@@ -116,6 +116,8 @@ if __name__ == "__main__":
         for existingCluster in existingClusters['clusters']:
             existingClustersArr.append(existingCluster['cluster_name'])
         
+        print(existingClustersArr)
+        
         if existingClustersArr:
             if buildCluster['cluster_name'] in existingClustersArr:
                     print("Cluster Exists - Do Nothing")
