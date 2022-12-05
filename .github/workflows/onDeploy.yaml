@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         target: [ UAT, Development ]
-    uses: microsoft/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
+    uses: ./.github/workflows/taskDatabricks.yaml
     with:
       ENVIRONMENT: ${{ matrix.target }}
     secrets:
