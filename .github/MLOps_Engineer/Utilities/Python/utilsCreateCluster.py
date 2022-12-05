@@ -102,19 +102,28 @@ if __name__ == "__main__":
     
     # Extract array from Json object
     buildClusters = buildClusters['Clusters']
+
+    print(f"Build Clusters {buildClusters}")
     
     for buildCluster in buildClusters:
+        print(f"Build Cluster {buildCluster}")
         existingClusters = listClusters()
 
-        if existingClusters:
-            for existingCluster in existingClusters['clusters']:
-                if existingCluster['cluster_name'] == buildCluster['cluster_name']:
+        print(f"existingClusters {existingClusters}")
+
+        existingClustersArr = []
+
+        for existingCluster in existingClusters['clusters']:
+            existingClustersArr.append(existingCluster['cluster_name'])
+        
+        if existingClustersArr:
+            if buildCluster['cluster_name'] in existingClustersArr:
                     print("Cluster Exists - Do Nothing")
-                else:
-                    print("Cluster Does Not Exist -  Build")
-                    
-                    createCluster(buildCluster)
-                    manageClusterState()
+            else:
+                print("Cluster Does Not Exist -  Build")
+
+                createCluster(buildCluster)
+                manageClusterState()
         else:
             print("There Are No Clusters - Build ")
             
