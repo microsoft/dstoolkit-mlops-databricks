@@ -31,11 +31,12 @@ build:
 environments:
   default:
     workflows:
-      - name: "e2e-mlops-sandbox"
+      - name: "e2e-mlops-Development"
+        <<: *dev-cluster-config
         spark_python_task:
           python_file: "file://Data_Scientist/featureStoreTaxiMLOps.py"
           parameters: [ '--env', 'file:fuse://conf/job_params/sandbox.yaml', '{"env": "dev"}']
-        existing_cluster_id: 1128-145618-6i6i1ekh
+        #existing_cluster_id: 1128-145618-6i6i1ekh
         #libraries: [
         #  whl: "file://.dbx/conf/pyWheel_1-0.0.1-py3-none-any.whl"
         #  ]
