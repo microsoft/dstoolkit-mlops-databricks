@@ -10,7 +10,7 @@
  ## CI/CD Pathway Diagram
  
 <p align="center">
-  <img width="821" alt="image" src="https://user-images.githubusercontent.com/108273509/191785696-e8f52385-38b6-42b1-9e85-a3f6bf38d54b.png">
+  <img width="520" alt="image" src="https://user-images.githubusercontent.com/108273509/205769001-fda9f81b-461e-4f82-97ac-890304f909ef.png">
 </p>
 
 ---
