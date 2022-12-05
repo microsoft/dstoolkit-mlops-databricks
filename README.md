@@ -90,10 +90,15 @@ The net effect is a disproportionate amount of the Data Scientist/Engineers time
 - Azure Service Principal Authentication
 - Azure resource deployment using BICEP
 - Examples given within Development Framework using the Python SDK for Databricks (Section 2)
-- Logging framework using the [Opensensus Azure Monitor Exporters](https://github.com/census-instrumentation/opencensus-python/tree/master/contrib/opencensus-ext-azure) (Section 2)
+- Databricks Feature Store + MLFlow Tracking + Model Registry + Model Experiments
+- DBX by Data Labs for Continuous Deployment of Jobs/Workflows (source code/ parameters files packaged within DBFS)
 - Databricks Continuous Development from VS Code IDE using the [Databricks Connect](https://docs.microsoft.com/en-us/azure/databricks/dev-tools/databricks-connect#visual-studio-code) feature (Section 2)
 - Docker Environment in VS Code (Section 2)
 
+
+<p align="center">
+  <img width="578" alt="image" src="https://user-images.githubusercontent.com/108273509/205700988-4126a354-3acf-4e43-b26c-af7af5adc333.png">
+</p>
 ---
 ---
 
