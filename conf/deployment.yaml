@@ -54,11 +54,11 @@ environments:
   Development:
     workflows:
       - name: "e2e-MLOps-Development"
-        #<<: *dev-cluster-config
+        <<: *dev-cluster-config
         spark_python_task:
           python_file: "file://Data_Engineer/ETL.py"
           parameters: [ '--env', 'file:fuse://conf/job_params/sandbox.yaml', '{"env": "dev"}']
-        existing_cluster_id: 1204-231501-b5749ycc
+        #existing_cluster_id: 1204-231501-b5749ycc
         #libraries: [
         #  whl: "file://.dbx/conf/pyWheel_1-0.0.1-py3-none-any.whl"
         #  ]
