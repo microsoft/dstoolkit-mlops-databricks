@@ -56,7 +56,7 @@ environments:
       - name: "e2e-MLOps-Development"
         <<: *dev-cluster-config
         spark_python_task:
-          python_file: "file://Data_Engineer/ETL.py"
+          python_file: "file://Data_Scientist/featureStoreTaxiMLOps.py"
           parameters: [ '--env', 'file:fuse://conf/job_params/sandbox.yaml', '{"env": "dev"}']
         #existing_cluster_id: 1204-231501-b5749ycc
         #libraries: [
