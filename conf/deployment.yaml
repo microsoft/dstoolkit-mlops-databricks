@@ -65,7 +65,7 @@ environments:
   UAT:
     workflows:
       - name: "e2e-MLOps-UAT"
-        <<: *dev-cluster-config
+        <<: *staging-cluster-config
         spark_python_task:
           python_file: "file://Data_Scientist/featureStoreTaxiMLOps.py"
           parameters: [ '--env', 'file:fuse://conf/job_params/sandbox.yaml', '{"env": "dev"}']
@@ -76,7 +76,7 @@ environments:
   Production:
     workflows:
       - name: "e2e-mlops-Production"
-        <<: *dev-cluster-config
+        <<: *prod-cluster-config
         spark_python_task:
           python_file: "file://Data_Scientist/featureStoreTaxiMLOps.py"
           parameters: [ '--env', 'file:fuse://conf/job_params/sandbox.yaml', '{"env": "dev"}']
