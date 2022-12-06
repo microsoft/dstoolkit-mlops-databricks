@@ -106,7 +106,7 @@ jobs:
 ###################################################################################################################################################################//
 
 # 6.  __Order Important__ Save env variable
-      - name:                     Set Env Variables 
+      - name:                     Create Databricks Custom Role 
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksCustomRole.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
