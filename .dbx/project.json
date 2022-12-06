@@ -1,20 +1,12 @@
 {
     "environments": {
-        "default": {
-            "profile": "DEFAULT",
-            "storage_type": "mlflow",
-            "properties": {
-                "workspace_directory": "/Shared/dbx/projects/dstoolkit-mlops-databricks",
-                "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks"
-            }
-        },
         "Sandbox": {
             "profile": "e2-demo-west",
             "workspace_dir": "/Shared/e2e_mlops/dev/dbx/e2e_mlops_dev",
             "artifact_location": "dbfs:/Shared/e2e_mlops/dev/dbx/projects/e2e_mlops_dbx_dev"
         },
-        "development": {
-            "profile": "DEFAULT",
+        "Development": {
+            "profile": "e2-demo-west",
             "storage_type": "mlflow",
             "properties": {
                 "workspace_directory": "/Shared/dbx/projects/dstoolkit-mlops-databricks",
@@ -26,18 +18,11 @@
             "workspace_dir": "/Shared/e2e_mlops/prod/dbx/e2e_mlops_prod",
             "artifact_location": "dbfs:/Shared/e2e_mlops/prod/dbx/projects/e2e_mlops_dbx_prod"
         },
-        "prod": {
+        "Production": {
             "profile": "e2-demo-west",
             "workspace_dir": "/Shared/e2e_mlops/prod/dbx/e2e_mlops_prod",
             "artifact_location": "dbfs:/Shared/e2e_mlops/prod/dbx/projects/e2e_mlops_dbx_prod"
-        },
-        "Development": {
-            "profile": "DEFAULT",
-            "storage_type": "mlflow",
-            "properties": {
-                "workspace_directory": "/Shared/dbx/projects/dstoolkit-mlops-databricks",
-                "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks"
-            }
+        }
         }
     },
     "inplace_jinja_support": false,
