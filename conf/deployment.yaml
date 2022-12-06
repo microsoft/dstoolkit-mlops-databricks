@@ -42,7 +42,7 @@ environments:
         #  ]
   Sandbox:
     workflows:
-      - name: "e2e-mlops-Sandbox"
+      - name: "e2e-MLOps-Sandbox"
         <<: *dev-cluster-config
         spark_python_task:
           python_file: "file://Data_Scientist/featureStoreTaxiMLOps.py"
