@@ -181,14 +181,14 @@ $DBX_CREDENTIALS=( az ad sp create-for-rbac -n $main_sp_name --role Contributor 
 # Service Principal Credentials
 $DBX_CREDENTIALS=( $DBX_CREDENTIALS | convertfrom-json )
 echo $DBX_CREDENTIALS
-$DBX_SP_Client_ID=( $DBX_CREDENTIALS.ARM_CLIENT_ID )
+$Client_ID=( $DBX_CREDENTIALS.ARM_CLIENT_ID )
 
 ```
 
 ---
 ---
 
-## Create Environment 
+## Create Environments 
 Follow the naming convention (case sensitive)
 <img width="971" alt="image" src="https://user-images.githubusercontent.com/108273509/205917146-a7deb2ae-674a-4ec1-a9b8-4859bcdce25f.png">
 
@@ -204,7 +204,7 @@ In addition generate a GitHub Personal Access Token and use it to create a secre
 
 <img width="883" alt="image" src="https://user-images.githubusercontent.com/108273509/205918329-9592e20f-439b-4e1b-b7c4-983579e295de.png">
 
-Finally create a Secret named **SUBSCRIPTION_ID**
+We are using the same Service Principal for each environment, which is not realistic. We might want to have different SPs for each environment, especially Production which is usually more locked down. We are also deploying to the same subscription, which you can change in order to strengthen isolation. 
 
 ---
 ---
@@ -215,7 +215,8 @@ Finally create a Secret named **SUBSCRIPTION_ID**
 
 Secrets in GitHub should look exactly like below. The secrets are case sensitive, therefore be very cautious when creating. 
 
-<img width="585" alt="image" src="https://user-images.githubusercontent.com/108273509/205917886-54e7de77-575c-4764-84e0-2d7a7bbd1e55.png">
+<img width="587" alt="image" src="https://user-images.githubusercontent.com/108273509/205921220-9ad2116a-7c85-4725-a70c-e178a0af2914.png">
+
 
 
 
@@ -228,11 +229,11 @@ Secrets in GitHub should look exactly like below. The secrets are case sensitive
 
 1. Retrieve ObjectID of Databricks Service Principal:  
 ```ps
-$DBX_SP_ObjID=( az ad sp show --id $DBX_SP_Client_ID --query "{roleBeneficiaryObjID:id}" -o tsv )
+$main_sp_name_obj_id=( az ad sp show --id $Client_ID --query "{roleBeneficiaryObjID:id}" -o tsv )
 
 echo "Back Stop Command For Older Azure CLI Command"
  
-if ($DBX_SP_ObjID -eq "None" ) { $DBX_SP_ObjID=( az ad sp show --id $DBX_SP_Client_ID --query "{roleBeneficiaryObjID:objectId}" -o tsv ) }
+if ($main_sp_name_obj_id -eq "None" ) { $main_sp_name_obj_id=( az ad sp show --id $Client_ID --query "{roleBeneficiaryObjID:objectId}" -o tsv ) }
  
 ```
 
@@ -268,38 +269,36 @@ $Git_Configuration = "Enter your GitHub Username"
   
   ```ps
 echo "Enter Your Git Repo Url... "
-# Example: "https://github.com/ciaran28/DatabricksAutomation"  
-$Repo_ConfigurationURL = "Enter Git Repo URL"
+# Example: ""  
+$Repo_ConfigurationURL = "https://github.com/ciaran28/dstoolkit-mlops-databricks"
 ```
   
   
 ```ps
-echo "Update The Parameter Files"
-$files = @('Development.json','UAT.json', 'PreProduction.json', 'Production.json' )
-
-Foreach($file in $files)
+echo "Update The Variable Files"
+$environments = @('Sandbox', 'Development', 'UAT', 'Production')
+foreach ($environment in $environments)
 {
-    $JsonData = Get-Content .github\workflows\Pipeline_Param\$file -raw | ConvertFrom-Json
-
-    $JsonData.RBAC_Assignments | % {if($_.Description -eq 'You Object ID'){$_.roleBeneficiaryObjID=$User_ObjID}}
-
-    $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Databricks SPN'){$_.roleBeneficiaryObjID=$DBX_SP_ObjID}}
-
-    $JsonData.update | % {$JsonData.SubscriptionId = $SubscriptionId}
-
-    foreach ($Obj in $JsonData.Git_Configuration)
-    {
-        ($Obj.git_username = $Git_Configuration )
-    }
-
-    foreach ($Obj in $JsonData.Repo_Configuration)
-    {
-        ($Obj.url = $Repo_ConfigurationURL )
-    }
-
-    $JsonData | ConvertTo-Json -Depth 4  | set-content .github\workflows\Pipeline_Param\$file -NoNewline
-
+   $JsonData = Get-Content .github\MLOps_Engineer\Variables\$environment\Repos.json -raw | ConvertFrom-Json
+   foreach ($Obj in $JsonData.Git_Configuration)
+   {
+       ($Obj.git_username = $Git_Configuration )
+   }
+   foreach ($Obj in $JsonData.Repo_Configuration)
+   {
+       ($Obj.url = $Repo_ConfigurationURL )
+   }
+   $JsonData | ConvertTo-Json -Depth 4  | set-content .github\MLOps_Engineer\Variables\$environment\Repos.json -NoNewline
 }
+ 
+foreach ($environment in $environments)
+{
+  $JsonData = Get-Content .github\MLOps_Engineer\Variables\$environment\RBAC.json -raw | ConvertFrom-Json
+  $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Your Object ID'){$_.roleBeneficiaryObjID=$User_ObjID}}
+  $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Databricks SPN'){$_.roleBeneficiaryObjID=$main_sp_name_obj_id}}
+  $JsonData | ConvertTo-Json -Depth 4  | set-content .github\MLOps_Engineer\Variables\$environment\RBAC.json -NoNewline
+}
+
 
 ```
 
