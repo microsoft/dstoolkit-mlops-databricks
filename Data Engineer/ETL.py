@@ -5,9 +5,6 @@
 
 # DATABRICKS SP NEEDS TO HAVE BLOB STORAGE CONTRIBUTOR ACCESS TO THE CONTAINER (OR POSSIBLY JUST THE SA)
 
-
-# Test - 16:48 - NEW
-
 import numpy as np
 import pandas as pd 
 from pyspark.sql.functions import *
@@ -19,7 +16,6 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from datetime import date
 
- 
 
 from pyspark.sql import SparkSession
 spark = SparkSession.builder.getOrCreate()
@@ -31,8 +27,6 @@ print('spark session created.')
 #print(dbutils.fs.ls('dbfs:/FileStore/'))
 #print(dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret"))
 #dbutils.fs.mounts()
-
-
 
 
 #import subprocess
@@ -55,13 +49,9 @@ default_credential = DefaultAzureCredential()
 #print(client)
 
 # Create the BlobServiceClient object
-blob_service_client = BlobServiceClient(account_url, credential=default_credential)
-print(blob_service_client)
-
-
-new_container = blob_service_client.create_container("containerfromblobservice")
-
-exit()
+#blob_service_client = BlobServiceClient(account_url, credential=default_credential)
+#print(blob_service_client)
+#new_container = blob_service_client.create_container("containerfromblobservice")
 
 
 
