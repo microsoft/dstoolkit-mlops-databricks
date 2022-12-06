@@ -1,6 +1,4 @@
 # Databricks notebook source
-# Take Data and Transform it, So that it may be used in the Feature Engineering stage
-# Raw Data Container --> ETL --> Feature Data Container 
 # DATABRICKS SP NEEDS TO HAVE BLOB STORAGE CONTRIBUTOR ACCESS TO THE CONTAINER (OR POSSIBLY JUST THE SA)
 
 import numpy as np
@@ -11,11 +9,15 @@ from pyspark.dbutils import DBUtils
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from datetime import date
+
+# COMMAND ----------
+
 spark = SparkSession.builder.getOrCreate()
 print(spark.version)
 print('spark session created.')
 
 # COMMAND ----------
+
 #dbutils = DBUtils(spark)
 #print(dbutils.fs.ls('dbfs:/FileStore/'))
 #print(dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret"))
@@ -29,6 +31,7 @@ print('spark session created.')
 #client = SecretClient(vault_url="https://keyvault-dev-gayt.vault.azure.net", credential=default_credential)
 
 # COMMAND ----------
+
 # Python code to mount and access Azure Data Lake Storage Gen2 Account to Azure Databricks with Service Principal and OAuth
 account_url = "https://adlsdevgayt.blob.core.windows.net"
 STORAGE_ACC_NAME = "adlsdevgayt"
@@ -75,12 +78,28 @@ configs = {"fs.azure.account.auth.type": "OAuth",
 # COMMAND ----------
 
 display(dbutils.fs.ls("abfss://bronze@"+ STORAGE_ACC_NAME +".dfs.core.windows.net"))
-print(dbutils.fs.ls("abfss://bronze@"+ STORAGE_ACC_NAME +".dfs.core.windows.net"))
-exit()
-dbfs_path = 'abfss://bronze@adlsdevgayt.dfs.core.windows.net/winequality-red.csv'
-df_train = spark.read.csv(dbfs_path, header = "True", inferSchema="True")
 
-df_train.display()
+
+dbfs_path1 = 'abfss://bronze@adlsdevgayt.dfs.core.windows.net/winequality-red.csv'
+dbfs_path2 = 'abfss://bronze@adlsdevgayt.dfs.core.windows.net/winequality-white.csv'
+mount_point1 = "/mnt/white_wine"
+mount_point2 = "/mnt/red_wine"
+
+if all(mount.mountPoint != mount_point1 for mount in dbutils.fs.mounts()):
+    dbutils.fs.mount(source = dbfs_path1, mount_point = mount_point1, extra_configs = configs)
+    
+if all(mount.mountPoint != mount_point2 for mount in dbutils.fs.mounts()):
+    dbutils.fs.mount(source = dbfs_path1, mount_point = mount_point2, extra_configs = configs)
+
+display(dbutils.fs.mounts())
+
+white_wine = spark.read.csv(mount_point1, header = "True", inferSchema="True", sep=';')
+display(white_wine)
+
+
+red_wine = spark.read.csv(mount_point1, header = "True", inferSchema="True", sep=';')
+display(red_wine)
+
 
 # COMMAND ----------
 
