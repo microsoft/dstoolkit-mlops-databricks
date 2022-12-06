@@ -8,10 +8,8 @@
 ---
  
  ## CI/CD Pathway Diagram
- 
-<p align="center">
-  <img width="821" alt="image" src="https://user-images.githubusercontent.com/108273509/191785696-e8f52385-38b6-42b1-9e85-a3f6bf38d54b.png">
-</p>
+
+<img width="713" alt="image" src="https://user-images.githubusercontent.com/108273509/205769709-12757af5-4239-4815-b546-3718c5133e2a.png">
 
 ---
 
@@ -96,9 +94,6 @@ The net effect is a disproportionate amount of the Data Scientist/Engineers time
 - Docker Environment in VS Code (Section 2)
 
 
-<p align="center">
-  <img width="578" alt="image" src="https://user-images.githubusercontent.com/108273509/205700988-4126a354-3acf-4e43-b26c-af7af5adc333.png">
-</p>
 ---
 ---
 
