@@ -6,8 +6,8 @@ on:
         required: true
         type: string
       UPDATE_FOLDER:
-        required: false
-        type: string
+        required: true
+        type: boolean
     secrets:
       ARM_TENANT_ID:
         required: true
@@ -59,24 +59,11 @@ jobs:
       - shell: bash
         name:  Tests and Dependency Install
         run: |
-          echo echo github.event_name
-          echo github.event.action
-          echo github.base_ref
-          echo github.head_ref
-          echo github.event.pull_request.merged
-
-
-
           echo $enableInfraDeploy
-          az upgrade
           sudo apt update && sudo apt install jq
-          #pip3 install requests
-          # Do A python pip install so that modules can be found from python tasks
+          # Do a python pip install so that modules can be found from python tasks
           python -m pip install requests
           pip3 install  azure-databricks-sdk-python
-        env:
-          Test3:                  ${{ secrets.AZURE_CREDENTIALS }}
-
 
 
 ###################################################################################################################################################################//
@@ -96,10 +83,11 @@ jobs:
 ##                                                                      Deploy Azure Infrastructure in BICEP                                               
 ###################################################################################################################################################################//
 
-      #- name:                     Deploy DBX CICD Azure Resources
-      #  run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
-      #  env:
-      #    ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+      - name:                     Deploy DBX CICD Azure Resources
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
+        env:
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+
 
 
 ###################################################################################################################################################################//
@@ -109,6 +97,17 @@ jobs:
 # 6.  __Order Important__ Save env variable
       - name:                     Set Env Variables 
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsSetEnvVariables.sh
+        env:
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+
+
+###################################################################################################################################################################//
+##                                                                      Create Databricks Custom Role                                              
+###################################################################################################################################################################//
+
+# 6.  __Order Important__ Save env variable
+      - name:                     Create Databricks Custom Role 
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksCustomRole.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
@@ -211,7 +210,7 @@ jobs:
 ##                                                                      DBX Launch                                             
 ###################################################################################################################################################################//
       - shell: bash
-        name:  DBX Launch
+        name:  DBX Launch - Workflow Artifacts (CD)
         run: |
           echo $DATABRICKS_TOKEN
           pip install dbx

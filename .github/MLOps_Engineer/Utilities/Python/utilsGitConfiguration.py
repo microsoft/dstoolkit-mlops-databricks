@@ -23,13 +23,14 @@ def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, manage
         }
     
     gitConfig.update(newData)
+    print(gitConfig)
 
     response = requests.post('https://' + databricksInstance + '/api/2.0/git-credentials', headers=DBRKS_REQ_HEADERS, json=gitConfig)
     print(response.json())
 
 if __name__ == "__main__":
 
-    with open('.github/MLOps_Engineer/Variables/' + os.environ['ENVIRONMENT'] +'/DBX_Repo_Folders/Repos.json', 'r') as f:
+    with open('.github/MLOps_Engineer/Variables/' + os.environ['ENVIRONMENT'] +'/Repos.json', 'r') as f:
         json = json.load(f)
 
     gitConfigs = json['Git_Configuration']

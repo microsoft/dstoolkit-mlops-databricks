@@ -1,0 +1,19 @@
+{
+    "Jobs":  [
+                 {
+                     "name":  "ml_job",
+                     "cluster_name":  "ml_cluster",
+                     "notebook_task":  {
+                                           "notebook_path":  "Data_Scientist/test",
+                                           "source":  "GIT"
+                                       },
+                     "git_branch":  "main",
+                     "existing_cluster_id":  "",
+                     "git_source":  {
+                                        "git_url":  "https://github.com/ciaran28/dstoolkit-mlops-databricks-AzDevOps",
+                                        "git_provider":  "gitHub",
+                                        "git_branch":  "main"
+                                    }
+                 }
+             ]
+}

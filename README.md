@@ -124,13 +124,16 @@ In a nutshell, Continuous **Development** _is a partly manual process where deve
 
 The Branching Strategy I have chosen is configured automatically as part of the accelerator. It follows a GitHub Flow paradigm in order to facilitate rapid Continuous Integration, with some nuances. (see Footnote 1 which contains the SST Git Flow Article written by Willie Ahlers for the Data Science Toolkit - This provides a narrative explaining the numbers below)[^1]
 
+
+The branching strategy is easy to change via updating the "if conditions" within .github/workflows/onRelease.yaml.
+
 <img width="805" alt="image" src="https://user-images.githubusercontent.com/108273509/186166011-527144d5-ebc1-4869-a0a6-83c5538b4521.png">
 
--   Feature Branch merged to Main Branch: resource deployment to Development environment 
--   Merge Request from Main Branch to Release Branch: deploy to UAT environment
--   Merge Request Approval from Main Branch to Release Branch: deploy to Pre-Production environment
--   Tag Release Branch with Stable Version: deploy to Production environment
-
+-   Pull Request from Feature Branch to Main Branch: C.I Tests
+-   Pull Request approved from Feature Branch to Main Branch: C.D. to Development Environment 
+-   Pull Request from Main Branch to Release Branch: C.I. Test
+-   Pull Request approved from Main Branch to Release Branch: C.D. to User Acceptance Testing (UAT) Environment
+-   Tag Version and Push to Release Branch: C.D. to Production Environment 
 
 ---
 ---
@@ -163,64 +166,58 @@ $SubscriptionId=( az account show --query id -o tsv )
 ```
 
 ## Create Main Service Principal 
-**Why**: You will need to assign RBAC permissions to Azure Resources created on the fly.
+**Why** : The Service Principal is a conduit for which we can authenticate into Azure. Personify it as as a User, with rights to access Azure Resources (as defined by Role Base Access conferred to it). If we have the Service Principal's secrets/credentials such as the Client Secret, Client ID and Tenant ID, all the powers held by the Service Principal will flow to the requestor. In this example, it will be the Github Action Runner/VM. 
 
 ```ps
-echo "Create The Service Principal"
+# Create The Service Principal
+# WARNING: DO NOT DELETE OUTPUT
 
-echo "WARNING: DO NOT DELETE OUTPUT "
+$main_sp_name="main_sp_"+$(Get-Random -Minimum 1000 -Maximum 9999)
 
-$Main_SP_Name= "Main_SP_"+$(Get-Random -Minimum 1000 -Maximum 9999)
-az ad sp create-for-rbac -n $Main_SP_Name --role Owner --scopes /subscriptions/$SubscriptionId --sdk-auth
- 
-```
-
-Ensure that the Service Principal names are unique within your Tenant. If not unique, you may see the error "Insufficient privileges to complete the operation"
-
-## Secrets
-Create GitHub Secret titled **AZURE_CREDENTIALS** using the output generated from the previous command.
-
-<img width="420" alt="image" src="https://user-images.githubusercontent.com/108273509/192110733-90975739-6f2d-46f3-8fe8-45cb0cf60b20.png">
+# use --sdk-auth flag if using GitHub Action Azure Authenticator 
+$DBX_CREDENTIALS=( az ad sp create-for-rbac -n $main_sp_name --role Owner --scopes /subscriptions/$SubscriptionId --query "{ARM_TENANT_ID:tenant, ARM_CLIENT_ID:appId, ARM_CLIENT_SECRET:password}")
 
 
----
----
-
-## Create Databricks Service Principal 
-
-**Why**: For those who only need permissions to create resources and interact with the Databricks API (zero trust).
-
-
-```ps
-echo "Create The Service Principal"
- 
-echo "WARNING: DO NOT DELETE OUTPUT"
-
-$Databricks_SP_Name= "DatabricksSP_"+$(Get-Random -Minimum 1000 -Maximum 9999) 
-$DBX_CREDENTIALS=( az ad sp create-for-rbac -n $Databricks_SP_Name --role Contributor --scopes /subscriptions/$SubscriptionId --query "{ARM_TENANT_ID:tenant, ARM_CLIENT_ID:appId, ARM_CLIENT_SECRET:password}")
-
-echo "Service Principal Credentials"
+# Service Principal Credentials
 $DBX_CREDENTIALS=( $DBX_CREDENTIALS | convertfrom-json )
 echo $DBX_CREDENTIALS
- 
-$DBX_SP_Client_ID=( $DBX_CREDENTIALS.ARM_CLIENT_ID )
- 
+$Client_ID=( $DBX_CREDENTIALS.ARM_CLIENT_ID )
+
 ```
 
+---
+---
+
+## Create Environments 
+Follow the naming convention (case sensitive)
+<img width="971" alt="image" src="https://user-images.githubusercontent.com/108273509/205917146-a7deb2ae-674a-4ec1-a9b8-4859bcdce25f.png">
+
+
 ## Secrets
-Create GitHub Secrets entitled **ARM_CLIENT_ID**, **ARM_CLIENT_SECRET** and **ARM_TENANT_ID** using the output in VS Code PowerShell Terminal. See below.
+
+**For each environment** create GitHub Secrets entitled **ARM_CLIENT_ID**, **ARM_CLIENT_SECRET** and **ARM_TENANT_ID** using the output in VS Code PowerShell Terminal from previous step.
+(Note: The Service Principal below was destroyed, and therefore the credentials are useless )
 
 <img width="656" alt="image" src="https://user-images.githubusercontent.com/108273509/194619649-2ef7e325-a6bb-4760-9a82-1e3b4775adbd.png">
 
+In addition generate a GitHub Personal Access Token and use it to create a secret named ^**PAT_GITHUB**:
+
+<img width="883" alt="image" src="https://user-images.githubusercontent.com/108273509/205918329-9592e20f-439b-4e1b-b7c4-983579e295de.png">
+
+We are using the same Service Principal for each environment, which is not realistic. We might want to have different SPs for each environment, especially Production which is usually more locked down. We are also deploying to the same subscription, which you can change in order to strengthen isolation. 
+
 ---
 ---
+
 
  
 ## Final Snapshot of GitHub Secrets
 
 Secrets in GitHub should look exactly like below. The secrets are case sensitive, therefore be very cautious when creating. 
 
-<img width="585" alt="image" src="https://user-images.githubusercontent.com/108273509/194613800-e8a99b1f-1d4f-4710-803f-b2ac0721ff33.png">
+<img width="587" alt="image" src="https://user-images.githubusercontent.com/108273509/205921220-9ad2116a-7c85-4725-a70c-e178a0af2914.png">
+
+
 
 
 ---
@@ -232,11 +229,11 @@ Secrets in GitHub should look exactly like below. The secrets are case sensitive
 
 1. Retrieve ObjectID of Databricks Service Principal:  
 ```ps
-$DBX_SP_ObjID=( az ad sp show --id $DBX_SP_Client_ID --query "{roleBeneficiaryObjID:id}" -o tsv )
+$main_sp_name_obj_id=( az ad sp show --id $Client_ID --query "{roleBeneficiaryObjID:id}" -o tsv )
 
 echo "Back Stop Command For Older Azure CLI Command"
  
-if ($DBX_SP_ObjID -eq "None" ) { $DBX_SP_ObjID=( az ad sp show --id $DBX_SP_Client_ID --query "{roleBeneficiaryObjID:objectId}" -o tsv ) }
+if ($main_sp_name_obj_id -eq "None" ) { $main_sp_name_obj_id=( az ad sp show --id $Client_ID --query "{roleBeneficiaryObjID:objectId}" -o tsv ) }
  
 ```
 
@@ -272,38 +269,36 @@ $Git_Configuration = "Enter your GitHub Username"
   
   ```ps
 echo "Enter Your Git Repo Url... "
-# Example: "https://github.com/ciaran28/DatabricksAutomation"  
-$Repo_ConfigurationURL = "Enter Git Repo URL"
+# Example: ""  
+$Repo_ConfigurationURL = "https://github.com/ciaran28/dstoolkit-mlops-databricks"
 ```
   
   
 ```ps
-echo "Update The Parameter Files"
-$files = @('Development.json','UAT.json', 'PreProduction.json', 'Production.json' )
-
-Foreach($file in $files)
+echo "Update The Variable Files"
+$environments = @('Sandbox', 'Development', 'UAT', 'Production')
+foreach ($environment in $environments)
 {
-    $JsonData = Get-Content .github\workflows\Pipeline_Param\$file -raw | ConvertFrom-Json
-
-    $JsonData.RBAC_Assignments | % {if($_.Description -eq 'You Object ID'){$_.roleBeneficiaryObjID=$User_ObjID}}
-
-    $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Databricks SPN'){$_.roleBeneficiaryObjID=$DBX_SP_ObjID}}
-
-    $JsonData.update | % {$JsonData.SubscriptionId = $SubscriptionId}
-
-    foreach ($Obj in $JsonData.Git_Configuration)
-    {
-        ($Obj.git_username = $Git_Configuration )
-    }
-
-    foreach ($Obj in $JsonData.Repo_Configuration)
-    {
-        ($Obj.url = $Repo_ConfigurationURL )
-    }
-
-    $JsonData | ConvertTo-Json -Depth 4  | set-content .github\workflows\Pipeline_Param\$file -NoNewline
-
+   $JsonData = Get-Content .github\MLOps_Engineer\Variables\$environment\Repos.json -raw | ConvertFrom-Json
+   foreach ($Obj in $JsonData.Git_Configuration)
+   {
+       ($Obj.git_username = $Git_Configuration )
+   }
+   foreach ($Obj in $JsonData.Repo_Configuration)
+   {
+       ($Obj.url = $Repo_ConfigurationURL )
+   }
+   $JsonData | ConvertTo-Json -Depth 4  | set-content .github\MLOps_Engineer\Variables\$environment\Repos.json -NoNewline
 }
+ 
+foreach ($environment in $environments)
+{
+  $JsonData = Get-Content .github\MLOps_Engineer\Variables\$environment\RBAC.json -raw | ConvertFrom-Json
+  $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Your Object ID'){$_.roleBeneficiaryObjID=$User_ObjID}}
+  $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Databricks SPN'){$_.roleBeneficiaryObjID=$main_sp_name_obj_id}}
+  $JsonData | ConvertTo-Json -Depth 4  | set-content .github\MLOps_Engineer\Variables\$environment\RBAC.json -NoNewline
+}
+
 
 ```
 
@@ -332,18 +327,13 @@ git push
  
 ## Deploy The Azure Environments 
 
-- In GitHub you can manually run the pipeline to deploy the environments to Azure using "1-Big-Bang-Databricks-CICD-Deployment.yml" found [here](.github/workflows/1-Big-Bang-Databricks-CICD-Deployment.yml). Use the instructions below to run the workflow.
+- In GitHub you can manually run the pipeline to deploy the environments to Azure using "onRelease.yml" found [here](.github/workflows/onRelease.yml). Use the instructions below to run the workflow.
 
-<img width="1172" alt="image" src="https://user-images.githubusercontent.com/108273509/186510528-29448e4d-1a0e-41b9-a37f-0cd89d226d57.png">
+<img width="893" alt="image" src="https://user-images.githubusercontent.com/108273509/205954210-c123c407-4c83-4952-ab4b-cd6c485efc2f.png">
 
- 
 - Azure Resources created (Production Environment snapshot)
   
 <img width="1175" alt="image" src="https://user-images.githubusercontent.com/108273509/194638664-fa6e1809-809e-45b2-9655-9312f32f24bb.png">
-
-- Snapshot of completed GitHub Action deployment 
-
-<img width="810" alt="image" src="https://user-images.githubusercontent.com/108273509/188155303-cfe07a79-0a9d-4a4d-a40a-dea6104b40f1.png">
 
 ---
 ---
@@ -355,27 +345,6 @@ git push
 ---
 ---
 
-## Continuous Integration and Deployment
-- Demo to follow 
-- Best Practice: Connect the Repo in your **own user folder** in Databricks REPO.
-- Admin will see two User Folders. The first is their own e.g. ciaranh@microsoft.com... and the other is the **Service Principal User Folder**, named after it's ClientID.
-- The cluster will run off the Service Principal Scripts (isolated and can only be updated when a Feature Branch is merged into Main)
-
-The process for CI/CD in Databricks is thus:
-1. Work in your User Folder 
-<img width="349" alt="image" src="https://user-images.githubusercontent.com/108273509/194616776-1445a003-f23d-4670-ae8a-d0af92b2d12d.png">
-
-2. Create a Feature Branch from Main. 
-3. Develop code in **your Feature Branch** 
-4. Push code regularly from Feature Branch
-5. When feature is complete, create a Pull Request from **Feature Branch to Main**
-6. If the Pull Request is approved, the files within the **Service Principal folder** will update. The Clusters in the Dev environment will now run off the updated code. 
-<img width="349" alt="image" src="https://user-images.githubusercontent.com/108273509/194617198-25eea06e-ee32-43b8-a502-6112c90bc918.png">
-
-7. If the Development Databricks Instance is stable and ready to be promoted to the Test Environment, create a Pull Request from **Main to Release**
-8. Changes will cascade into the UAT Databricks Instance
-9. If tests are successful, the Pull Request is **approved**, which will trigger a release pipeline to propagate changes to the PreProduction Environment
-10. The above will happen iteratively, until the PreProduction environment is stable enough for a new release version, at which we Tag the Release Branch with a version number, e.g "v-1.0.1". This will promote changes to the Production Environment. **Release Pipeline for Production Environment not yet complete** 
    
 # Section 2
 ---

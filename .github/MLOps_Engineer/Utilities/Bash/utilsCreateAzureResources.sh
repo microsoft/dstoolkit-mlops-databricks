@@ -16,7 +16,7 @@ echo "Location: $location"
 
 
 echo "environment variable: $TemplateParamFilePath"
-echo "environment variable: $Location"
+echo "environment variable: $location"
 echo "environment variable: $TemplateFilePath"
 # Important to define unique deployment names as conflicts will occur
 echo "Create Azure DBX Resource Environments...."

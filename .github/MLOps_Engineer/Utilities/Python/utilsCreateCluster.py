@@ -97,7 +97,7 @@ def manageClusterState():
 if __name__ == "__main__":
     ENVIRONMENT = os.environ['ENVIRONMENT']
     print(ENVIRONMENT)
-    with open('.github/MLOps_Engineer/Variables/' + ENVIRONMENT + '/DBX_Clusters/Clusters.json', 'r') as f:
+    with open('.github/MLOps_Engineer/Variables/' + ENVIRONMENT + '/Clusters.json', 'r') as f:
         buildClusters = json.load(f)
     
     # Extract array from Json object
@@ -112,9 +112,10 @@ if __name__ == "__main__":
         print(f"existingClusters {existingClusters}")
 
         existingClustersArr = []
-
-        for existingCluster in existingClusters['clusters']:
-            existingClustersArr.append(existingCluster['cluster_name'])
+        
+        if existingClusters:
+            for existingCluster in existingClusters['clusters']:
+                existingClustersArr.append(existingCluster['cluster_name'])
         
         print(existingClustersArr)
         

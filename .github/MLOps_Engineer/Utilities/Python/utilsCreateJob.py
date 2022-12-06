@@ -73,7 +73,7 @@ def createJobs(tokenRequestHeaders, existingClusters, buildJob, existingJobs, da
 
 if __name__ == "__main__":
 
-    with open('.github/MLOps_Engineer/Variables/' +  os.environ['ENVIRONMENT'] +'/DBX_Jobs/Jobs.json', 'r') as f:
+    with open('.github/MLOps_Engineer/Variables/' +  os.environ['ENVIRONMENT'] +'/Jobs.json', 'r') as f:
         buildJobs = json.load(f)
 
 
