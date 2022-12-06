@@ -1,8 +1,6 @@
 # Databricks notebook source
 # Take Data and Transform it, So that it may be used in the Feature Engineering stage
 # Raw Data Container --> ETL --> Feature Data Container 
-
-
 # DATABRICKS SP NEEDS TO HAVE BLOB STORAGE CONTRIBUTOR ACCESS TO THE CONTAINER (OR POSSIBLY JUST THE SA)
 
 import numpy as np
@@ -22,16 +20,15 @@ print('spark session created.')
 #print(dbutils.fs.ls('dbfs:/FileStore/'))
 #print(dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret"))
 #dbutils.fs.mounts()
-
-
 # IMPORTANT : https://learn.microsoft.com/en-us/python/api/overview/azure/identity-readme?view=azure-python#authenticate-via-visual-studio-code
-from azure.identity import DefaultAzureCredential
-from azure.storage.blob import BlobServiceClient
-from azure.storage.blob import ContainerClient
+#from azure.identity import DefaultAzureCredential
+#from azure.storage.blob import BlobServiceClient
+#from azure.storage.blob import ContainerClient
 #from azure.keyvault.secrets import SecretClient
 
 account_url = "https://adlsdevgayt.blob.core.windows.net"
-default_credential = DefaultAzureCredential()
+#default_credential = DefaultAzureCredential()
+
 
 #client = SecretClient(vault_url="https://keyvault-dev-gayt.vault.azure.net", credential=default_credential)
 #print(client)
@@ -40,11 +37,6 @@ default_credential = DefaultAzureCredential()
 #blob_service_client = BlobServiceClient(account_url, credential=default_credential)
 #print(blob_service_client)
 #new_container = blob_service_client.create_container("containerfromblobservice")
-
-
-
-
-
 # COMMAND ----------
 
 # MAGIC %md
