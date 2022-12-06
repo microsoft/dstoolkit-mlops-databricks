@@ -8,7 +8,7 @@ jobs:
     name: Master Deployment
     strategy:
       matrix:
-        target: [ UAT, Development ]
+        target: [ Sandbox, Development, UAT, Production ]
     uses: ./.github/workflows/taskDatabricks.yaml
     with:
       ENVIRONMENT: ${{ matrix.target }}
