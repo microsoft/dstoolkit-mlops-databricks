@@ -8,10 +8,10 @@ jobs:
     name: Master Deployment
     strategy:
       matrix:
-        target: [ Sandbox, Development, UAT, Production ]
+        targetEnvironment: [ Sandbox, Development, UAT, Production ]
     uses: ./.github/workflows/taskDatabricks.yaml
     with:
-      ENVIRONMENT: ${{ matrix.target }}
+      ENVIRONMENT: ${{ matrix.targetEnvironment }}
     secrets:
       ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
