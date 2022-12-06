@@ -124,13 +124,16 @@ In a nutshell, Continuous **Development** _is a partly manual process where deve
 
 The Branching Strategy I have chosen is configured automatically as part of the accelerator. It follows a GitHub Flow paradigm in order to facilitate rapid Continuous Integration, with some nuances. (see Footnote 1 which contains the SST Git Flow Article written by Willie Ahlers for the Data Science Toolkit - This provides a narrative explaining the numbers below)[^1]
 
+
+The branching strategy is easy to change via updating the "if conditions" within .github/workflows/onRelease.yaml.
+
 <img width="805" alt="image" src="https://user-images.githubusercontent.com/108273509/186166011-527144d5-ebc1-4869-a0a6-83c5538b4521.png">
 
--   Feature Branch merged to Main Branch: resource deployment to Development environment 
--   Merge Request from Main Branch to Release Branch: deploy to UAT environment
--   Merge Request Approval from Main Branch to Release Branch: deploy to Pre-Production environment
--   Tag Release Branch with Stable Version: deploy to Production environment
-
+-   Pull Request from Feature Branch to Main Branch: C.I Tests
+-   Pull Request approved from Feature Branch to Main Branch: C.D. to Development Environment 
+-   Pull Request from Main Branch to Release Branch: C.I. Test
+-   Pull Request approved from Main Branch to Release Branch: C.D. to User Acceptance Testing (UAT) Environment
+-   Tag Version and Push to Release Branch: C.D. to Production Environment 
 
 ---
 ---
@@ -163,64 +166,57 @@ $SubscriptionId=( az account show --query id -o tsv )
 ```
 
 ## Create Main Service Principal 
-**Why**: You will need to assign RBAC permissions to Azure Resources created on the fly.
+**Why** : The Service Principal is a conduit for which we can authenticate into Azure. Personify it as as a User, with rights to access Azure Resources (as defined by Role Base Access conferred to it). If we have the Service Principal's secrets/credentials such as the Client Secret, Client ID and Tenant ID, all the powers held by the Service Principal will flow to the requestor. In this example, it will be the Github Action Runner/VM. 
 
 ```ps
-echo "Create The Service Principal"
+# Create The Service Principal
+# WARNING: DO NOT DELETE OUTPUT
 
-echo "WARNING: DO NOT DELETE OUTPUT "
+$main_sp_name="main_sp_"+$(Get-Random -Minimum 1000 -Maximum 9999)
 
-$Main_SP_Name= "Main_SP_"+$(Get-Random -Minimum 1000 -Maximum 9999)
-az ad sp create-for-rbac -n $Main_SP_Name --role Owner --scopes /subscriptions/$SubscriptionId --sdk-auth
- 
-```
-
-Ensure that the Service Principal names are unique within your Tenant. If not unique, you may see the error "Insufficient privileges to complete the operation"
-
-## Secrets
-Create GitHub Secret titled **AZURE_CREDENTIALS** using the output generated from the previous command.
-
-<img width="420" alt="image" src="https://user-images.githubusercontent.com/108273509/192110733-90975739-6f2d-46f3-8fe8-45cb0cf60b20.png">
+# use --sdk-auth flag if using GitHub Action Azure Authenticator 
+$DBX_CREDENTIALS=( az ad sp create-for-rbac -n $main_sp_name --role Contributor --scopes /subscriptions/$SubscriptionId --query "{ARM_TENANT_ID:tenant, ARM_CLIENT_ID:appId, ARM_CLIENT_SECRET:password}")
 
 
----
----
-
-## Create Databricks Service Principal 
-
-**Why**: For those who only need permissions to create resources and interact with the Databricks API (zero trust).
-
-
-```ps
-echo "Create The Service Principal"
- 
-echo "WARNING: DO NOT DELETE OUTPUT"
-
-$Databricks_SP_Name= "DatabricksSP_"+$(Get-Random -Minimum 1000 -Maximum 9999) 
-$DBX_CREDENTIALS=( az ad sp create-for-rbac -n $Databricks_SP_Name --role Contributor --scopes /subscriptions/$SubscriptionId --query "{ARM_TENANT_ID:tenant, ARM_CLIENT_ID:appId, ARM_CLIENT_SECRET:password}")
-
-echo "Service Principal Credentials"
+# Service Principal Credentials
 $DBX_CREDENTIALS=( $DBX_CREDENTIALS | convertfrom-json )
 echo $DBX_CREDENTIALS
- 
 $DBX_SP_Client_ID=( $DBX_CREDENTIALS.ARM_CLIENT_ID )
- 
+
 ```
 
+---
+---
+
+## Create Environment 
+Follow the naming convention (case sensitive)
+<img width="971" alt="image" src="https://user-images.githubusercontent.com/108273509/205917146-a7deb2ae-674a-4ec1-a9b8-4859bcdce25f.png">
+
+
 ## Secrets
-Create GitHub Secrets entitled **ARM_CLIENT_ID**, **ARM_CLIENT_SECRET** and **ARM_TENANT_ID** using the output in VS Code PowerShell Terminal. See below.
+
+**For each environment** create GitHub Secrets entitled **ARM_CLIENT_ID**, **ARM_CLIENT_SECRET** and **ARM_TENANT_ID** using the output in VS Code PowerShell Terminal from previous step.
+(Note: The Service Principal below was destroyed, and therefore the credentials are useless )
 
 <img width="656" alt="image" src="https://user-images.githubusercontent.com/108273509/194619649-2ef7e325-a6bb-4760-9a82-1e3b4775adbd.png">
 
+In addition generate a GitHub Personal Access Token and use it to create a secret named ^**PAT_GITHUB**:
+
+<img width="883" alt="image" src="https://user-images.githubusercontent.com/108273509/205918329-9592e20f-439b-4e1b-b7c4-983579e295de.png">
+
+Finally create a Secret named **SUBSCRIPTION_ID**
+
 ---
 ---
+
 
  
 ## Final Snapshot of GitHub Secrets
 
 Secrets in GitHub should look exactly like below. The secrets are case sensitive, therefore be very cautious when creating. 
 
-<img width="585" alt="image" src="https://user-images.githubusercontent.com/108273509/194613800-e8a99b1f-1d4f-4710-803f-b2ac0721ff33.png">
+<img width="585" alt="image" src="https://user-images.githubusercontent.com/108273509/205917886-54e7de77-575c-4764-84e0-2d7a7bbd1e55.png">
+
 
 
 ---
