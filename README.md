@@ -166,52 +166,33 @@ $SubscriptionId=( az account show --query id -o tsv )
 ```
 
 ## Create Main Service Principal 
-**Why**: You will need to assign RBAC permissions to Azure Resources created on the fly.
+**Why** : The Service Principal is a conduit for which we can authenticate into Azure. Personify it as as a User, with rights to access Azure Resources (as defined by Role Base Access conferred to it). If we have the Service Principal's secrets/credentials such as the Client Secret, Client ID and Tenant ID, all the powers held by the Service Principal will flow to the requestor. In this example, it will be the Github Action Runner/VM. 
 
 ```ps
-echo "Create The Service Principal"
+# Create The Service Principal
+# WARNING: DO NOT DELETE OUTPUT
 
-echo "WARNING: DO NOT DELETE OUTPUT "
+$main_sp_name="main_sp_"+$(Get-Random -Minimum 1000 -Maximum 9999)
 
-$Main_SP_Name= "Main_SP_"+$(Get-Random -Minimum 1000 -Maximum 9999)
-az ad sp create-for-rbac -n $Main_SP_Name --role Owner --scopes /subscriptions/$SubscriptionId --sdk-auth
- 
-```
-
-Ensure that the Service Principal names are unique within your Tenant. If not unique, you may see the error "Insufficient privileges to complete the operation"
-
-## Secrets
-Create GitHub Secret titled **AZURE_CREDENTIALS** using the output generated from the previous command.
-
-<img width="420" alt="image" src="https://user-images.githubusercontent.com/108273509/192110733-90975739-6f2d-46f3-8fe8-45cb0cf60b20.png">
+# use --sdk-auth flag if using GitHub Action Azure Authenticator 
+$DBX_CREDENTIALS=( az ad sp create-for-rbac -n $main_sp_name --role Contributor --scopes /subscriptions/$SubscriptionId --query "{ARM_TENANT_ID:tenant, ARM_CLIENT_ID:appId, ARM_CLIENT_SECRET:password}")
 
 
----
----
-
-## Create Databricks Service Principal 
-
-**Why**: For those who only need permissions to create resources and interact with the Databricks API (zero trust).
-
-
-```ps
-echo "Create The Service Principal"
- 
-echo "WARNING: DO NOT DELETE OUTPUT"
-
-$Databricks_SP_Name= "DatabricksSP_"+$(Get-Random -Minimum 1000 -Maximum 9999) 
-$DBX_CREDENTIALS=( az ad sp create-for-rbac -n $Databricks_SP_Name --role Contributor --scopes /subscriptions/$SubscriptionId --query "{ARM_TENANT_ID:tenant, ARM_CLIENT_ID:appId, ARM_CLIENT_SECRET:password}")
-
-echo "Service Principal Credentials"
+# Service Principal Credentials
 $DBX_CREDENTIALS=( $DBX_CREDENTIALS | convertfrom-json )
 echo $DBX_CREDENTIALS
- 
 $DBX_SP_Client_ID=( $DBX_CREDENTIALS.ARM_CLIENT_ID )
- 
+
 ```
+
+---
+---
+
+
 
 ## Secrets
 Create GitHub Secrets entitled **ARM_CLIENT_ID**, **ARM_CLIENT_SECRET** and **ARM_TENANT_ID** using the output in VS Code PowerShell Terminal. See below.
+(Note: The Service Principal below was destroyed, and therefore the credentials are useless )
 
 <img width="656" alt="image" src="https://user-images.githubusercontent.com/108273509/194619649-2ef7e325-a6bb-4760-9a82-1e3b4775adbd.png">
 
