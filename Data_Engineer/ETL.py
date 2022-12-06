@@ -93,34 +93,12 @@ if all(mount.mountPoint != mount_point2 for mount in dbutils.fs.mounts()):
 
 display(dbutils.fs.mounts())
 
-white_wine = spark.read.csv(mount_point1, header = "True", inferSchema="True", sep=';')
+white_wine = spark.read.csv(mount_point1, header = "True", inferSchema="True", sep=';').toPandas()
 display(white_wine)
 
 
-red_wine = spark.read.csv(mount_point1, header = "True", inferSchema="True", sep=';')
+red_wine = spark.read.csv(mount_point1, header = "True", inferSchema="True", sep=';').toPandas()
 display(red_wine)
-
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC # Establish Mount Point
-
-# COMMAND ----------
-
-
-mount_point = "/mnt/titanicdata"
-
-if all(mount.mountPoint != mount_point for mount in dbutils.fs.mounts()):
-    dbutils.fs.mount(source = "abfss://raw@adlsdevgayt.dfs.core.windows.net/training_data", mount_point = mount_point, extra_configs = configs)
-        
-
-
-# COMMAND ----------
-
-#dbutils.fs.unmount("/mnt/titanicdata")
-display(dbutils.fs.mounts())
-
 
 
 # COMMAND ----------
@@ -130,39 +108,45 @@ display(dbutils.fs.mounts())
 
 # COMMAND ----------
 
-df_train = spark.read.csv(mount_point, header = "True", inferSchema="True")
-df_train.display()
+red_wine['is_red'] = 1
+white_wine['is_red'] = 0
+ 
+data = pd.concat([red_wine, white_wine], axis=0)
+ 
+# Remove spaces from column names
+data.rename(columns=lambda x: x.replace(' ', '_'), inplace=True)
+
+data.head()
 
 # COMMAND ----------
 
-df_train.printSchema()
+# MAGIC %md
+# MAGIC # Visualise The Data
 
 # COMMAND ----------
 
-# MAGIC %md 
-# MAGIC # Cleaning Data
+import seaborn as sns
+sns.distplot(data.quality, kde=False)
 
 # COMMAND ----------
 
-df_train = (df_train 
-                 .withColumnRenamed("Pclass", "PassengerClass") 
-                 .withColumnRenamed("SibSp", "SiblingsSpouses") 
-                 .withColumnRenamed("Parch", "ParentsChildren"))
-df_train.display()
+high_quality = (data.quality >= 7).astype(int)
+data.quality = high_quality
 
 # COMMAND ----------
 
-df_train.display()
-
-# Add a new Feature column "Title"
-df = df_train.withColumn("Title",regexp_extract(col("Name"),"([A-Za-z]+)\.",1))
-df.display()
-
-# Sanitise and group titles
-# 'Mlle', 'Mme', 'Ms' --> Miss
-# 'Lady', 'Dona', 'Countess' --> Mrs
-# 'Dr', 'Master', 'Major', 'Capt', 'Sir', 'Don' --> Mr
-# 'Jonkheer' , 'Col' , 'Rev' --> Other
-df = df.replace(['Mlle','Mme', 'Ms', 'Dr','Master','Major','Lady','Dona','Countess','Jonkheer','Col','Rev','Capt','Sir','Don'],
-                ['Miss','Miss','Miss','Mr','Mr', 'Mr', 'Mrs',  'Mrs', 'Mrs', 'Other',  'Other','Other','Mr','Mr','Mr'])
+import matplotlib.pyplot as plt
+ 
+dims = (3, 4)
+ 
+f, axes = plt.subplots(dims[0], dims[1], figsize=(25, 15))
+axis_i, axis_j = 0, 0
+for col in data.columns:
+  if col == 'is_red' or col == 'quality':
+    continue # Box plots cannot be used on indicator variables
+  sns.boxplot(x=high_quality, y=data[col], ax=axes[axis_i, axis_j])
+  axis_j += 1
+  if axis_j == dims[1]:
+    axis_i += 1
+    axis_j = 0
 
