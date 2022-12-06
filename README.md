@@ -188,23 +188,35 @@ $DBX_SP_Client_ID=( $DBX_CREDENTIALS.ARM_CLIENT_ID )
 ---
 ---
 
+## Create Environment 
+Follow the naming convention (case sensitive)
+<img width="971" alt="image" src="https://user-images.githubusercontent.com/108273509/205917146-a7deb2ae-674a-4ec1-a9b8-4859bcdce25f.png">
 
 
 ## Secrets
-Create GitHub Secrets entitled **ARM_CLIENT_ID**, **ARM_CLIENT_SECRET** and **ARM_TENANT_ID** using the output in VS Code PowerShell Terminal. See below.
+
+**For each environment** create GitHub Secrets entitled **ARM_CLIENT_ID**, **ARM_CLIENT_SECRET** and **ARM_TENANT_ID** using the output in VS Code PowerShell Terminal from previous step.
 (Note: The Service Principal below was destroyed, and therefore the credentials are useless )
 
 <img width="656" alt="image" src="https://user-images.githubusercontent.com/108273509/194619649-2ef7e325-a6bb-4760-9a82-1e3b4775adbd.png">
 
+In addition generate a GitHub Personal Access Token and use it to create a secret named ^**PAT_GITHUB**:
+
+<img width="883" alt="image" src="https://user-images.githubusercontent.com/108273509/205918329-9592e20f-439b-4e1b-b7c4-983579e295de.png">
+
+Finally create a Secret named **SUBSCRIPTION_ID**
+
 ---
 ---
+
 
  
 ## Final Snapshot of GitHub Secrets
 
 Secrets in GitHub should look exactly like below. The secrets are case sensitive, therefore be very cautious when creating. 
 
-<img width="585" alt="image" src="https://user-images.githubusercontent.com/108273509/194613800-e8a99b1f-1d4f-4710-803f-b2ac0721ff33.png">
+<img width="585" alt="image" src="https://user-images.githubusercontent.com/108273509/205917886-54e7de77-575c-4764-84e0-2d7a7bbd1e55.png">
+
 
 
 ---
