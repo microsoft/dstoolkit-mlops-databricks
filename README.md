@@ -124,13 +124,16 @@ In a nutshell, Continuous **Development** _is a partly manual process where deve
 
 The Branching Strategy I have chosen is configured automatically as part of the accelerator. It follows a GitHub Flow paradigm in order to facilitate rapid Continuous Integration, with some nuances. (see Footnote 1 which contains the SST Git Flow Article written by Willie Ahlers for the Data Science Toolkit - This provides a narrative explaining the numbers below)[^1]
 
+
+The branching strategy is easy to change via updating the "if conditions" within .github/workflows/onRelease.yaml.
+
 <img width="805" alt="image" src="https://user-images.githubusercontent.com/108273509/186166011-527144d5-ebc1-4869-a0a6-83c5538b4521.png">
 
--   Feature Branch merged to Main Branch: resource deployment to Development environment 
--   Merge Request from Main Branch to Release Branch: deploy to UAT environment
--   Merge Request Approval from Main Branch to Release Branch: deploy to Pre-Production environment
--   Tag Release Branch with Stable Version: deploy to Production environment
-
+-   Pull Request from Feature Branch to Main Branch: C.I Tests
+-   Pull Request approved from Feature Branch to Main Branch: C.D. to Development Environment 
+-   Pull Request from Main Branch to Release Branch: C.I. Test
+-   Pull Request approved from Main Branch to Release Branch: C.D. to User Acceptance Testing (UAT) Environment
+-   Tag Version and Push to Release Branch: C.D. to Production Environment 
 
 ---
 ---
