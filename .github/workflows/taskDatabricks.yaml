@@ -210,7 +210,7 @@ jobs:
 ##                                                                      DBX Launch                                             
 ###################################################################################################################################################################//
       - shell: bash
-        name:  DBX Launch
+        name:  DBX Launch - Workflow Artifacts (CD)
         run: |
           echo $DATABRICKS_TOKEN
           pip install dbx
