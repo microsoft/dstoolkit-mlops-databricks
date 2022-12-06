@@ -112,9 +112,10 @@ if __name__ == "__main__":
         print(f"existingClusters {existingClusters}")
 
         existingClustersArr = []
-
-        for existingCluster in existingClusters['clusters']:
-            existingClustersArr.append(existingCluster['cluster_name'])
+        
+        if existingClusters:
+            for existingCluster in existingClusters['clusters']:
+                existingClustersArr.append(existingCluster['cluster_name'])
         
         print(existingClustersArr)
         
