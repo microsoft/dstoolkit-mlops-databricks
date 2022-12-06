@@ -75,7 +75,7 @@ environments:
         #  ]
   Production:
     workflows:
-      - name: "e2e-mlops-Production"
+      - name: "e2e-MLOps-Production"
         <<: *prod-cluster-config
         spark_python_task:
           python_file: "file://Data_Scientist/featureStoreTaxiMLOps.py"
