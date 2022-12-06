@@ -10,14 +10,9 @@ import pandas as pd
 from pyspark.sql.functions import *
 #from databricks import feature_store
 from pyspark.dbutils import DBUtils
-
-
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from datetime import date
-
-
-from pyspark.sql import SparkSession
 spark = SparkSession.builder.getOrCreate()
 print(spark.version)
 print('spark session created.')
@@ -27,13 +22,6 @@ print('spark session created.')
 #print(dbutils.fs.ls('dbfs:/FileStore/'))
 #print(dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret"))
 #dbutils.fs.mounts()
-
-
-#import subprocess
-#import sys
-##subprocess.check_call([sys.executable, "-m", "pip", "install", 'azure-storage-blob'])
-#subprocess.check_call([sys.executable, "-m", "pip", "install", 'azure-keyvault'])
-#subprocess.check_call([sys.executable, "-m", "pip", "install", 'azure-keyvault-secrets'])
 
 
 # IMPORTANT : https://learn.microsoft.com/en-us/python/api/overview/azure/identity-readme?view=azure-python#authenticate-via-visual-studio-code
