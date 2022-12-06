@@ -6,8 +6,8 @@ on:
         required: true
         type: string
       UPDATE_FOLDER:
-        required: false
-        type: string
+        required: true
+        type: boolean
     secrets:
       ARM_TENANT_ID:
         required: true
