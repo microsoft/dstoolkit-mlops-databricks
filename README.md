@@ -327,18 +327,13 @@ git push
  
 ## Deploy The Azure Environments 
 
-- In GitHub you can manually run the pipeline to deploy the environments to Azure using "1-Big-Bang-Databricks-CICD-Deployment.yml" found [here](.github/workflows/1-Big-Bang-Databricks-CICD-Deployment.yml). Use the instructions below to run the workflow.
+- In GitHub you can manually run the pipeline to deploy the environments to Azure using "onRelease.yml" found [here](.github/workflows/onRelease.yml). Use the instructions below to run the workflow.
 
-<img width="1172" alt="image" src="https://user-images.githubusercontent.com/108273509/186510528-29448e4d-1a0e-41b9-a37f-0cd89d226d57.png">
+<img width="893" alt="image" src="https://user-images.githubusercontent.com/108273509/205954210-c123c407-4c83-4952-ab4b-cd6c485efc2f.png">
 
- 
 - Azure Resources created (Production Environment snapshot)
   
 <img width="1175" alt="image" src="https://user-images.githubusercontent.com/108273509/194638664-fa6e1809-809e-45b2-9655-9312f32f24bb.png">
-
-- Snapshot of completed GitHub Action deployment 
-
-<img width="810" alt="image" src="https://user-images.githubusercontent.com/108273509/188155303-cfe07a79-0a9d-4a4d-a40a-dea6104b40f1.png">
 
 ---
 ---
@@ -350,27 +345,6 @@ git push
 ---
 ---
 
-## Continuous Integration and Deployment
-- Demo to follow 
-- Best Practice: Connect the Repo in your **own user folder** in Databricks REPO.
-- Admin will see two User Folders. The first is their own e.g. ciaranh@microsoft.com... and the other is the **Service Principal User Folder**, named after it's ClientID.
-- The cluster will run off the Service Principal Scripts (isolated and can only be updated when a Feature Branch is merged into Main)
-
-The process for CI/CD in Databricks is thus:
-1. Work in your User Folder 
-<img width="349" alt="image" src="https://user-images.githubusercontent.com/108273509/194616776-1445a003-f23d-4670-ae8a-d0af92b2d12d.png">
-
-2. Create a Feature Branch from Main. 
-3. Develop code in **your Feature Branch** 
-4. Push code regularly from Feature Branch
-5. When feature is complete, create a Pull Request from **Feature Branch to Main**
-6. If the Pull Request is approved, the files within the **Service Principal folder** will update. The Clusters in the Dev environment will now run off the updated code. 
-<img width="349" alt="image" src="https://user-images.githubusercontent.com/108273509/194617198-25eea06e-ee32-43b8-a502-6112c90bc918.png">
-
-7. If the Development Databricks Instance is stable and ready to be promoted to the Test Environment, create a Pull Request from **Main to Release**
-8. Changes will cascade into the UAT Databricks Instance
-9. If tests are successful, the Pull Request is **approved**, which will trigger a release pipeline to propagate changes to the PreProduction Environment
-10. The above will happen iteratively, until the PreProduction environment is stable enough for a new release version, at which we Tag the Release Branch with a version number, e.g "v-1.0.1". This will promote changes to the Production Environment. **Release Pipeline for Production Environment not yet complete** 
    
 # Section 2
 ---
