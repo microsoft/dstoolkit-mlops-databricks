@@ -1,15 +1,16 @@
 # Databricks notebook source
-
 # Databricks Flask Version quite low. Upgrade this. Put into a wheel file. 
 #%pip install --upgrade Flask
+
 # COMMAND ----------
 
 
-array2 = [1,2,3]
+array2 = [1,2,3,4,5]
 for item in array2:
     print(item)
 kblcd
-array3 = [12]
+array3 = [12] 
+
 # COMMAND ----------
 
 # MAGIC %md
@@ -34,11 +35,13 @@ array3 = [12]
 
 # COMMAND ----------
 
-# MAGIC %md ## Compute features
+# MAGIC %md
+# MAGIC ## Compute features
 
 # COMMAND ----------
 
-# MAGIC %md #### Load the raw data used to compute features
+# MAGIC %md
+# MAGIC #### Load the raw data used to compute features
 # MAGIC 
 # MAGIC Load the `nyc-taxi-tiny` dataset.  This was generated from the full [NYC Taxi Data](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page) which can be found at `dbfs:/databricks-datasets/nyctaxi` by applying the following transformations:
 # MAGIC 
@@ -49,7 +52,6 @@ array3 = [12]
 # MAGIC If you want to create this dataset from the raw data yourself, follow these steps:
 # MAGIC 1. Run the Feature Store taxi example dataset notebook ([AWS](https://docs.databricks.com/_static/notebooks/machine-learning/feature-store-taxi-example-dataset.html)|[Azure](https://docs.microsoft.com/azure/databricks/_static/notebooks/machine-learning/feature-store-taxi-example-dataset.html)|[GCP](https://docs.gcp.databricks.com/_static/notebooks/machine-learning/feature-store-taxi-example-dataset.html)) to generate the Delta table.
 # MAGIC 1. In this notebook, replace the following `spark.read.format("delta").load("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")` with: `spark.read.table("feature_store_taxi_example.nyc_yellow_taxi_with_zips")`
-
 
 # COMMAND ----------
 
@@ -82,6 +84,7 @@ if namespace.env is not None:
 else:
     print("Set The Parameters Manually, As We Are Deploying From UI")
     mlflow.set_experiment("/Shared/e2e_mlops/staging/dbx/e2e_mlops_staging") 
+
 # COMMAND ----------
 
 
@@ -95,7 +98,6 @@ display(raw_data)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
 # MAGIC From the taxi fares transactional data, we will compute two groups of features based on trip pickup and drop off zip codes.
 # MAGIC 
 # MAGIC #### Pickup features
@@ -110,7 +112,8 @@ display(raw_data)
 
 # COMMAND ----------
 
-# MAGIC %md ### Helper functions
+# MAGIC %md
+# MAGIC ### Helper functions
 
 # COMMAND ----------
 
@@ -141,7 +144,8 @@ def filter_df_by_ts(df, ts_column, start_date, end_date):
 
 # COMMAND ----------
 
-# MAGIC %md ### Data scientist's custom code to compute features
+# MAGIC %md
+# MAGIC ### Data scientist's custom code to compute features
 
 # COMMAND ----------
 
@@ -209,11 +213,13 @@ display(pickup_features)
 
 # COMMAND ----------
 
-# MAGIC %md ### Use Feature Store library to create new feature tables 
+# MAGIC %md
+# MAGIC ### Use Feature Store library to create new feature tables
 
 # COMMAND ----------
 
-# MAGIC %md First, create the database where the feature tables will be stored.
+# MAGIC %md
+# MAGIC First, create the database where the feature tables will be stored.
 
 # COMMAND ----------
 
@@ -222,7 +228,8 @@ display(pickup_features)
 
 # COMMAND ----------
 
-# MAGIC %md Next, create an instance of the Feature Store client.
+# MAGIC %md
+# MAGIC Next, create an instance of the Feature Store client.
 
 # COMMAND ----------
 
@@ -278,7 +285,8 @@ fs.create_table(
 
 # COMMAND ----------
 
-# MAGIC %md ## Update features
+# MAGIC %md
+# MAGIC ## Update features
 # MAGIC 
 # MAGIC Use the `write_table` function to update the feature table values.
 # MAGIC 
@@ -322,7 +330,8 @@ fs.write_table(
 
 # COMMAND ----------
 
-# MAGIC %md When writing, both `merge` and `overwrite` modes are supported.
+# MAGIC %md
+# MAGIC When writing, both `merge` and `overwrite` modes are supported.
 # MAGIC 
 # MAGIC     fs.write_table(
 # MAGIC       name="feature_store_taxi_example.trip_pickup_features",
@@ -342,7 +351,8 @@ fs.write_table(
 
 # COMMAND ----------
 
-# MAGIC %md Analysts can interact with Feature Store using SQL, for example:
+# MAGIC %md
+# MAGIC Analysts can interact with Feature Store using SQL, for example:
 
 # COMMAND ----------
 
@@ -355,7 +365,8 @@ fs.write_table(
 
 # COMMAND ----------
 
-# MAGIC %md ## Feature search and discovery
+# MAGIC %md
+# MAGIC ## Feature search and discovery
 
 # COMMAND ----------
 
@@ -366,13 +377,15 @@ fs.write_table(
 
 # COMMAND ----------
 
-# MAGIC %md ## Train a model
+# MAGIC %md
+# MAGIC ## Train a model
 # MAGIC 
 # MAGIC This section illustrates how to train a model using the pickup and dropoff features stored in Feature Store. It trains a LightGBM model to predict taxi fare.
 
 # COMMAND ----------
 
-# MAGIC %md ### Helper functions
+# MAGIC %md
+# MAGIC ### Helper functions
 
 # COMMAND ----------
 
@@ -427,7 +440,8 @@ def get_latest_model_version(model_name):
 
 # COMMAND ----------
 
-# MAGIC %md ### Read taxi data for training
+# MAGIC %md
+# MAGIC ### Read taxi data for training
 
 # COMMAND ----------
 
@@ -435,7 +449,8 @@ taxi_data = rounded_taxi_data(raw_data)
 
 # COMMAND ----------
 
-# MAGIC %md ### Understanding how a training dataset is created
+# MAGIC %md
+# MAGIC ### Understanding how a training dataset is created
 # MAGIC 
 # MAGIC In order to train a model, you need to create a training dataset that is used to train the model.  The training dataset is comprised of:
 # MAGIC 
@@ -482,7 +497,8 @@ dropoff_feature_lookups = [
 
 # COMMAND ----------
 
-# MAGIC %md ### Create a Training Dataset
+# MAGIC %md
+# MAGIC ### Create a Training Dataset
 # MAGIC 
 # MAGIC When `fs.create_training_set(..)` is invoked below, the following steps will happen:
 # MAGIC 
@@ -569,7 +585,8 @@ fs.log_model(
 
 # COMMAND ----------
 
-# MAGIC %md ### Build and log a custom PyFunc model
+# MAGIC %md
+# MAGIC ### Build and log a custom PyFunc model
 # MAGIC 
 # MAGIC To add preprocessing or post-processing code to the model and generate processed predictions with batch inference, you can build a custom PyFunc MLflow model that encapusulates these methods. The following cell shows an example that returns a string output based on the numeric prediction from the model.
 
@@ -611,11 +628,13 @@ with mlflow.start_run() as run:
 
 # COMMAND ----------
 
-# MAGIC %md ## Scoring: batch inference
+# MAGIC %md
+# MAGIC ## Scoring: batch inference
 
 # COMMAND ----------
 
-# MAGIC %md Suppose another data scientist now wants to apply this model to a different batch of data.
+# MAGIC %md
+# MAGIC Suppose another data scientist now wants to apply this model to a different batch of data.
 
 # COMMAND ----------
 
@@ -623,7 +642,8 @@ new_taxi_data = rounded_taxi_data(raw_data)
 
 # COMMAND ----------
 
-# MAGIC %md Display the data to use for inference, reordered to highlight the `fare_amount` column, which is the prediction target.
+# MAGIC %md
+# MAGIC Display the data to use for inference, reordered to highlight the `fare_amount` column, which is the prediction target.
 
 # COMMAND ----------
 
@@ -634,7 +654,7 @@ display(new_taxi_data_reordered)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Use the `score_batch` API to evaluate the model on the batch of data, retrieving needed features from FeatureStore. 
+# MAGIC Use the `score_batch` API to evaluate the model on the batch of data, retrieving needed features from FeatureStore.
 
 # COMMAND ----------
 
@@ -647,7 +667,8 @@ with_predictions = fs.score_batch(model_uri, new_taxi_data)
 
 # COMMAND ----------
 
-# MAGIC %md To score using the logged PyFunc model:
+# MAGIC %md
+# MAGIC To score using the logged PyFunc model:
 
 # COMMAND ----------
 
@@ -660,11 +681,13 @@ pyfunc_predictions = fs.score_batch(pyfunc_model_uri,
 
 # COMMAND ----------
 
-# MAGIC %md <img src="https://docs.databricks.com/_static/images/machine-learning/feature-store/taxi_example_score_batch.png"/>
+# MAGIC %md
+# MAGIC <img src="https://docs.databricks.com/_static/images/machine-learning/feature-store/taxi_example_score_batch.png"/>
 
 # COMMAND ----------
 
-# MAGIC %md ### View the taxi fare predictions
+# MAGIC %md
+# MAGIC ### View the taxi fare predictions
 # MAGIC 
 # MAGIC This code reorders the columns to show the taxi fare predictions in the first column.  Note that the `predicted_fare_amount` roughly lines up with the actual `fare_amount`, although more data and feature engineering would be required to improve the model accuracy.
 
@@ -694,7 +717,8 @@ display(with_predictions_reordered)
 
 # COMMAND ----------
 
-# MAGIC %md ### View the PyFunc predictions
+# MAGIC %md
+# MAGIC ### View the PyFunc predictions
 
 # COMMAND ----------
 
@@ -702,7 +726,8 @@ display(pyfunc_predictions.select('fare_amount', 'prediction'))
 
 # COMMAND ----------
 
-# MAGIC %md ## Next steps
+# MAGIC %md
+# MAGIC ## Next steps
 # MAGIC 
 # MAGIC 1. Explore the feature tables created in this example in the <a href="#feature-store">Feature Store UI</a>.
 # MAGIC 1. Adapt this notebook to your own data and create your own feature tables.
