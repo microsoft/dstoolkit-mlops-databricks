@@ -4,6 +4,14 @@
 #%pip install --upgrade Flask
 # COMMAND ----------
 
+
+array2 = [1,2,3]
+for item in array2:
+    print(item)
+kblcd
+array3 = [12]
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC # Feature Store taxi example notebook
 # MAGIC 
