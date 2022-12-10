@@ -1,14 +1,14 @@
 # Databricks notebook source
 # Databricks Flask Version quite low. Upgrade this. Put into a wheel file. 
-#%pip install --upgrade Flask
+#%pip install --upgrade Flask 
 
 # COMMAND ----------
 
 
-array2 = [1,2,3,4,5]
+array2 = [1,2,3,4,5, 6, 7,8 ]
 for item in array2:
     print(item)
-kblcd
+
 array3 = [12] 
 
 # COMMAND ----------
