@@ -1,11 +1,14 @@
 # Databricks notebook source
 
 # COMMAND ----------
+
+# Modules
+
 from pyspark.sql import *
 from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import IntegerType
-import math
-from datetime import timedelta
+from pyspark.sql.types import FloatType, IntegerType, StringType
+from pyspark.sql.functions import *
 import mlflow.pyfunc
 from databricks.feature_store import FeatureLookup
 import mlflow
@@ -15,13 +18,34 @@ from mlflow.tracking import MlflowClient
 import lightgbm as lgb
 import mlflow.lightgbm
 from mlflow.models.signature import infer_signature
+import yaml
+import pathlib
+import sys
+from argparse import ArgumentParser
 
+
+p = ArgumentParser()
+p.add_argument("--env", required=False, type=str)
+namespace = p.parse_known_args(sys.argv[1:])[0]
+display(namespace)
+
+# COMMAND ----------
+if namespace.env is not None:
+    display(namespace.env)
+    params = yaml.safe_load(pathlib.Path(namespace.env).read_text())
+    display(params)
+    experiment_name = params['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['EXPERIMENT_NAME']
+    display(experiment_name)
+    mlflow.set_experiment(experiment_name=experiment_name) 
+
+else:
+    display("Set The Parameters Manually, As We Are Deploying From UI")
+    mlflow.set_experiment("/Shared/dbxDevelopment") 
 
 
 # COMMAND ----------
 rounded_unix_timestamp_udf = udf(rounded_unix_timestamp, IntegerType())
-
-# COMMAND ----------
+raw_data = spark.read.format("delta").load("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
 taxi_data = rounded_taxi_data(raw_data)
 display(taxi_data)
 
@@ -51,7 +75,6 @@ mlflow.end_run()
 mlflow.start_run() 
 exclude_columns = ["rounded_pickup_datetime", "rounded_dropoff_datetime"]
 
-# COMMAND ----------
 fs = feature_store.FeatureStoreClient()
 training_set = fs.create_training_set(
   taxi_data,

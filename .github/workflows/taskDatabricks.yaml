@@ -207,14 +207,17 @@ jobs:
 
 
 ###################################################################################################################################################################//
-##                                                                      DBX Launch                                             
+##                                                                      DBX Deploy                                             
 ###################################################################################################################################################################//
       - shell: bash
-        name:  DBX Launch - Workflow Artifacts (CD)
+        name:  DBX Deploy - Workflow Artifacts (CD)
         run: |
           echo $DATABRICKS_TOKEN
           pip install dbx
-          dbx deploy --deployment-file conf/deployment.yaml --jobs=e2e-MLOps-$ENVIRONMENT --environment=$ENVIRONMENT
+          dbx configure --enable-inplace-jinja-support
+          dbx deploy --deployment-file conf/deployment.yaml --jobs=FEATURE_ENGINEERING --environment=$ENVIRONMENT --jinja-variables-file=conf/vars/vars.yaml
+          dbx deploy --deployment-file conf/deployment.yaml --jobs=MODEL_TRAINING --environment=$ENVIRONMENT --jinja-variables-file=conf/vars/vars.yaml
+          dbx deploy --deployment-file conf/deployment.yaml --jobs=MODEL_INFERENCE --environment=$ENVIRONMENT --jinja-variables-file=conf/vars/vars.yaml
 
 
 ###################################################################################################################################################################//

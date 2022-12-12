@@ -5,9 +5,6 @@
 # Packages Install
 
 import mlflow 
-import os
-import json
-import argparse
 import sys
 import yaml
 import pathlib
@@ -36,7 +33,8 @@ if namespace.env is not None:
     display(namespace.env)
     params = yaml.safe_load(pathlib.Path(namespace.env).read_text())
     display(params)
-    experiment_name = params['experiment_name']
+    experiment_name = params['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['EXPERIMENT_NAME']
+    display(experiment_name)
     mlflow.set_experiment(experiment_name=experiment_name) 
 
 else:

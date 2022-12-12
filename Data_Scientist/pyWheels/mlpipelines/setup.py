@@ -9,6 +9,8 @@ with open(path_requirements, "r") as fh:
 
 requirements = [rq for rq in requirements if (rq) and (rq.startswith('#') is False)]
 
+print(requirements)
+
 
 #with open("README.md", "r") as fh:
 #    long_description = fh.read()

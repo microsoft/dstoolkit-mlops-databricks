@@ -24,7 +24,7 @@
             "artifact_location": "dbfs:/Shared/e2e_mlops/prod/dbx/projects/e2e_mlops_dbx_prod"
         }
     },
-    "inplace_jinja_support": false,
+    "inplace_jinja_support": true,
     "failsafe_cluster_reuse_with_assets": false,
     "context_based_upload_for_execute": false
 }
