@@ -14,7 +14,7 @@ requirements = [rq for rq in requirements if (rq) and (rq.startswith('#') is Fal
 #    long_description = fh.read()
 
 setuptools.setup(
-    name="pyWheel-1",
+    name="helperfunctions",
     version="0.0.1",
     author="Ciaran HD",
     author_email="ciaranh@microsoft.com",
@@ -27,6 +27,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.8.8',
     install_requires=requirements
 )

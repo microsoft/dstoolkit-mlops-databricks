@@ -55,9 +55,7 @@ array3 = [12]
 
 # COMMAND ----------
 
-
 import mlflow 
-
 import os
 import argparse
 import json
