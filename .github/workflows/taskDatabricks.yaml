@@ -1,4 +1,4 @@
-name: taskDatabricks 
+name: Tasks Databricks
 on:
   workflow_call:
     inputs:
