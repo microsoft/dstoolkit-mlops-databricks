@@ -1,6 +1,6 @@
 
 
-name: onRelease
+name: onRelease Databricks
 on: 
   pull_request:
     branches:
