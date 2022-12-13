@@ -206,7 +206,7 @@ jobs:
 ###################################################################################################################################################################//
       - shell: bash
         name:  DBX Deploy - Workflow Artifacts (CD)
-        if: ${{ inputs.RELEASE_CD}} 
+        #if: ${{ inputs.RELEASE_CD}} 
         run: |
           echo $DATABRICKS_TOKEN
           pip install dbx
@@ -214,6 +214,8 @@ jobs:
           dbx deploy --deployment-file conf/deployment.yaml FEATURE_ENGINEERING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
           dbx deploy --deployment-file conf/deployment.yaml MODEL_TRAINING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
           dbx deploy --deployment-file conf/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+        env:
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 ###################################################################################################################################################################//
