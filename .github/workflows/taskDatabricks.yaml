@@ -17,6 +17,8 @@ on:
         required: true
       PAT_GITHUB:
         required: true
+      RELEASE_BRANCH:
+        required: false
 
 
 # Were we can define the inputs that our action will accept
@@ -222,8 +224,8 @@ jobs:
         run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
         env:
           UPDATE_FOLDER:        ${{ inputs.UPDATE_FOLDER}} 
-          PULL_BRANCH:          github.base_ref
-
+          PULL_BRANCH:          ${{ github.ref_name }}
+          RELEASE_BRANCH:       ${{ inputs.RELEASE_BRANCH}} 
 
 
 

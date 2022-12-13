@@ -7,6 +7,12 @@ REPOS_WITH_MANAGEMENT_PERMISSIONS=$(curl -X GET \
 
 echo "PULL_BRANCH: $PULL_BRANCH"
 
+if [ -z "$PULL_BRANCH" ];
+then
+    PULL_BRANCH=$RELEASE_BRANCH
+    "Use Release Branch: $PULL_BRANCH"
+fi
+
 echo "Display Repos In DBX With Manage Permissions...."
 echo $REPOS_WITH_MANAGEMENT_PERMISSIONS
 
@@ -19,6 +25,7 @@ echo "Git Pull on DBX Repo $UPDATE_FOLDER With $PULL_BRANCH Branch "
 
 JSON_STRING=$( jq -n -c --arg tb "$PULL_BRANCH" \
         '{branch: $tb}' )
+
 
 GIT_PULL_RESPONSE=$(curl -X PATCH \
 -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
