@@ -4,35 +4,37 @@ name: CI/CD Pipelines
 on: 
   pull_request:
     branches:
-      #- main
-      - dev
-      #- feature/**
-      #- release-**
+      - main
+      - feature/**
+      - release/**
+    tags:
+      - 'v**'
     types:
       - opened
       - closed
 
 jobs:
-  prOnMain_CI_Test:
+  pr_CI_Development:
 
     if:   github.event_name == 'pull_request' && github.event.action == 'opened' && github.base_ref == 'main'
     name:                       Checks
     runs-on:                    ubuntu-latest
     steps:
       - run: |
-          echo "Checks Test!!!"
+          echo "Insert Continuous Integration Tests"
       - run: |
           echo "${{ github.head_ref }}"
           echo "${{ github.base_ref }}"
 
 
 
-  prApprovedOnMain:
+  prApproved_CD_Development:
     if:   github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == 'main'
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
       ENVIRONMENT: Development
       UPDATE_FOLDER: DevelopmentFolder
+      RELEASE_CD: true
     secrets:
       ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -40,25 +42,26 @@ jobs:
       PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
 
 
-  prOnRelease_CI_Test:
+  pr_CI_UAT:
 
-    if:   github.event_name == 'pull_request' && github.event.action == 'opened' && github.head_ref == 'main'
+    if:   github.event_name == 'pull_request' && github.event.action == 'opened' && contains(github.head_ref, release)
     name:                       Checks
     runs-on:                    ubuntu-latest
     steps:
       - run: |
-          echo "Checks Test!!!"
+          echo "Insert Continuous Integration Tests"
       - run: |
           echo "${{ github.head_ref }}"
           echo "${{ github.base_ref }}"
 
 
-  prApprovedOnRelease:
-    if:   github.event_name == 'pull_request' && github.event.action == 'closed' && github.head_ref == 'main'
+  prApproved_CD_UAT:
+    if:   github.event_name == 'pull_request' && github.event.action == 'closed' && contains(github.head_ref, release)
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
       ENVIRONMENT: UAT
       UPDATE_FOLDER: UATFolder
+      RELEASE_CD: true
     secrets:
       ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -66,7 +69,26 @@ jobs:
       PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
     
 
-  
+# git tag -a v1.0.1 -m "my version 1.0.1"
+# git tag -l
+# git push origin v1.0.1
+# git tag -d v1.0.1
+# ( Create Security Rule That Only Allow Release Branch to be Tagged). 
+
+  prApproved_CD_Production:
+    if:   ${{ startsWith(github.ref, 'refs/tags/v') }}
+    uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
+    with:
+      ENVIRONMENT: Production
+      UPDATE_FOLDER: ProductionFolder
+      RELEASE_CD: true
+    secrets:
+      ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
+      ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
+      PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
+    
+
 
 
 

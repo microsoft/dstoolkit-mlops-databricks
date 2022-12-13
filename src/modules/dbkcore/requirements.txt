@@ -1,2 +1,0 @@
-opencensus-ext-azure>=1.0.2
-typeguard==2.7.1
