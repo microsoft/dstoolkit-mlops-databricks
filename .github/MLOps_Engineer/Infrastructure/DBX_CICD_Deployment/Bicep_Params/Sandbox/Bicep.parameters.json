@@ -41,7 +41,7 @@
       "value": "databricks-sandbox-rg"
     },
     "workspaceName" : {
-      "value": "dbxwsdev"
+      "value": "dbxwssandbox"
     },
     "pricingTier": {
       "value": "premium"
