@@ -4,7 +4,7 @@
  <br>
 
  # Azure DevOps Version Coming Soon
- # Section 1: DevOps Agent Deployment of CI/CD Databricks Environments
+ # GitHub Actions Deployment of CI/CD Databricks Environments.
 ---
  
  ## CI/CD Pathway Diagram
@@ -32,8 +32,6 @@
 - [Run Machine Learning Scripts](#Run-Machine-Learning-Scripts)
 
 
-## Section 2: Databricks Connect Local Development (Docker)
-- [Interact With Databricks From Local VS Code Using Databricks Connect + Docker Image](#Interact-With-Databricks-From-Local-VS-Code-Using-Databricks-Connect-And-Docker)
 ---
 ---
 
