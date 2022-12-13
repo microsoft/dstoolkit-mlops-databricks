@@ -85,10 +85,10 @@ jobs:
 ##                                                                      Deploy Azure Infrastructure in BICEP                                               
 ###################################################################################################################################################################//
 
-      - name:                     Deploy DBX CICD Azure Resources
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
-        env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+      #- name:                     Deploy DBX CICD Azure Resources
+      #  run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
+      #  env:
+      #    ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 
