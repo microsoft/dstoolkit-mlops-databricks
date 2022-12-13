@@ -1,6 +1,5 @@
 
-name:                           onDeploy Databricks
-
+name: onDeploy Databricks
 on:                             
   workflow_dispatch:
 jobs:
