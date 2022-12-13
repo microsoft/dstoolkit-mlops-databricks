@@ -1,4 +1,4 @@
-name: taskDatabricks 
+name: Tasks Databricks
 on:
   workflow_call:
     inputs:
@@ -7,7 +7,7 @@ on:
         type: string
       UPDATE_FOLDER:
         required: true
-        type: boolean
+        type: string
     secrets:
       ARM_TENANT_ID:
         required: true
@@ -167,14 +167,6 @@ jobs:
         run:                  python .github/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
 
 
-###################################################################################################################################################################//
-##                                                                      Create Jobs                                           
-###################################################################################################################################################################//
-# 13.   Create Databricks Jobs (Linked To Git Repo)
-      - name:                 Create Databricks Jobs
-        run:                  python .github/MLOps_Engineer/Utilities/Python/utilsCreateJob.py
-
-
 
 ###################################################################################################################################################################//
 ##                                                                      Create Repos                                           
@@ -207,14 +199,19 @@ jobs:
 
 
 ###################################################################################################################################################################//
-##                                                                      DBX Launch                                             
+##                                                                      DBX Deploy Jobs/ Workflows                                            
 ###################################################################################################################################################################//
       - shell: bash
-        name:  DBX Launch - Workflow Artifacts (CD)
+        name:  DBX Deploy - Workflow Artifacts (CD) 
         run: |
           echo $DATABRICKS_TOKEN
           pip install dbx
-          dbx deploy --deployment-file conf/deployment.yaml --jobs=e2e-MLOps-$ENVIRONMENT --environment=$ENVIRONMENT
+          dbx configure --enable-inplace-jinja-support
+          dbx deploy --deployment-file conf/deployment.yaml FEATURE_ENGINEERING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+          dbx deploy --deployment-file conf/deployment.yaml MODEL_TRAINING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+          dbx deploy --deployment-file conf/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+        env:
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 ###################################################################################################################################################################//
@@ -222,17 +219,41 @@ jobs:
 ###################################################################################################################################################################//
 # 15. Databricks CLI Config
       - name:                   Repo Pull
-        if:                     ${{ inputs.UPDATE_FOLDER}} 
         run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
         env:
-          UPDATE_FOLDER:        ${{ inputs.UPDATE_FOLDER}}   
+          UPDATE_FOLDER:        ${{ inputs.UPDATE_FOLDER}} 
+          PULL_BRANCH:          github.head_ref
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###################################################################################################################################################################//
+##                                                                      Create Jobs  
+## Deprecated: Use for reference purposes only                                          
+###################################################################################################################################################################//
+# 13.   Create Databricks Jobs (Linked To Git Repo)
+#      - name:                 Create Databricks Jobs
+#        run:                  python .github/MLOps_Engineer/Utilities/Python/utilsCreateJob.py
+
+###################################################################################################################################################################//
+##                                                                      Create Wheel Files & Upload
+## Deprecated: Use for reference purposes only                                          
+###################################################################################################################################################################//
 # 16. Databricks Wheel File Creation + DBFS/Cluster Upload
       #- name:                   Create Wheel Files & Upload To DBFS
       #  run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsWheelUpload.sh
-
-
-
-

@@ -1,0 +1,29 @@
+ML_PIPELINE_FILES:
+    FEATURE_ENGINEERING: 
+        FILE_PATH: 'file://Data_Scientist/featureEngineering.py'
+        #WHL_PATH: file://Data_Scientist/pyWheels/wheel1/dist/helperfunctions-0.0.1-py3-none-any.whl
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://conf/jobConfigs/jobConfigs.yaml'
+            EXPERIMENT_NAME: '/Shared/e2e_mlops/dbx/e2e_mlops'
+
+    MODEL_TRAINING:
+        FILE_PATH: file://Data_Scientist/modelTraining.py
+        #WHL_PATH: 'file://Data_Scientist/pyWheels/wheel1/dist/helperfunctions-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://conf/jobConfigs/jobConfigs.yaml'
+            EXPERIMENT_NAME: '/Shared/e2e_mlops/dbx/e2e_mlops'
+
+    MODEL_INFERENCE:
+        FILE_PATH: 'file://Data_Scientist/modelInference.py'
+        #WHL_PATH: 'file://Data_Scientist/pyWheels/wheel1/dist/helperfunctions-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://conf/jobConfigs/jobConfigs.yaml'
+            EXPERIMENT_NAME: '/Shared/e2e_mlops/dbx/e2e_mlops'
+
+
+
+
+
