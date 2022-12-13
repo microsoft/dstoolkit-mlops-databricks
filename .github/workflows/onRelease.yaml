@@ -1,6 +1,6 @@
 
 
-name: CI/CD Pipelines
+name: onRelease
 on: 
   pull_request:
     branches:
