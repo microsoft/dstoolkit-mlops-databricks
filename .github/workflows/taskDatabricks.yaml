@@ -222,7 +222,7 @@ jobs:
         run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
         env:
           UPDATE_FOLDER:        ${{ inputs.UPDATE_FOLDER}} 
-          PULL_BRANCH:          github.head_ref
+          PULL_BRANCH:          github.base_ref
 
 
 

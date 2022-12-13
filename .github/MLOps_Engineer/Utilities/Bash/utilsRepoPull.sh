@@ -5,7 +5,7 @@ REPOS_WITH_MANAGEMENT_PERMISSIONS=$(curl -X GET \
                 -H 'Content-Type: application/json' \
                 https://$DATABRICKS_INSTANCE/api/2.0/repos )
 
-
+echo "PULL_BRANCH: $PULL_BRANCH"
 
 echo "Display Repos In DBX With Manage Permissions...."
 echo $REPOS_WITH_MANAGEMENT_PERMISSIONS
@@ -15,9 +15,9 @@ REPO_ID=$( jq -r --arg UPDATE_FOLDER "$UPDATE_FOLDER" ' .repos[] | select( .path
 
 echo "Repo ID: $REPO_ID"
 
-echo "Git Pull on DBX Repo $UPDATE_FOLDER With $branchName Branch "
+echo "Git Pull on DBX Repo $UPDATE_FOLDER With $PULL_BRANCH Branch "
 
-JSON_STRING=$( jq -n -c --arg tb "$branchName" \
+JSON_STRING=$( jq -n -c --arg tb "$PULL_BRANCH" \
         '{branch: $tb}' )
 
 GIT_PULL_RESPONSE=$(curl -X PATCH \
