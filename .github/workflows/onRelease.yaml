@@ -43,7 +43,7 @@ jobs:
 
   pr_CI_UAT:
 
-    if:   github.event_name == 'pull_request' && github.event.action == 'opened' && contains(github.head_ref, release)
+    if:   github.event_name == 'pull_request' && github.event.action == 'opened' && contains(github.head_ref, 'release')
     name:                       Checks
     runs-on:                    ubuntu-latest
     steps:
@@ -55,7 +55,7 @@ jobs:
 
 
   prApproved_CD_UAT:
-    if:   github.event_name == 'pull_request' && github.event.action == 'closed' && contains(github.head_ref, release)
+    if:   github.event_name == 'pull_request' && github.event.action == 'closed' && contains(github.head_ref, 'release')
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
       ENVIRONMENT: UAT
