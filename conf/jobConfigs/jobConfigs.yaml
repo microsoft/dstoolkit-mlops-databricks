@@ -4,7 +4,7 @@ ML_PIPELINE_FILES:
         WHL_PATH: file://Data_Scientist/pyWheels/wheel1/dist/helperfunctions-0.0.1-py3-none-any.whl
         PARAMETERS:
             ENV:  '--env'
-            FILE: 'file:fuse://conf/vars/vars.yaml'
+            FILE: 'file:fuse://conf/jobConfigs/jobConfigs.yaml'
             EXPERIMENT_NAME: '/Shared/dbx/projects/dstoolkit-mlops-databricks'
 
     MODEL_TRAINING:
@@ -12,7 +12,7 @@ ML_PIPELINE_FILES:
         WHL_PATH: 'file://Data_Scientist/pyWheels/wheel1/dist/helperfunctions-0.0.1-py3-none-any.whl'
         PARAMETERS:
             ENV:  '--env'
-            FILE: 'file:fuse://conf/vars/vars.yaml'
+            FILE: 'file:fuse://conf/jobConfigs/jobConfigs.yaml'
             EXPERIMENT_NAME: '/Shared/dbx/projects/dstoolkit-mlops-databricks'
 
     MODEL_INFERENCE:
@@ -20,7 +20,7 @@ ML_PIPELINE_FILES:
         WHL_PATH: 'file://Data_Scientist/pyWheels/wheel1/dist/helperfunctions-0.0.1-py3-none-any.whl'
         PARAMETERS:
             ENV:  '--env'
-            FILE: 'file:fuse://conf/vars/vars.yaml'
+            FILE: 'file:fuse://conf/jobConfigs/jobConfigs.yaml'
             EXPERIMENT_NAME: '/Shared/dbx/projects/dstoolkit-mlops-databricks'
 
 
