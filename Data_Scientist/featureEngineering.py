@@ -1,8 +1,9 @@
 # Databricks notebook source
 
+
 # COMMAND ----------
 
-# Packages Install
+# Packages Install.
 
 import mlflow 
 import sys
@@ -52,6 +53,7 @@ display(raw_data)
 
 
 # COMMAND ----------
+
 @udf(returnType=IntegerType())
 def is_weekend(dt):
     tz = "America/New_York"
@@ -84,8 +86,9 @@ dropoff_features = dropoff_features_fn(
 display(pickup_features)
 
 # COMMAND ----------
-%sql 
-CREATE DATABASE IF NOT EXISTS feature_store_taxi_example2;
+
+# MAGIC %sql 
+# MAGIC CREATE DATABASE IF NOT EXISTS feature_store_taxi_example2;
 
 # COMMAND ----------
 
@@ -147,5 +150,3 @@ fs.write_table(
   df=dropoff_features_df,
   mode="merge",
 )
-
-# COMMAND ----------
