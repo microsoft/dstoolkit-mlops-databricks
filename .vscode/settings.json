@@ -2,7 +2,7 @@
     "databricks.connectionManager": "VSCode Settings",
     "databricks.lastActiveConnection": "Development",
     "jupyter.codeRegularExpression": "^(#\\s*COMMAND\\s*[-]*|#\\s*%%|#\\s*\\<codecell\\>|#\\s*In\\[\\d*?\\]|#\\s*In\\[ \\])",
-    "databricks.connection.default.apiRootUrl": "https://adb-6870666443999632.12.azuredatabricks.net",
+    "databricks.connection.default.apiRootUrl": "https://adb-7552166960492784.4.azuredatabricks.net",
     "databricks.connection.default.displayName": "Development",
     "databricks.connection.default.localSyncFolder": "C:\\DSToolkit\\dstoolkit-mlops-databricks\\dstoolkit-mlops-databricks\\dbxDevelopment",
     "databricks.connection.default.personalAccessTokenSecure": {
