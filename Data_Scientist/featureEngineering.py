@@ -87,8 +87,14 @@ display(pickup_features)
 
 # COMMAND ----------
 
-# MAGIC      %sql 
-# MAGIC      CREATE DATABASE IF NOT EXISTS feature_store_taxi_example2;
+
+spark.sql("CREATE DATABASE IF NOT EXISTS feature_store_taxi_example4;")
+
+
+# COMMAND ----------
+
+# MAGIC   %sql 
+# MAGIC   CREATE DATABASE IF NOT EXISTS feature_store_taxi_example2;
 
 # COMMAND ----------
 
