@@ -8,9 +8,6 @@ on:
       UPDATE_FOLDER:
         required: true
         type: string
-      RELEASE_CD:
-        required: false
-        type: boolean
     secrets:
       ARM_TENANT_ID:
         required: true
@@ -205,8 +202,7 @@ jobs:
 ##                                                                      DBX Deploy Jobs/ Workflows                                            
 ###################################################################################################################################################################//
       - shell: bash
-        name:  DBX Deploy - Workflow Artifacts (CD)
-        #if: ${{ inputs.RELEASE_CD}} 
+        name:  DBX Deploy - Workflow Artifacts (CD) 
         run: |
           echo $DATABRICKS_TOKEN
           pip install dbx
@@ -223,10 +219,11 @@ jobs:
 ###################################################################################################################################################################//
 # 15. Databricks CLI Config
       - name:                   Repo Pull
-        if:                     ${{ inputs.RELEASE_CD}} 
         run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
         env:
-          UPDATE_FOLDER:        ${{ inputs.UPDATE_FOLDER}}   
+          UPDATE_FOLDER:        ${{ inputs.UPDATE_FOLDER}} 
+          PULL_BRANCH:          github.head_ref
+
 
 
 

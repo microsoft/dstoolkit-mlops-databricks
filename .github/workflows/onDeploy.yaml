@@ -12,7 +12,6 @@ jobs:
     with:
       ENVIRONMENT: ${{ matrix.targetEnvironment }}
       UPDATE_FOLDER: false
-      #RELEASE_CD: false
     secrets:
       ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
