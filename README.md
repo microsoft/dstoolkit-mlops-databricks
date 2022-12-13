@@ -32,8 +32,6 @@
 - [Run Machine Learning Scripts](#Run-Machine-Learning-Scripts)
 
 
-## Section 2: Databricks Connect Local Development (Docker)
-- [Interact With Databricks From Local VS Code Using Databricks Connect + Docker Image](#Interact-With-Databricks-From-Local-VS-Code-Using-Databricks-Connect-And-Docker)
 ---
 ---
 
