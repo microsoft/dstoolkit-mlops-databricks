@@ -9,7 +9,7 @@ on:
         required: true
         type: string
       RELEASE_CD:
-        required: true
+        required: false
         type: boolean
     secrets:
       ARM_TENANT_ID:
