@@ -87,8 +87,8 @@ display(pickup_features)
 
 # COMMAND ----------
 
-# MAGIC %sql 
-# MAGIC CREATE DATABASE IF NOT EXISTS feature_store_taxi_example2;
+# MAGIC      %sql 
+# MAGIC      CREATE DATABASE IF NOT EXISTS feature_store_taxi_example2;
 
 # COMMAND ----------
 
