@@ -1,6 +1,6 @@
 {
-    "databricks.connectionManager": "VSCode Settings",
-    "databricks.lastActiveConnection": "Sandbox",
+    "databricks.connectionManager": "Azure",
+    "databricks.lastActiveConnection": "dbxwsprod-xu2e",
     "jupyter.codeRegularExpression": "^(#\\s*COMMAND\\s*[-]*|#\\s*%%|#\\s*\\<codecell\\>|#\\s*In\\[\\d*?\\]|#\\s*In\\[ \\])",
     "databricks.connection.default.apiRootUrl": "https://adb-7552166960492784.4.azuredatabricks.net/",
     "databricks.connection.default.displayName": "Sandbox",
