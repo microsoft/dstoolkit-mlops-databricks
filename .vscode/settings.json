@@ -1,17 +1,17 @@
 {
     "databricks.connectionManager": "VSCode Settings",
-    "databricks.lastActiveConnection": "Development",
+    "databricks.lastActiveConnection": "Sandbox",
     "jupyter.codeRegularExpression": "^(#\\s*COMMAND\\s*[-]*|#\\s*%%|#\\s*\\<codecell\\>|#\\s*In\\[\\d*?\\]|#\\s*In\\[ \\])",
-    "databricks.connection.default.apiRootUrl": "https://adb-7552166960492784.4.azuredatabricks.net",
-    "databricks.connection.default.displayName": "Development",
+    "databricks.connection.default.apiRootUrl": "https://adb-7552166960492784.4.azuredatabricks.net/",
+    "databricks.connection.default.displayName": "Sandbox",
     "databricks.connection.default.localSyncFolder": "C:\\DSToolkit\\dstoolkit-mlops-databricks\\dstoolkit-mlops-databricks\\dbxDevelopment",
     "databricks.connection.default.personalAccessTokenSecure": {
         "keyTarSettingName": "Development-API-Token"
     },
     "databricks.connections": [
         {
-            "apiRootUrl": "https://adb-6870666443999632.12.azuredatabricks.net",
-            "displayName": "Development Workspace",
+            "apiRootUrl": "https://adb-4257369231337599.19.azuredatabricks.net",
+            "displayName": "Development",
             "localSyncFolder": "C:\\DSToolkit\\dstoolkit-mlops-databricks\\dstoolkit-mlops-databricks\\experiments",
             "personalAccessTokenSecure": {
                 "keyTarSettingName": "My DEV workspace-API-Token"
@@ -19,6 +19,7 @@
         }
     ],
     "databricks.connection.default.exportFormats": {
+
 
 
         "Scala": ".scala",
