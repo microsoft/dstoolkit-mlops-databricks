@@ -5,8 +5,8 @@ on:
       ENVIRONMENT:
         required: true
         type: string
-      UPDATE_FOLDER:
-        required: true
+      RELEASE_BRANCH:
+        required: false
         type: string
     secrets:
       ARM_TENANT_ID:

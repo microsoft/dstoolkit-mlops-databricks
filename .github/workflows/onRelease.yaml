@@ -32,7 +32,6 @@ jobs:
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
       ENVIRONMENT: Development
-      UPDATE_FOLDER: DevelopmentFolder
     secrets:
       ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -59,7 +58,6 @@ jobs:
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
       ENVIRONMENT: UAT
-      UPDATE_FOLDER: UATFolder
     secrets:
       ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -79,13 +77,13 @@ jobs:
     uses: ciaran28/dstoolkit-mlops-databricks/.github/workflows/taskDatabricks.yaml@main
     with:
       ENVIRONMENT: Production
-      UPDATE_FOLDER: ProductionFolder
+      RELEASE_BRANCH: 'release/1'
     secrets:
       ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
       PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
-      RELEASE_BRANCH:         'release/1'
+      
     
 
 
