@@ -1,9 +1,9 @@
 {
-    "databricks.connectionManager": "Azure",
-    "databricks.lastActiveConnection": "dbxwsprod-xu2e",
+    "databricks.connectionManager": "VSCode Settings",
+    "databricks.lastActiveConnection": "Development",
     "jupyter.codeRegularExpression": "^(#\\s*COMMAND\\s*[-]*|#\\s*%%|#\\s*\\<codecell\\>|#\\s*In\\[\\d*?\\]|#\\s*In\\[ \\])",
-    "databricks.connection.default.apiRootUrl": "https://adb-7552166960492784.4.azuredatabricks.net/",
-    "databricks.connection.default.displayName": "Sandbox",
+    "databricks.connection.default.apiRootUrl": "https://adb-4257369231337599.19.azuredatabricks.net",
+    "databricks.connection.default.displayName": "Development",
     "databricks.connection.default.localSyncFolder": "C:\\DSToolkit\\dstoolkit-mlops-databricks\\dstoolkit-mlops-databricks\\dbxDevelopment",
     "databricks.connection.default.personalAccessTokenSecure": {
         "keyTarSettingName": "Development-API-Token"
@@ -28,6 +28,7 @@
         "R": ".r"
     },
     "databricks.connection.default.localSyncSubfolders": {
+    
 
 
 
