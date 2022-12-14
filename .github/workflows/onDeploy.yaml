@@ -1,22 +1,23 @@
 
-name: onDeploy Databricks
+name:                         onDeploy Databricks
 on:                             
   workflow_dispatch:
 jobs:
   ReuseableMatrixJobForDeployment:
-    name: Master Deployment
+    name:                     Master Deployment
     strategy:
       matrix:
-        targetEnvironment: [ Sandbox, Development, UAT, Production ]
-    uses: ./.github/workflows/taskDatabricks.yaml
+        targetEnvironment:    [ Sandbox, Development, UAT, Production ]
+    uses:                     ./.github/workflows/taskDatabricks.yaml
     with:
-      ENVIRONMENT: ${{ matrix.targetEnvironment }}
-      UPDATE_FOLDER: false
+      ENVIRONMENT:            ${{ matrix.targetEnvironment }}
+      RELEASE_BRANCH:         'release/1'
     secrets:
       ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
       PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
+      
   
 
 
