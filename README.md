@@ -37,7 +37,9 @@
 
 ## Youtube Demo 
 
-This previous Video was slightly out of date given recent major code changes. It will be updated and added back in due course. The written instructions have been updated, therefore please use this for now. 
+This video was is slightly out of date given recent major code changes. It will be updated and added back in due course. The written instructions have been updated, therefore please use this for now. 
+
+[![Youtube Demo](docs/images/YoutubeThumbNail.png)](https://www.youtube.com/embed/Q3DNOgIu6rk)
 
 ---
 
