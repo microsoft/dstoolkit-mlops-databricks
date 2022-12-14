@@ -42,7 +42,7 @@ jobs:
       
   pr_CI_UAT:
 
-    if:   github.event_name == 'pull_request' && github.event.action == 'opened' && contains(github.head_ref, 'release')
+    if:   github.event_name == 'pull_request' && github.event.action == 'opened' && contains(github.base_ref, 'release')
     name:                       Checks
     runs-on:                    ubuntu-latest
     steps:
