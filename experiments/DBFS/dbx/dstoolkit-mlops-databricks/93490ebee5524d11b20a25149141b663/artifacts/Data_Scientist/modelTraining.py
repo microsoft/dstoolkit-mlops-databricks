@@ -2,7 +2,7 @@
 
 # COMMAND ----------
 
-# Modules.
+# Modules
 
 from pyspark.sql import *
 from pyspark.sql.functions import current_timestamp
