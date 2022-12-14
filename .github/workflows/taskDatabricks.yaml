@@ -1,4 +1,4 @@
-name: Tasks Databricks
+name:                         Tasks Databricks
 on:
   workflow_call:
     inputs:
@@ -20,44 +20,35 @@ on:
       RELEASE_BRANCH:
         required: false
 
-
-# Were we can define the inputs that our action will accept
-
 jobs:
   build:
-    name: ${{ inputs.ENVIRONMENT }} Environment Deployment
-    runs-on: ubuntu-latest
-    environment:  ${{ inputs.ENVIRONMENT }}
-
-
+    name:                         ${{ inputs.ENVIRONMENT }} Environment Deployment
+    runs-on:                      ubuntu-latest
+    environment:                  ${{ inputs.ENVIRONMENT }}
     steps:      
       - name:                     Checkout
         uses:                     actions/checkout@v2
 
-
-###################################################################################################################################################################//
-##                                                                      Git File Changes Check                                               
-###################################################################################################################################################################//
+#################################/
+##  Git File Changes Check                                               
+##################################/
       - name:                     Check Infra Git Path Change
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsGitFileChanges.sh
         env:
-            PATH_FILTER:                      '.github/MLOps_Engineer/Infrastructure'
-            VAR_NAME:                          enableInfraDeploy
+            PATH_FILTER:         '.github/MLOps_Engineer/Infrastructure'
+            VAR_NAME:             enableInfraDeploy
 
-
-###################################################################################################################################################################//
-##                                                                      Set Python                                          
-###################################################################################################################################################################//
-
-# 9.  Set Up Python
+#################################/
+##  Set Python                                          
+#################################/
       - name:                     Setup Python
         uses:                     actions/setup-python@v4
         with:
-          python-version:         '3.8'
+          python-version:         3.8
     
-###################################################################################################################################################################//
-##                                                                      Dependencies/ Install                                              
-###################################################################################################################################################################//
+#################################/
+##  Dependencies/ Install                                              
+#################################/
       - shell: bash
         name:  Tests and Dependency Install
         run: |
@@ -67,10 +58,9 @@ jobs:
           python -m pip install requests
           pip3 install  azure-databricks-sdk-python
 
-
-###################################################################################################################################################################//
-##                                                                      Authenticate/Login To Azure                                               
-###################################################################################################################################################################//
+#################################/
+##  Authenticate/Login To Azure                                               
+#################################/
       - name:                     Service Principal Login
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsAzureLogin.sh
         env:
@@ -79,46 +69,36 @@ jobs:
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
 
+#################################/
+## Deploy Azure Infrastructure                                               
+#################################/
+      - name:                     Deploy DBX CICD Azure Resources
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
+        env:
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
-###################################################################################################################################################################//
-##                                                                      Deploy Azure Infrastructure in BICEP                                               
-###################################################################################################################################################################//
-
-      #- name:                     Deploy DBX CICD Azure Resources
-      #  run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
-      #  env:
-      #    ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
-
-
-
-###################################################################################################################################################################//
-##                                                                      Save Dynamically Generated Env Variable                                               
-###################################################################################################################################################################//
-
-# 6.  __Order Important__ Save env variable
+#################################/
+##  Save Dynamically Generated Env Variable                                               
+#################################/
       - name:                     Set Env Variables 
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsSetEnvVariables.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
-###################################################################################################################################################################//
-##                                                                      Create Databricks Custom Role                                              
-###################################################################################################################################################################//
-
-# 6.  __Order Important__ Save env variable
+#################################/
+##  Create Databricks Custom Role                                              
+#################################/
       - name:                     Create Databricks Custom Role 
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksCustomRole.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
-###################################################################################################################################################################//
-##                                                                      Generate AAD Tokens                                              
-###################################################################################################################################################################//
-
-# 6.  __Order Important__ Save env variable
+#################################/
+##  Generate AAD Tokens                                              
+#################################/
       - name:                     Generate AAD Tokens
         run:                      python .github/MLOps_Engineer/Utilities/Python/utilsCreateAuthenticationTokens.py
         env:
@@ -127,11 +107,9 @@ jobs:
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
 
-
-###################################################################################################################################################################//
-##                                                                      RBAC Assignments                                           
-###################################################################################################################################################################//
-# 6.  __Order Important__ Asign RBAC Permission
+#################################/
+##  RBAC Assignments                                           
+#################################/
       - name:                     Assign RBAC Permissions 
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRoleBasedAccess.sh
         env:
@@ -139,72 +117,62 @@ jobs:
 
 
 
-###################################################################################################################################################################//
-##                                                                      PAT Token                                           
-###################################################################################################################################################################//
-# 10.  PAT Token --> Key Vault
+#################################/
+##  PAT Token                                           
+#################################/
       - name:                     Create And Store PAT Token In Key Vault
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksToken.sh
 
-
-
-
-###################################################################################################################################################################//
-##                                                                      Secret Scopes                                           
-###################################################################################################################################################################//
-# 11.  Secret Scopes
-      - name:                 Save Databricks SP Credentials Within Secret Scopes
-        run:                  bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateSecretScopes.sh
+#################################/
+##  Secret Scopes                                           
+#################################/
+      - name:                     Save Databricks SP Credentials Within Secret Scopes
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateSecretScopes.sh
         env:
-          ARM_CLIENT_ID:      ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET:  ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID:      ${{ secrets.ARM_TENANT_ID }}
+          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
 
 
-###################################################################################################################################################################//
-##                                                                      Create Cluster                                           
-###################################################################################################################################################################//
-# 12. Databricks Clusters
-      - name:                 Create Databricks Clusters
-        run:                  python .github/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
+#################################/
+##  Create Cluster                                           
+#################################/
+      - name:                     Create Databricks Clusters
+        run:                      python .github/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
 
 
-
-###################################################################################################################################################################//
-##                                                                      Create Repos                                           
-###################################################################################################################################################################//
-# 14. 
-      - name:                 Create Databricks Repos
-        run:                  bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRepoFolder.sh
+#################################/
+##  Create Repos                                           
+#################################/
+      - name:                     Create Databricks Repos
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRepoFolder.sh
         env:
-          ARM_CLIENT_ID:      ${{ secrets.ARM_CLIENT_ID }} 
+          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
 
 
-
-###################################################################################################################################################################//
-##                                                                      Git Config                                           
-###################################################################################################################################################################//
+#################################/
+##  Git Config                                           
+#################################/
 # 13.   
-      - name:                 Git Config
-        run:                  python .github/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
+      - name:                     Git Config
+        run:                      python .github/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
         env:
-          PAT_GITHUB:         ${{ secrets.PAT_GITHUB }}
+          PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
 
 
-
-###################################################################################################################################################################//
-##                                                                      Configure CLI                                           
-###################################################################################################################################################################//
+#################################/
+##  Configure CLI                                           
+#################################/
 # 15. Databricks CLI Config
-      - name:                   Install + Configure Databricks CLI
-        run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsDatabricksCLIConfig.sh
+      - name:                     Install + Configure Databricks CLI
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsDatabricksCLIConfig.sh
 
 
-###################################################################################################################################################################//
-##                                                                      DBX Deploy Jobs/ Workflows                                            
-###################################################################################################################################################################//
-      - shell: bash
-        name:  DBX Deploy - Workflow Artifacts (CD) 
+#################################/
+##  DBX Deploy Jobs / Workflows                                            
+#################################/
+      - shell:                    bash
+        name:                     DBX Deploy - Workflow Artifacts (CD) 
         run: |
           echo $DATABRICKS_TOKEN
           pip install dbx
@@ -216,16 +184,16 @@ jobs:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
-###################################################################################################################################################################//
-##                                                                      Repo Pull                                           
-###################################################################################################################################################################//
+#################################/
+##  Repo Pull                                           
+#################################/
 # 15. Databricks CLI Config
-      - name:                   Repo Pull
-        run:                    bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
+      - name:                     Repo Pull
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
         env:
-          UPDATE_FOLDER:        ${{ inputs.UPDATE_FOLDER}} 
-          PULL_BRANCH:          ${{ github.ref_name }}
-          RELEASE_BRANCH:       ${{ inputs.RELEASE_BRANCH}} 
+          UPDATE_FOLDER:          ${{ inputs.UPDATE_FOLDER}} 
+          PULL_BRANCH:            ${{ github.ref_name }}
+          RELEASE_BRANCH:         ${{ inputs.RELEASE_BRANCH}} 
 
 
 
@@ -242,7 +210,7 @@ jobs:
 
 
 
-
+                                                      # DEPRECATED
 
 ###################################################################################################################################################################//
 ##                                                                      Create Jobs  
