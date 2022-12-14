@@ -4,7 +4,7 @@
  <br>
 
  # Azure DevOps Version Coming Soon
- # GitHub Actions Deployment of CI/CD Databricks Environments.
+ # GitHub Actions Deployment of CI/CD Databricks Environments. 
 ---
  
  ## CI/CD Pathway Diagram
