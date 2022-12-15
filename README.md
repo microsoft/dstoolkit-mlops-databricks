@@ -9,8 +9,11 @@
  
  ## CI/CD Pathway Diagram
 
-<img width="713" alt="image" src="https://user-images.githubusercontent.com/108273509/205769709-12757af5-4239-4815-b546-3718c5133e2a.png">
+![image](https://user-images.githubusercontent.com/108273509/207945308-14e4794e-e86b-4bee-aa21-088698983703.png)
 
+Features to be included in future releases:
+- Model testing & promotion 
+- Metrics & Monitoring 
 ---
 
 ## Section 1: DevOps Agent Deployment of CI/CD Databricks Environments
@@ -135,6 +138,10 @@ The branching strategy is easy to change via updating the "if conditions" within
 -   Pull Request from Main Branch to Release Branch: C.I. Test
 -   Pull Request approved from Main Branch to Release Branch: C.D. to User Acceptance Testing (UAT) Environment
 -   Tag Version and Push to Release Branch: C.D. to Production Environment 
+- Naming conventions for branches (to ensure the CD pipelines will deploy - onRelease.yaml for more details ):
+  - Feature Branches: "feature/<insertname>"
+  - Main Branch: "main"
+  - Release branch "release/<insertname>"
 
 ---
 ---
