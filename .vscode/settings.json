@@ -37,6 +37,6 @@
         "DBFS": "DBFS",
         "Jobs": "Jobs"
     },
-    "databricks.connection.default.personalAccessToken": "dapi3b320060338f56d8ca54355f51d83e22-3"
+    "databricks.connection.default.personalAccessToken": ""
 
 }
