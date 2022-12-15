@@ -37,9 +37,9 @@
 
 ## Youtube Demo 
 
-This video was is slightly out of date given recent major code changes. It will be updated and added back in due course. The written instructions have been updated, therefore please use this for now. 
+Version 2 of the Demo video now released below!
 
-[![Youtube Demo](docs/images/YoutubeThumbNail.png)](https://www.youtube.com/embed/Q3DNOgIu6rk)
+[![Youtube Demo](docs/images/YoutubeThumbNail.png)](https://youtu.be/g57N3GYXuDI)
 
 ---
 
