@@ -1,5 +1,5 @@
 # Environments
-.venv/
-myvenv/
-.vscode/
+.venv/*
+myvenv/*
+.vscode/*
 
