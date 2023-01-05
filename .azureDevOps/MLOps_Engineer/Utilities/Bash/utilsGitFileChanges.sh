@@ -20,7 +20,9 @@ done
 
 echo "$MATCH_COUNT match(es) for filter '$PATH_FILTER' found."
 if [[ $MATCH_COUNT -gt 0 ]]; then
-    echo "$VAR_NAME=true" >> $GITHUB_ENV
+    #echo "$VAR_NAME=true" >> $GITHUB_ENV
+    echo "##vso[task.setvariable variable="VAR_NAME";isOutput=true;]true"
 else
-    echo "$VAR_NAME=false" >> $GITHUB_ENV
+    #echo "$VAR_NAME=false" >> $GITHUB_ENV
+    echo "##vso[task.setvariable variable="VAR_NAME";isOutput=true;]false"
 fi
