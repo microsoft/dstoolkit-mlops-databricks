@@ -64,7 +64,6 @@ jobs:
       - name:                     Service Principal Login
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsAzureLogin.sh
         env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
@@ -116,7 +115,6 @@ jobs:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
-
 #################################/
 ##  PAT Token                                           
 #################################/
@@ -153,7 +151,7 @@ jobs:
 #################################/
 ##  Git Config                                           
 #################################/
-# 13.   
+  
       - name:                     Git Config
         run:                      python .github/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
         env:
@@ -163,7 +161,6 @@ jobs:
 #################################/
 ##  Configure CLI                                           
 #################################/
-# 15. Databricks CLI Config
       - name:                     Install + Configure Databricks CLI
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsDatabricksCLIConfig.sh
 

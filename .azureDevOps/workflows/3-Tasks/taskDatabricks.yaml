@@ -1,0 +1,289 @@
+
+parameters:
+  azureSubscription:                  String
+  SubscriptionId:                     String
+  Environment:                        String
+  Location:                           String
+  TemplateParamFilePath:              String
+  ServiceReleased:                    String
+  TemplateFilePath:                   String
+  MANAGEMENT_RESOURCE_ENDPOINT:       String
+  AZURE_DATABRICKS_APP_ID:            String
+  enableRepoPull:                     Boolean
+  branchName:                         String
+  releaseBranch:                      String
+  PAT_GITHUB:                         String
+  files:                              []
+
+
+steps:
+
+#################################/
+##  Git File Changes Check                                               
+##################################/
+- task:                               AzureCLI@2
+  displayName:                        Check Infra Git Path Change
+  name:                               "CheckInfraGitPathChange"
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath 
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsGitFileChanges.sh
+    failOnStandardError:              false
+  env:
+    PATH_FILTER:                      '2-Infrastructure_Layer/'
+    VAR_NAME:                         'enableInfraDeploy'
+
+
+#################################/
+##  Dependencies/ Install                                              
+#################################/
+- bash: |
+    az upgrade
+    sudo apt update && sudo apt install jq
+    pip3 install requests
+    pip3 install  azure-databricks-sdk-python
+
+
+#################################/
+##  Authenticate/Login To Azure                                               
+#################################/
+# 1) Create Service Principal 2) In ADO Create Service Connection "Manually", linking it to the SP you created
+# 3) I have named my "Service Connection", "DBX_ADO_DSTOOLKIT"
+- task:                               AzureCLI@2
+  displayName:                        Azure Login
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath 
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsAzureLogin.sh
+    failOnStandardError:              false
+  env:        
+    ARM_CLIENT_ID :                   $(ARM_CLIENT_ID)
+    ARM_TENANT_ID:                    $(ARM_TENANT_ID)
+    ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
+
+
+#################################/
+## Deploy Azure Infrastructure                                               
+#################################/
+- task:                               AzureCLI@2
+  displayName:                        Deploy DBX CICD Azure Resources
+  #condition:                          eq(variables['CheckInfraGitPathChange.enableInfraDeploy'], 'true')
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
+    failOnStandardError:              false
+  enabled:                            true
+  env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
+
+
+#################################/
+##  Save Dynamically Generated Env Variable                                               
+#################################/
+- task:                               AzureCLI@2
+  displayName:                        Set Env Variables  
+  name:                               "DynamicEnvVariables"
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath 
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsSetEnvVariables.sh
+    failOnStandardError:              false
+  env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
+
+
+#################################/
+##  Create Databricks Custom Role                                              
+#################################/
+- task:                               AzureCLI@2
+  displayName:                        Create Databricks Custom Role
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksCustomRole.sh
+    failOnStandardError:              false
+  enabled:                            true
+  env:
+    SubscriptionId:                   ${{ parameters.SubscriptionId }}
+
+
+#################################/
+##  Generate AAD Tokens                                              
+#################################/
+- task:                               PythonScript@0
+  displayName:                        Get AAD Auth Tokens
+  name:                               "auth_tokens"
+  inputs:
+    scriptSource:                     'filePath' 
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Python/utilsCreateAuthenticationTokens.py
+  env:
+    ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
+    ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
+    ARM_TENANT_ID:                    $(ARM_TENANT_ID)
+
+
+#################################/
+##  RBAC Assignments                                           
+#################################/
+- task:                               AzureCLI@2
+  displayName:                        RBAC Assignments
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateRoleBasedAccess.sh
+    failOnStandardError:              false
+  env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
+
+
+#################################/
+##  PAT Token                                           
+#################################/
+- task:                               AzureCLI@2
+  displayName:                        'Create PAT Token'
+  name:                               "create_pat_token"
+  inputs:
+    scriptType:                       bash
+    scriptSource:                     scriptPath
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksToken.sh
+    azureSubscription:                ${{ parameters.azureSubscription }}
+  enabled:                            true
+
+
+#################################/
+##  Secret Scopes                                           
+#################################/
+
+- task:                               AzureCLI@2
+  displayName:                        'Save Databricks SP Credentials Within Secret Scope'
+  name:                               "secret_scope"
+  inputs:
+    scriptType:                       bash
+    scriptSource:                     scriptPath
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateSecretScopes.sh
+    azureSubscription:                ${{ parameters.azureSubscription }}
+  enabled:                            true
+  env:
+    ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
+    ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
+    ARM_TENANT_ID:                    $(ARM_TENANT_ID)
+
+
+#################################/
+##  Create KV Secreats                                          
+#################################/
+
+- task:                               AzureCLI@2
+  displayName:                        'Key Vault Secrets'
+  name:                               "key_vault_secrets"
+  inputs:
+    scriptType:                       bash
+    scriptSource:                     scriptPath
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateKeyVaultSecrets.sh
+    azureSubscription:                ${{ parameters.azureSubscription }}
+  enabled:                            true
+  env:
+    AZ_KEYVAULT_NAME:                 $(DynamicEnvVariables.AZ_KEYVAULT_NAME)
+    ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
+    ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
+    ARM_TENANT_ID:                    $(ARM_TENANT_ID)
+
+
+#################################/
+##  Create Cluster                                           
+#################################/
+- task:                               PythonScript@0
+  displayName:                        'Create DBX Clusters'
+  name:                               "create_dbx_clusters"
+  inputs:
+    scriptSource:                     'filePath' 
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
+  enabled:                            true
+
+
+
+#################################/
+##  Create Repos                                           
+#################################/
+- task:                                AzureCLI@2
+  displayName:                        'Create Databricks Repo Folder'
+  name:                               "dbx_repo_folders_create"
+  inputs:
+    scriptType:                       bash
+    scriptSource:                     'filePath' 
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateRepoFolder.sh
+    azureSubscription:                ${{ parameters.azureSubscription }}
+  enabled:                            true
+  env:
+    ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
+
+
+#################################/
+##  Git Config                                           
+#################################/
+
+- task:                               PythonScript@0
+  displayName:                        'Git Config' 
+  name:                               "git_configure"
+  inputs:
+    scriptSource:                     'filePath' 
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
+  env:
+    PAT_GITHUB:                       $(PAT_GITHUB)
+
+
+#################################/
+##  Configure CLI                                           
+#################################/
+- task:                               AzureCLI@2
+  displayName:                        'Install + Configure Databricks CLI'
+  name:                               "databricks_cli_auth"
+  inputs:
+    scriptType:                       bash
+    scriptSource:                     scriptPath
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsDatabricksCLIConfig.sh
+    azureSubscription:                ${{ parameters.azureSubscription }}
+  enabled:                            true
+
+
+#################################/
+##  DBX Deploy Jobs / Workflows                                           
+#################################/
+- bash: |
+      echo $DATABRICKS_TOKEN
+      pip install dbx
+      dbx configure --enable-inplace-jinja-support
+      dbx deploy --deployment-file conf/deployment.yaml FEATURE_ENGINEERING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+      dbx deploy --deployment-file conf/deployment.yaml MODEL_TRAINING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+      dbx deploy --deployment-file conf/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+      dbx deploy --deployment-file conf/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+  env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
+
+
+#################################/
+##  Repo Pull                                           
+#################################/
+- task:                                AzureCLI@2
+  displayName:                        'Git Pull DBX Repo'
+  name:                               "git_pull_dbx_repo"
+  inputs:
+    scriptType:                       bash
+    scriptSource:                     'filePath' 
+    scriptPath:                       $(Build.SourcesDirectory)/MLOps_Engineer/1-DevOps_Pipeline_Layer/Utilities/Bash/utilsCreateRepoFolder.sh
+    azureSubscription:                ${{ parameters.azureSubscription }}
+  enabled:                            ${{ parameters.enableRepoPull }}
+  env:
+    DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
+    DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)
+    WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
+    PULL_BRANCH:                      ${{ parameters.branchName }}
+    RELEASE_BRANCH:                   ${{ parameters.releaseBranch}}

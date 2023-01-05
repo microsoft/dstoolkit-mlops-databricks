@@ -1,0 +1,9 @@
+{
+    "WheelFiles":  [
+        {
+            "setup_py_file_path":  "Data_Scientist/pyWheels/pyWheel-1/setup.py",
+            "wheel_cluster":  "ml_cluster",
+            "upload_to_cluster?":  true
+        }
+    ]
+}

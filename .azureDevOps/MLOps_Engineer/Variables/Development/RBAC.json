@@ -1,0 +1,23 @@
+{
+    "RBAC_Assignments":  [
+                             {
+                                 "roles":  [
+                                               "Key Vault Administrator"
+                                           ],
+                                 "roleBeneficiaryObjID":  "3fb6e2d3-7734-43fc-be9e-af8671acf605",
+                                 "Description":  "Your Object ID",
+                                 "principalType":  "User"
+                             },
+                             {
+                                 "roles":  [
+                                               "Contributor",
+                                               "DBX_Custom_Role_DSToolkit",
+                                               "Key Vault Administrator",
+                                               "Storage Blob Data Contributor"
+                                           ],
+                                 "roleBeneficiaryObjID":  "3f4dcef3-3e9c-4634-974f-3f25b94d582c",
+                                 "Description":  "Databricks SPN",
+                                 "principalType":  "ServicePrincipal"
+                             }
+                         ]
+}
