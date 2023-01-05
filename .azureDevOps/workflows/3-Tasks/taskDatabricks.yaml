@@ -3,17 +3,10 @@ parameters:
   azureSubscription:                  String
   SubscriptionId:                     String
   Environment:                        String
-  Location:                           String
-  TemplateParamFilePath:              String
   ServiceReleased:                    String
-  TemplateFilePath:                   String
-  MANAGEMENT_RESOURCE_ENDPOINT:       String
   AZURE_DATABRICKS_APP_ID:            String
   enableRepoPull:                     Boolean
   branchName:                         String
-  releaseBranch:                      String
-  PAT_GITHUB:                         String
-  files:                              []
 
 
 steps:

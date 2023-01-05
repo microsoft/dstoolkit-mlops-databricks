@@ -13,8 +13,8 @@ parameters:
 jobs:                  
   - deployment:                               ${{ parameters.Environment }}
     displayName:                              ${{ parameters.Environment }}
-    variables:
-      - template:                             ..\Variables\${{ parameters.Environment }}\core.yaml
+    #variables:
+    #  - template:                             ..\Variables\${{ parameters.Environment }}\core.yaml
     environment:                              ${{ parameters.Environment }}
     strategy:
       runOnce:
@@ -27,12 +27,6 @@ jobs:
 
           - template:                         ../3-Tasks/taskDatabricks.yaml
             parameters:
-              SubscriptionId:                 ${{ variables.SubscriptionId }}
-              Location:                       ${{ variables.Location }}
-              TemplateFilePath:               ${{ variables.TemplateFilePath }}     
-              TemplateParamFilePath:          ${{ variables.TemplateParamFilePath }}    
-              MANAGEMENT_RESOURCE_ENDPOINT:   ${{ variables.MANAGEMENT_RESOURCE_ENDPOINT }}
-              AZURE_DATABRICKS_APP_ID:        ${{ variables.AZURE_DATABRICKS_APP_ID }}
               azureSubscription:              ${{ parameters.azureSubscription }}
               Environment:                    ${{ parameters.Environment }}
               enableRepoPull:                 ${{ parameters.enableRepoPull }}
