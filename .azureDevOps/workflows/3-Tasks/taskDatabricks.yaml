@@ -24,7 +24,7 @@ steps:
     scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsGitFileChanges.sh
     failOnStandardError:              false
   env:
-    PATH_FILTER:                      '2-Infrastructure_Layer/'
+    PATH_FILTER:                      'Infrastructure/'
     VAR_NAME:                         'enableInfraDeploy'
 
 
