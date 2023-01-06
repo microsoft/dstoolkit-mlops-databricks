@@ -44,7 +44,7 @@ rounded_unix_timestamp_udf = udf(rounded_unix_timestamp, IntegerType())
 
 def rounded_taxi_data(taxi_data_df):
     # Round the taxi data timestamp to 15 and 30 minute intervals so we can join with the pickup and dropoff features
-    # respectively.
+    # respectively
     taxi_data_df = (
         taxi_data_df.withColumn(
             "rounded_pickup_datetime",

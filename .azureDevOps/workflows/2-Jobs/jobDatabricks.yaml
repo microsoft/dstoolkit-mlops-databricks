@@ -1,0 +1,34 @@
+###################################################################################################################################################################//
+##                                                                      JOBS                                
+###################################################################################################################################################################//
+
+parameters: 
+  Environment:                                String
+  azureSubscription:                          String
+  enableRepoPull:                             Boolean
+  branchName:                                 String
+  updateFolder:                               String
+
+
+jobs:                  
+  - deployment:                               ${{ parameters.Environment }}
+    displayName:                              ${{ parameters.Environment }}
+    #variables:
+    #  - template:                             ..\Variables\${{ parameters.Environment }}\core.yaml
+    environment:                              ${{ parameters.Environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout:                         self
+            fetchDepth:                       2
+            #ref:                              ${{ parameters.branchName }}
+            # Paramount for fetchDepth to 2 for Git File Changes Check
+
+          - template:                         ../3-Tasks/taskDatabricks.yaml
+            parameters:
+              azureSubscription:              ${{ parameters.azureSubscription }}
+              Environment:                    ${{ parameters.Environment }}
+              enableRepoPull:                 ${{ parameters.enableRepoPull }}
+              branchName:                     ${{ parameters.branchName }}
+              updateFolder:                   ${{ parameters.updateFolder }}

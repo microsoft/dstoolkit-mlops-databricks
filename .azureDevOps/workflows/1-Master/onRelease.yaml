@@ -1,0 +1,113 @@
+
+name:                                     Databricks Deployment
+
+trigger:
+  branches:
+    include:
+    - main
+    - dev
+    #- features/*
+    - releases/*
+  paths:
+    exclude:
+    - README.md
+
+#pr: none
+
+pool:
+  vmImage:                                'ubuntu-latest'
+
+
+#Secrets
+variables:
+- group: ADO-Secrets
+- name: isPR
+  value: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
+
+- name: isMain
+  value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+
+- name: isPRFeatureOnMain
+  value: $[eq(variables['System.PullRequest.SourceBranch'], 'features/*')]
+
+
+#resources:
+#  repositories:
+#  - repository: self
+#    ref: 'refs/heads/$(branchName)'
+
+
+# Undo Pull Requests == None. Create conditions which run tests on the given branch. Pull Request will check out the 
+# Source Branch... i.e if you Pull Request from feature to Main , then it will use the feature branch code. This is ideal.
+# Create a stage which runs tests on the feature branch code. If it comes back all green, then reviewer can appove the request. 
+# You could even have a deployment to a sandbox environment. Possibly overkill for Dev merges, but it might be good before promoting
+# at higher levels!
+
+
+
+# PROTECT THE MAIN BRANCH SO YOU CANT PUSH DIRECTLY TO IT 
+stages:
+  - stage:                                DevelopmentDeploy  
+    condition: and(eq(variables['Build.SourceBranchName'], 'dev'), eq(variables['Build.Reason'], 'IndividualCI'))                            
+    displayName:                          DevelopmentDeploy
+    jobs:
+      - template:                         ..\2-Jobs\jobDatabricks.yaml
+        parameters:
+          Environment:                    Development
+          azureSubscription:              DBX_ADO_DSTOOLKIT
+          enableRepoPull:                 true # should really be true when bash script is working
+          branchName:                     $(Build.SourceBranchName)
+          updateFolder:                   DevelopmentFolder    
+
+# This will deploy code on the source branch for the PR. If PR from Feature to Dev, then this will deploy Feature. 
+  - stage:                                pullRequestChecks
+    condition: and(startsWith(variables['system.pullRequest.sourceBranch'], 'features/'), eq(variables['system.pullRequest.targetBranch'], 'dev'))                      
+    displayName:                          pullRequestChecks
+    jobs:
+    - job:
+      steps:
+      - checkout: self
+      - bash: echo "Dummy Test - This is changed in Feature Branch - If you see this then SUCCESSUL"
+
+
+# TO DO - Test on PR From Dev To Release
+
+# Change To Main Branch --> Deploy To Test Environment
+  - stage:                                UATDeploy                                   
+    displayName:                          UATDeploy
+    condition: and(eq(variables['Build.SourceBranchName'], 'main'), eq(variables['Build.Reason'], 'IndividualCI'))  
+    jobs:
+      - template:                         ..\2-Jobs\jobDatabricks.yaml
+        parameters:
+          Environment:                    UAT
+          azureSubscription:              DBX_ADO_DSTOOLKIT
+          enableRepoPull:                 true # should really be true when bash script is working
+          branchName:                     $(Build.SourceBranchName)
+          updateFolder:                   DevelopmentFolder 
+
+  - stage:                                pullRequestChecks_dev_to_main
+    condition: and(eq(variables['system.pullRequest.sourceBranch'], 'dev'), eq(variables['system.pullRequest.targetBranch'], 'main'))                      
+    displayName:                          pullRequestChecks
+    jobs:
+    - job:
+      steps:
+      - checkout: self
+      - bash: echo "Dummy Test "
+
+
+# Tag Release Branch --> Deploy To Production Environment
+#  - stage:                                ProductionDeploy                                   
+#    displayName:                          ProductionDeploy
+#    condition: and(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), eq(variables['Build.Reason'], 'IndividualCI')) 
+#    jobs:
+#      - template:                         ..\2-Jobs\Job-Databricks.yaml
+#        parameters:
+#          Environment:                    Production
+#          azureSubscription:              DBX_ADO_DSTOOLKIT
+#          enableRepoPull:                 true
+#          branchName:                     $(Build.SourceBranchName)
+#          updateFolder:                   DevelopmentFolder 
+
+
+# Implement a condition to ignore a azure resource deployment if Infra folder is unchanged. 
+# https://pumpingco.de/blog/run-an-azure-pipelines-job-only-if-source-code-has-changed/
