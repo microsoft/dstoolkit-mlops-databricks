@@ -36,6 +36,7 @@ steps:
     sudo apt update && sudo apt install jq
     pip3 install requests
     pip3 install  azure-databricks-sdk-python
+  displayName:                        "Dependency Install"
 
 
 #################################/
@@ -289,8 +290,11 @@ steps:
       dbx deploy --deployment-file conf/deployment.yaml MODEL_TRAINING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
       dbx deploy --deployment-file conf/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
       dbx deploy --deployment-file conf/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+  displayName:                        "Launch Jobs - DBX by Databricks Lab"
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
+    DATABRICKS_HOST:                  $(DynamicEnvVariables.DATABRICKS_HOST)   
+    DATABRICKS_TOKEN:                 $(create_pat_token.DATABRICKS_TOKEN)
 
 
 #################################/
