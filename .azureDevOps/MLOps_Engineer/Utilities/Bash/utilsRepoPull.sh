@@ -8,7 +8,7 @@ REPOS_WITH_MANAGEMENT_PERMISSIONS=$(curl -X GET \
 
 
 echo "Ingest JSON File"
-JSON=$( jq '.' .github/MLOps_Engineer/Variables/$ENVIRONMENT/Repos.json)
+JSON=$( jq '.' .azureDevOps/MLOps_Engineer/Variables/$ENVIRONMENT/Repos.json)
 for row in $(echo "${JSON}" | jq -r '.Repo_Configuration[] | @base64'); do
     _jq() {
         echo ${row} | base64 --decode | jq -r ${1}

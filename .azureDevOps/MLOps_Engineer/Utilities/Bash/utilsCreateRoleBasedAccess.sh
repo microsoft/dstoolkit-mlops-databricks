@@ -6,7 +6,7 @@ echo "ENVIRONMENT: $ENVIRONMENT"
 RESOURCE_GROUP_ID=$( az group show -n $RESOURCE_GROUP_NAME --query id -o tsv )
 
 echo "Ingest JSON File"
-JSON=$( jq '.' .github/MLOps_Engineer/Variables/$ENVIRONMENT/RBAC.json)
+JSON=$( jq '.' .azureDevOps/MLOps_Engineer/Variables/$ENVIRONMENT/RBAC.json)
 #echo "${JSON}" | jq
 
 for row in $(echo "${JSON}" | jq -r '.RBAC_Assignments[] | @base64'); do
