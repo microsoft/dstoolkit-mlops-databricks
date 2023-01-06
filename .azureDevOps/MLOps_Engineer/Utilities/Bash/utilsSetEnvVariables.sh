@@ -40,7 +40,6 @@ echo "Set Workspace ID As Environment Variable..."
 echo "##vso[task.setvariable variable="WORKSPACE_ID";isOutput=true;]$WORKSPACE_ID"
 
 
-
 echo "Set Datbricks Instance As Environment Variable..."
 echo "##vso[task.setvariable variable="DATABRICKS_INSTANCE";isOutput=true;]$DATABRICKS_INSTANCE"
 

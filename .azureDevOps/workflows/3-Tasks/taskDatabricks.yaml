@@ -152,8 +152,8 @@ steps:
   enabled:                            true
   env:  
     AZ_KEYVAULT_NAME:                 $(DynamicEnvVariables.AZ_KEYVAULT_NAME)
-    DBRKS_BEARER_TOKEN:               $(DynamicEnvVariables.DBRKS_BEARER_TOKEN)
-    DBRKS_MANAGEMENT_TOKEN:           $(DynamicEnvVariables.DBRKS_MANAGEMENT_TOKEN)
+    DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
@@ -175,8 +175,8 @@ steps:
     ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
     ARM_TENANT_ID:                    $(ARM_TENANT_ID)
-    DBRKS_BEARER_TOKEN:               $(DynamicEnvVariables.DBRKS_BEARER_TOKEN)
-    DBRKS_MANAGEMENT_TOKEN:           $(DynamicEnvVariables.DBRKS_MANAGEMENT_TOKEN)
+    DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
@@ -213,8 +213,8 @@ steps:
   enabled:                            true
   env:    
     ENVIRONMENT:                      ${{ parameters.Environment }}
-    DBRKS_BEARER_TOKEN:               $(DynamicEnvVariables.DBRKS_BEARER_TOKEN)
-    DBRKS_MANAGEMENT_TOKEN:           $(DynamicEnvVariables.DBRKS_MANAGEMENT_TOKEN)
+    DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
@@ -235,8 +235,8 @@ steps:
   env:
     ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
     ENVIRONMENT:                      ${{ parameters.Environment }}
-    DBRKS_BEARER_TOKEN:               $(DynamicEnvVariables.DBRKS_BEARER_TOKEN)
-    DBRKS_MANAGEMENT_TOKEN:           $(DynamicEnvVariables.DBRKS_MANAGEMENT_TOKEN)
+    DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
@@ -254,8 +254,8 @@ steps:
   env:
     PAT_GITHUB:                       $(PAT_GITHUB)
     ENVIRONMENT:                      ${{ parameters.Environment }}
-    DBRKS_BEARER_TOKEN:               $(DynamicEnvVariables.DBRKS_BEARER_TOKEN)
-    DBRKS_MANAGEMENT_TOKEN:           $(DynamicEnvVariables.DBRKS_MANAGEMENT_TOKEN)
+    DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
