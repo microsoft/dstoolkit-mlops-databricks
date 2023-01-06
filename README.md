@@ -3,7 +3,8 @@
 ---
  <br>
 
- # Azure DevOps Version Now Live (See ".azureDevOps" Folder) - Set Up Instructions To Follow 
+ # Azure DevOps Version Now Live 
+ - (See ".azureDevOps" Folder) - Set Up Instructions To Follow 
  # GitHub Actions Deployment of CI/CD Databricks Environments. 
 ---
  
