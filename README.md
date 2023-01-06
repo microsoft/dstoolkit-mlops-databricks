@@ -28,7 +28,6 @@ Features to be included in future releases:
 - [Login to Azure](#Login-To-Azure)
 - [Provide SubscriptionID ](#Provide-SubscriptionID)
 - [Create Main Service Principal](#Create-Main-Service-Principal)
-- [Create Databricks Service Principal](#Create-Databricks-Service-Principal)
 - [Final Snapshot of Github Secrets](#Final-Snapshot-of-Github-Secrets)
 - [Retrieve Object ID's](#Retrieve-Object-IDs)
 - [Update Yaml Pipeline Parameters Files](#Update-Yaml-Pipeline-Parameters-Files)
@@ -74,7 +73,6 @@ The net effect is a disproportionate amount of the Data Scientist/Engineers time
 - Microsoft Azure Subscription
 - VS Code
 - Azure CLI Installed (This Accelerator is tested on version 2.39)
-- Docker Desktop Installed (not required for Section 1)
 
 </details>
 
@@ -84,19 +82,16 @@ The net effect is a disproportionate amount of the Data Scientist/Engineers time
 ## Details of The Solution Accelerator
 
 - Creation of four environments:
+  - Sandbox
   - Development 
   - User Acceptance Testing (UAT)
-  - Pre-Production
   - Production
 - Full CI/CD between environments
 - Infrastructure-as-Code for interacting with Databricks API and also CLI
 - Azure Service Principal Authentication
 - Azure resource deployment using BICEP
-- Examples given within Development Framework using the Python SDK for Databricks (Section 2)
 - Databricks Feature Store + MLFlow Tracking + Model Registry + Model Experiments
 - DBX by Data Labs for Continuous Deployment of Jobs/Workflows (source code/ parameters files packaged within DBFS)
-- Databricks Continuous Development from VS Code IDE using the [Databricks Connect](https://docs.microsoft.com/en-us/azure/databricks/dev-tools/databricks-connect#visual-studio-code) feature (Section 2)
-- Docker Environment in VS Code (Section 2)
 
 
 ---
