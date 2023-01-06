@@ -119,6 +119,7 @@ steps:
     ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
     ARM_TENANT_ID:                    $(ARM_TENANT_ID)
+    
 
 
 #################################/
@@ -134,6 +135,7 @@ steps:
     failOnStandardError:              false
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
+    RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME)    
 
 
 #################################/
@@ -148,6 +150,12 @@ steps:
     scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksToken.sh
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            true
+  env:  
+    AZ_KEYVAULT_NAME:                 $(DynamicEnvVariables.AZ_KEYVAULT_NAME)
+    DBRKS_BEARER_TOKEN:               $(DynamicEnvVariables.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(DynamicEnvVariables.DBRKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
 
 #################################/
@@ -167,10 +175,14 @@ steps:
     ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
     ARM_TENANT_ID:                    $(ARM_TENANT_ID)
+    DBRKS_BEARER_TOKEN:               $(DynamicEnvVariables.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(DynamicEnvVariables.DBRKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
 
 #################################/
-##  Create KV Secreats                                          
+##  Create KV Secrets                                          
 #################################/
 
 - task:                               AzureCLI@2
@@ -199,6 +211,12 @@ steps:
     scriptSource:                     'filePath' 
     scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
   enabled:                            true
+  env:    
+    ENVIRONMENT:                      ${{ parameters.Environment }}
+    DBRKS_BEARER_TOKEN:               $(DynamicEnvVariables.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(DynamicEnvVariables.DBRKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
 
 
@@ -216,6 +234,11 @@ steps:
   enabled:                            true
   env:
     ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
+    ENVIRONMENT:                      ${{ parameters.Environment }}
+    DBRKS_BEARER_TOKEN:               $(DynamicEnvVariables.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(DynamicEnvVariables.DBRKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
 
 #################################/
@@ -230,6 +253,12 @@ steps:
     scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
   env:
     PAT_GITHUB:                       $(PAT_GITHUB)
+    ENVIRONMENT:                      ${{ parameters.Environment }}
+    DBRKS_BEARER_TOKEN:               $(DynamicEnvVariables.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(DynamicEnvVariables.DBRKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
+
 
 
 #################################/
@@ -244,6 +273,8 @@ steps:
     scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsDatabricksCLIConfig.sh
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            true
+  env:  
+    RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME) 
 
 
 #################################/
@@ -270,7 +301,7 @@ steps:
   inputs:
     scriptType:                       bash
     scriptSource:                     'filePath' 
-    scriptPath:                       $(Build.SourcesDirectory)/MLOps_Engineer/1-DevOps_Pipeline_Layer/Utilities/Bash/utilsCreateRepoFolder.sh
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            ${{ parameters.enableRepoPull }}
   env:

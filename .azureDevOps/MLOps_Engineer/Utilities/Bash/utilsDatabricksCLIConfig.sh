@@ -27,7 +27,4 @@ databricks -h
 databricks fs ls
 
 
-echo "Set DATABRICKS_TOKEN As Environment Variable..."
-echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
-
 #databricks fs mkdirs dbfs:/tmp/new-dir
