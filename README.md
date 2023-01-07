@@ -257,13 +257,11 @@ if ($User_ObjID -eq "None" ) { $User_ObjID=( az ad sp show --id $AZ_ACCOUNT_ALIA
 ---
 ---
  
-## Update Yaml Pipeline Parameters Files
+## Update Yaml Pipeline Variables Files
 
 - The Parameters file can be thought of as a quasi ARM Template for Databricks
-- Parameters files can be found [here](.github/workflows/Pipeline_Param/)
 
-
-We will update the parameters files ( Development.json, UAT.json, PreProduction.json, Production.json). Enter script below into VS Code PowerShell Terminal to update files automatically.
+We will update the variables files contained within .github/MLOps_Engineer/Variables/ . Enter scripts below into VS Code PowerShell Terminal.
   
 ```ps
 echo "Enter Your Git Username... "
@@ -331,7 +329,7 @@ git push
  
 ## Deploy The Azure Environments 
 
-- In GitHub you can manually run the pipeline to deploy the environments to Azure using "onRelease.yml" found [here](.github/workflows/onRelease.yml). Use the instructions below to run the workflow.
+- In GitHub you can manually run the pipeline to deploy the environments to Azure using "onDeploy.yml" found [here](.github/workflows/onDeploy.yml). Use the instructions below to run the workflow.
 
 <img width="893" alt="image" src="https://user-images.githubusercontent.com/108273509/205954210-c123c407-4c83-4952-ab4b-cd6c485efc2f.png">
 
