@@ -6,7 +6,7 @@ echo $SUBSCRIPTION_ID
 
 if [ $Bool_Contains_DBX_Custom_Role_Exists == false ]; then
     echo "Is it..."
-    cd MLOps_Engineer/RBAC_Role_Definition
+    cd .github/MLOps_Engineer/RBAC_Role_Definition
     ls
 
     # Note the use of the single quotes around param_SubscriptionId below. This is necessary to esacape the initial single quote, thereby recognising param_SubscriptionID as a variable and not string literal

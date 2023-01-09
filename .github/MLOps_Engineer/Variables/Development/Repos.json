@@ -1,15 +1,15 @@
 {
-    "Git_Configuration":  [
-                              {
-                                  "git_username":  "ciaran28",
-                                  "git_provider":  "gitHub"
-                              }
-                          ],
-    "Repo_Configuration":  [
-                               {
-                                   "url":  "https://github.com/ciaran28/dstoolkit-mlops-databricks",
-                                   "provider":  "gitHub",
-                                   "path":  "DevelopmentFolder"
-                               }
-                           ]
+  "Git_Configuration": [
+    {
+      "git_username": "mucifous",
+      "git_provider": "gitHub"
+    }
+  ],
+  "Repo_Configuration": [
+    {
+      "url": "https://github.com/pasteurlabs/dstoolkit-mlops-databricks",
+      "provider": "gitHub",
+      "path": "DevelopmentFolder"
+    }
+  ]
 }
