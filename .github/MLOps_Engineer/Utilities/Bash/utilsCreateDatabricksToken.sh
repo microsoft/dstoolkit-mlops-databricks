@@ -1,5 +1,11 @@
 SECRET_NAME="dbkstoken"
 # Check if secret exists
+
+az upgrade 
+
+az account set --subscription $SUBSCRIPTION_ID
+
+
 SECRET_EXISTS=$(az keyvault secret list \
                 --vault-name $AZ_KEYVAULT_NAME \
                 --query "contains([].id, \
@@ -47,5 +53,7 @@ else
         --value $DATABRICKS_TOKEN
     
     echo "Databricks Token As Environment Variable..."
-    echo "##vso[task.setvariable variable="DATABRICKS_TOKEN";isOutput=true;]$DATABRICKS_TOKEN"
+
+    echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
+    #echo "##vso[task.setvariable variable="DATABRICKS_TOKEN";isOutput=true;]$DATABRICKS_TOKEN"
 fi

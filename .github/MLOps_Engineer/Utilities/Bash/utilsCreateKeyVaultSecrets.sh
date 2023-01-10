@@ -5,6 +5,8 @@
 SECRET_VALUE=$ARM_CLIENT_ID
 SECRET_NAME="ARMCLIENTID"
 
+
+
 SECRET_EXISTS=$(az keyvault secret list \
                 --vault-name $AZ_KEYVAULT_NAME \
                 --query "contains([].id, \

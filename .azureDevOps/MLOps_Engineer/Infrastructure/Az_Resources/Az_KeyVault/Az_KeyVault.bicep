@@ -11,7 +11,7 @@ resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
       family: 'A'
       name: 'premium'
     }
-    tenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47' 
+    tenantId: subscription().tenantId
     networkAcls: {
       defaultAction: 'Allow'
       bypass: 'AzureServices'
@@ -33,7 +33,7 @@ resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
             'get'
           ]
           }
-          tenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47' 
+          tenantId: subscription().tenantId
           objectId: 'ab926dd1-657d-4bb2-9987-c7857046d0dd'
         }
         
@@ -46,7 +46,7 @@ resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
             'get'
           ]
         }
-        tenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47' 
+        tenantId: subscription().tenantId
         objectId: '47527038-bf92-4422-8632-961c5851c21b'
       }
     ]
