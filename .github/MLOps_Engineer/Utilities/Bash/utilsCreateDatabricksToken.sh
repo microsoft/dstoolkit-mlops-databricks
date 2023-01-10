@@ -1,5 +1,10 @@
 SECRET_NAME="dbkstoken"
 # Check if secret exists
+
+
+az account set --subscription $SUBSCRIPTION_ID
+
+
 SECRET_EXISTS=$(az keyvault secret list \
                 --vault-name $AZ_KEYVAULT_NAME \
                 --query "contains([].id, \
