@@ -1,6 +1,7 @@
 SECRET_NAME="dbkstoken"
 # Check if secret exists
 
+az upgrade 
 
 az account set --subscription $SUBSCRIPTION_ID
 
