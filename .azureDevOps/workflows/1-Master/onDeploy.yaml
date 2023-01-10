@@ -35,7 +35,7 @@ stages:
   
   - stage:                                DevelopmentDeploy                                   
     displayName:                          DevelopmentDeploy
-    dependsOn: [] 
+    dependsOn: [SandboxDeploy] 
     jobs:
       - template:                         ..\2-Jobs\jobDatabricks.yaml
         parameters:
@@ -45,14 +45,14 @@ stages:
           branchName:                     main
           updateFolder:                   None
 
-  - stage:                                UATDeploy                                   
-    displayName:                          UATDeploy
-    dependsOn: [] 
-    jobs:
-      - template:                         ..\2-Jobs\jobDatabricks.yaml
-        parameters:
-          Environment:                    UAT
-          azureSubscription:              DBX_ADO_DSTOOLKIT
-          enableRepoPull:                 false
-          branchName:                     main
-          releaseBranch:                  'release/1'
+  #- stage:                                UATDeploy                                   
+  #  displayName:                          UATDeploy
+  #  dependsOn: [] 
+  #  jobs:
+  #    - template:                         ..\2-Jobs\jobDatabricks.yaml
+  #      parameters:
+  #        Environment:                    UAT
+  #        azureSubscription:              DBX_ADO_DSTOOLKIT
+  #        enableRepoPull:                 false
+  #        branchName:                     main
+  #        releaseBranch:                  'release/1'
