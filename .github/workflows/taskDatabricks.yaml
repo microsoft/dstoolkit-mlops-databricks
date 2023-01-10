@@ -89,10 +89,10 @@ jobs:
 #################################/
 ##  Create Databricks Custom Role                                              
 #################################/
-      - name:                     Create Databricks Custom Role 
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksCustomRole.sh
-        env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+      #- name:                     Create Databricks Custom Role 
+      #  run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksCustomRole.sh
+      #  env:
+      #    ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 #################################/
