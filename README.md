@@ -147,6 +147,9 @@ In most situations, Databricks recommends that during the ML development process
 
 https://learn.microsoft.com/en-us/azure/databricks/machine-learning/mlops/deployment-patterns
 
+<img width="427" alt="image" src="https://user-images.githubusercontent.com/108273509/211937862-2aaf118f-85c1-4d98-af75-56628837ffa4.png">
+
+
 ---
 ---
 
