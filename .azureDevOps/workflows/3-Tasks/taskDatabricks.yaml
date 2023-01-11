@@ -133,7 +133,7 @@ steps:
     scriptLocation:                   scriptPath
     azureSubscription:                ${{ parameters.azureSubscription }}
     scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateRoleBasedAccess.sh
-    failOnStandardError:              false
+    failOnStandardError:              true
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
     RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME)    
