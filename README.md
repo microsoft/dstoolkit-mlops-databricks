@@ -261,7 +261,6 @@ if ($main_sp_name_obj_id -eq "None" ) { $main_sp_name_obj_id=( az ad sp show --i
 2. Retrieve your own ObectID:  
 ```ps
  
-$AZ_ACCOUNT_ALIAS=( az account show --query user.name -o tsv )
 $User_ObjID=( az ad signed-in-user show --query "{roleBeneficiaryObjID:id}" -o tsv )
  
 echo "Back Stop Command For Older Azure CLI Command"
