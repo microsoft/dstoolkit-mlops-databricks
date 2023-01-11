@@ -141,6 +141,14 @@ The branching strategy is easy to change via updating the "if conditions" within
 
 ---
 ---
+## MLOps Paradigm: Deploy Code, not Models
+
+In most situations, Databricks recommends that during the ML development process, you promote code, rather than models, from one environment to the next. Moving project assets this way ensures that all code in the ML development process goes through the same code review and integration testing processes. It also ensures that the production version of the model is trained on production code. For a more detailed discussion of the options and trade-offs, see Model deployment patterns.
+
+https://learn.microsoft.com/en-us/azure/databricks/machine-learning/mlops/deployment-patterns
+
+---
+---
 
 ## Create Repository
 <details open>
