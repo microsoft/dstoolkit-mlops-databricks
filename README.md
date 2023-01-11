@@ -141,6 +141,17 @@ The branching strategy is easy to change via updating the "if conditions" within
 
 ---
 ---
+## MLOps Paradigm: Deploy Code, not Models
+
+In most situations, Databricks recommends that during the ML development process, you promote code, rather than models, from one environment to the next. Moving project assets this way ensures that all code in the ML development process goes through the same code review and integration testing processes. It also ensures that the production version of the model is trained on production code. For a more detailed discussion of the options and trade-offs, see Model deployment patterns.
+
+https://learn.microsoft.com/en-us/azure/databricks/machine-learning/mlops/deployment-patterns
+
+<img width="427" alt="image" src="https://user-images.githubusercontent.com/108273509/211937862-2aaf118f-85c1-4d98-af75-56628837ffa4.png">
+
+
+---
+---
 
 ## Create Repository
 <details open>
@@ -160,6 +171,10 @@ The branching strategy is easy to change via updating the "if conditions" within
 
  ```ps
 az login
+
+# If There Are Multiple Tenants In Your Subscription, Ensure You Specify The Correct Tenant "az login --tenant"
+
+# ** Microsoft Employees Use: az login --tenant fdpo.onmicrosoft.com (New Non Prod Tenant )
 
 ```
 
@@ -246,12 +261,11 @@ if ($main_sp_name_obj_id -eq "None" ) { $main_sp_name_obj_id=( az ad sp show --i
 2. Retrieve your own ObectID:  
 ```ps
  
-$AZ_ACCOUNT_ALIAS=( az account show --query user.name -o tsv )
-$User_ObjID=( az ad user show --id $AZ_ACCOUNT_ALIAS --query "{roleBeneficiaryObjID:id}" -o tsv )
+$User_ObjID=( az ad signed-in-user show --query "{roleBeneficiaryObjID:id}" -o tsv )
  
 echo "Back Stop Command For Older Azure CLI Command"
  
-if ($User_ObjID -eq "None" ) { $User_ObjID=( az ad sp show --id $AZ_ACCOUNT_ALIAS --query "{roleBeneficiaryObjID:objectId}" -o tsv ) }
+if ($User_ObjID -eq "None" ) { $User_ObjID=( az ad signed-in-user show --query "{roleBeneficiaryObjID: objectId}" -o tsv ) }
  
 ```
 ---
