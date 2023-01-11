@@ -19,7 +19,7 @@ pool:
 
 #Secrets
 variables:
-- group:                                    ADO-Secrets
+- group:                                    'ADO-Secrets'
 
 stages:
   
