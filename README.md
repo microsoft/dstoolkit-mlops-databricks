@@ -161,6 +161,10 @@ The branching strategy is easy to change via updating the "if conditions" within
  ```ps
 az login
 
+# If There Are Multiple Tenants In Your Subscription, Ensure You Specify The Correct Tenant "az login --tenant"
+
+# ** Microsoft Employees Use: az login --tenant fdpo.onmicrosoft.com (New Non Prod Tenant )
+
 ```
 
 
