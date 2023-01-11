@@ -24,7 +24,7 @@ if [ $SECRET_EXISTS == true ]; then
     echo "Secret Value: $DATABRICKS_TOKEN"
     
     echo "Databricks Token As Environment Variable..."
-    echo "##vso[task.setvariable variable="DATABRICKS_TOKEN";isOutput=true;]$DATABRICKS_TOKEN"
+    #echo "##vso[task.setvariable variable="DATABRICKS_TOKEN";isOutput=true;]$DATABRICKS_TOKEN"
 
 else
     echo "Secret '$SECRET_NAME' Do Not exist! Creating PAT Token & Store In Key Vault..."
