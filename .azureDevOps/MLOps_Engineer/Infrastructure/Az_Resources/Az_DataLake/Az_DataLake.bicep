@@ -41,7 +41,7 @@ resource azStorage 'Microsoft.Storage/storageAccounts@2021-08-01' =  {
       resource containersCreate 'containers' = [for ContainerName in containerNames: if (ShouldCreateContainers) {
         name: ContainerName
         properties: {
-          publicAccess: 'Blob'
+          publicAccess: 'None'
         }
       }]
     }
