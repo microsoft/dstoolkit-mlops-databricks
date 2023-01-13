@@ -7,7 +7,7 @@
                           ],
     "Repo_Configuration":  [
                                {
-                                   "url":  "https://github.com/ciaran28/dstoolkit-mlops-databricks",
+                                   "url":  null,
                                    "provider":  "gitHub",
                                    "path":  "Sandbox"
                                }
