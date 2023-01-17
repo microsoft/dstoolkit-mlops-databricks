@@ -5,7 +5,7 @@
 
  # Azure DevOps Version Now Live 
  - (See ".azureDevOps" Folder) - Set Up Instructions To Follow 
- # GitHub Actions Deployment of CI/CD Databricks Environments. 
+ # MLOps for Databricks with CI/CD (GitHub Actions)
 ---
  
  ## MLOps Architecture
@@ -17,7 +17,7 @@ Features to be included in future releases:
 - Metrics & Monitoring 
 ---
 
-## Section 1: DevOps Agent Deployment of CI/CD Databricks Environments
+## Sections:
 - [Youtube Demo](#Youtube-Demo)
 - [About This Repository](#About-This-Repository)
 - [Prerequisites](#Prerequisites)
