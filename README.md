@@ -4,7 +4,7 @@
  <br>
 
  # Azure DevOps Version Now Live 
- - (See ".azureDevOps" Folder) - Set Up Instructions To Follow 
+ - See ".azureDevOps" Folder - **Set Up Instructions To Follow** 
  # MLOps for Databricks with CI/CD (GitHub Actions)
 ---
  
