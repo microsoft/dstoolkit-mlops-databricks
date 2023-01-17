@@ -8,7 +8,7 @@
  # GitHub Actions Deployment of CI/CD Databricks Environments. 
 ---
  
- ## CI/CD Pathway Diagram
+ ## MLOps Architecture
 
 ![image](https://user-images.githubusercontent.com/108273509/207945308-14e4794e-e86b-4bee-aa21-088698983703.png)
 
