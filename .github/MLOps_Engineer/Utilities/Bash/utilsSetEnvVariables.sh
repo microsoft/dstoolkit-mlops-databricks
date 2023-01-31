@@ -15,7 +15,7 @@ DATABRICKS_ORDGID=$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query
 DATABRICKS_INSTANCE="$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].workspaceUrl" -o tsv)"
 WORKSPACE_ID=$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].id" -o tsv)
 AZ_KEYVAULT_NAME=$(az keyvault list -g $RESOURCE_GROUP_NAME --query "[].name" -o tsv)
-SUBSCRIPTION_ID=$( az account show --query id  )
+SUBSCRIPTION_ID=$( az account show --query id -o tsv )
 echo $SUBSCRIPTION_ID
 echo $DATABRICKS_ORDGID
 echo $WORKSPACE_ID
