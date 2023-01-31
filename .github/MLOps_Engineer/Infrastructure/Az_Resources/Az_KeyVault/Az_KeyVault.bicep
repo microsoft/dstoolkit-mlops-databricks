@@ -1,12 +1,13 @@
 
 param environment string
+param location string
 var keyVaultName = 'keyvault-${environment}-${substring(uniqueString(resourceGroup().id), 0, 4)}'
 
 
 
 resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
   name: keyVaultName
-  location: environment
+  location: location
   properties: {
     sku: {
       family: 'A'

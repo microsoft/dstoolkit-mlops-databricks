@@ -56,6 +56,7 @@ module azKeyVault '../Az_Resources/Az_KeyVault/Az_KeyVault.bicep' = {
   name: 'azKeyVault'
   params: {
     environment: environment 
+    location: location
   }
 }
 
