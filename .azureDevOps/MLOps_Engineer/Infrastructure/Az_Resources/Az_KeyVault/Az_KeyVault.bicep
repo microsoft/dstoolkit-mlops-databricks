@@ -5,7 +5,7 @@ var keyVaultName = 'keyvault-${environment}-${substring(uniqueString(resourceGro
 
 resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
   name: keyVaultName
-  location: 'uksouth'
+  location: environment
   properties: {
     sku: {
       family: 'A'
