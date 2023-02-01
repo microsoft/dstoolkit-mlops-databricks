@@ -152,6 +152,22 @@ https://learn.microsoft.com/en-us/azure/databricks/machine-learning/mlops/deploy
 
 ---
 ---
+## Feature Store Integration 
+
+In an organization, thousands of features are buried in different scripts and in different formats; they are not captured, organized, or preserved, and thus cannot be reused and leveraged by teams other than those who generated them.
+
+Because feature engineering is so important for machine learning models and features cannot be shared, data scientists must duplicate their feature engineering efforts across teams.
+
+To solve those problems, a concept called feature store was developed, so that:
+
+- Features are centralized in an organization and can be reused
+- Features can be served in real-time with low latency
+
+![image](https://user-images.githubusercontent.com/108273509/216114586-0c4dea68-a98c-4cf6-938a-ceecf11b12a8.png)
+
+---
+---
+
 
 ## Create Repository
 <details open>

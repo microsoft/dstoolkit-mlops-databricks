@@ -16,6 +16,11 @@ DATABRICKS_INSTANCE="$(az databricks workspace list -g $RESOURCE_GROUP_NAME --qu
 WORKSPACE_ID=$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].id" -o tsv)
 AZ_KEYVAULT_NAME=$(az keyvault list -g $RESOURCE_GROUP_NAME --query "[].name" -o tsv)
 SUBSCRIPTION_ID=$( az account show --query id -o tsv )
+echo $SUBSCRIPTION_ID
+echo $DATABRICKS_ORDGID
+echo $WORKSPACE_ID
+echo $AZ_KEYVAULT_NAME
+echo $SUBSCRIPTION_ID
 #DATABRICKS_TOKEN=$(az keyvault secret show --name "dbkstoken" --vault-name $AZ_KEYVAULT_NAME --query "value" -o tsv)
 
 
