@@ -163,6 +163,8 @@ To solve those problems, a concept called feature store was developed, so that:
 - Features are centralized in an organization and can be reused
 - Features can be served in real-time with low latency
 
+![image](https://user-images.githubusercontent.com/108273509/216114586-0c4dea68-a98c-4cf6-938a-ceecf11b12a8.png)
+
 ---
 ---
 
