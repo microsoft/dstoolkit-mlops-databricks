@@ -18,20 +18,11 @@ pool:
   vmImage:                                'ubuntu-latest'
 
 #Secrets
-variables:
-- group:                                    'ADO-Secrets'
+steps:
+- bash: |
+    echo "Test"
+  displayName: Test
 
-stages:
-  
-  - stage:                                SandboxDeploy                                   
-    displayName:                          SandboxDeploy
-    jobs:
-      - template:                         ..\2-Jobs\jobDatabricks.yaml
-        parameters:
-          Environment:                    Sandbox
-          azureSubscription:              ado-mapi-sbox-devs-spn-test
-          enableRepoPull:                 false
-          branchName:                     main
   
  # - stage:                                DevelopmentDeploy                                   
  #   displayName:                          DevelopmentDeploy
