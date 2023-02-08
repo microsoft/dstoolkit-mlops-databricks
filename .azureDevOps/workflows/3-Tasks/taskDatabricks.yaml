@@ -14,25 +14,24 @@ steps:
 #################################/
 ##  Git File Changes Check                                               
 ##################################/
-#- task:                               AzureCLI@2
-#  displayName:                        Check Infra Git Path Change
-#  name:                               "CheckInfraGitPathChange"
-#  inputs:
-#    scriptType:                       bash
-#    scriptLocation:                   scriptPath 
-#    azureSubscription:                ${{ parameters.azureSubscription }}
-#    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsGitFileChanges.sh
-#    failOnStandardError:              false
-#  env:
-#    PATH_FILTER:                      '.azureDevOps/MLOps_Engineer/Infrastructure'
-#    VAR_NAME:                         'enableInfraDeploy'
+- task:                               AzureCLI@2
+  displayName:                        Check Infra Git Path Change
+  name:                               "CheckInfraGitPathChange"
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath 
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsGitFileChanges.sh
+    failOnStandardError:              false
+  env:
+    PATH_FILTER:                      '.azureDevOps/MLOps_Engineer/Infrastructure'
+    VAR_NAME:                         'enableInfraDeploy'
 
 
 #################################/
 ##  Dependencies/ Install                                              
 #################################/
 - bash: |
-    az login --identity --tenant 16b3c013-d300-468d-ac64-7eda0820b6d3
     az upgrade
     sudo apt update && sudo apt install jq
     pip3 install requests
@@ -45,35 +44,35 @@ steps:
 #################################/
 # 1) Create Service Principal 2) In ADO Create Service Connection "Manually", linking it to the SP you created
 # 3) I have named my "Service Connection", "DBX_ADO_DSTOOLKIT"
-#- task:                               AzureCLI@2
-#  displayName:                        Azure Login
-#  inputs:
-#    scriptType:                       bash
-#    scriptLocation:                   scriptPath 
-#    azureSubscription:                ${{ parameters.azureSubscription }}
-#    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsAzureLogin.sh
-#    failOnStandardError:              false
-#  env:        
-#    ARM_CLIENT_ID :                   $(ARM_CLIENT_ID)
-#    ARM_TENANT_ID:                    $(ARM_TENANT_ID)
-#    ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
+- task:                               AzureCLI@2
+  displayName:                        Azure Login
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath 
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsAzureLogin.sh
+    failOnStandardError:              false
+  env:        
+    ARM_CLIENT_ID :                   $(ARM_CLIENT_ID)
+    ARM_TENANT_ID:                    $(ARM_TENANT_ID)
+    ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
 
 
 #################################/
 ## Deploy Azure Infrastructure                                               
 #################################/
-#- task:                               AzureCLI@2
-#  displayName:                        Deploy DBX CICD Azure Resources
-#  #condition:                          eq(variables['CheckInfraGitPathChange.enableInfraDeploy'], 'true')
-#  inputs:
-#    scriptType:                       bash
-#    scriptLocation:                   scriptPath
-#    azureSubscription:                ${{ parameters.azureSubscription }}
-#    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
-#    failOnStandardError:              false
-#  enabled:                            true
-#  env:
-#    ENVIRONMENT:                      ${{ parameters.Environment }}
+- task:                               AzureCLI@2
+  displayName:                        Deploy DBX CICD Azure Resources
+  #condition:                          eq(variables['CheckInfraGitPathChange.enableInfraDeploy'], 'true')
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
+    failOnStandardError:              false
+  enabled:                            true
+  env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
 
 
 #################################/
@@ -87,22 +86,6 @@ steps:
     scriptLocation:                   scriptPath 
     azureSubscription:                ${{ parameters.azureSubscription }}
     scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsSetEnvVariables.sh
-    failOnStandardError:              false
-  env:
-    ENVIRONMENT:                      ${{ parameters.Environment }}
-
-
-#################################/
-##  Save Dynamically Generated Env Variable                                               
-#################################/
-- task:                               AzureCLI@2
-  displayName:                        Test - Managed Identity   
-  name:                               "ManagedIdentityAuthentication"
-  inputs:
-    scriptType:                       bash
-    scriptLocation:                   scriptPath 
-    azureSubscription:                ${{ parameters.azureSubscription }}
-    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsMIAuthentication.sh
     failOnStandardError:              false
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
