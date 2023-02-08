@@ -32,7 +32,7 @@ steps:
 ##  Dependencies/ Install                                              
 #################################/
 - bash: |
-    az login
+    az login --identity
     az upgrade
     sudo apt update && sudo apt install jq
     pip3 install requests
