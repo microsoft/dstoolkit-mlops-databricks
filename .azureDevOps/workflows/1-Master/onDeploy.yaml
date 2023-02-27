@@ -15,7 +15,7 @@ pr:                                       none
 
 
 pool:
-  name:                                'vmsslinux'
+  name:                                'vmss-linux-pool'
 
 #Secrets
 variables:
