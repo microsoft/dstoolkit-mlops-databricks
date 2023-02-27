@@ -97,15 +97,3 @@ stages:
           releaseBranch:                  'release/1'
 
 
-  - stage:                                ProductionDeploy 
-    condition:                            or(eq('${{ parameters.ENVIRONMENT }}', 'GenesisDeployment'), eq('${{ parameters.ENVIRONMENT }}', 'Production'))                                    
-    displayName:                          ProductionDeploy
-    dependsOn: [] 
-    jobs:
-      - template:                         ..\2-Jobs\jobDatabricks.yaml
-        parameters:
-          Environment:                    Production
-          azureSubscription:              ${{ parameters.azureSubscription }}
-          enableRepoPull:                 false
-          branchName:                     main
-          releaseBranch:                  'release/1'
