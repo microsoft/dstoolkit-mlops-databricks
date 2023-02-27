@@ -35,7 +35,7 @@ parameters:
   - GenesisDeployment
 
 
-- name:         Authentication type
+- name:         AuthenticationType
   displayName:  Choose How To Authenticate
   default:      Managed_Identity 
   type:         string
@@ -65,6 +65,7 @@ stages:
       - template:                         ..\2-Jobs\jobDatabricks.yaml
         parameters:
           Environment:                    Sandbox
+          AuthenticationType:             ${{ parameters.AuthenticationType }}   
           azureSubscription:              ${{ parameters.azureSubscription }}
           enableRepoPull:                 false
           branchName:                     main

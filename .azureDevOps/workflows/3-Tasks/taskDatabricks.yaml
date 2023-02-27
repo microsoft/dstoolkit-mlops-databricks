@@ -7,6 +7,7 @@ parameters:
   AZURE_DATABRICKS_APP_ID:            String
   enableRepoPull:                     Boolean
   branchName:                         String
+  AuthenticationType:                 String
 
 
 steps:
@@ -56,6 +57,7 @@ steps:
     ARM_CLIENT_ID :                   $(ARM_CLIENT_ID)
     ARM_TENANT_ID:                    $(ARM_TENANT_ID)
     ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
+    AuthenticationType:               ${{ parameters.AuthenticationType }}
 
 
 #################################/
