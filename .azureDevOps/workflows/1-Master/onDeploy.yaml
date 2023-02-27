@@ -15,7 +15,7 @@ pr:                                       none
 
 
 pool:
-  vmImage:                                'ubuntu-latest'
+  vmImage:                                'vmss-linux-pool'
 
 #Secrets
 variables:
