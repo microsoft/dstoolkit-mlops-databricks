@@ -15,7 +15,7 @@ pr:                                       none
 
 
 pool:
-  vmImage:                                'vmss-linux-pool'
+  vmImage:                                'vmsslinux'
 
 #Secrets
 variables:
