@@ -57,24 +57,6 @@ steps:
   displayName:                        "Dependency Install"
 
 
-#################################/
-##  Authenticate/Login To Azure                                               
-#################################/
-# 1) Create Service Principal 2) In ADO Create Service Connection "Manually", linking it to the SP you created
-# 3) I have named my "Service Connection", "DBX_ADO_DSTOOLKIT"
-- task:                               AzureCLI@2
-  displayName:                        Azure Login
-  inputs:
-    scriptType:                       bash
-    scriptLocation:                   scriptPath 
-    azureSubscription:                ${{ parameters.azureSubscription }}
-    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsAzureLogin.sh
-    failOnStandardError:              false
-  env:        
-    ARM_CLIENT_ID :                   $(ARM_CLIENT_ID)
-    ARM_TENANT_ID:                    $(ARM_TENANT_ID)
-    ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
-    AuthenticationType:               ${{ parameters.AuthenticationType }}
 
 
 #################################/
@@ -115,6 +97,8 @@ steps:
 ##  Generate AAD Tokens                                              
 #################################/
 - bash: |
+    az login --identity
+    az account list
 
     DBRKS_BEARER_TOKEN=$( az account get-access-token \
                       --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
