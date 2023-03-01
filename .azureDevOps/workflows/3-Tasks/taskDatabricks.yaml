@@ -12,6 +12,20 @@ parameters:
 
 steps:
 
+- task:     UsePythonVersion@0
+  inputs:
+    versionSpec: '3.8'
+
+- bash: |
+    $(buildPython.pythonLocation)\python -m pip install databricks-cli --upgrade
+
+  displayName: Install Databricks CLI
+
+- bash: |
+    sudo apt -y install jq 
+      displayName: Install JsonQuery
+
+      
 #################################/
 ##  Git File Changes Check                                               
 ##################################/
