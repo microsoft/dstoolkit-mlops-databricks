@@ -13,9 +13,13 @@ pr:                                       none
 # After The First Environment Deployment, This YAML Pipeline is Triggering Alongside onRealease. I have Set
 # pr == none For Now To Prevent This Behaviour 
 
+strategy:
+  matrix:
+    sandbox_pool:
+      imageName: 'vmss-linux-pool'
 
 pool:
-  name:                                'vmss-linux-pool'
+  name:                                $(imageName)
 
 #Secrets
 variables:
