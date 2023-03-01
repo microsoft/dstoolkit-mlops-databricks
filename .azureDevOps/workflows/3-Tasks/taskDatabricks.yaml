@@ -23,9 +23,9 @@ steps:
 
 - bash: |
     az --version 
-    
+
     sudo apt -y install jq 
-      displayName: Install JsonQuery
+  displayName: Install JsonQuery
 
 
 #################################/
