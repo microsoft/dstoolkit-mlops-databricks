@@ -17,9 +17,6 @@ pr:                                       none
 pool:
   name:                                'vmss-linux-pool'
 
-#Secrets
-variables:
-- group:                                    'ADO-Secrets'
 
 parameters:
 
