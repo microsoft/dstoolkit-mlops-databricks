@@ -8,7 +8,7 @@ parameters:
   enableRepoPull:                     Boolean
   branchName:                         String
   AuthenticationType:                 String
-  VMSS_Object_ID:                     String
+
 
 
 steps:

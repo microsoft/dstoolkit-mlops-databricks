@@ -34,10 +34,6 @@ parameters:
   - Production
   - GenesisDeployment
 
-- name:         VMSS_Object_ID
-  displayName:  Enter The Object ID for The VMSS
-  type:         string 
-
 - name:         AuthenticationType
   displayName:  Choose How To Authenticate
   default:      Managed_Identity 
@@ -69,8 +65,7 @@ stages:
           AuthenticationType:             ${{ parameters.AuthenticationType }}   
           azureSubscription:              ${{ parameters.azureSubscription }}
           enableRepoPull:                 false
-          branchName:                     main
-          VMSS_Object_ID:                 ${{ parameters.VMSS_Object_ID }}         
+          branchName:                     main        
   
   - stage:                                DevelopmentDeploy   
     condition:                            or(eq('${{ parameters.ENVIRONMENT }}', 'GenesisDeployment'), eq('${{ parameters.ENVIRONMENT }}', 'Development'))                                
@@ -84,7 +79,6 @@ stages:
           enableRepoPull:                 false
           branchName:                     main
           updateFolder:                   None
-          VMSS_Object_ID:                 ${{ parameters.VMSS_Object_ID }} 
 
   - stage:                                UATDeploy 
     condition:                            or(eq('${{ parameters.ENVIRONMENT }}', 'GenesisDeployment'), eq('${{ parameters.ENVIRONMENT }}', 'UAT'))                                    
@@ -98,6 +92,5 @@ stages:
           enableRepoPull:                 false
           branchName:                     main
           releaseBranch:                  'release/1'
-          VMSS_Object_ID:                 ${{ parameters.VMSS_Object_ID }} 
 
 
