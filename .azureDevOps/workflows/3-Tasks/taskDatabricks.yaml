@@ -22,10 +22,12 @@ steps:
   displayName: Install Databricks CLI
 
 - bash: |
+    az --version 
+    
     sudo apt -y install jq 
       displayName: Install JsonQuery
 
-      
+
 #################################/
 ##  Git File Changes Check                                               
 ##################################/
