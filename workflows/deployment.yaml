@@ -33,9 +33,12 @@ environments:
   Development:
     workflows:
       - name: FEATURE_ENGINEERING
+        
         job_cluster_key: "Basic Cluster"
-        <<: *default-cluster-spec
-
+        <<: *dev-cluster-config
+        
+        format: MULTI_TASK
+        
         tasks:
           - task_key: "one"
             job_cluster_key: "Basic Cluster"
