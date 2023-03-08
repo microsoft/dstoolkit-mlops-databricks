@@ -9,7 +9,7 @@ parameters:
   branchName:                                 String
   updateFolder:                               String
   AuthenticationType:                         String
-  VMSS_Object_ID:                             String
+  MI_VMSS_NAME:                               String 
 
 
 jobs:                  
@@ -35,3 +35,4 @@ jobs:
               enableRepoPull:                 ${{ parameters.enableRepoPull }}
               branchName:                     ${{ parameters.branchName }}
               updateFolder:                   ${{ parameters.updateFolder }}
+              MI_VMSS_NAME:                   ${{ parameters.MI_VMSS_NAME }}
