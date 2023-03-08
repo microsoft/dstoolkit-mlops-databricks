@@ -108,7 +108,7 @@ steps:
   displayName:  Generate AAD Tokens
   name:         "auth_tokens"
   env:  
-    MI_VMSS_NAME: 'test'
+    MI_VMSS_NAME: ${{ parameters.MI_VMSS_NAME }}
     
 
 #################################/
