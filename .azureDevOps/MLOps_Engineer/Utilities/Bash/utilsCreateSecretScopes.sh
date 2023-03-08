@@ -1,3 +1,7 @@
+az config set extension.use_dynamic_install=yes_without_promp
+az extension add --name databricks
+az extension add --name application-insights
+
 echo $RESOURCE_GROUP_NAME
 
 APP_INSIGHT_NAME=$(az resource list \

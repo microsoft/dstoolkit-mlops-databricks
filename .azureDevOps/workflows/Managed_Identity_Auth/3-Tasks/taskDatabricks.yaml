@@ -25,9 +25,6 @@ steps:
 - bash: |
     az --version 
     sudo apt -y install jq 
-    az config set extension.use_dynamic_install=yes_without_promp
-    az extension add --name databricks
-    az extension add --name application-insights
   displayName: Install JsonQuery
 
 
