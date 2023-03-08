@@ -103,6 +103,15 @@ steps:
     
 
 #################################/
+##  Generate Python Wheel Files                                            
+#################################/
+- script: |
+    python setup.py sdist bdist_wheel
+  workingDirectory:                   dstoolkit-mlops-databricks/Data_Scientist/pyWheels/Helper_Functions
+  displayName:                        'Create Helper_Functions Package Wheel File'
+
+
+#################################/
 ##  PAT Token                                           
 #################################/
 - task:                               AzureCLI@2
@@ -250,10 +259,10 @@ steps:
       echo $DATABRICKS_TOKEN
       pip install dbx
       dbx configure --enable-inplace-jinja-support
-      dbx deploy --deployment-file conf/deployment.yaml FEATURE_ENGINEERING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
-      dbx deploy --deployment-file conf/deployment.yaml MODEL_TRAINING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
-      dbx deploy --deployment-file conf/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
-      dbx deploy --deployment-file conf/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+      dbx deploy --deployment-file workflows/deployment.yaml FEATURE_ENGINEERING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+      dbx deploy --deployment-file workflows/deployment.yaml MODEL_TRAINING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+      dbx deploy --deployment-file workflows/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+
   displayName:                        "Launch Jobs - DBX by Databricks Lab"
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
