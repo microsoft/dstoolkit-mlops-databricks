@@ -7,7 +7,6 @@ parameters:
   AZURE_DATABRICKS_APP_ID:            String
   enableRepoPull:                     Boolean
   branchName:                         String
-  AuthenticationType:                 String
 
 
 steps:
@@ -18,14 +17,10 @@ steps:
 
 - bash: |
     $(buildPython.pythonLocation)\python -m pip install databricks-cli --upgrade
-
-  displayName: Install Databricks CLI
-
-- bash: |
-    az --version 
-
-    sudo apt -y install jq 
-  displayName: Install JsonQuery
+    sudo apt update && sudo apt install jq
+    pip3 install requests
+    pip3 install  azure-databricks-sdk-python
+  displayName: Environment Set Up
 
 
 #################################/
@@ -46,17 +41,6 @@ steps:
 
 
 #################################/
-##  Dependencies/ Install                                              
-#################################/
-- bash: |
-    az upgrade
-    sudo apt update && sudo apt install jq
-    pip3 install requests
-    pip3 install  azure-databricks-sdk-python
-  displayName:                        "Dependency Install"
-
-
-#################################/
 ##  Authenticate/Login To Azure                                               
 #################################/
 # 1) Create Service Principal 2) In ADO Create Service Connection "Manually", linking it to the SP you created
@@ -73,7 +57,6 @@ steps:
     ARM_CLIENT_ID :                   $(ARM_CLIENT_ID)
     ARM_TENANT_ID:                    $(ARM_TENANT_ID)
     ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
-    AuthenticationType:               ${{ parameters.AuthenticationType }}
 
 
 #################################/
@@ -88,7 +71,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
     scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
     failOnStandardError:              false
-  enabled:                            true
+  enabled:                            false
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
 

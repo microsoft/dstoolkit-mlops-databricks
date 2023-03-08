@@ -9,15 +9,7 @@ echo $AuthenticationType
 az config set extension.use_dynamic_install=yes_without_prompt
 
 
-if [ $AuthenticationType == 'Managed_Identity' ]; then
-
-    echo "Managed Identity Authentication (Through Virtual Machine Scale Set)"
-    az login --identity
-    az account list
-
-else
-    echo "Service Principal Authentication"
-    az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
-    az account list
-fi
+echo "Service Principal Authentication"
+az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+az account list
 

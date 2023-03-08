@@ -1,5 +1,5 @@
 
-name:                                     Databricks Deployment
+name:                                     Service Principal MLOps Databricks Deployment
 
 trigger:                                  none
 pr:                                       none
@@ -21,6 +21,7 @@ pool:
 variables:
 - group:                                    'ADO-Secrets'
 
+
 parameters:
 
 - name:         ENVIRONMENT
@@ -34,13 +35,6 @@ parameters:
   - Production
   - GenesisDeployment
 
-
-- name:         AuthenticationType
-  displayName:  Choose How To Authenticate
-  default:      Service_Principal 
-  type:         string
-
-
 - name:         azureSubscription
   displayName:  Enter Service Connection Name
   default:      mi-vmss-spn
@@ -51,7 +45,6 @@ parameters:
   displayName:  Branch For DBX Repo Folders
   default:      ciarand/dbx_pipeline
   type:         string 
-
 
 
 stages:
