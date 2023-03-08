@@ -41,6 +41,7 @@ environments:
             libraries: [ 
               whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
             ]
+
           - task_key: "two"
             spark_python_task:
               python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['FILE_PATH']}}"
@@ -48,6 +49,8 @@ environments:
             libraries: [ 
               whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
             ]
+            depends_on:
+              - task_key: "one"
       
       - name: MODEL_TRAINING
         <<: *dev-cluster-config
