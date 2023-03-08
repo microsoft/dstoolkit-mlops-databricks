@@ -41,5 +41,4 @@ if __name__ == "__main__":
                                 databricksInstance=os.environ['DATABRICKS_INSTANCE'], 
                                 bearerToken=os.environ['DBRKS_BEARER_TOKEN'], 
                                 managementToken=os.environ['DBRKS_MANAGEMENT_TOKEN'], 
-                                SYSTEM_ACCESSTOKEN=os.environ['SYSTEM_ACCESSTOKEN'], 
-                                environment=os.environ['ENVIRONMENT'])       
+                                SYSTEM_ACCESSTOKEN=os.environ['SYSTEM_ACCESSTOKEN'] )       
