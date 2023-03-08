@@ -1,5 +1,5 @@
 
-name:                                     Databricks Deployment
+name:                                     Managed Identity MLOps Databricks Deployment
 
 trigger:                                  none
 pr:                                       none
@@ -31,10 +31,6 @@ parameters:
   - Production
   - GenesisDeployment
 
-- name:         AuthenticationType
-  displayName:  Choose How To Authenticate
-  default:      Managed_Identity 
-  type:         string
 
 - name:         MI_VMSS_NAME
   displayName:  Enter name of Virtual Machine Scale Set With Managed Identity On Sub Enabled
