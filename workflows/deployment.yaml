@@ -33,15 +33,11 @@ environments:
   Development:
     workflows:
       - name: FEATURE_ENGINEERING
-        
-        job_cluster_key: "basic_cluster"
         <<: *dev-cluster-config
-        
-        format: MULTI_TASK
-        
+                
         tasks:
           - task_key: "one"
-            job_cluster_key: "basic_cluster"
+            <<: *dev-cluster-config
             spark_python_task:
               python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
               parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
@@ -50,7 +46,7 @@ environments:
             ]
 
           - task_key: "two"
-            job_cluster_key: "basic_cluster"
+            <<: *dev-cluster-config
             spark_python_task:
               python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
               parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
