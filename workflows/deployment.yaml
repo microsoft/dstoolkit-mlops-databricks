@@ -32,9 +32,7 @@ build:
 environments:
   Development:
     workflows:
-      - name: FEATURE_ENGINEERING
-        <<: *dev-cluster-config
-                
+      - name: FEATURE_ENGINEERING     
         tasks:
           - task_key: "one"
             <<: *dev-cluster-config
