@@ -24,6 +24,7 @@ custom:
   prod-cluster-config: &prod-cluster-config
     new_cluster:
       <<: *default-cluster-spec
+            
 
 
 build:
@@ -32,9 +33,12 @@ environments:
   Development:
     workflows:
       - name: FEATURE_ENGINEERING
-        <<: *dev-cluster-config
+        job_cluster_key: "Basic Cluster"
+        <<: *default-cluster-spec
+
         tasks:
           - task_key: "one"
+            job_cluster_key: "Basic Cluster"
             spark_python_task:
               python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
               parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
@@ -43,9 +47,10 @@ environments:
             ]
 
           - task_key: "two"
+            job_cluster_key: "Basic Cluster"
             spark_python_task:
-              python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['FILE_PATH']}}"
-              parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['FILE']}}"]
+              python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
             libraries: [ 
               whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
             ]
