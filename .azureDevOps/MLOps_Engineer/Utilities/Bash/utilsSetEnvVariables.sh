@@ -1,3 +1,5 @@
+az config set extension.use_dynamic_install=yes_without_prompt
+az extension add --name databricks
 
 ### Lets Retrieve Important Variables That Are Important For Later Steps
 
