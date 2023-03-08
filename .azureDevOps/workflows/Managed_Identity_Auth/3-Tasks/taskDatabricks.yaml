@@ -8,7 +8,7 @@ parameters:
   enableRepoPull:                     Boolean
   branchName:                         String
   AuthenticationType:                 String
-
+  MI_VMSS_NAME:                       String
 
 
 steps:
@@ -82,14 +82,16 @@ steps:
 ##  Generate AAD Tokens                                              
 #################################/
 - bash: |
-    LOGIN=$( az login --identity )
-    echo $LOGIN 
+    az login --identity
     
-    az account list
-    
-    Identity=$(az ad sp list --display-name )
-    echo $Identity 
+    echo "Print VMSS Name (Ensure It Has Managed Identity Enabled With RBAC Assigned To Subscription)"
+    echo $MI_VMSS_NAME
 
+    MANAGED_IDENTITY=$( az ad sp list --display-name $MI_VMSS_NAME ) 
+    MANAGED_IDENTITY_APP_ID=$( jq -r '.[].appId' <<< "$MANAGED_IDENTITY")  
+    echo $ MANAGED_IDENTITY_APP_ID
+
+    
     DBRKS_BEARER_TOKEN=$( az account get-access-token \
                       --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
                       --query "accessToken" \
@@ -105,6 +107,8 @@ steps:
   
   displayName:  Generate AAD Tokens
   name:         "auth_tokens"
+  env:  
+    MI_VMSS_NAME:                   ${{ parameters.MI_VMSS_NAME }}
     
 
 #################################/

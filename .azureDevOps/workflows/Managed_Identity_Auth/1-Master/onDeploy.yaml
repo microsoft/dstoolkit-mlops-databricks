@@ -36,7 +36,7 @@ parameters:
   default:      Managed_Identity 
   type:         string
 
-- name:         Virtual_Machine_Scale_Set_Name
+- name:         MI_VMSS_NAME
   displayName:  Enter name of Virtual Machine Scale Set With Managed Identity On Sub Enabled
   default:      vmsslinux
   type:         string 
@@ -66,7 +66,8 @@ stages:
           AuthenticationType:             ${{ parameters.AuthenticationType }}   
           azureSubscription:              ${{ parameters.azureSubscription }}
           enableRepoPull:                 false
-          branchName:                     main        
+          branchName:                     main      
+          MI_VMSS_NAME:                   ${{ parameters.MI_VMSS_NAME }}
   
   - stage:                                DevelopmentDeploy   
     condition:                            or(eq('${{ parameters.ENVIRONMENT }}', 'GenesisDeployment'), eq('${{ parameters.ENVIRONMENT }}', 'Development'))                                
@@ -80,6 +81,7 @@ stages:
           enableRepoPull:                 false
           branchName:                     main
           updateFolder:                   None
+          MI_VMSS_NAME:                   ${{ parameters.MI_VMSS_NAME }}
 
   - stage:                                UATDeploy 
     condition:                            or(eq('${{ parameters.ENVIRONMENT }}', 'GenesisDeployment'), eq('${{ parameters.ENVIRONMENT }}', 'UAT'))                                    
@@ -93,5 +95,6 @@ stages:
           enableRepoPull:                 false
           branchName:                     main
           releaseBranch:                  'release/1'
+          MI_VMSS_NAME:                   ${{ parameters.MI_VMSS_NAME }}
 
 
