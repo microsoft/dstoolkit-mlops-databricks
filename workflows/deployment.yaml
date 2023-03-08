@@ -1,6 +1,6 @@
 custom:
 
-  # Cluster configs for each environment.
+  # Cluster configs for each environment
   default-cluster-spec: &default-cluster-spec
     spark_version: '11.3.x-cpu-ml-scala2.12'
     node_type_id: 'Standard_DS3_v2' 
