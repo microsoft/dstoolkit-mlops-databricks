@@ -34,7 +34,6 @@ parameters:
   - Production
   - GenesisDeployment
 
-
 - name:         AuthenticationType
   displayName:  Choose How To Authenticate
   default:      Managed_Identity 
@@ -53,7 +52,6 @@ parameters:
   displayName:  Branch For DBX Repo Folders
   default:      ciarand/dbx_pipeline
   type:         string 
-
 
 
 stages:

@@ -59,8 +59,6 @@ steps:
   displayName:                        "Dependency Install"
 
 
-
-
 #################################/
 ## Deploy Azure Infrastructure                                               
 #################################/
@@ -92,7 +90,6 @@ steps:
     failOnStandardError:              false
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
-
 
 
 #################################/
