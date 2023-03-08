@@ -17,15 +17,15 @@ steps:
   inputs:
     versionSpec: '3.8'
 
+#################################/
+##  Dependencies/ Install                                              
+#################################/
 - bash: |
     $(buildPython.pythonLocation)\python -m pip install databricks-cli --upgrade
-
-  displayName: Install Databricks CLI
-
-- bash: |
-    az --version 
-    sudo apt -y install jq 
-  displayName: Install JsonQuery
+    sudo apt update && sudo apt install jq
+    pip3 install requests
+    pip3 install  azure-databricks-sdk-python
+  displayName: Environment Set Up
 
 
 #################################/
@@ -43,17 +43,6 @@ steps:
   env:
     PATH_FILTER:                      '.azureDevOps/MLOps_Engineer/Infrastructure'
     VAR_NAME:                         'enableInfraDeploy'
-
-
-#################################/
-##  Dependencies/ Install                                              
-#################################/
-- bash: |
-    az upgrade
-    sudo apt update && sudo apt install jq
-    pip3 install requests
-    pip3 install  azure-databricks-sdk-python
-  displayName:                        "Dependency Install"
 
 
 #################################/
@@ -131,6 +120,8 @@ steps:
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
+    RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME)
+
 
 
 #################################/
@@ -169,9 +160,9 @@ steps:
   enabled:                            true
   env:
     AZ_KEYVAULT_NAME:                 $(DynamicEnvVariables.AZ_KEYVAULT_NAME)
-    ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
-    ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
-    ARM_TENANT_ID:                    $(ARM_TENANT_ID)
+    ARM_CLIENT_ID:                    "JUST_AN_EXAMPLE"
+    ARM_CLIENT_SECRET:                "JUST_AN_EXAMPLE"
+    ARM_TENANT_ID:                    "JUST_AN_EXAMPLE"
 
 
 #################################/
@@ -190,6 +181,7 @@ steps:
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
+    RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME) 
 
 
 
