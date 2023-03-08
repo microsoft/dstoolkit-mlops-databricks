@@ -104,6 +104,7 @@ steps:
 
     echo "##vso[task.setvariable variable="DBRKS_MANAGEMENT_TOKEN";isOutput=true;]$DBRKS_MANAGEMENT_TOKEN"
     echo "##vso[task.setvariable variable="DBRKS_BEARER_TOKEN";isOutput=true;]$DBRKS_BEARER_TOKEN"
+    echo "##vso[task.setvariable variable="MANAGED_IDENTITY_APP_ID";isOutput=true;]$MANAGED_IDENTITY_APP_ID"
   
   displayName:  Generate AAD Tokens
   name:         "auth_tokens"
@@ -234,7 +235,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            true
   env:
-    ARM_CLIENT_ID:                    "913df13a-c3c1-4c68-9106-1f72e377ac7a"
+    ARM_CLIENT_ID:                    $(auth_tokens.MANAGED_IDENTITY_APP_ID)
     ENVIRONMENT:                      ${{ parameters.Environment }}
     DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
