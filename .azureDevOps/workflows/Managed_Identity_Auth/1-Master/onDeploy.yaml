@@ -36,6 +36,11 @@ parameters:
   default:      Managed_Identity 
   type:         string
 
+- name:         Virtual_Machine_Scale_Set_Name
+  displayName:  Enter name of Virtual Machine Scale Set With Managed Identity On Sub Enabled
+  default:      vmsslinux
+  type:         string 
+
 
 - name:         azureSubscription
   displayName:  Enter Service Connection Name

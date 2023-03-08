@@ -82,10 +82,12 @@ steps:
 ##  Generate AAD Tokens                                              
 #################################/
 - bash: |
-    az login --identity
+    LOGIN=$( az login --identity )
+    echo $LOGIN 
+    
     az account list
     
-    Identity=$(az identity show)
+    Identity=$(az ad sp list --display-name )
     echo $Identity 
 
     DBRKS_BEARER_TOKEN=$( az account get-access-token \
