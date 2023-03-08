@@ -3,6 +3,8 @@ az extension add --name databricks
 az extension add --name application-insights
 
 echo $RESOURCE_GROUP_NAME
+echo $DATABRICKS_INSTANCE
+echo $WORKSPACE_ID
 
 APP_INSIGHT_NAME=$(az resource list \
                 -g $RESOURCE_GROUP_NAME \
@@ -17,9 +19,8 @@ APP_INSIGHT_INSTRUMENT_KEY=$( az monitor app-insights component show \
 
 echo "Test"
 
-echo $ARM_CLIENT_ID
-echo $ARM_TENANT_ID
-echo $ARM_CLIENT_SECRET
+echo $APP_INSIGHT_NAME
+echo $APP_INSIGHT_INSTRUMENT_KEY
 
 echo "Creating Secret Scopes...."
 
