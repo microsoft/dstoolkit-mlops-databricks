@@ -84,6 +84,9 @@ steps:
 - bash: |
     az login --identity
     az account list
+    
+    Identity=$(az identity show)
+    echo $Identity 
 
     DBRKS_BEARER_TOKEN=$( az account get-access-token \
                       --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
@@ -193,6 +196,24 @@ steps:
     RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME) 
 
 
+#################################/
+##  Git Config                                           
+#################################/
+
+- task:                               PythonScript@0
+  displayName:                        'Git Config' 
+  name:                               "git_configure"
+  inputs:
+    scriptSource:                     'filePath' 
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
+  env:
+    SYSTEM_ACCESSTOKEN:               $(System.AccessToken)
+    ENVIRONMENT:                      ${{ parameters.Environment }}
+    DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
+
 
 #################################/
 ##  Create Repos                                           
@@ -215,23 +236,6 @@ steps:
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
 
-#################################/
-##  Git Config                                           
-#################################/
-
-- task:                               PythonScript@0
-  displayName:                        'Git Config' 
-  name:                               "git_configure"
-  inputs:
-    scriptSource:                     'filePath' 
-    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
-  env:
-    PAT_GITHUB:                       $(PAT_GITHUB)
-    ENVIRONMENT:                      ${{ parameters.Environment }}
-    DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
-    DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
-    WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
-    DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
 
 
