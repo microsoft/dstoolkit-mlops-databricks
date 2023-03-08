@@ -89,7 +89,7 @@ steps:
 
     MANAGED_IDENTITY=$( az ad sp list --display-name $MI_VMSS_NAME ) 
     MANAGED_IDENTITY_APP_ID=$( jq -r '.[].appId' <<< "$MANAGED_IDENTITY")  
-    echo $ MANAGED_IDENTITY_APP_ID
+    echo $MANAGED_IDENTITY_APP_ID
 
     
     DBRKS_BEARER_TOKEN=$( az account get-access-token \
@@ -108,7 +108,7 @@ steps:
   displayName:  Generate AAD Tokens
   name:         "auth_tokens"
   env:  
-    MI_VMSS_NAME:                   ${{ parameters.MI_VMSS_NAME }}
+    MI_VMSS_NAME: ${{ parameters.MI_VMSS_NAME }}
     
 
 #################################/
