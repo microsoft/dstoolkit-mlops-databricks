@@ -117,7 +117,7 @@ steps:
 #################################/
 - script: |
     python setup.py sdist bdist_wheel
-  workingDirectory:                   $(Build.SourcesDirectory)/.azureDevOps/Data_Scientist/pyWheels/Helper_Functions
+  workingDirectory:                   $(Build.SourcesDirectory)/Data_Scientist/pyWheels/Helper_Functions
   displayName:                        'Create Helper_Functions Package Wheel File'
 
 
