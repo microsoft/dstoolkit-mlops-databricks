@@ -116,6 +116,7 @@ steps:
 ##  Generate Python Wheel Files                                            
 #################################/
 - script: |
+    pip3 install wheel
     python setup.py sdist bdist_wheel
   workingDirectory:                   $(Build.SourcesDirectory)/Data_Scientist/pyWheels/Helper_Functions
   displayName:                        'Create Helper_Functions Package Wheel File'
