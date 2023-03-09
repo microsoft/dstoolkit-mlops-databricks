@@ -68,6 +68,39 @@ environments:
     
   UAT:
     workflows:
+      - name: MULTI_TASK     
+        tasks:
+          - task_key: "one"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+            ]
+
+          - task_key: "two"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "one"
+
+          - task_key: "three"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "two"
+
       - name: FEATURE_ENGINEERING
         <<: *dev-cluster-config
         spark_python_task:
@@ -97,6 +130,40 @@ environments:
 
   Production:
     workflows:
+
+      - name: MULTI_TASK     
+        tasks:
+          - task_key: "one"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+            ]
+
+          - task_key: "two"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "one"
+
+          - task_key: "three"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "two"
+
       - name: FEATURE_ENGINEERING
         <<: *dev-cluster-config
         spark_python_task:
@@ -126,6 +193,39 @@ environments:
             
   Sandbox:
     workflows:
+      - name: MULTI_TASK     
+        tasks:
+          - task_key: "one"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+            ]
+
+          - task_key: "two"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "one"
+
+          - task_key: "three"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "two"
+              
       - name: FEATURE_ENGINEERING
         <<: *dev-cluster-config
         spark_python_task:
