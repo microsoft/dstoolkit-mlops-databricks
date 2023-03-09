@@ -53,7 +53,7 @@ jobs:
         name:  Tests and Dependency Install
         run: |
           echo $enableInfraDeploy
-          sudo apt update && sudo apt install jq
+          sudo apt update && sudo apt install jq -y
           # Do a python pip install so that modules can be found from python tasks
           python -m pip install requests
           pip3 install  azure-databricks-sdk-python
