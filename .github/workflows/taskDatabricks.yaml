@@ -88,17 +88,6 @@ jobs:
 
 
 #################################/
-##  Create Databricks Custom Role                                              
-#################################/
-      - name:                     Create Databricks Custom Role 
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksCustomRole.sh
-        env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
-        continue-on-error:        true
-
-
-
-#################################/
 ##  Generate AAD Tokens                                              
 #################################/
       - name:                     Generate AAD Tokens
@@ -177,9 +166,8 @@ jobs:
           echo $DATABRICKS_TOKEN
           pip install dbx
           dbx configure --enable-inplace-jinja-support
-          dbx deploy --deployment-file workflows/deployment.yaml FEATURE_ENGINEERING -e $ENVIRONMENT --jinja-variables-file=workflows/jobConfigs/jobConfigs.yaml
-          dbx deploy --deployment-file workflows/deployment.yaml MODEL_TRAINING -e $ENVIRONMENT --jinja-variables-file=workflows/jobConfigs/jobConfigs.yaml
-          dbx deploy --deployment-file workflows/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=workflows/jobConfigs/jobConfigs.yaml
+          dbx deploy --deployment-file workflows/deployment.yaml MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=workflows/jobConfigs/jobConfigs.yaml
+
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+az config set auto-upgrade.enable=yes'
 az upgrade
 echo $ARM_CLIENT_ID
 echo $ARM_CLIENT_SECRET
