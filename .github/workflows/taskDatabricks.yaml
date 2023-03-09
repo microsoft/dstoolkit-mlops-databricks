@@ -53,7 +53,7 @@ jobs:
         name:  Tests and Dependency Install
         run: |
           echo $enableInfraDeploy
-          sudo apt update && sudo apt install jq
+          sudo apt update && sudo apt install jq -y
           # Do a python pip install so that modules can be found from python tasks
           python -m pip install requests
           pip3 install  azure-databricks-sdk-python
@@ -88,17 +88,6 @@ jobs:
 
 
 #################################/
-##  Create Databricks Custom Role                                              
-#################################/
-      - name:                     Create Databricks Custom Role 
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksCustomRole.sh
-        env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
-        continue-on-error:        true
-
-
-
-#################################/
 ##  Generate AAD Tokens                                              
 #################################/
       - name:                     Generate AAD Tokens
@@ -116,6 +105,19 @@ jobs:
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRoleBasedAccess.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+
+
+#################################/
+##  Generate Python Wheel Files                                            
+#################################/
+      - name:                     'Create Helper_Functions Package Wheel File'
+        run: |
+          pip3 install wheel
+          ls
+          cd Data_Scientist/pyWheels/Helper_Functions
+          ls
+          python setup.py sdist bdist_wheel
+
 
 
 #################################/
@@ -177,9 +179,8 @@ jobs:
           echo $DATABRICKS_TOKEN
           pip install dbx
           dbx configure --enable-inplace-jinja-support
-          dbx deploy --deployment-file conf/deployment.yaml FEATURE_ENGINEERING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
-          dbx deploy --deployment-file conf/deployment.yaml MODEL_TRAINING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
-          dbx deploy --deployment-file conf/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+          dbx deploy --deployment-file workflows/deployment.yaml MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=workflows/jobConfigs/jobConfigs.yaml
+
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 

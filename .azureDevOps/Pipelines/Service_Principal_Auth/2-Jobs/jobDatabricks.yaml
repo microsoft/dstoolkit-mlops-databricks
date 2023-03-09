@@ -8,6 +8,7 @@ parameters:
   enableRepoPull:                             Boolean
   branchName:                                 String
   updateFolder:                               String
+  AuthenticationType:                         String
 
 
 jobs:                  
@@ -28,6 +29,7 @@ jobs:
           - template:                         ../3-Tasks/taskDatabricks.yaml
             parameters:
               azureSubscription:              ${{ parameters.azureSubscription }}
+              AuthenticationType:             ${{ parameters.AuthenticationType }}         
               Environment:                    ${{ parameters.Environment }}
               enableRepoPull:                 ${{ parameters.enableRepoPull }}
               branchName:                     ${{ parameters.branchName }}

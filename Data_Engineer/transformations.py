@@ -1,6 +1,6 @@
 # Databricks notebook source
 # DATABRICKS SP NEEDS TO HAVE BLOB STORAGE CONTRIBUTOR ACCESS TO THE CONTAINER (OR POSSIBLY JUST THE SA)
-
+# COMMAND ----------
 import numpy as np
 import pandas as pd 
 from pyspark.sql.functions import *

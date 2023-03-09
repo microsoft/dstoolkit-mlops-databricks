@@ -4,18 +4,17 @@
                                  "roles":  [
                                                "Key Vault Administrator"
                                            ],
-                                 "roleBeneficiaryObjID":  "3fb6e2d3-7734-43fc-be9e-af8671acf605",
+                                 "roleBeneficiaryObjID":  "888a0304-df2d-4e40-b0e8-48ea893539ef",
                                  "Description":  "Your Object ID",
                                  "principalType":  "User"
                              },
                              {
                                  "roles":  [
                                                "Contributor",
-                                               "DBX_Custom_Role_DSToolkit",
                                                "Key Vault Administrator",
                                                "Storage Blob Data Contributor"
                                            ],
-                                 "roleBeneficiaryObjID":  "4f305dd8-567a-4db8-aaf6-cf8b3bdd9337",
+                                 "roleBeneficiaryObjID":  "587604dd-f10d-450b-8238-8d6a0a75371d",
                                  "Description":  "Databricks SPN",
                                  "principalType":  "ServicePrincipal"
                              }
