@@ -25,9 +25,8 @@ steps:
     sudo apt update && sudo apt install jq -y
     pip3 install requests
     pip3 install  azure-databricks-sdk-python
-
     curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-    
+
   displayName: Environment Set Up
 
 
@@ -245,9 +244,6 @@ steps:
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
-
-
-
 
 
 #################################/

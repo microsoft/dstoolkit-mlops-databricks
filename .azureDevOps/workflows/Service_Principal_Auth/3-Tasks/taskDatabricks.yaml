@@ -17,9 +17,11 @@ steps:
 
 - bash: |
     $(buildPython.pythonLocation)\python -m pip install databricks-cli --upgrade
-    sudo apt update && sudo apt install jq
+    sudo apt update && sudo apt install jq -y
     pip3 install requests
     pip3 install  azure-databricks-sdk-python
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
   displayName: Environment Set Up
 
 
@@ -38,6 +40,23 @@ steps:
   env:
     PATH_FILTER:                      '.azureDevOps/MLOps_Engineer/Infrastructure'
     VAR_NAME:                         'enableInfraDeploy'
+
+
+#################################/
+## Deploy Azure Infrastructure                                               
+#################################/
+- task:                               AzureCLI@2
+  displayName:                        Deploy DBX CICD Azure Resources
+  #condition:                          eq(variables['CheckInfraGitPathChange.enableInfraDeploy'], 'true')
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
+    failOnStandardError:              false
+  enabled:                            false
+  env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
 
 
 #################################/
@@ -60,23 +79,6 @@ steps:
 
 
 #################################/
-## Deploy Azure Infrastructure                                               
-#################################/
-- task:                               AzureCLI@2
-  displayName:                        Deploy DBX CICD Azure Resources
-  #condition:                          eq(variables['CheckInfraGitPathChange.enableInfraDeploy'], 'true')
-  inputs:
-    scriptType:                       bash
-    scriptLocation:                   scriptPath
-    azureSubscription:                ${{ parameters.azureSubscription }}
-    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
-    failOnStandardError:              false
-  enabled:                            false
-  env:
-    ENVIRONMENT:                      ${{ parameters.Environment }}
-
-
-#################################/
 ##  Save Dynamically Generated Env Variable                                               
 #################################/
 - task:                               AzureCLI@2
@@ -90,22 +92,6 @@ steps:
     failOnStandardError:              false
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
-
-
-#################################/
-##  Create Databricks Custom Role                                              
-#################################/
-- task:                               AzureCLI@2
-  displayName:                        Create Databricks Custom Role
-  inputs:
-    scriptType:                       bash
-    scriptLocation:                   scriptPath
-    azureSubscription:                ${{ parameters.azureSubscription }}
-    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksCustomRole.sh
-    failOnStandardError:              false
-  enabled:                            true
-  env:
-    SubscriptionId:                   ${{ parameters.SubscriptionId }}
 
 
 #################################/
@@ -221,6 +207,24 @@ steps:
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
 
 
+#################################/
+##  Git Config                                           
+#################################/
+
+- task:                               PythonScript@0
+  displayName:                        'Git Config' 
+  name:                               "git_configure"
+  inputs:
+    scriptSource:                     'filePath' 
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
+  env:
+    SYSTEM_ACCESSTOKEN:               $(System.AccessToken)
+    ENVIRONMENT:                      ${{ parameters.Environment }}
+    DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
+    DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)  
+
 
 #################################/
 ##  Create Repos                                           
@@ -241,26 +245,6 @@ steps:
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
-
-
-#################################/
-##  Git Config                                           
-#################################/
-
-- task:                               PythonScript@0
-  displayName:                        'Git Config' 
-  name:                               "git_configure"
-  inputs:
-    scriptSource:                     'filePath' 
-    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
-  env:
-    PAT_GITHUB:                       $(PAT_GITHUB)
-    ENVIRONMENT:                      ${{ parameters.Environment }}
-    DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
-    DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
-    WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
-    DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
-
 
 
 #################################/
@@ -287,10 +271,8 @@ steps:
       echo $DATABRICKS_TOKEN
       pip install dbx
       dbx configure --enable-inplace-jinja-support
-      dbx deploy --deployment-file conf/deployment.yaml FEATURE_ENGINEERING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
-      dbx deploy --deployment-file conf/deployment.yaml MODEL_TRAINING -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
-      dbx deploy --deployment-file conf/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
-      dbx deploy --deployment-file conf/deployment.yaml MODEL_INFERENCE -e $ENVIRONMENT --jinja-variables-file=conf/jobConfigs/jobConfigs.yaml
+      dbx deploy --deployment-file workflows/deployment.yaml MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=workflows/jobConfigs/jobConfigs.yaml
+      
   displayName:                        "Launch Jobs - DBX by Databricks Lab"
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}

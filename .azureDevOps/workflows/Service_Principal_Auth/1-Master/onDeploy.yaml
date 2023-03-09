@@ -15,7 +15,7 @@ pr:                                       none
 
 
 pool:
-  name:                                'vmss-linux-pool'
+  vmImage:                                'ubuntu-latest'
 
 #Secrets
 variables:
@@ -37,7 +37,7 @@ parameters:
 
 - name:         azureSubscription
   displayName:  Enter Service Connection Name
-  default:      mi-vmss-spn
+  default:      DBX_ADO_DSTOOLKIT
   type:         string 
 
 
