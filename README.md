@@ -3,8 +3,10 @@
 ---
  <br>
 
- # Azure DevOps Version Now Live 
- - See ".azureDevOps" Folder - **Set Up Instructions To Follow** 
+ # Version History And Updates
+ ## Version 1.0.1
+ - Managed Identity Deployment for Azure DevOps 
+ - 
  # MLOps for Databricks with CI/CD (GitHub Actions)
 ---
  
