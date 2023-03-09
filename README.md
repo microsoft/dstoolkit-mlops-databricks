@@ -6,9 +6,9 @@
  # Version History And Updates
  ## Version 1.0.1
  - !! Managed Identity Deployment for Azure DevOps !!
- - Multi Task Databricks Workflows for Azure DevOps
+ - Multi Task Databricks Workflows for Azure DevOps & GitHub
  - Automated the retrieval of version control system PAT Token for Git Linking Workspaces for Az DevOps
- - Dynamic creation of python wheel files for Databricks Workflows / Jobs for Az DevOps
+ - Dynamic creation of python wheel files for Databricks Workflows / Jobs for Az DevOps & GitHub
 
  # MLOps for Databricks with CI/CD (GitHub Actions)
 ---
