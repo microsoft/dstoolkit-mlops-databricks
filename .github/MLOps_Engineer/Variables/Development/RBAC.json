@@ -11,11 +11,10 @@
                              {
                                  "roles":  [
                                                "Contributor",
-                                               "DBX_Custom_Role_DSToolkit",
                                                "Key Vault Administrator",
                                                "Storage Blob Data Contributor"
                                            ],
-                                 "roleBeneficiaryObjID":  "5a9f4233-4741-4010-834e-da0fe77c4149",
+                                 "roleBeneficiaryObjID":  "587604dd-f10d-450b-8238-8d6a0a75371d",
                                  "Description":  "Databricks SPN",
                                  "principalType":  "ServicePrincipal"
                              }
