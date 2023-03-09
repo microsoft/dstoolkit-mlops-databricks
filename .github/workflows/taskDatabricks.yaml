@@ -108,6 +108,16 @@ jobs:
 
 
 #################################/
+##  Generate Python Wheel Files                                            
+#################################/
+      - name:                     'Create Helper_Functions Package Wheel File'
+        run:
+          pip3 install wheel
+          python Data_Scientist/pyWheels/Helper_Functions/setup.py sdist bdist_wheel
+
+
+
+#################################/
 ##  PAT Token                                           
 #################################/
       - name:                     Create And Store PAT Token In Key Vault
