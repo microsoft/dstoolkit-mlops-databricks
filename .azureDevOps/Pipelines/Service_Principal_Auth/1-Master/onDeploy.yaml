@@ -55,8 +55,7 @@ stages:
     jobs:
       - template:                         ..\2-Jobs\jobDatabricks.yaml
         parameters:
-          Environment:                    Sandbox
-          AuthenticationType:             ${{ parameters.AuthenticationType }}   
+          Environment:                    Sandbox  
           azureSubscription:              ${{ parameters.azureSubscription }}
           enableRepoPull:                 false
           branchName:                     main
