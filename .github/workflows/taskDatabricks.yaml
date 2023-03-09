@@ -113,7 +113,8 @@ jobs:
       - name:                     'Create Helper_Functions Package Wheel File'
         run:
           pip3 install wheel
-          python Data_Scientist/pyWheels/Helper_Functions/setup.py sdist bdist_wheel
+          cd Data_Scientist/pyWheels/Helper_Functions
+          python setup.py sdist bdist_wheel
 
 
 
