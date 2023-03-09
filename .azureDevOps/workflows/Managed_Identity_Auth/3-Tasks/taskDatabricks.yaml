@@ -22,7 +22,7 @@ steps:
 #################################/
 - bash: |
     $(buildPython.pythonLocation)\python -m pip install databricks-cli --upgrade
-    sudo apt update && sudo apt install jq
+    sudo apt update && sudo apt install jq -y
     pip3 install requests
     pip3 install  azure-databricks-sdk-python
   displayName: Environment Set Up
