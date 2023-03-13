@@ -49,7 +49,6 @@ module azMachineLearning'../Az_Resources/Az_Machine_Learning/Az_MachineLearning.
 // ################################################################################################################################################################//
 module azDatabricks '../Az_Resources/Az_Databricks/Az_Databricks.bicep' =  {
   dependsOn: [
-    azResourceGroup
     azMachineLearning
   ]
   scope: resourceGroup(resourceGroupName)
@@ -70,8 +69,6 @@ module azDatabricks '../Az_Resources/Az_Databricks/Az_Databricks.bicep' =  {
 
 module azKeyVault '../Az_Resources/Az_KeyVault/Az_KeyVault.bicep' = {
   dependsOn: [
-    azResourceGroup
-    azMachineLearning
     azDatabricks
     
   ]
@@ -89,8 +86,7 @@ module azKeyVault '../Az_Resources/Az_KeyVault/Az_KeyVault.bicep' = {
 // ################################################################################################################################################################//
 module azDataLake '../Az_Resources/Az_DataLake/Az_DataLake.bicep' =  {
   dependsOn: [
-    azResourceGroup
-    azDatabricks
+    azKeyVault
   ]
   scope: resourceGroup(resourceGroupName)
   name: 'azDataLake' 
@@ -111,8 +107,6 @@ module azDataLake '../Az_Resources/Az_DataLake/Az_DataLake.bicep' =  {
 
 module logAnalytics '../Az_Resources/Az_AppInsights/Az_AppInsights.bicep' = {
   dependsOn: [
-    azResourceGroup
-    azDatabricks
     azDataLake
   ]
   scope: resourceGroup(resourceGroupName)
