@@ -68,6 +68,8 @@ module azDataLake '../Az_Resources/Az_DataLake/Az_DataLake.bicep' =  {
   }
 }
 
+
+
 module logAnalytics '../Az_Resources/Az_AppInsights/Az_AppInsights.bicep' = {
   dependsOn: [
     azResourceGroup
@@ -96,7 +98,6 @@ module azMachineLearning'../Az_Resources/Az_Machine_Learning/Az_MachineLearning.
   params: {
     location: location
     azAppInsightsID: logAnalytics.outputs.azAppInsightsID
-    varstorageAccountID: azDataLake.outputs.varstorageAccountID
     azKeyVaultID: azKeyVault.outputs.azKeyVaultID
 
   }
