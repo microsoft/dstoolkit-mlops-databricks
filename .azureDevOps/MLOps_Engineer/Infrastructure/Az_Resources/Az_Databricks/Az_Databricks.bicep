@@ -2,6 +2,7 @@
 //                                                                       Define Parameters                                                                  
 // ################################################################################################################################################################//
 
+param azMachineLearningWSId string 
 param location string
 param workspaceName string
 var varworkspaceName = '${workspaceName}-${substring(uniqueString(resourceGroup().id), 0, 4)}'
@@ -31,16 +32,24 @@ resource azDatabricksWS 'Microsoft.Databricks/workspaces@2021-04-01-preview' = {
   properties: {
     managedResourceGroupId: '${subscription().id}/resourceGroups/${managedResourceGroupName}'
     publicNetworkAccess: 'Enabled'
+    parameters: {
+      amlWorkspaceId: {
+        value: azMachineLearningWSId
+      }
+  
+    }
     authorizations: [
       {
         principalId: '0e3c30b0-dd4e-4937-96ca-3fe88bd8f259'
         roleDefinitionId: roleDefinitionUser 
       }
     ]
+    
   }
   sku: {
     name: pricingTier
   }
+  
   
 
 }

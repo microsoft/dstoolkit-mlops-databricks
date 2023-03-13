@@ -29,6 +29,11 @@ custom:
 
 build:
   no_build: true
+  #commands:
+  #  - "echo 'building!'"
+  #  - "ls"
+
+
 environments:
   Development:
     workflows:

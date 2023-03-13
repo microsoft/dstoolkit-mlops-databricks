@@ -28,12 +28,28 @@ resource azResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 
 // ################################################################################################################################################################//
+//                                                                       Module for Creating Azure Machine Learning Workspace
+// Outputs AzDatabricks Workspace ID, which is used when Assigning RBACs
+// ################################################################################################################################################################//
+module azMachineLearning'../Az_Resources/Az_Machine_Learning/Az_MachineLearning.bicep' =  {
+  dependsOn: [
+    azResourceGroup
+  ]
+  scope: resourceGroup(resourceGroupName)
+  name: 'azamldbxdstoolkit' 
+  params: {
+    location: location
+
+  }
+}
+
+// ################################################################################################################################################################//
 //                                                                       Module for Creating Azure Databricks Workspace
 // Outputs AzDatabricks Workspace ID, which is used when Assigning RBACs
 // ################################################################################################################################################################//
 module azDatabricks '../Az_Resources/Az_Databricks/Az_Databricks.bicep' =  {
   dependsOn: [
-    azResourceGroup
+    azMachineLearning
   ]
   scope: resourceGroup(resourceGroupName)
   name: 'azDatabricks' 
@@ -41,8 +57,11 @@ module azDatabricks '../Az_Resources/Az_Databricks/Az_Databricks.bicep' =  {
     location: location
     workspaceName: workspaceName
     pricingTier: pricingTier
+    azMachineLearningWSId: azMachineLearning.outputs.azMachineLearningWSId
   }
 }
+
+
 
 // ################################################################################################################################################################//
 //                                                                  KEY VAULT - SELECT KV                                                                                //
