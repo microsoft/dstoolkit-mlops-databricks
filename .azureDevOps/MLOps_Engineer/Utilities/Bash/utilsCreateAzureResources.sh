@@ -24,6 +24,8 @@ echo "Create Azure DBX Resource Environments...."
 az config set bicep.use_binary_from_path=False
 az bicep install
 
+az login --identity 
+
 az deployment sub create \
     --location $location \
     --template-file $TemplateFilePath \
