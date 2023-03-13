@@ -49,6 +49,7 @@ module azMachineLearning'../Az_Resources/Az_Machine_Learning/Az_MachineLearning.
 // ################################################################################################################################################################//
 module azDatabricks '../Az_Resources/Az_Databricks/Az_Databricks.bicep' =  {
   dependsOn: [
+    azResourceGroup
     azMachineLearning
   ]
   scope: resourceGroup(resourceGroupName)
@@ -69,7 +70,10 @@ module azDatabricks '../Az_Resources/Az_Databricks/Az_Databricks.bicep' =  {
 
 module azKeyVault '../Az_Resources/Az_KeyVault/Az_KeyVault.bicep' = {
   dependsOn: [
+    azResourceGroup
+    azMachineLearning
     azDatabricks
+    
   ]
   scope: azResourceGroup
   name: 'azKeyVault'
