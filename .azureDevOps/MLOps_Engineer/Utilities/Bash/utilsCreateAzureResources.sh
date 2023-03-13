@@ -21,6 +21,9 @@ echo "environment variable: $TemplateFilePath"
 # Important to define unique deployment names as conflicts will occur
 echo "Create Azure DBX Resource Environments...."
 
+az config set bicep.use_binary_from_path=False
+az bicep install
+
 az deployment sub create \
     --location $location \
     --template-file $TemplateFilePath \
