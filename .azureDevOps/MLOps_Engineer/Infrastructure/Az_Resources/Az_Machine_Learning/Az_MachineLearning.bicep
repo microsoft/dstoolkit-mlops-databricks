@@ -4,7 +4,7 @@ param azKeyVaultID string
 
 
 resource azBlob 'Microsoft.Storage/storageAccounts@2021-08-01' =  {    
-  name: 'blobstorage'
+  name: 'blobschdamlmlops'
     location: location
     kind: 'StorageV2'
     sku: {
