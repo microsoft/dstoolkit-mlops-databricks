@@ -28,17 +28,76 @@ resource azResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 
 // ################################################################################################################################################################//
+//                                                                  KEY VAULT - SELECT KV                                                                                //
+// ################################################################################################################################################################//
+
+module azKeyVault '../Az_Resources/Az_KeyVault/Az_KeyVault.bicep' = {
+  dependsOn: [
+    azResourceGroup
+    
+  ]
+  scope: azResourceGroup
+  name: 'azKeyVault'
+  params: {
+    environment: environment 
+    location: location
+  }
+}
+
+// ################################################################################################################################################################//
+//                                                                       Module for Create Azure Data Lake Storage
+// RBAC is assigned -> azDatabricks given access to Storage 
+// ################################################################################################################################################################//
+module azDataLake '../Az_Resources/Az_DataLake/Az_DataLake.bicep' =  {
+  dependsOn: [
+    azResourceGroup
+  ]
+  scope: resourceGroup(resourceGroupName)
+  name: 'azDataLake' 
+  params: {
+    storageAccountName: storageAccountName
+    storageConfig: storageConfig
+    location: location
+    containerNames: containerNames
+    ShouldCreateContainers: ShouldCreateContainers
+    workspaceName: workspaceName
+    resourceGroupName: resourceGroupName
+    azKeyVaultName: azKeyVault.outputs.azKeyVaultName
+
+
+  }
+}
+
+module logAnalytics '../Az_Resources/Az_AppInsights/Az_AppInsights.bicep' = {
+  dependsOn: [
+    azResourceGroup
+  ]
+  scope: resourceGroup(resourceGroupName)
+  name: 'logAnalytics'
+  params: {
+    location: location
+    logwsname: loganalyticswsname
+    appinsightname: appInsightswsname
+  }
+}
+// ################################################################################################################################################################//
 //                                                                       Module for Creating Azure Machine Learning Workspace
 // Outputs AzDatabricks Workspace ID, which is used when Assigning RBACs
 // ################################################################################################################################################################//
 module azMachineLearning'../Az_Resources/Az_Machine_Learning/Az_MachineLearning.bicep' =  {
   dependsOn: [
-    azResourceGroup
+    logAnalytics
+    azDataLake
+    azKeyVault
+
   ]
   scope: resourceGroup(resourceGroupName)
   name: 'azamldbxdstoolkit' 
   params: {
     location: location
+    azAppInsightsID: logAnalytics.outputs.azAppInsightsID
+    varstorageAccountID: azDataLake.outputs.varstorageAccountID
+    azKeyVaultID: azKeyVault.outputs.azKeyVaultID
 
   }
 }
@@ -62,61 +121,6 @@ module azDatabricks '../Az_Resources/Az_Databricks/Az_Databricks.bicep' =  {
 }
 
 
-
-// ################################################################################################################################################################//
-//                                                                  KEY VAULT - SELECT KV                                                                                //
-// ################################################################################################################################################################//
-
-module azKeyVault '../Az_Resources/Az_KeyVault/Az_KeyVault.bicep' = {
-  dependsOn: [
-    azDatabricks
-    
-  ]
-  scope: azResourceGroup
-  name: 'azKeyVault'
-  params: {
-    environment: environment 
-    location: location
-  }
-}
-
-// ################################################################################################################################################################//
-//                                                                       Module for Create Azure Data Lake Storage
-// RBAC is assigned -> azDatabricks given access to Storage 
-// ################################################################################################################################################################//
-module azDataLake '../Az_Resources/Az_DataLake/Az_DataLake.bicep' =  {
-  dependsOn: [
-    azKeyVault
-  ]
-  scope: resourceGroup(resourceGroupName)
-  name: 'azDataLake' 
-  params: {
-    storageAccountName: storageAccountName
-    storageConfig: storageConfig
-    location: location
-    containerNames: containerNames
-    ShouldCreateContainers: ShouldCreateContainers
-    azDatabricksWorkspaceID: azDatabricks.outputs.azDatabricksWorkspaceID 
-    workspaceName: workspaceName
-    resourceGroupName: resourceGroupName
-    azKeyVaultName: azKeyVault.outputs.azKeyVaultName
-
-
-  }
-}
-
-module logAnalytics '../Az_Resources/Az_AppInsights/Az_AppInsights.bicep' = {
-  dependsOn: [
-    azDataLake
-  ]
-  scope: resourceGroup(resourceGroupName)
-  name: 'logAnalytics'
-  params: {
-    location: location
-    logwsname: loganalyticswsname
-    appinsightname: appInsightswsname
-  }
-}
 
 output azDatabricksWorkspaceID string = azDatabricks.outputs.azDatabricksWorkspaceID 
 

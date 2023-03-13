@@ -56,3 +56,4 @@ resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
 }
 
 output azKeyVaultName string = azKeyVault.name
+output azKeyVaultID string = azKeyVault.id
