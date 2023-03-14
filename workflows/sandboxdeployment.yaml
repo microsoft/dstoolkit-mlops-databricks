@@ -1,0 +1,120 @@
+custom:
+
+  # Cluster configs for each environment
+  default-cluster-spec: &default-cluster-spec
+    spark_version: '11.3.x-cpu-ml-scala2.12'
+    node_type_id: 'Standard_DS3_v2' 
+    driver_node_type_id: 'Standard_DS3_v2'  
+    num_workers: 1
+    # To reduce start up time for each job, it is advisable to use a cluster pool. To do so involves supplying the following
+    # two fields with a pool_id to acquire both the driver and instances from.
+    # If driver_instance_pool_id and instance_pool_id are set, both node_type_id and driver_node_type_id CANNOT be supplied.
+    # As such, if providing a pool_id for driver and worker instances, please ensure that node_type_id and driver_node_type_id are not present
+#    driver_instance_pool_id: '0617-151415-bells2-pool-hh7h6tjm'
+#    instance_pool_id: '0617-151415-bells2-pool-hh7h6tjm'
+
+  dev-cluster-config: &dev-cluster-config
+    new_cluster:
+      <<: *default-cluster-spec
+
+  staging-cluster-config: &staging-cluster-config
+    new_cluster:
+      <<: *default-cluster-spec
+
+  prod-cluster-config: &prod-cluster-config
+    new_cluster:
+      <<: *default-cluster-spec
+            
+
+
+build:
+  no_build: true
+  #commands:
+  #  - "echo 'building!'"
+  #  - "ls"
+
+
+environments:            
+  Sandbox:
+    workflows:
+      - name: MULTI_TASK     
+        tasks:
+          - task_key: "one"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+            ]
+
+          - task_key: "two"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "one"
+
+          - task_key: "three"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "two"
+              
+      - name: FEATURE_ENGINEERING
+        <<: *dev-cluster-config
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
+        libraries: [ 
+          whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+        ]
+
+      - name: NOTEBOOK_TEST
+        existing_cluster_id: "0314-135724-hsknmfut"
+        notebook_task:
+          notebook_path: "/Repos/913df13a-c3c1-4c68-9106-1f72e377ac7a/Sandbox/Data_Scientist/featureEngineering"
+          parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
+        #libraries: [ 
+        #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+        #]
+      
+      - name: MODEL_TRAINING
+        <<: *dev-cluster-config
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['FILE']}}"]
+        libraries: [ 
+          whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+        ]
+
+      - name: MODEL_INFERENCE
+        <<: *dev-cluster-config
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['FILE']}}"]
+        libraries: [ 
+          whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+        ]
+
+  #Sandbox2:
+  #  workflows:
+  #    - name: "e2e-MLOps-Sandbox"
+  #      <<: *dev-cluster-config
+  #      spark_python_task:
+  #        python_file: "file://Data_Scientist/featureStoreTaxiMLOps.py"
+  #        parameters: [ '--env', 'file:fuse://conf/job_params/sandbox.yaml', '{"env": "dev"}']
+  #      #existing_cluster_id: 1128-145618-6i6i1ekh
+        #libraries: [
+        #  whl: "file://.dbx/conf/pyWheel_1-0.0.1-py3-none-any.whl"
+        #  ]
+
