@@ -286,7 +286,7 @@ steps:
 - bash: |
       echo $DATABRICKS_TOKEN
       pip install dbx
-      
+
       dbx configure --enable-inplace-jinja-support
 
       dbx deploy --deployment-file DBX_Workflows/Sandbox_Expermentation/DBX_Workflow_Deployments.yaml \
@@ -297,7 +297,7 @@ steps:
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
     DATABRICKS_HOST:                  $(DynamicEnvVariables.DATABRICKS_HOST)   
-    DATABRICKS_TOKEN:                 $(create_pat_token.DATABRICKS_TOKEN)
+    DATABRICKS_TOKEN:                 $(auth_tokens.DBRKS_BEARER_TOKEN)
 
 
 #################################/
