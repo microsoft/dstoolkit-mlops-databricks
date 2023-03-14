@@ -2,7 +2,7 @@
     "environments": {
         "Sandbox": {
             "profile": "Sandbox",
-            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops_ciaran_experiments",
+            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops",
             "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx"
         },
         "Development": {
@@ -22,6 +22,11 @@
             "profile": "Production",
             "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops",
             "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx"
+        },
+        "Ciaran_Sandbox": {
+            "profile": "Ciaran_Sandbox",
+            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops_ciaran_sandbox",
+            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx_Ciaran_Experiments"
         }
     },
     "inplace_jinja_support": true,

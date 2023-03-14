@@ -70,24 +70,6 @@ environments:
             depends_on:
               - task_key: "two"
               
-      - name: FEATURE_ENGINEERING
-        <<: *dev-cluster-config
-        spark_python_task:
-          python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
-          parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
-        libraries: [ 
-          whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
-        ]
-
-      - name: NOTEBOOK_TEST
-        existing_cluster_id: "0314-135724-hsknmfut"
-        spark_python_task:
-          python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
-          parameters: ["{{var['ML_PIPELINE_FILES']['NOTEBOOK_TEST']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['NOTEBOOK_TEST']['PARAMETERS']['FILE']}}"]
-        #libraries: [ 
-        #  whl: "{{var['ML_PIPELINE_FILES']['NOTEBOOK_TEST']['WHL_PATH']}}" 
-        #]
-      
       - name: MODEL_TRAINING
         <<: *dev-cluster-config
         spark_python_task:
@@ -106,15 +88,13 @@ environments:
           whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
         ]
 
-  #Sandbox2:
-  #  workflows:
-  #    - name: "e2e-MLOps-Sandbox"
-  #      <<: *dev-cluster-config
-  #      spark_python_task:
-  #        python_file: "file://Data_Scientist/featureStoreTaxiMLOps.py"
-  #        parameters: [ '--env', 'file:fuse://conf/job_params/sandbox.yaml', '{"env": "dev"}']
-  #      #existing_cluster_id: 1128-145618-6i6i1ekh
-        #libraries: [
-        #  whl: "file://.dbx/conf/pyWheel_1-0.0.1-py3-none-any.whl"
-        #  ]
-
+  Ciaran_Sandbox:
+    workflows:
+      - name: FEATURE_ENGINEERING_CIARAN
+        existing_cluster_id: "0314-135724-hsknmfut"
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
+        #libraries: [ 
+        #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+        #]
