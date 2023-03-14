@@ -2,31 +2,31 @@
     "environments": {
         "Sandbox": {
             "profile": "Sandbox",
-            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops",
-            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx"
+            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops_sandbox_cicd",
+            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx_sandbox_cicd"
         },
         "Development": {
             "profile": "Development",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/e2e_mlops/dbx/e2e_mlops",
-                "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx"
+                "workspace_directory": "/Shared/e2e_mlops/dbx/e2e_mlops_development_cicd",
+                "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx_development_cicd"
             }
         },
         "UAT": {
             "profile": "UAT",
-            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops",
-            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx"
+            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops_uat_cicd",
+            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx_uat_cicd"
         },
         "Production": {
             "profile": "Production",
-            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops",
-            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx"
+            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops_production_cicd",
+            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx_production_cicd"
         },
         "Ciaran_Sandbox": {
             "profile": "Ciaran_Sandbox",
             "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops_ciaran_sandbox",
-            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx_Ciaran_Experiments"
+            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx_ciaran_experiments"
         }
     },
     "inplace_jinja_support": true,
