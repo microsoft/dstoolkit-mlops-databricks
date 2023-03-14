@@ -57,6 +57,12 @@
     },
     "storageAccountName": {
       "value": "adlssandbox"
+    },
+    "amlwsname": {
+      "value": "amlsandbox"
+    },
+    "amlblobname": {
+      "value": "amlblobsandbox"
     }
   }
 }

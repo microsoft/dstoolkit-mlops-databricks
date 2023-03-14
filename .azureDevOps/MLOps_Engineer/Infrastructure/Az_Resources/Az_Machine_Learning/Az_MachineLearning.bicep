@@ -1,10 +1,14 @@
 param location string 
 param azAppInsightsID string
 param azKeyVaultID string
+param amlwsname string 
+param amlblobname string 
 
+var varamlblobname = '${amlblobname}${substring(uniqueString(resourceGroup().id), 0, 4)}'
+var varamlwsname = '${amlwsname}-${substring(uniqueString(resourceGroup().id), 0, 4)}'
 
-resource azBlob 'Microsoft.Storage/storageAccounts@2021-08-01' =  {    
-  name: 'blobschdamlmlops'
+resource amlBlob 'Microsoft.Storage/storageAccounts@2021-08-01' =  {    
+  name: varamlblobname
     location: location
     kind: 'StorageV2'
     sku: {
@@ -18,7 +22,7 @@ resource azBlob 'Microsoft.Storage/storageAccounts@2021-08-01' =  {
 }
 
 resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2022-12-01-preview' = {
-  name: 'azamldbxdstoolkit'
+  name: varamlwsname
   location: location
   identity: {
     type: 'SystemAssigned'
@@ -26,7 +30,7 @@ resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2022-12
   properties: {
     publicNetworkAccess: 'Enabled'
     applicationInsights: azAppInsightsID
-    storageAccount: azBlob.id
+    storageAccount: amlBlob.id
     keyVault: azKeyVaultID
 
   }
@@ -36,6 +40,5 @@ resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2022-12
   }
   
 }
-
 
 output azMachineLearningWSId string = AzMachineLearning.id

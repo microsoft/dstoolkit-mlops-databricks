@@ -15,6 +15,8 @@ param TemplateParamFilePath string
 param TemplateFilePath string
 param AZURE_DATABRICKS_APP_ID string
 param MANAGEMENT_RESOURCE_ENDPOINT string 
+param amlblobname string 
+param amlwsname string 
 
 // ################################################################################################################################################################//
 //                                                                       Create Resource Group                                                                    
@@ -69,7 +71,6 @@ module azDataLake '../Az_Resources/Az_DataLake/Az_DataLake.bicep' =  {
 }
 
 
-
 module logAnalytics '../Az_Resources/Az_AppInsights/Az_AppInsights.bicep' = {
   dependsOn: [
     azResourceGroup
@@ -94,11 +95,15 @@ module azMachineLearning'../Az_Resources/Az_Machine_Learning/Az_MachineLearning.
 
   ]
   scope: resourceGroup(resourceGroupName)
-  name: 'azamldbxdstoolkit' 
+  name: 'amlws' 
   params: {
     location: location
     azAppInsightsID: logAnalytics.outputs.azAppInsightsID
     azKeyVaultID: azKeyVault.outputs.azKeyVaultID
+    amlwsname: amlwsname
+    amlblobname: amlblobname
+
+
 
   }
 }
