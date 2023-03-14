@@ -81,12 +81,12 @@ environments:
 
       - name: NOTEBOOK_TEST
         existing_cluster_id: "0314-135724-hsknmfut"
-        notebook_task:
-          notebook_path: "/Repos/913df13a-c3c1-4c68-9106-1f72e377ac7a/Sandbox/Data_Scientist/featureEngineering"
-          parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
-        #libraries: [ 
-        #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
-        #]
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['NOTEBOOK_TEST']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['NOTEBOOK_TEST']['PARAMETERS']['FILE']}}"]
+        libraries: [ 
+          whl: "{{var['ML_PIPELINE_FILES']['NOTEBOOK_TEST']['WHL_PATH']}}" 
+        ]
       
       - name: MODEL_TRAINING
         <<: *dev-cluster-config
