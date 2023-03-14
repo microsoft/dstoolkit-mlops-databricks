@@ -289,8 +289,8 @@ steps:
 
       dbx configure --enable-inplace-jinja-support
 
-      dbx deploy --deployment-file DBX_Workflows/Sandbox_Expermentation/DBX_Workflow_Deployments.yaml \
-      MULTI_TASK -e Sandbox --jinja-variables-file=DBX_Workflows/Sandbox_Expermentation/DBX_Workflow_Parameters.yaml
+      dbx deploy --deployment-file DBX_Workflows/CICD_Deployments/DBX_Workflow_Deployments.yaml \
+      MULTI_TASK -e Sandbox --jinja-variables-file=DBX_Workflows/CICD_Deployments/DBX_Workflow_Parameters.yaml
 
 
   displayName:                        "Launch Jobs - DBX by Databricks Lab"
