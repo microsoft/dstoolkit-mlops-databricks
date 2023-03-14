@@ -35,7 +35,7 @@ resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2022-12
 
   }
   sku: {
-    name: 'standard'
+    name: 'Enterprise'
 
   }
   
