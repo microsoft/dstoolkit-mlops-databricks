@@ -255,7 +255,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            true
   env:
-    ARM_CLIENT_ID:                    $(auth_tokens.MANAGED_IDENTITY_APP_ID)
+    ROOT_USER_FOLDER:               $(auth_tokens.MANAGED_IDENTITY_APP_ID)
     ENVIRONMENT:                      ${{ parameters.Environment }}
     DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
