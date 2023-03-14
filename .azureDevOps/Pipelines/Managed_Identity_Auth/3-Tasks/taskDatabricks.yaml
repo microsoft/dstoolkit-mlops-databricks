@@ -112,7 +112,22 @@ steps:
   name:         "auth_tokens"
   env:  
     MI_VMSS_NAME: ${{ parameters.MI_VMSS_NAME }}
-    
+
+
+#################################/
+##  RBAC Assignments                                           
+#################################/
+- task:                               AzureCLI@2
+  displayName:                        RBAC Assignments
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateRoleBasedAccess.sh
+    failOnStandardError:              true
+  env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
+    RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME) 
 
 #################################/
 ##  Generate Python Wheel Files                                            
