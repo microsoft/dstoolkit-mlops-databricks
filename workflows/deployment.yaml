@@ -239,6 +239,15 @@ environments:
         libraries: [ 
           whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
         ]
+
+      - name: NOTEBOOK_TEST
+        existing_cluster_id: "0313-233404-e5bphws7"
+        notebook_task:
+          notebook_path: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
+        libraries: [ 
+          whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+        ]
       
       - name: MODEL_TRAINING
         <<: *dev-cluster-config
