@@ -313,6 +313,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            ${{ parameters.enableRepoPull }}
   env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
     DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)
