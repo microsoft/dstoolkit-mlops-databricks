@@ -276,7 +276,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            true
   env:  
-    RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME) 
+    DATABRICKS_AAD_TOKEN:            $(authtokens.DBKRS_AAD_TOKEN)
     DATABRICKS_HOST:                  $(DynamicEnvVariables.DATABRICKS_HOST)   
 
 

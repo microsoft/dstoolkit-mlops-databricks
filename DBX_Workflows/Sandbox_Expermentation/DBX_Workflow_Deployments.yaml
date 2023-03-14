@@ -84,9 +84,9 @@ environments:
         spark_python_task:
           python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
           parameters: ["{{var['ML_PIPELINE_FILES']['NOTEBOOK_TEST']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['NOTEBOOK_TEST']['PARAMETERS']['FILE']}}"]
-        libraries: [ 
-          whl: "{{var['ML_PIPELINE_FILES']['NOTEBOOK_TEST']['WHL_PATH']}}" 
-        ]
+        #libraries: [ 
+        #  whl: "{{var['ML_PIPELINE_FILES']['NOTEBOOK_TEST']['WHL_PATH']}}" 
+        #]
       
       - name: MODEL_TRAINING
         <<: *dev-cluster-config
