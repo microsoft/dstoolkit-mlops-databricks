@@ -54,10 +54,8 @@ display(namespace)
 
 workspace_name = "amlsandbox-eco3"
 resource_group = "databricks-sandbox-rg"
- 
-subscription_id = "2a834239-8f89-42e1-8cf1-c3c10090f51c"
-tenant_id = "16b3c013-d300-468d-ac64-7eda0820b6d3"
 
+subscription_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="SUBSCRIPTION_ID")
 DBX_SP_Client_Secret = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret")
 DBX_SP_ClientID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_ClientID")
 DBX_SP_TenantID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_TenantID")
@@ -90,6 +88,15 @@ ws = Workspace(
         )
 
 print(ws)
+
+aml_uri = ws.get_mlflow_tracking_uri()
+print(aml_uri)
+
+
+import mlflow
+mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()) 
+print("MLflow tracking URI to point to your Azure ML Workspace setup complete.")
+
 # COMMAND ----------
 if namespace.env is not None:
     display(namespace.env)

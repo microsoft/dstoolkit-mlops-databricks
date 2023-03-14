@@ -180,6 +180,7 @@ steps:
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
     RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME)
+    SUBSCRIPTION_ID:                  $(DynamicEnvVariables.SUBSCRIPTION_ID)
 
 
 #################################/
@@ -197,9 +198,10 @@ steps:
   enabled:                            true
   env:
     AZ_KEYVAULT_NAME:                 $(DynamicEnvVariables.AZ_KEYVAULT_NAME)
-    ARM_CLIENT_ID:                    "JUST_AN_EXAMPLE"
-    ARM_CLIENT_SECRET:                "JUST_AN_EXAMPLE"
-    ARM_TENANT_ID:                    "JUST_AN_EXAMPLE"
+    ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
+    ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
+    ARM_TENANT_ID:                    $(ARM_TENANT_ID)
+    SUBSCRIPTION_ID:                  $(DynamicEnvVariables.SUBSCRIPTION_ID)
 
 
 #################################/
