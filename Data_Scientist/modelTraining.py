@@ -1,5 +1,10 @@
 # Databricks notebook source
 
+
+# COMMAND ----------
+%pip install azureml-mlflow
+%pip install azureml-core
+%pip install azure-ai-ml
 # COMMAND ----------
 
 # Modules.
@@ -23,11 +28,68 @@ import pathlib
 import sys
 from argparse import ArgumentParser
 
+# COMMAND ----------
+# AML Connection Models 
+
+import mlflow
+import mlflow.azureml
+import azureml.mlflow
+import azureml.core
+from azureml.core import Workspace
+from azureml.mlflow import get_portal_url
+from mlflow.deployments import get_deploy_client
+from azure.identity import DefaultAzureCredential
+import os
+from azure.ai.ml import MLClient
+from azure.ai.ml.entities import Model
+from azure.ai.ml.constants import AssetTypes
+import datetime
+from azure.ai.ml.entities import ManagedOnlineEndpoint, ManagedOnlineDeployment
 p = ArgumentParser()
 p.add_argument("--env", required=False, type=str)
 namespace = p.parse_known_args(sys.argv[1:])[0]
 display(namespace)
+# COMMAND ----------
+# Set Up AML MLFlow 
 
+workspace_name = "amlsandbox-eco3"
+resource_group = "databricks-sandbox-rg"
+ 
+subscription_id = "2a834239-8f89-42e1-8cf1-c3c10090f51c"
+tenant_id = "16b3c013-d300-468d-ac64-7eda0820b6d3"
+
+DBX_SP_Client_Secret = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret")
+DBX_SP_ClientID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_ClientID")
+DBX_SP_TenantID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_TenantID")
+
+print(f"Test: {DBX_SP_ClientID}")
+print(f"Test: {DBX_SP_Client_Secret}")
+print(DBX_SP_TenantID)
+
+os.environ["AZURE_CLIENT_ID"] = DBX_SP_ClientID
+os.environ["AZURE_CLIENT_SECRET"] = DBX_SP_Client_Secret
+os.environ["AZURE_TENANT_ID"] = DBX_SP_TenantID
+
+
+
+# COMMAND ----------
+# Use AzureML SDK To Authenticate 
+
+from azureml.core.authentication import ServicePrincipalAuthentication
+
+svc_pr = ServicePrincipalAuthentication(
+                        tenant_id=DBX_SP_TenantID,
+                        service_principal_id= DBX_SP_ClientID,
+                        service_principal_password=DBX_SP_Client_Secret)
+
+ws = Workspace(
+        subscription_id=subscription_id,
+        resource_group=resource_group,
+        workspace_name=workspace_name,
+        auth=svc_pr
+        )
+
+print(ws)
 # COMMAND ----------
 if namespace.env is not None:
     display(namespace.env)
