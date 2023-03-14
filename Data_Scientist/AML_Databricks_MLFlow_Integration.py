@@ -218,10 +218,6 @@ train_diabetes(data, 0.01, 0.75)
 
 # COMMAND ----------
 
-train_diabetes(data, 0.01, 0.01)
-
-# COMMAND ----------
-
 
 train_diabetes(data, 0.01, .5)
 
