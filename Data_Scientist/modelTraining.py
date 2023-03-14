@@ -1,12 +1,5 @@
 # Databricks notebook source
 
-
-# COMMAND ----------
-%pip install azureml-mlflow
-%pip install azureml-core
-%pip install azure-ai-ml
-# COMMAND ----------
-
 # Modules.
 
 from pyspark.sql import *
