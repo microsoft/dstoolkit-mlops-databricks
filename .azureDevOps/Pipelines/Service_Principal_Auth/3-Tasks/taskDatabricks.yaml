@@ -63,7 +63,7 @@ steps:
 ##  Authenticate/Login To Azure                                               
 #################################/
 # 1) Create Service Principal 2) In ADO Create Service Connection "Manually", linking it to the SP you created
-# 3) I have named my "Service Connection", "DBX_ADO_DSTOOLKIT"
+# 3) I have named my "Service Connection", "DBX_ADO_DSTOOLKIT".
 - task:                               AzureCLI@2
   displayName:                        Azure Login
   inputs:
