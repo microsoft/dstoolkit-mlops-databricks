@@ -10,7 +10,7 @@ astor==0.8.1
 astunparse==1.6.3
 async-generator==1.10
 attrs==21.2.0
-azure-core==1.22.1
+azure-core
 azure-cosmos==4.2.0
 backcall==0.2.0
 backports.entry-points-selectable==1.1.1
@@ -66,3 +66,5 @@ zipp==3.6.0
 azureml-mlflow==1.49.0
 azureml-core==1.49.0
 azure-ai-ml==1.4.0
+
+

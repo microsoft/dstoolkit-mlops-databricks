@@ -38,7 +38,7 @@ environments:
   Ciaran_Sandbox:
     workflows:
       - name: FEATURE_ENGINEERING_CIARAN
-        existing_cluster_id: "0314-135724-hsknmfut"
+        existing_cluster_id: "0317-114529-qn2ltisd"
         spark_python_task:
           python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
           parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
@@ -47,7 +47,7 @@ environments:
         #]
 
       - name: MODEL_TRAINING_CIARAN
-        existing_cluster_id: "0314-135724-hsknmfut"
+        existing_cluster_id: "0317-114529-qn2ltisd"
         spark_python_task:
           python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['FILE_PATH']}}"
           parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['FILE']}}"]
