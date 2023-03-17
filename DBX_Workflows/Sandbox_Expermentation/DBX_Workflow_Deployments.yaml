@@ -45,3 +45,12 @@ environments:
         #libraries: [ 
         #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
         #]
+
+      - name: MODEL_TRAINING_CIARAN
+        existing_cluster_id: "0314-135724-hsknmfut"
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['FILE']}}"]
+        #libraries: [ 
+        #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+        #]

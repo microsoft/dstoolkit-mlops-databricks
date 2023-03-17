@@ -1,5 +1,10 @@
 # Databricks notebook source
 
+# COMMAND ----------
+%pip install azureml-mlflow
+%pip install azureml-core
+%pip install azure-ai-ml
+# COMMAND ----------
 # Modules.
 
 from pyspark.sql import *
@@ -21,9 +26,22 @@ import pathlib
 import sys
 from argparse import ArgumentParser
 
-# COMMAND ----------
+import mlflow
+import mlflow.azureml
+import azureml.mlflow
+import azureml.core
+from azureml.core import Workspace
+from azureml.mlflow import get_portal_url
+from mlflow.deployments import get_deploy_client
+from azure.identity import DefaultAzureCredential
+import os
+from azure.ai.ml import MLClient
+from azure.ai.ml.entities import Model
+from azure.ai.ml.constants import AssetTypes
+import datetime
+from azure.ai.ml.entities import ManagedOnlineEndpoint, ManagedOnlineDeployment
 
-# Demo Test 
+# COMMAND ----------
 
 p = ArgumentParser()
 p.add_argument("--env", required=False, type=str)

@@ -12,7 +12,7 @@ ML_PIPELINE_FILES:
         WHL_PATH: 'file://Data_Scientist/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
         PARAMETERS:
             ENV:  '--env'
-            FILE: 'file:fuse://workflows/jobConfigs/jobConfigs.yaml'
+            FILE: 'file:fuse://DBX_Workflows/Sandbox_Expermentation/DBX_Workflow_Parameters.yaml'
             EXPERIMENT_NAME: '/Shared/e2e_mlops/dbx/e2e_mlops'
 
     MODEL_INFERENCE:
