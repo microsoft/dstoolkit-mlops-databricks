@@ -1,10 +1,6 @@
 # Databricks notebook source
 
-# COMMAND ----------
-%pip install azureml-mlflow
-%pip install azureml-core
-%pip install azure-ai-ml
-# COMMAND ----------
+
 # Modules.
 
 from pyspark.sql import *
@@ -181,7 +177,7 @@ os.environ["AZURE_TENANT_ID"] = DBX_SP_TenantID
 
 # COMMAND ----------
 
-# Use AzureML SDK To Authenticate 
+# Use AzureML SDK To Authenticate. 
 
 from azureml.core.authentication import ServicePrincipalAuthentication
 
