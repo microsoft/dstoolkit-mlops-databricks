@@ -54,3 +54,13 @@ environments:
         #libraries: [ 
         #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
         #]
+
+      - name: DEMO_DIABETES_CIARAN
+        existing_cluster_id: "0317-114529-qn2ltisd"
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['FILE']}}"]
+        #libraries: [ 
+        #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+        #]
+

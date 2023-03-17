@@ -1,10 +1,5 @@
 # Databricks notebook source
 # COMMAND ----------
-%pip install azureml-mlflow
-%pip install azureml-core
-%pip install azure-ai-ml
-# COMMAND ----------
-
 import mlflow
 import mlflow.azureml
 import azureml.mlflow
@@ -197,7 +192,7 @@ def train_diabetes(data, in_alpha, in_l1_ratio):
         mlflow.log_metric("mae", mae)
         mlflow.sklearn.log_model(lr, "model")
         modelpath = "/dbfs/mlflow/test_diabetes/model-%f-%f" % (alpha, l1_ratio)
-        mlflow.sklearn.save_model(lr, modelpath)
+        #mlflow.sklearn.save_model(lr, modelpath)
         
         # Call plot_enet_descent_path
         image = plot_enet_descent_path(X, y, l1_ratio)
@@ -206,7 +201,9 @@ def train_diabetes(data, in_alpha, in_l1_ratio):
         mlflow.log_artifact("ElasticNet-paths.png")
 
 # COMMAND ----------
-%fs rm -r dbfs:/mlflow/test_diabetes
+
+run = os.system("%fs rm -r dbfs:/mlflow/test_diabetes")
+#%fs rm -r dbfs:/mlflow/test_diabetes
 
 # COMMAND ----------
 
