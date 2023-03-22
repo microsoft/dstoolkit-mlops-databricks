@@ -56,6 +56,12 @@
       },
       "storageAccountName": {
         "value": "adlspreprod"
+      },
+      "amlwsname": {
+        "value": "amlpreprd"
+      },
+      "amlblobname": {
+        "value": "amlblobpreprod"
       }
     }
   }

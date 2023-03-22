@@ -111,6 +111,3 @@ stages:
 #          branchName:                     $(Build.SourceBranchName)
 #          updateFolder:                   DevelopmentFolder 
 
-
-# Implement a condition to ignore a azure resource deployment if Infra folder is unchanged. 
-# https://pumpingco.de/blog/run-an-azure-pipelines-job-only-if-source-code-has-changed/

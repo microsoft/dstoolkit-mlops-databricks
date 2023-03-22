@@ -1,4 +1,3 @@
-
 parameters:
   azureSubscription:                  String
   SubscriptionId:                     String
@@ -9,12 +8,16 @@ parameters:
   branchName:                         String
 
 
+
 steps:
 
 - task:     UsePythonVersion@0
   inputs:
     versionSpec: '3.8'
 
+#################################/
+##  Dependencies/ Install                                              
+#################################/
 - bash: |
     $(buildPython.pythonLocation)\python -m pip install databricks-cli --upgrade
     sudo apt update && sudo apt install jq -y
@@ -63,7 +66,7 @@ steps:
 ##  Authenticate/Login To Azure                                               
 #################################/
 # 1) Create Service Principal 2) In ADO Create Service Connection "Manually", linking it to the SP you created
-# 3) I have named my "Service Connection", "DBX_ADO_DSTOOLKIT"
+# 3) I have named my "Service Connection", "DBX_ADO_DSTOOLKIT".
 - task:                               AzureCLI@2
   displayName:                        Azure Login
   inputs:
@@ -249,7 +252,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            true
   env:
-    ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
+    ROOT_USER_FOLDER:                 $(ARM_CLIENT_ID)
     ENVIRONMENT:                      ${{ parameters.Environment }}
     DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
@@ -271,7 +274,8 @@ steps:
   enabled:                            true
   env:  
     RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME) 
-    DATABRICKS_HOST:                  $(DynamicEnvVariables.DATABRICKS_HOST)   
+    DATABRICKS_HOST:                  $(DynamicEnvVariables.DATABRICKS_HOST)  
+    DATABRICKS_AAD_TOKEN:             $(auth_tokens.DBRKS_BEARER_TOKEN)
 
 
 #################################/
@@ -281,7 +285,9 @@ steps:
       echo $DATABRICKS_TOKEN
       pip install dbx
       dbx configure --enable-inplace-jinja-support
-      dbx deploy --deployment-file workflows/deployment.yaml MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=workflows/jobConfigs/jobConfigs.yaml
+      
+      dbx deploy --deployment-file DBX_Workflows/CICD_Deployments/DBX_Workflow_Deployments.yaml \
+      MULTI_TASK -e Sandbox --jinja-variables-file=DBX_Workflows/CICD_Deployments/DBX_Workflow_Parameters.yaml
       
   displayName:                        "Launch Jobs - DBX by Databricks Lab"
   env:
@@ -303,6 +309,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            ${{ parameters.enableRepoPull }}
   env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
     DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)

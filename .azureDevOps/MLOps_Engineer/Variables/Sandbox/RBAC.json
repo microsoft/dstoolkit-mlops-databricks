@@ -12,7 +12,8 @@
                                  "roles":  [
                                                "Contributor",
                                                "Key Vault Administrator",
-                                               "Storage Blob Data Contributor"
+                                               "Storage Blob Data Contributor",
+                                               "AzureML Data Scientist"
                                            ],
                                  "roleBeneficiaryObjID":  "587604dd-f10d-450b-8238-8d6a0a75371d",
                                  "Description":  "Databricks SPN",

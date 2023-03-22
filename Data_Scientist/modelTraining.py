@@ -1,6 +1,5 @@
 # Databricks notebook source
 
-# COMMAND ----------
 
 # Modules.
 
@@ -22,11 +21,30 @@ import yaml
 import pathlib
 import sys
 from argparse import ArgumentParser
+# COMMAND ----------
+import mlflow
+import mlflow.azureml
+import azureml.mlflow
+import azureml.core
+from azureml.core import Workspace
+from azureml.mlflow import get_portal_url
+from mlflow.deployments import get_deploy_client
+from azure.identity import DefaultAzureCredential
+import os
+from azure.ai.ml import MLClient
+from azure.ai.ml.entities import Model
+from azure.ai.ml.constants import AssetTypes
+import datetime
+from azure.ai.ml.entities import ManagedOnlineEndpoint, ManagedOnlineDeployment
+
+# COMMAND ----------
 
 p = ArgumentParser()
 p.add_argument("--env", required=False, type=str)
 namespace = p.parse_known_args(sys.argv[1:])[0]
 display(namespace)
+
+
 
 # COMMAND ----------
 if namespace.env is not None:
@@ -138,3 +156,70 @@ with mlflow.start_run() as run:
   )
 
 # COMMAND ----------
+
+# Set Up AML MLFlow 
+
+workspace_name = "amlsandbox-eco3"
+resource_group = "databricks-sandbox-rg"
+
+subscription_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="SUBSCRIPTION_ID")
+DBX_SP_Client_Secret = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret")
+DBX_SP_ClientID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_ClientID")
+DBX_SP_TenantID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_TenantID")
+
+print(f"Test: {DBX_SP_ClientID}")
+print(f"Test: {DBX_SP_Client_Secret}")
+print(DBX_SP_TenantID)
+
+os.environ["AZURE_CLIENT_ID"] = DBX_SP_ClientID
+os.environ["AZURE_CLIENT_SECRET"] = DBX_SP_Client_Secret
+os.environ["AZURE_TENANT_ID"] = DBX_SP_TenantID
+
+# COMMAND ----------
+
+# Use AzureML SDK To Authenticate. 
+
+from azureml.core.authentication import ServicePrincipalAuthentication
+
+svc_pr = ServicePrincipalAuthentication(
+                        tenant_id=DBX_SP_TenantID,
+                        service_principal_id= DBX_SP_ClientID,
+                        service_principal_password=DBX_SP_Client_Secret)
+
+ws = Workspace(
+        subscription_id=subscription_id,
+        resource_group=resource_group,
+        workspace_name=workspace_name,
+        auth=svc_pr
+        )
+
+print(ws)
+
+aml_uri = ws.get_mlflow_tracking_uri()
+print(aml_uri)
+
+
+import mlflow
+mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()) 
+print("MLflow tracking URI to point to your Azure ML Workspace setup complete.")
+
+mlflow.end_run()
+mlflow.set_experiment("/Shared/dbxDevelopment") 
+with mlflow.start_run():
+    # Log mlflow attributes for mlflow UI
+    mlflow.log_param("alpha", "test")
+    mlflow.log_param("l1_ratio", "random")
+    mlflow.log_metric("rmse", 3)
+    mlflow.sklearn.log_model(pyfunc_model, "model")
+
+# COMMAND ----------
+
+#mlflow.sklearn.save_model(lr, "model.pkl")
+#from azureml.core import Model
+#model = Model.register(workspace=ws, 
+#    model_name='nyc-taxi-fare',
+#    model_path='model.pkl', # local path
+#    description='Model to predict taxi fares in NYC.')
+
+# COMMAND ----------
+

@@ -100,3 +100,4 @@ else
         --name $SECRET_NAME \
         --value $SECRET_VALUE
 fi
+

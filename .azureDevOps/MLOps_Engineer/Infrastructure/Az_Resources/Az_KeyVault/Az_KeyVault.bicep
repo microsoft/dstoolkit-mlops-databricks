@@ -20,7 +20,7 @@ resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
       virtualNetworkRules: []
     }
     enableRbacAuthorization: true // if this is false then you cannot use RBAC assignments, on acl (below). If true acl (below) is ignored
-    enableSoftDelete: false
+    enableSoftDelete: true
     enabledForTemplateDeployment: true
     accessPolicies: [
         {
@@ -56,3 +56,4 @@ resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
 }
 
 output azKeyVaultName string = azKeyVault.name
+output azKeyVaultID string = azKeyVault.id

@@ -1,0 +1,62 @@
+custom:
+
+  # Cluster configs for each environment
+  default-cluster-spec: &default-cluster-spec
+    spark_version: '11.3.x-cpu-ml-scala2.12'
+    node_type_id: 'Standard_DS3_v2' 
+    driver_node_type_id: 'Standard_DS3_v2'  
+    num_workers: 1
+    # To reduce start up time for each job, it is advisable to use a cluster pool. To do so involves supplying the following
+    # two fields with a pool_id to acquire both the driver and instances from.
+    # If driver_instance_pool_id and instance_pool_id are set, both node_type_id and driver_node_type_id CANNOT be supplied.
+    # As such, if providing a pool_id for driver and worker instances, please ensure that node_type_id and driver_node_type_id are not present
+#    driver_instance_pool_id: '0617-151415-bells2-pool-hh7h6tjm'
+#    instance_pool_id: '0617-151415-bells2-pool-hh7h6tjm'
+
+  dev-cluster-config: &dev-cluster-config
+    new_cluster:
+      <<: *default-cluster-spec
+
+  staging-cluster-config: &staging-cluster-config
+    new_cluster:
+      <<: *default-cluster-spec
+
+  prod-cluster-config: &prod-cluster-config
+    new_cluster:
+      <<: *default-cluster-spec
+            
+
+
+build:
+  no_build: true
+
+environments:            
+  Ciaran_Sandbox:
+    workflows:
+      - name: FEATURE_ENGINEERING_CIARAN
+        existing_cluster_id: "0317-114529-qn2ltisd"
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING_CIARAN']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING_CIARAN']['PARAMETERS']['FILE']}}"]
+        #libraries: [ 
+        #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+        #]
+
+      - name: MODEL_TRAINING_CIARAN
+        existing_cluster_id: "0317-114529-qn2ltisd"
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING_CIARAN']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_TRAINING_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING_CIARAN']['PARAMETERS']['FILE']}}"]
+        #libraries: [ 
+        #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+        #]
+
+      - name: DEMO_DIABETES_CIARAN
+        existing_cluster_id: "0317-114529-qn2ltisd"
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['FILE']}}"]
+        #libraries: [ 
+        #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+        #]
+

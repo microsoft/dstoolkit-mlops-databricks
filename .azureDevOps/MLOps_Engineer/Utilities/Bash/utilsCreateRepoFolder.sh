@@ -5,7 +5,7 @@ JSON=$( jq '.' .azureDevOps/MLOps_Engineer/Variables/$ENVIRONMENT/Repos.json)
 
 
 echo "User Folders In Databricks Repos Will Be Described Using An Email Address... e.g Ciaranh@Microsoft.com  "
-echo "The DevOps Agent SP Which Is Also A User, However Its Databricks Repo User Folder is Named After The AppID: $ARM_CLIENT_ID"
+echo "The DevOps Agent SP Which Is Also A User, However Its Databricks Repo User Folder is Named After The AppID: $ROOT_USER_FOLDER"
 echo "All Folders Defined In The JSON Parameters Folder Will Be Appended To /Repos/<AppId>/"
 
 for row in $(echo "${JSON}" | jq -r '.Repo_Configuration[] | @base64'); do
@@ -16,7 +16,7 @@ for row in $(echo "${JSON}" | jq -r '.Repo_Configuration[] | @base64'); do
     JSON_STRING=$( jq -n -c \
                     --arg url "$(_jq '.url')" \
                     --arg pr "$(_jq '.provider')" \
-                    --arg pa "/Repos/$ARM_CLIENT_ID/$(_jq '.path')"  \
+                    --arg pa "/Repos/$ROOT_USER_FOLDER/$(_jq '.path')"  \
                     '{url: $url,
                     provider: $pr,
                     path: $pa}' )

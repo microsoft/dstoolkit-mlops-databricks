@@ -1,4 +1,3 @@
-
 parameters:
   azureSubscription:                  String
   SubscriptionId:                     String
@@ -9,7 +8,6 @@ parameters:
   branchName:                         String
   AuthenticationType:                 String
   MI_VMSS_NAME:                       String
-
 
 steps:
 
@@ -59,7 +57,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
     scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
     failOnStandardError:              false
-  enabled:                            false
+  enabled:                            true
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
 
@@ -112,7 +110,22 @@ steps:
   name:         "auth_tokens"
   env:  
     MI_VMSS_NAME: ${{ parameters.MI_VMSS_NAME }}
-    
+
+
+#################################/
+##  RBAC Assignments                                           
+#################################/
+- task:                               AzureCLI@2
+  displayName:                        RBAC Assignments
+  inputs:
+    scriptType:                       bash
+    scriptLocation:                   scriptPath
+    azureSubscription:                ${{ parameters.azureSubscription }}
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateRoleBasedAccess.sh
+    failOnStandardError:              true
+  env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
+    RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME) 
 
 #################################/
 ##  Generate Python Wheel Files                                            
@@ -145,7 +158,6 @@ steps:
     RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME)
 
 
-
 #################################/
 ##  Secret Scopes                                           
 #################################/
@@ -165,10 +177,11 @@ steps:
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
     RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME)
+    SUBSCRIPTION_ID:                  $(DynamicEnvVariables.SUBSCRIPTION_ID)
 
 
 #################################/
-##  Create KV Secrets                                          
+##  Create KV Secrets - Only Required for AML Integration                                      
 #################################/
 
 - task:                               AzureCLI@2
@@ -182,9 +195,10 @@ steps:
   enabled:                            true
   env:
     AZ_KEYVAULT_NAME:                 $(DynamicEnvVariables.AZ_KEYVAULT_NAME)
-    ARM_CLIENT_ID:                    "JUST_AN_EXAMPLE"
-    ARM_CLIENT_SECRET:                "JUST_AN_EXAMPLE"
-    ARM_TENANT_ID:                    "JUST_AN_EXAMPLE"
+    ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
+    ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
+    ARM_TENANT_ID:                    $(ARM_TENANT_ID)
+    SUBSCRIPTION_ID:                  $(DynamicEnvVariables.SUBSCRIPTION_ID)
 
 
 #################################/
@@ -238,7 +252,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            true
   env:
-    ARM_CLIENT_ID:                    $(auth_tokens.MANAGED_IDENTITY_APP_ID)
+    ROOT_USER_FOLDER:                 $(auth_tokens.MANAGED_IDENTITY_APP_ID)
     ENVIRONMENT:                      ${{ parameters.Environment }}
     DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
@@ -259,7 +273,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            true
   env:  
-    RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME) 
+    DATABRICKS_AAD_TOKEN:             $(auth_tokens.DBRKS_BEARER_TOKEN)
     DATABRICKS_HOST:                  $(DynamicEnvVariables.DATABRICKS_HOST)   
 
 
@@ -269,15 +283,18 @@ steps:
 - bash: |
       echo $DATABRICKS_TOKEN
       pip install dbx
+
       dbx configure --enable-inplace-jinja-support
-      dbx deploy --deployment-file workflows/deployment.yaml MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=workflows/jobConfigs/jobConfigs.yaml
+
+      dbx deploy --deployment-file DBX_Workflows/CICD_Deployments/DBX_Workflow_Deployments.yaml \
+      MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=DBX_Workflows/CICD_Deployments/DBX_Workflow_Parameters.yaml
 
 
   displayName:                        "Launch Jobs - DBX by Databricks Lab"
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
     DATABRICKS_HOST:                  $(DynamicEnvVariables.DATABRICKS_HOST)   
-    DATABRICKS_TOKEN:                 $(create_pat_token.DATABRICKS_TOKEN)
+    DATABRICKS_TOKEN:                 $(auth_tokens.DBRKS_BEARER_TOKEN)
 
 
 #################################/
@@ -293,6 +310,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            ${{ parameters.enableRepoPull }}
   env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
     DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)

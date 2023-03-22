@@ -17,6 +17,8 @@ pr:                                       none
 pool:
   name:                                'vmss-linux-pool'
 
+variables:
+- group:                                    'ADO-Secrets'
 
 parameters:
 
@@ -60,7 +62,7 @@ stages:
         parameters:
           Environment:                    Sandbox
           azureSubscription:              ${{ parameters.azureSubscription }}
-          enableRepoPull:                 false
+          enableRepoPull:                 true # Should really be false 
           branchName:                     main      
           MI_VMSS_NAME:                   ${{ parameters.MI_VMSS_NAME }}
   

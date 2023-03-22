@@ -15,3 +15,6 @@ scikit-learn>=0.24.1
 PyArrow>=0.15.1
 databricks-cli==0.17.0
 azure-cli==2.40.0
+azureml-mlflow==1.49.0
+azureml-core==1.49.0
+azure-ai-ml==1.4.0

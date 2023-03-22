@@ -15,6 +15,8 @@ param TemplateParamFilePath string
 param TemplateFilePath string
 param AZURE_DATABRICKS_APP_ID string
 param MANAGEMENT_RESOURCE_ENDPOINT string 
+param amlblobname string 
+param amlwsname string 
 
 // ################################################################################################################################################################//
 //                                                                       Create Resource Group                                                                    
@@ -28,29 +30,13 @@ resource azResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 
 // ################################################################################################################################################################//
-//                                                                       Module for Creating Azure Databricks Workspace
-// Outputs AzDatabricks Workspace ID, which is used when Assigning RBACs
-// ################################################################################################################################################################//
-module azDatabricks '../Az_Resources/Az_Databricks/Az_Databricks.bicep' =  {
-  dependsOn: [
-    azResourceGroup
-  ]
-  scope: resourceGroup(resourceGroupName)
-  name: 'azDatabricks' 
-  params: {
-    location: location
-    workspaceName: workspaceName
-    pricingTier: pricingTier
-  }
-}
-
-// ################################################################################################################################################################//
 //                                                                  KEY VAULT - SELECT KV                                                                                //
 // ################################################################################################################################################################//
 
 module azKeyVault '../Az_Resources/Az_KeyVault/Az_KeyVault.bicep' = {
   dependsOn: [
-    azDatabricks
+    azResourceGroup
+    
   ]
   scope: azResourceGroup
   name: 'azKeyVault'
@@ -67,7 +53,6 @@ module azKeyVault '../Az_Resources/Az_KeyVault/Az_KeyVault.bicep' = {
 module azDataLake '../Az_Resources/Az_DataLake/Az_DataLake.bicep' =  {
   dependsOn: [
     azResourceGroup
-    azDatabricks
   ]
   scope: resourceGroup(resourceGroupName)
   name: 'azDataLake' 
@@ -77,7 +62,6 @@ module azDataLake '../Az_Resources/Az_DataLake/Az_DataLake.bicep' =  {
     location: location
     containerNames: containerNames
     ShouldCreateContainers: ShouldCreateContainers
-    azDatabricksWorkspaceID: azDatabricks.outputs.azDatabricksWorkspaceID 
     workspaceName: workspaceName
     resourceGroupName: resourceGroupName
     azKeyVaultName: azKeyVault.outputs.azKeyVaultName
@@ -86,11 +70,10 @@ module azDataLake '../Az_Resources/Az_DataLake/Az_DataLake.bicep' =  {
   }
 }
 
+
 module logAnalytics '../Az_Resources/Az_AppInsights/Az_AppInsights.bicep' = {
   dependsOn: [
     azResourceGroup
-    azDatabricks
-    azDataLake
   ]
   scope: resourceGroup(resourceGroupName)
   name: 'logAnalytics'
@@ -100,6 +83,50 @@ module logAnalytics '../Az_Resources/Az_AppInsights/Az_AppInsights.bicep' = {
     appinsightname: appInsightswsname
   }
 }
+// ################################################################################################################################################################//
+//                                                                       Module for Creating Azure Machine Learning Workspace
+// Outputs AzDatabricks Workspace ID, which is used when Assigning RBACs
+// ################################################################################################################################################################//
+module azMachineLearning'../Az_Resources/Az_Machine_Learning/Az_MachineLearning.bicep' =  {
+  dependsOn: [
+    logAnalytics
+    azDataLake
+    azKeyVault
+
+  ]
+  scope: resourceGroup(resourceGroupName)
+  name: 'amlws' 
+  params: {
+    location: location
+    azAppInsightsID: logAnalytics.outputs.azAppInsightsID
+    azKeyVaultID: azKeyVault.outputs.azKeyVaultID
+    amlwsname: amlwsname
+    amlblobname: amlblobname
+
+
+
+  }
+}
+
+// ################################################################################################################################################################//
+//                                                                       Module for Creating Azure Databricks Workspace
+// Outputs AzDatabricks Workspace ID, which is used when Assigning RBACs
+// ################################################################################################################################################################//
+module azDatabricks '../Az_Resources/Az_Databricks/Az_Databricks.bicep' =  {
+  dependsOn: [
+    azMachineLearning
+  ]
+  scope: resourceGroup(resourceGroupName)
+  name: 'azDatabricks' 
+  params: {
+    location: location
+    workspaceName: workspaceName
+    pricingTier: pricingTier
+    azMachineLearningWSId: azMachineLearning.outputs.azMachineLearningWSId
+  }
+}
+
+
 
 output azDatabricksWorkspaceID string = azDatabricks.outputs.azDatabricksWorkspaceID 
 

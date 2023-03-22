@@ -6,7 +6,6 @@ param location string
 param containerNames array
 param ShouldCreateContainers bool = true
 param storageAccountName string
-param azDatabricksWorkspaceID string
 param workspaceName string
 param resourceGroupName string
 param azKeyVaultName string
@@ -16,6 +15,7 @@ param azKeyVaultName string
 //                                                                       Define Variables                                                                    
 // ################################################################################################################################################################//
 var varstorageAccountName = '${storageAccountName}${substring(uniqueString(resourceGroup().id), 0, 4)}'
+
 
 
 // ################################################################################################################################################################//
@@ -54,7 +54,7 @@ resource azStorage 'Microsoft.Storage/storageAccounts@2021-08-01' =  {
 // ################################################################################################################################################################//
 // output storagekey string = listKeys(resourceId('Microsoft.Storage/storageAccounts', name), '2021-08-01').keys[0].value
   output varstorageAccountName string = azStorage.name
-  output azDatabricksWorkspaceID string = azDatabricksWorkspaceID
+  output varstorageAccountID string = azStorage.id
   output workspaceName string = workspaceName
   output resourceGroupName string = resourceGroupName
   output azKeyVaultName string = azKeyVaultName

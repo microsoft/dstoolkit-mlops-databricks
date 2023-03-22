@@ -3,31 +3,36 @@
         "Sandbox": {
             "profile": "Sandbox",
             "storage_type": "mlflow",
-            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops",
-            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx"
+            "properties": {
+                "workspace_directory": "/Shared/cicd_workflow/sandbox",
+                "artifact_location": "dbfs:/Shared/cicd_workflow/sandbox"
+            }
+        },
+        "Ciaran_Sandbox": {
+            "profile": "Ciaran_Sandbox",
+            "workspace_dir": "/Shared/ciaran_sandbox",
+            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx_ciaran_experiments"
+        }
         },
         "Development": {
             "profile": "Development",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/e2e_mlops/dbx/e2e_mlops",
-                "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx"
+                "workspace_directory": "/Shared/cicd_workflow/dev",
+                "artifact_location": "dbfs:/Shared/cicd_workflow/dev"
             }
         },
         "UAT": {
             "profile": "UAT",
-            "storage_type": "mlflow",
-            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops",
-            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx"
+            "workspace_dir": "/Shared/cicd_workflow/uat",
+            "artifact_location": "dbfs:/Shared/cicd_workflow/uat"
         },
         "Production": {
             "profile": "Production",
-            "storage_type": "mlflow",
-            "workspace_dir": "/Shared/e2e_mlops/dbx/e2e_mlops",
-            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx"
-        }
-    },
-    "inplace_jinja_support": true,
-    "failsafe_cluster_reuse_with_assets": false,
-    "context_based_upload_for_execute": false
+            "workspace_dir": "/Shared/cicd_workflow/prod",
+            "artifact_location": "dbfs:/Shared/cicd_workflow/prod"
+        },
+        "inplace_jinja_support": true,
+        "failsafe_cluster_reuse_with_assets": false,
+        "context_based_upload_for_execute": false
 }

@@ -56,7 +56,13 @@
       "value": "appinsightsdev"
     },
     "storageAccountName": {
-      "value": "adlsdev"
+      "value": "adldev"
+    },
+    "amlwsname": {
+      "value": "amldev"
+    },
+    "amlblobname": {
+      "value": "amldev"
     }
   }
 }

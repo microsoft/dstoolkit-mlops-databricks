@@ -4,24 +4,24 @@ ML_PIPELINE_FILES:
         WHL_PATH: file://Data_Scientist/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl
         PARAMETERS:
             ENV:  '--env'
-            FILE: 'file:fuse://workflows/jobConfigs/jobConfigs.yaml'
-            EXPERIMENT_NAME: '/Shared/e2e_mlops/dbx/e2e_mlops'
+            FILE: 'file:fuse://DBX_Workflows/CICD_Deployments/DBX_Workflow_Parameters.yaml'
+            EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/feauture_engineering'
 
     MODEL_TRAINING:
         FILE_PATH: file://Data_Scientist/modelTraining.py
         WHL_PATH: 'file://Data_Scientist/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
         PARAMETERS:
             ENV:  '--env'
-            FILE: 'file:fuse://workflows/jobConfigs/jobConfigs.yaml'
-            EXPERIMENT_NAME: '/Shared/e2e_mlops/dbx/e2e_mlops'
+            FILE: 'file:fuse://DBX_Workflows/CICD_Deployments/DBX_Workflow_Parameters.yaml'
+            EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/model_training'
 
     MODEL_INFERENCE:
         FILE_PATH: 'file://Data_Scientist/modelInference.py'
         WHL_PATH: 'file://Data_Scientist/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
         PARAMETERS:
             ENV:  '--env'
-            FILE: 'file:fuse://workflows/jobConfigs/jobConfigs.yaml'
-            EXPERIMENT_NAME: '/Shared/e2e_mlops/dbx/e2e_mlops'
+            FILE: 'file:fuse://DBX_Workflows/CICD_Deployments/DBX_Workflow_Parameters.yaml'
+            EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/model_inference'
 
 
 
