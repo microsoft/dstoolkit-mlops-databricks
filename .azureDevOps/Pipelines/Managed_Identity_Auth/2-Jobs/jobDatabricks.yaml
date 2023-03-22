@@ -15,8 +15,6 @@ parameters:
 jobs:                  
   - deployment:                               ${{ parameters.Environment }}
     displayName:                              ${{ parameters.Environment }}
-    #variables:
-    #  - template:                             ..\Variables\${{ parameters.Environment }}\core.yaml
     environment:                              ${{ parameters.Environment }}
     strategy:
       runOnce:
