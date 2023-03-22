@@ -1,4 +1,3 @@
-
 parameters:
   azureSubscription:                  String
   SubscriptionId:                     String
@@ -9,7 +8,6 @@ parameters:
   branchName:                         String
   AuthenticationType:                 String
   MI_VMSS_NAME:                       String
-
 
 steps:
 
@@ -160,7 +158,6 @@ steps:
     RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME)
 
 
-
 #################################/
 ##  Secret Scopes                                           
 #################################/
@@ -184,7 +181,7 @@ steps:
 
 
 #################################/
-##  Create KV Secrets                                          
+##  Create KV Secrets - Only Required for AML Integration                                      
 #################################/
 
 - task:                               AzureCLI@2

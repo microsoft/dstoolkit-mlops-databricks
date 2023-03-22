@@ -1,4 +1,3 @@
-
 parameters:
   azureSubscription:                  String
   SubscriptionId:                     String
@@ -9,12 +8,16 @@ parameters:
   branchName:                         String
 
 
+
 steps:
 
 - task:     UsePythonVersion@0
   inputs:
     versionSpec: '3.8'
 
+#################################/
+##  Dependencies/ Install                                              
+#################################/
 - bash: |
     $(buildPython.pythonLocation)\python -m pip install databricks-cli --upgrade
     sudo apt update && sudo apt install jq -y
@@ -303,6 +306,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            ${{ parameters.enableRepoPull }}
   env:
+    ENVIRONMENT:                      ${{ parameters.Environment }}
     DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)
