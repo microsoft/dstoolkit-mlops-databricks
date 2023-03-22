@@ -285,7 +285,9 @@ steps:
       echo $DATABRICKS_TOKEN
       pip install dbx
       dbx configure --enable-inplace-jinja-support
-      dbx deploy --deployment-file workflows/deployment.yaml MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=workflows/jobConfigs/jobConfigs.yaml
+      
+      dbx deploy --deployment-file DBX_Workflows/CICD_Deployments/DBX_Workflow_Deployments.yaml \
+      MULTI_TASK -e Sandbox --jinja-variables-file=DBX_Workflows/CICD_Deployments/DBX_Workflow_Parameters.yaml
       
   displayName:                        "Launch Jobs - DBX by Databricks Lab"
   env:
