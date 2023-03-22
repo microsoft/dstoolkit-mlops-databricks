@@ -57,7 +57,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
     scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
     failOnStandardError:              false
-  enabled:                            true
+  enabled:                            false
   env:
     ENVIRONMENT:                      ${{ parameters.Environment }}
 

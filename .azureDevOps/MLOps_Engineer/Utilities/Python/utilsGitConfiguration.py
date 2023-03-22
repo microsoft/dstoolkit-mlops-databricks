@@ -33,7 +33,7 @@ def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, manage
         print(response.json())
         credential = response.json()["credentials"][0]["credential_id"]
         print(f"Credential is {credential}")
-        response = requests.patch('https://' + databricksInstance + '/api/2.0/git-credentials'+ credential, headers=DBRKS_REQ_HEADERS, json=gitConfig)
+        response = requests.patch('https://' + databricksInstance + '/api/2.0/git-credentials'+ str(credential), headers=DBRKS_REQ_HEADERS, json=gitConfig)
     
     print(response.json())
 
