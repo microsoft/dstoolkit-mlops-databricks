@@ -28,7 +28,7 @@ from azure.ai.ml.entities import ManagedOnlineEndpoint, ManagedOnlineDeployment
 # COMMAND ----------
 
 model_name = 'test_model'
-model_uri = "runs:/d53ec57a17f2482ab298bbd3ee95b484/pyfunc_packaged_model"
+model_uri = "runs:/d53**/pyfunc_packaged_model"
 try:
     os.mkdir(model_name)
 except:
@@ -41,8 +41,8 @@ model_path = mlflow.tracking.artifact_utils._download_artifact_from_uri(artifact
 workspace_name = "dbxamlws"
 resource_group = "databricks-sandbox-rg"
 
-subscription_id = "2a834239-8f89-42e1-8cf1-c3c10090f51c"
-tenant_id = "16b3c013-d300-468d-ac64-7eda0820b6d3"
+subscription_id = "2a834239-****"
+tenant_id = "16**"
 
 DBX_SP_Client_Secret = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret")
 DBX_SP_ClientID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_ClientID")
