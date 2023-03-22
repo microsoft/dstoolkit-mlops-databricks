@@ -1,6 +1,6 @@
 {
     "environments": {
-        "Sandox": {
+        "Sandbox": {
             "profile": "Sandbox",
             "storage_type": "mlflow",
             "properties": {
