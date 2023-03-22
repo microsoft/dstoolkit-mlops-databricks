@@ -1,7 +1,7 @@
 
 param environment string
 param location string
-var keyVaultName = 'keyvault-${environment}-${substring(uniqueString(resourceGroup().id), 0, 4)}'
+var keyVaultName = 'keyvault-${environment}-${substring(uniqueString(resourceGroup().id), 0, 3)}'
 
 
 
