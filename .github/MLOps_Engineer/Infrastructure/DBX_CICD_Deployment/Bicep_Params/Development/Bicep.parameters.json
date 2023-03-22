@@ -57,7 +57,14 @@
     },
     "storageAccountName": {
       "value": "adlsdev"
+    },
+    "amlwsname": {
+      "value": "amldev"
+    },
+    "amlblobname": {
+      "value": "amlblobdev"
     }
+
   }
 }
   
