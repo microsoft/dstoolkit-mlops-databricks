@@ -274,7 +274,8 @@ steps:
   enabled:                            true
   env:  
     RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME) 
-    DATABRICKS_HOST:                  $(DynamicEnvVariables.DATABRICKS_HOST)   
+    DATABRICKS_HOST:                  $(DynamicEnvVariables.DATABRICKS_HOST)  
+    DATABRICKS_AAD_TOKEN:             $(auth_tokens.DBRKS_BEARER_TOKEN)
 
 
 #################################/
