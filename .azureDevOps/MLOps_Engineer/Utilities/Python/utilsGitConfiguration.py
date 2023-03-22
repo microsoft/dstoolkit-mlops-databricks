@@ -29,7 +29,9 @@ def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, manage
 
     if response.status_code != 200:
 
-        credential = requests.get('https://' + databricksInstance + '/api/2.0/git-credentials', headers=DBRKS_REQ_HEADERS)
+        response = requests.get('https://' + databricksInstance + '/api/2.0/git-credentials', headers=DBRKS_REQ_HEADERS)
+        print(response.json())
+        credential = response.json()["credentials"][0]["credential_id"]
         print(f"Credential is {credential}")
         response = requests.patch('https://' + databricksInstance + '/api/2.0/git-credentials'+ credential, headers=DBRKS_REQ_HEADERS, json=gitConfig)
     
