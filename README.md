@@ -5,11 +5,11 @@
 
 
  # Version History And Updates 
-=======
-# Major updates coming this week - Azure Machine Learning and Databricks MLFLow Integration 
+
+## Major updates coming this week - Azure Machine Learning and Databricks MLFLow Integration 
 There may be stability issues as changes trickle through between 20th - 24th March
 
- # Version History And Updates
+
 
  ## Version 1.0.1
  - !! Managed Identity Deployment for Azure DevOps !!
