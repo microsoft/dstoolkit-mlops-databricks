@@ -252,7 +252,7 @@ steps:
     azureSubscription:                ${{ parameters.azureSubscription }}
   enabled:                            true
   env:
-    ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
+    ROOT_USER_FOLDER:                 $(ARM_CLIENT_ID)
     ENVIRONMENT:                      ${{ parameters.Environment }}
     DBRKS_BEARER_TOKEN:               $(auth_tokens.DBRKS_BEARER_TOKEN)
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
