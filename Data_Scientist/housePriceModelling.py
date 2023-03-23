@@ -136,8 +136,11 @@ with mlflow.start_run(run_name="exp-adb-aml-connection") as run:            #Sta
     joblib.dump(clf, open(model_file_path,'wb'))      #Log the Model
     mlflow.log_artifact(model_file_path)
     
-    
-    joblib.dump(clf, open(code_file_path,'wb'))      #Log the Model
+
+    run_id = run.info.run_id
+    #run_id = mlflow.active_run()
+    mlflow.log_param('databricks_runid', run_id)
+    print(run_id)
 
 # COMMAND ----------
 
@@ -147,8 +150,6 @@ print("MLflow tracking URI to point to your Azure ML Workspace setup complete.")
 
 aml_uri = ws.get_mlflow_tracking_uri()
 print(aml_uri)
-
-# COMMAND ----------
 
 # Ensure You Have RBAC Set
 experiment_name = 'exp-adb-aml-connection'
@@ -163,7 +164,7 @@ with mlflow.start_run(run_name="exp-adb-aml-connection") as run:            #Sta
     mlflow.log_metric('R2 score', r2)
     mlflow.log_artifact(results_graph)
     mlflow.log_artifact(model_file_path)     #Log the Model
-    
+    mlflow.log_param('databricks_runid', run_id)
 
 
 
