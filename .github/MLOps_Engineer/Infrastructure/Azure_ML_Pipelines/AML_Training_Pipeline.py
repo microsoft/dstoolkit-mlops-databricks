@@ -63,7 +63,7 @@ import os
 from azureml.core.authentication import ServicePrincipalAuthentication
 
 svc_pr = ServicePrincipalAuthentication(
-                        tenant_id = SUBSCRIPTION_ID,
+                        tenant_id = ARM_TENANT_ID,
                         service_principal_id = ARM_CLIENT_ID,
                         service_principal_password = ARM_CLIENT_SECRET 
                         )
