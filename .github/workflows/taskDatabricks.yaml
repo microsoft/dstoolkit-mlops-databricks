@@ -212,7 +212,7 @@ jobs:
       - name:                       Build AML Pipelines
         run:                        python .github/MLOps_Engineer/Infrastructure/Azure_ML_Pipelines/AML_Training_Pipeline.py
         env:
-          DATABRICKS_COMPUTE_NAME: 'dbx_aml_link_compute'
+          DATABRICKS_COMPUTE_NAME: 'mlclusterlink'
           ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
