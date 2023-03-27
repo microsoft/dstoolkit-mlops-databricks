@@ -15,6 +15,7 @@ SUBSCRIPTION_ID = os.environ['SUBSCRIPTION_ID']
 ARM_CLIENT_SECRET = os.environ['ARM_CLIENT_SECRET']
 ARM_TENANT_ID = os.environ['ARM_TENANT_ID']
 ARM_CLIENT_ID = os.environ['ARM_CLIENT_ID']
+AML_WS_NAME = os.environ['AML_WS_NAME']
 
 print(DATABRICKS_COMPUTE_NAME)
 print(RESOURCE_GROUP_NAME)
@@ -71,7 +72,7 @@ svc_pr = ServicePrincipalAuthentication(
 ws = Workspace(
         subscription_id=SUBSCRIPTION_ID,
         resource_group=RESOURCE_GROUP_NAME,
-        workspace_name=DATABRICKS_INSTANCE,
+        workspace_name=AML_WS_NAME,
         auth=svc_pr
         )
 
