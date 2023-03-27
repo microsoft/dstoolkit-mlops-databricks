@@ -99,9 +99,9 @@ except ComputeTargetException:
 
 #
 #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "/Data_Scientist/featureEngineering.py")
-notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
+#notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
 
-pipeline = create_pipeline_structure(compute_target=databricks_compute,  workspace=ws)
+pipeline = create_pipeline_structure(compute_target=DATABRICKS_COMPUTE_NAME,  workspace=ws)
 
 published_pipeline = pipeline.publish("databricks_pipeline", version="1.0.0", description="Databricks Pipeline")
 
