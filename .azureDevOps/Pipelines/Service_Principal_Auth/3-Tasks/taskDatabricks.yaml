@@ -180,6 +180,7 @@ steps:
     DBRKS_MANAGEMENT_TOKEN:           $(auth_tokens.DBRKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)   
+    SUBSCRIPTION_ID:                  $(DynamicEnvVariables.SUBSCRIPTION_ID)
 
 
 #################################/
