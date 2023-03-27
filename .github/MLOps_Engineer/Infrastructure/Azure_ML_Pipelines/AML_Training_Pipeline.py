@@ -82,7 +82,7 @@ ws = Workspace(
 print(f" AML Workspace Properties: {ws} ")
 
 try:
-    DATABRICKS_COMPUTE_NAME = DatabricksCompute(workspace=ws, name=DATABRICKS_COMPUTE_NAME)
+    databricks_compute = DatabricksCompute(workspace=ws, name=DATABRICKS_COMPUTE_NAME)
     print('Compute target {} already exists'.format(DATABRICKS_COMPUTE_NAME))
 
 except ComputeTargetException:
@@ -103,7 +103,7 @@ except ComputeTargetException:
 #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "/Data_Scientist/featureEngineering.py")
 #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
 
-pipeline = create_pipeline_structure(compute_target=DATABRICKS_COMPUTE_NAME,  workspace=ws)
+pipeline = create_pipeline_structure(compute_target=databricks_compute,  workspace=ws)
 
 published_pipeline = pipeline.publish("databricks_pipeline", version="1.0.0", description="Databricks Pipeline")
 
