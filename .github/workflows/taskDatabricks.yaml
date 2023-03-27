@@ -145,15 +145,6 @@ jobs:
 
 
 #################################/
-##  Create Repos                                           
-#################################/
-      - name:                     Create Databricks Repos
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRepoFolder.sh
-        env:
-          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
-
-
-#################################/
 ##  Git Config                                           
 #################################/
   
@@ -161,6 +152,14 @@ jobs:
         run:                      python .github/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
         env:
           PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
+          
+#################################/
+##  Create Repos                                           
+#################################/
+      - name:                     Create Databricks Repos
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRepoFolder.sh
+        env:
+          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
 
 
 #################################/

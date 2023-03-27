@@ -9,7 +9,7 @@ import os
 import json
 
 
-def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, managementToken, githubToken, environment):
+def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, managementToken, SYSTEM_ACCESSTOKEN ):
 
     DBRKS_REQ_HEADERS  = {
         'Authorization': f'Bearer {bearerToken}',
@@ -19,13 +19,22 @@ def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, manage
     }
 
     newData = {
-        "personal_access_token": githubToken
+        "personal_access_token": SYSTEM_ACCESSTOKEN
         }
     
     gitConfig.update(newData)
     print(gitConfig)
 
     response = requests.post('https://' + databricksInstance + '/api/2.0/git-credentials', headers=DBRKS_REQ_HEADERS, json=gitConfig)
+
+    if response.status_code != 200:
+
+        response = requests.get('https://' + databricksInstance + '/api/2.0/git-credentials', headers=DBRKS_REQ_HEADERS)
+        print(response.json())
+        credential = response.json()["credentials"][0]["credential_id"]
+        print(f"Credential is {credential}")
+        response = requests.patch('https://' + databricksInstance + '/api/2.0/git-credentials/'+ str(credential), headers=DBRKS_REQ_HEADERS, json=gitConfig)
+    
     print(response.json())
 
 if __name__ == "__main__":
@@ -41,5 +50,4 @@ if __name__ == "__main__":
                                 databricksInstance=os.environ['DATABRICKS_INSTANCE'], 
                                 bearerToken=os.environ['DBRKS_BEARER_TOKEN'], 
                                 managementToken=os.environ['DBRKS_MANAGEMENT_TOKEN'], 
-                                githubToken=os.environ['PAT_GITHUB'], 
-                                environment=os.environ['ENVIRONMENT'])       
+                                SYSTEM_ACCESSTOKEN=os.environ['SYSTEM_ACCESSTOKEN'] )       
