@@ -70,7 +70,7 @@ get_or_create_compute(compute_name="mlcluster2", workspace = ws)
 db_compute_name=os.getenv("DATABRICKS_COMPUTE_NAME", "mlcluster2") # Databricks compute name
 db_resource_group=os.getenv("DATABRICKS_RESOURCE_GROUP", "databricks-sandbox-rg") # Databricks resource group
 db_workspace_name=os.getenv("DATABRICKS_WORKSPACE_NAME", "dbxwssandbox-eco3") # Databricks workspace name
-db_access_token=os.getenv("DATABRICKS_ACCESS_TOKEN", "dapi63c057791ec3ea61ff5190568fe205d6-3") # Databricks access token
+db_access_token=os.getenv("DATABRICKS_ACCESS_TOKEN", "") # Databricks access token
 
 try:
     databricks_compute = DatabricksCompute(workspace=ws, name=db_compute_name)
