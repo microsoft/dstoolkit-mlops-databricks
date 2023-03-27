@@ -61,6 +61,7 @@ jobs:
           pip3 install --upgrade azure-cli
           pip3 install azureml
           pip3 install azureml-core
+          pip3 install azureml.pipeline
           
 
 #################################/
