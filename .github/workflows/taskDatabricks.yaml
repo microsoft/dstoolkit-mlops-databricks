@@ -58,6 +58,7 @@ jobs:
           python -m pip install requests
           pip3 install  azure-databricks-sdk-python
           pip3 install --upgrade azure-cli
+          pip3 install azureml
 
 #################################/
 ##  Authenticate/Login To Azure                                               
@@ -152,7 +153,7 @@ jobs:
         run:                      python .github/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
         env:
           PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
-          
+
 #################################/
 ##  Create Repos                                           
 #################################/
