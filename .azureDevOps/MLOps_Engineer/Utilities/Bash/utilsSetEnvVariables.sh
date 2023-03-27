@@ -12,7 +12,7 @@ JSON=$( jq '.' .azureDevOps/MLOps_Engineer/Infrastructure/DBX_CICD_Deployment/Bi
 RESOURCE_GROUP_NAME=$( jq -r '.parameters.resourceGroupName.value' <<< "$JSON")
 echo "Resource Group Name: $RESOURCE_GROUP_NAME"
 
-
+AML_WS_NAME=$(az ml workspace list -g databricks-sandbox-rg --query [].workspaceName -o tsv)
 DATABRICKS_ORDGID=$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].workspaceId" -o tsv)
 DATABRICKS_INSTANCE="$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].workspaceUrl" -o tsv)"
 WORKSPACE_ID=$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].id" -o tsv)
@@ -50,6 +50,9 @@ echo "##vso[task.setvariable variable="DATABRICKS_HOST";isOutput=true;]https://$
 
 echo "Set Databricks Host As Environment Variable..."
 echo "##vso[task.setvariable variable="SUBSCRIPTION_ID";isOutput=true;]$SUBSCRIPTION_ID"
+
+echo "Set AML_WS_NAME As Environment Variable..."
+echo "##vso[task.setvariable variable="AML_WS_NAME";isOutput=true;]$AML_WS_NAME"
 
 
 #echo "Set Python Path"

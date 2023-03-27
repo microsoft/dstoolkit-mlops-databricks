@@ -59,7 +59,7 @@ jobs:
           pip3 install azure-mgmt-storage==21.0.0
           pip3 install  azure-databricks-sdk-python
           pip3 install --upgrade azure-cli
-          az extension add -n azure-cli-ml
+          #az extension add -n azure-cli-ml
           pip3 install azureml
           pip3 install azureml-core
           pip3 install azureml.pipeline
