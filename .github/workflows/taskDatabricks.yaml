@@ -205,7 +205,8 @@ jobs:
 
 
 #################################/
-##  Build AML Pipelines (Running Databricks Notebooks From AML Pipeline)                                          
+##  Build AML Pipelines (Running Databricks Notebooks From AML Pipeline)  
+## Functionality Under Development (Not yet parameterized to work on general deployments)                                        
 #################################/
 # 15. AML Pipeline
       - name:                       Build AML Pipelines
