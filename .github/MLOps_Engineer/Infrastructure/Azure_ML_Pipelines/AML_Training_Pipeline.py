@@ -99,7 +99,7 @@ except ComputeTargetException:
     databricks_compute=ComputeTarget.attach(ws, DATABRICKS_COMPUTE_NAME, config)
     databricks_compute.wait_for_completion(True)
 
-#
+# 
 #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "/Data_Scientist/featureEngineering.py")
 #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
 
