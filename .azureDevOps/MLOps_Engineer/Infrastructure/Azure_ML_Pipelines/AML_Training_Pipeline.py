@@ -9,12 +9,21 @@ from azureml.exceptions import ComputeTargetException
 
 DATABRICKS_COMPUTE_NAME = os.environ['DATABRICKS_COMPUTE_NAME']
 RESOURCE_GROUP_NAME = os.environ['RESOURCE_GROUP_NAME']
-DBRKS_BEARER_TOKEN = os.environ['DBRKS_BEARER_TOKEN']
+DATABRICKS_TOKEN = os.environ['DATABRICKS_TOKEN']
 DATABRICKS_INSTANCE = os.environ['DATABRICKS_INSTANCE']
 SUBSCRIPTION_ID = os.environ['SUBSCRIPTION_ID']
 ARM_CLIENT_SECRET = os.environ['ARM_CLIENT_SECRET']
 ARM_TENANT_ID = os.environ['ARM_TENANT_ID']
 ARM_CLIENT_ID = os.environ['ARM_CLIENT_ID']
+
+print(DATABRICKS_COMPUTE_NAME)
+print(RESOURCE_GROUP_NAME)
+print(DATABRICKS_TOKEN)
+print(DATABRICKS_INSTANCE)
+print(SUBSCRIPTION_ID)
+print(ARM_CLIENT_SECRET)
+print(ARM_TENANT_ID)
+print(ARM_CLIENT_ID)
 
 
 def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspace):
@@ -66,6 +75,8 @@ ws = Workspace(
         auth=svc_pr
         )
 
+print(f" AML Workspace Properties: {ws} ")
+
 try:
     DATABRICKS_COMPUTE_NAME = DatabricksCompute(workspace=ws, name=DATABRICKS_COMPUTE_NAME)
     print('Compute target {} already exists'.format(DATABRICKS_COMPUTE_NAME))
@@ -75,21 +86,18 @@ except ComputeTargetException:
     print('db_compute_name {}'.format(DATABRICKS_COMPUTE_NAME))
     print('db_resource_group {}'.format(RESOURCE_GROUP_NAME))
     print('db_workspace_name {}'.format(DATABRICKS_INSTANCE))
-    print('db_access_token {}'.format(DBRKS_BEARER_TOKEN))
+    print('db_access_token {}'.format(DATABRICKS_TOKEN))
 
     config = DatabricksCompute.attach_configuration(
         resource_group = RESOURCE_GROUP_NAME,
         workspace_name = DATABRICKS_INSTANCE,
-        access_token= DBRKS_BEARER_TOKEN)
+        access_token= DATABRICKS_TOKEN)
     databricks_compute=ComputeTarget.attach(ws, DATABRICKS_COMPUTE_NAME, config)
     databricks_compute.wait_for_completion(True)
 
 #
 #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "/Data_Scientist/featureEngineering.py")
 notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
-
-ws = Workspace.from_config()
-print(ws)
 
 pipeline = create_pipeline_structure(compute_target=databricks_compute,  workspace=ws)
 

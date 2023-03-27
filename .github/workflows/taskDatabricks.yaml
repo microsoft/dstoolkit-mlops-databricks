@@ -203,8 +203,8 @@ jobs:
 ##  Build AML Pipelines (Running Databricks Notebooks From AML Pipeline)                                          
 #################################/
 # 15. AML Pipeline
-      - name:                     Build AML Pipelines
-        run:                      python .github/MLOps_Engineer/Infrastructure/Azure_ML_Pipelines/AML_Training_Pipeline.py
+      - name:                       Build AML Pipelines
+        run:                        python .github/MLOps_Engineer/Infrastructure/Azure_ML_Pipelines/AML_Training_Pipeline.py
         env:
           DATABRICKS_COMPUTE_NAME: 'dbx_aml_link_compute'
           ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}

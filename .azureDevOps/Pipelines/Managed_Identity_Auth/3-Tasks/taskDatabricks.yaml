@@ -25,8 +25,23 @@ steps:
     pip3 install  azure-databricks-sdk-python
     curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
+    echo "Installing AML SDK"
+    pip install azureml-sdk
+
   displayName: Environment Set Up
 
+
+- task: DownloadSecureFile@1
+  name: config_json
+  inputs:
+    secureFile: 'config.json'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |      
+      echo Copying $(config_json.secureFilePath) to $(Build.SourcesDirectory)
+      cp $(config_json.secureFilePath) $(Build.SourcesDirectory)
 
 #################################/
 ##  Git File Changes Check                                               
@@ -317,3 +332,20 @@ steps:
     WORKSPACE_ID:                     $(DynamicEnvVariables.WORKSPACE_ID)
     PULL_BRANCH:                      ${{ parameters.branchName }}
     RELEASE_BRANCH:                   ${{ parameters.releaseBranch}}
+
+
+- task:                               PythonScript@0
+  displayName:                        'Git Config' 
+  name:                               "git_configure"
+  inputs:
+    scriptSource:                     'filePath' 
+    scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Infrastructure/Azure_ML_Pipelines/AML_Training_Pipeline.py
+  env:
+    DATABRICKS_COMPUTE_NAME:          "dbx_aml_link_compute"
+    RESOURCE_GROUP_NAME:              $(DynamicEnvVariables.RESOURCE_GROUP_NAME) 
+    DATABRICKS_TOKEN:                 $(auth_tokens.DBRKS_BEARER_TOKEN)
+    DATABRICKS_INSTANCE:              $(DynamicEnvVariables.DATABRICKS_INSTANCE)
+    SUBSCRIPTION_ID:                  $(DynamicEnvVariables.SUBSCRIPTION_ID)
+    ARM_CLIENT_ID:                    $(ARM_CLIENT_ID)
+    ARM_CLIENT_SECRET:                $(ARM_CLIENT_SECRET)
+    ARM_TENANT_ID:                    $(ARM_TENANT_ID)
