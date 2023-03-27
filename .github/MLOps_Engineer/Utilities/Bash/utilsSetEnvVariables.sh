@@ -10,6 +10,7 @@ JSON=$( jq '.' .github/MLOps_Engineer/Infrastructure/DBX_CICD_Deployment/Bicep_P
 RESOURCE_GROUP_NAME=$( jq -r '.parameters.resourceGroupName.value' <<< "$JSON")
 echo "Resource Group Name: $RESOURCE_GROUP_NAME"
 
+DATABRICKS_WS_NAME=$( az databricks workspace list -g databricks-sandbox-rg --query [].name -o tsv )
 AML_WS_NAME=$(az ml workspace list -g $RESOURCE_GROUP_NAME  --query [].workspaceName -o tsv)
 DATABRICKS_ORDGID=$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].workspaceId" -o tsv)
 DATABRICKS_INSTANCE="$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].workspaceUrl" -o tsv)"
@@ -22,6 +23,7 @@ echo $WORKSPACE_ID
 echo $AZ_KEYVAULT_NAME
 echo $SUBSCRIPTION_ID
 echo $AML_WS_NAME
+echo $DATABRICKS_WS_NAME
 #DATABRICKS_TOKEN=$(az keyvault secret show --name "dbkstoken" --vault-name $AZ_KEYVAULT_NAME --query "value" -o tsv)
 
 
@@ -57,6 +59,9 @@ echo "SUBSCRIPTION_ID=$SUBSCRIPTION_ID" >> $GITHUB_ENV
 
 echo "Set AML_WS_NAME As Environment Variable..."
 echo "AML_WS_NAME=$AML_WS_NAME" >> $GITHUB_ENV
+
+echo "Set DATABRICKS_WS_NAME As Environment Variable..."
+echo "DATABRICKS_WS_NAME=$DATABRICKS_WS_NAME" >> $GITHUB_ENV
 
 
 #echo "Set Python Path"

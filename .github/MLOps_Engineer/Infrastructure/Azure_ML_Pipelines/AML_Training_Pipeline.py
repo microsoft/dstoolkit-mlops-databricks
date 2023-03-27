@@ -16,6 +16,7 @@ ARM_CLIENT_SECRET = os.environ['ARM_CLIENT_SECRET']
 ARM_TENANT_ID = os.environ['ARM_TENANT_ID']
 ARM_CLIENT_ID = os.environ['ARM_CLIENT_ID']
 AML_WS_NAME = os.environ['AML_WS_NAME']
+DATABRICKS_WS_NAME = os.environ['DATABRICKS_WS_NAME']
 
 print(DATABRICKS_COMPUTE_NAME)
 print(RESOURCE_GROUP_NAME)
@@ -26,6 +27,7 @@ print(ARM_CLIENT_SECRET)
 print(ARM_TENANT_ID)
 print(ARM_CLIENT_ID)
 print(AML_WS_NAME)
+print(DATABRICKS_WS_NAME)
 
 
 def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspace):
@@ -87,12 +89,12 @@ except ComputeTargetException:
     print('Compute not found, will use below parameters to attach new one')
     print('db_compute_name {}'.format(DATABRICKS_COMPUTE_NAME))
     print('db_resource_group {}'.format(RESOURCE_GROUP_NAME))
-    print('db_workspace_name {}'.format(DATABRICKS_INSTANCE))
+    print('db_workspace_name {}'.format(DATABRICKS_WS_NAME))
     print('db_access_token {}'.format(DATABRICKS_TOKEN))
 
     config = DatabricksCompute.attach_configuration(
         resource_group = RESOURCE_GROUP_NAME,
-        workspace_name = DATABRICKS_INSTANCE,
+        workspace_name = DATABRICKS_WS_NAME,
         access_token= DATABRICKS_TOKEN)
     databricks_compute=ComputeTarget.attach(ws, DATABRICKS_COMPUTE_NAME, config)
     databricks_compute.wait_for_completion(True)
