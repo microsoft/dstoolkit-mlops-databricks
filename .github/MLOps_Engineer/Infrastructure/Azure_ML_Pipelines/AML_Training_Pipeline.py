@@ -25,6 +25,7 @@ print(SUBSCRIPTION_ID)
 print(ARM_CLIENT_SECRET)
 print(ARM_TENANT_ID)
 print(ARM_CLIENT_ID)
+print(AML_WS_NAME)
 
 
 def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspace):

@@ -10,7 +10,7 @@ JSON=$( jq '.' .github/MLOps_Engineer/Infrastructure/DBX_CICD_Deployment/Bicep_P
 RESOURCE_GROUP_NAME=$( jq -r '.parameters.resourceGroupName.value' <<< "$JSON")
 echo "Resource Group Name: $RESOURCE_GROUP_NAME"
 
-AML_WS_NAME=$(az ml workspace list -g databricks-sandbox-rg --query [].workspaceName -o tsv)
+AML_WS_NAME=$(az ml workspace list -g $RESOURCE_GROUP_NAME  --query [].workspaceName -o tsv)
 DATABRICKS_ORDGID=$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].workspaceId" -o tsv)
 DATABRICKS_INSTANCE="$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].workspaceUrl" -o tsv)"
 WORKSPACE_ID=$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].id" -o tsv)
