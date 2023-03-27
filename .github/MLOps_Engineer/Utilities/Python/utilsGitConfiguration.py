@@ -9,7 +9,7 @@ import os
 import json
 
 
-def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, managementToken, SYSTEM_ACCESSTOKEN ):
+def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, managementToken, githubToken, environment):
 
     DBRKS_REQ_HEADERS  = {
         'Authorization': f'Bearer {bearerToken}',
@@ -19,13 +19,14 @@ def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, manage
     }
 
     newData = {
-        "personal_access_token": SYSTEM_ACCESSTOKEN
+        "personal_access_token": githubToken
         }
     
     gitConfig.update(newData)
     print(gitConfig)
 
     response = requests.post('https://' + databricksInstance + '/api/2.0/git-credentials', headers=DBRKS_REQ_HEADERS, json=gitConfig)
+    print(response.json())
 
     if response.status_code != 200:
 
@@ -50,4 +51,5 @@ if __name__ == "__main__":
                                 databricksInstance=os.environ['DATABRICKS_INSTANCE'], 
                                 bearerToken=os.environ['DBRKS_BEARER_TOKEN'], 
                                 managementToken=os.environ['DBRKS_MANAGEMENT_TOKEN'], 
-                                SYSTEM_ACCESSTOKEN=os.environ['SYSTEM_ACCESSTOKEN'] )       
+                                githubToken=os.environ['PAT_GITHUB'], 
+                                environment=os.environ['ENVIRONMENT'])       
