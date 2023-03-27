@@ -323,8 +323,8 @@ steps:
 
 
 - task:                               PythonScript@0
-  displayName:                        'Git Config' 
-  name:                               "git_configure"
+  displayName:                        'Deploy_Azure_ML_Pipelines' 
+  name:                               "Deploy_Azure_ML_Pipelines"
   inputs:
     scriptSource:                     'filePath' 
     scriptPath:                       $(Build.SourcesDirectory)/.azureDevOps/MLOps_Engineer/Infrastructure/Azure_ML_Pipelines/AML_Training_Pipeline.py
