@@ -190,13 +190,28 @@ jobs:
 #################################/
 ##  Repo Pull                                           
 #################################/
-# 15. Databricks CLI Config
+# 15. Databricks Repo Pull
       - name:                     Repo Pull
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
         env:
           UPDATE_FOLDER:          ${{ inputs.UPDATE_FOLDER}} 
           PULL_BRANCH:            ${{ github.ref_name }}
           RELEASE_BRANCH:         ${{ inputs.RELEASE_BRANCH}} 
+
+
+#################################/
+##  Build AML Pipelines (Running Databricks Notebooks From AML Pipeline)                                          
+#################################/
+# 15. AML Pipeline
+      - name:                     Repo Pull
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
+        env:
+          DATABRICKS_COMPUTE_NAME: 'dbx_aml_link_compute'
+          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
+        
+
 
 
 
