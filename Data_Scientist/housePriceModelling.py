@@ -1,4 +1,9 @@
 # Databricks notebook source
+
+# COMMAND ----------
+%pip install sklearn_pandas
+%pip install azureml-sdk
+%pip install azureml-mlflow
 # COMMAND ----------
 import os
 import numpy as np
@@ -69,6 +74,7 @@ pd_df_california_housing = pd.DataFrame(california_housing.data, columns = calif
 pd_df_california_housing['target'] = pd.Series(california_housing.target)
 
 # COMMAND ----------
+import mlflow
 
 mlflow.set_tracking_uri("databricks") 
 mlflow.set_experiment("/Shared/houseprice_modeling")
