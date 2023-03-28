@@ -28,6 +28,16 @@ def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, manage
     response = requests.post('https://' + databricksInstance + '/api/2.0/git-credentials', headers=DBRKS_REQ_HEADERS, json=gitConfig)
     print(response.json())
 
+    if response.status_code != 200:
+
+        response = requests.get('https://' + databricksInstance + '/api/2.0/git-credentials', headers=DBRKS_REQ_HEADERS)
+        print(response.json())
+        credential = response.json()["credentials"][0]["credential_id"]
+        print(f"Credential is {credential}")
+        response = requests.patch('https://' + databricksInstance + '/api/2.0/git-credentials/'+ str(credential), headers=DBRKS_REQ_HEADERS, json=gitConfig)
+    
+    print(response.json())
+
 if __name__ == "__main__":
 
     with open('.github/MLOps_Engineer/Variables/' + os.environ['ENVIRONMENT'] +'/Repos.json', 'r') as f:

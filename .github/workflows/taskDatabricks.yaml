@@ -56,8 +56,14 @@ jobs:
           sudo apt update && sudo apt install jq -y
           # Do a python pip install so that modules can be found from python tasks
           python -m pip install requests
+          pip3 install azure-mgmt-storage==21.0.0
           pip3 install  azure-databricks-sdk-python
           pip3 install --upgrade azure-cli
+          az extension add -n azure-cli-ml
+          pip3 install azureml
+          pip3 install azureml-core
+          pip3 install azureml.pipeline
+          
 
 #################################/
 ##  Authenticate/Login To Azure                                               
@@ -134,6 +140,7 @@ jobs:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
+          
 
 
 #################################/
@@ -144,15 +151,6 @@ jobs:
 
 
 #################################/
-##  Create Repos                                           
-#################################/
-      - name:                     Create Databricks Repos
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRepoFolder.sh
-        env:
-          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
-
-
-#################################/
 ##  Git Config                                           
 #################################/
   
@@ -160,6 +158,14 @@ jobs:
         run:                      python .github/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
         env:
           PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
+
+#################################/
+##  Create Repos                                           
+#################################/
+      - name:                     Create Databricks Repos
+        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRepoFolder.sh
+        env:
+          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
 
 
 #################################/
@@ -189,13 +195,30 @@ jobs:
 #################################/
 ##  Repo Pull                                           
 #################################/
-# 15. Databricks CLI Config
+# 15. Databricks Repo Pull
       - name:                     Repo Pull
         run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
         env:
           UPDATE_FOLDER:          ${{ inputs.UPDATE_FOLDER}} 
           PULL_BRANCH:            ${{ github.ref_name }}
           RELEASE_BRANCH:         ${{ inputs.RELEASE_BRANCH}} 
+
+
+#################################/
+##  Build AML Pipelines (Running Databricks Notebooks From AML Pipeline)  
+## Functionality Under Development (Not yet parameterized to work on general deployments)                                        
+#################################/
+# 15. AML Pipeline
+      - name:                       Build AML Pipelines
+        run:                        python .github/MLOps_Engineer/Infrastructure/Azure_ML_Pipelines/AML_Training_Pipeline.py
+        env:
+          DATABRICKS_COMPUTE_NAME: 'mlclusterlink'
+          ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
+          
+        
+
 
 
 

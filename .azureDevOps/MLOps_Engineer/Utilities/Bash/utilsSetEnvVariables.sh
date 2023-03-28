@@ -12,7 +12,8 @@ JSON=$( jq '.' .azureDevOps/MLOps_Engineer/Infrastructure/DBX_CICD_Deployment/Bi
 RESOURCE_GROUP_NAME=$( jq -r '.parameters.resourceGroupName.value' <<< "$JSON")
 echo "Resource Group Name: $RESOURCE_GROUP_NAME"
 
-
+DATABRICKS_WS_NAME=$( az databricks workspace list -g databricks-sandbox-rg --query [].name -o tsv )
+AML_WS_NAME=$(az ml workspace list -g $RESOURCE_GROUP_NAME --query [].workspaceName -o tsv)
 DATABRICKS_ORDGID=$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].workspaceId" -o tsv)
 DATABRICKS_INSTANCE="$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].workspaceUrl" -o tsv)"
 WORKSPACE_ID=$(az databricks workspace list -g $RESOURCE_GROUP_NAME --query "[].id" -o tsv)
@@ -20,6 +21,7 @@ AZ_KEYVAULT_NAME=$(az keyvault list -g $RESOURCE_GROUP_NAME --query "[].name" -o
 SUBSCRIPTION_ID=$( az account show --query id -o tsv )
 #DATABRICKS_TOKEN=$(az keyvault secret show --name "dbkstoken" --vault-name $AZ_KEYVAULT_NAME --query "value" -o tsv)
 
+echo DATABRICKS_WS_NAME: $DATABRICKS_WS_NAME
 
 # Creation Of Important Environment Variables For Later Steps.
 echo "Set Environment Variables For Later Stages..."
@@ -50,6 +52,12 @@ echo "##vso[task.setvariable variable="DATABRICKS_HOST";isOutput=true;]https://$
 
 echo "Set Databricks Host As Environment Variable..."
 echo "##vso[task.setvariable variable="SUBSCRIPTION_ID";isOutput=true;]$SUBSCRIPTION_ID"
+
+echo "Set AML_WS_NAME As Environment Variable..."
+echo "##vso[task.setvariable variable="AML_WS_NAME";isOutput=true;]$AML_WS_NAME"
+
+echo "Set DATABRICKS_WS_NAME As Environment Variable..."
+echo "##vso[task.setvariable variable="DATABRICKS_WS_NAME";isOutput=true;]$DATABRICKS_WS_NAME"
 
 
 #echo "Set Python Path"

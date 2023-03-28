@@ -25,7 +25,15 @@ ML_PIPELINE_FILES:
             EXPERIMENT_NAME: '/Shared/ciaran_sandbox/nyc_taxi_experiments/feature_engineering'
 
     DEMO_DIABETES_CIARAN:
-        FILE_PATH: 'file://Data_Scientist/AML_Databricks_MLFlow_Integration.py'
+        FILE_PATH: 'file://Data_Scientist/amlDatabricksMLFlowIntegration.py'
+        WHL_PATH: 'file://Data_Scientist/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://DBX_Workflows/Sandbox_Expermentation/DBX_Workflow_Parameters.yaml'
+            EXPERIMENT_NAME: '/Shared/ciaran_sandbox/diabetes_Experiments/e2e'
+
+    HOUSE_PRICE_MODELLING:
+        FILE_PATH: 'file://Data_Scientist/housePriceModelling.py'
         WHL_PATH: 'file://Data_Scientist/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
         PARAMETERS:
             ENV:  '--env'
