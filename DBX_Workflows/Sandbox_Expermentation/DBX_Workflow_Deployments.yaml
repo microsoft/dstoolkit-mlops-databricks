@@ -34,29 +34,27 @@ environments:
   Ciaran_Sandbox:
     workflows:
       - name: FEATURE_ENGINEERING_CIARAN
-        existing_cluster_id: "0317-114529-qn2ltisd"
+        existing_cluster_id: "0327-230505-5m9ke7k7"
         spark_python_task:
           python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING_CIARAN']['FILE_PATH']}}"
           parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING_CIARAN']['PARAMETERS']['FILE']}}"]
-        #libraries: [ 
-        #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
-        #]
+
 
       - name: MODEL_TRAINING_CIARAN
-        existing_cluster_id: "0317-114529-qn2ltisd"
+        existing_cluster_id: "0327-230505-5m9ke7k7"
         spark_python_task:
           python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING_CIARAN']['FILE_PATH']}}"
           parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_TRAINING_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING_CIARAN']['PARAMETERS']['FILE']}}"]
-        #libraries: [ 
-        #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
-        #]
+
 
       - name: DEMO_DIABETES_CIARAN
-        existing_cluster_id: "0317-114529-qn2ltisd"
+        existing_cluster_id: "0327-230505-5m9ke7k7"
         spark_python_task:
           python_file: "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['FILE_PATH']}}"
           parameters: ["{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['FILE']}}"]
-        #libraries: [ 
-        #  whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
-        #]
 
+      - name: HOUSE_PRICE_MODELLING
+        existing_cluster_id: "0327-230505-5m9ke7k7"
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['FILE']}}"]
