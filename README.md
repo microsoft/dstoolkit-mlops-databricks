@@ -7,7 +7,7 @@
  # Version History And Updates 
 
 ## Major updates coming this week - Azure Machine Learning and Databricks MLFLow Integration 
-There may be stability issues as changes trickle through between 20th - 24th March
+There may be stability issues as changes trickle through between 20th - 31th March
 
 
 
