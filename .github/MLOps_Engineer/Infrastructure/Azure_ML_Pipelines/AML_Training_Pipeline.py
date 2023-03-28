@@ -47,7 +47,7 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
     Databricks_Model_Training_Step = DatabricksStep(
         name="Databricks_Model_Training",
         
-        notebook_path="/Workspace/Repos/841ba6d9-a509-44ee-bf40-c0876b4ac6bb/Sandbox/Data_Scientist/modelTraining",
+        notebook_path="/Repos/841ba6d9-a509-44ee-bf40-c0876b4ac6bb/Sandbox/Data_Scientist/modelTraining",
         #notebook_params={'myparam': 'testparam', 
         #    'myparam2': pipeline_param},
         run_name='Databricks_Model_Training',
