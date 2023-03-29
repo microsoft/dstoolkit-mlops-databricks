@@ -21,6 +21,11 @@ from helperFunctions.helperFunction import *
 
 # COMMAND ----------
 
+
+experiment_id = dbutils.widgets.get("--AZUREML_EXPERIMENT_ID")
+print(experiment_id)
+# COMMAND ----------
+
 # Ingest Parameters Files
 
 
