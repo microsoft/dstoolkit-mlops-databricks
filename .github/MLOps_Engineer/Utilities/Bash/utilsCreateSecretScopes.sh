@@ -1,4 +1,10 @@
+az config set extension.use_dynamic_install=yes_without_promp
+az extension add --name application-insights
+
 echo $RESOURCE_GROUP_NAME
+echo $DATABRICKS_INSTANCE
+echo $WORKSPACE_ID
+echo $SUBSCRIPTION_ID
 
 APP_INSIGHT_NAME=$(az resource list \
                 -g $RESOURCE_GROUP_NAME \
@@ -13,9 +19,9 @@ APP_INSIGHT_INSTRUMENT_KEY=$( az monitor app-insights component show \
 
 echo "Test"
 
-echo $ARM_CLIENT_ID
-echo $ARM_TENANT_ID
-echo $ARM_CLIENT_SECRET
+echo $APP_INSIGHT_NAME
+echo $APP_INSIGHT_INSTRUMENT_KEY
+echo $SUBSCRIPTION_ID
 
 echo "Creating Secret Scopes...."
 
@@ -32,6 +38,27 @@ Create_Secret_Scope=$(curl -X POST -H "Authorization: Bearer $DBRKS_BEARER_TOKEN
 
 echo "Inserting Service Principal + Other Secrets Into Scope.... "
 
+
+
+JSON_STRING=$( jq -n -c \
+                --arg scope "DBX_SP_Credentials" \
+                --arg key "DBX_SP_Client_ID" \
+                --arg value "$SUBSCRIPTION_ID"  \
+                '{
+                    scope: $scope,
+                    key: $key,
+                    string_value: $value
+                }' )
+
+
+echo $JSON_STRING
+
+Create_DBX_Client_Secret=$(curl -X POST -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
+                            -H "X-Databricks-Azure-SP-Management-Token: $DBRKS_MANAGEMENT_TOKEN" \
+                            -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
+                            -H 'Content-Type: application/json' \
+                            -d $JSON_STRING \
+                            https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
 
 JSON_STRING=$( jq -n -c \
                 --arg scope "DBX_SP_Credentials" \
@@ -90,6 +117,27 @@ Create_DBX_TenantID_Secret=$(curl -X POST -H "Authorization: Bearer $DBRKS_BEARE
                             -H 'Content-Type: application/json' \
                             -d $JSON_STRING \
                             https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
+
+
+
+JSON_STRING=$( jq -n -c --arg scope "DBX_SP_Credentials" --arg key "SUBSCRIPTION_ID" --arg value "$SUBSCRIPTION_ID"  \
+                            '{
+                                scope: $scope,
+                                key: $key,
+                                string_value: $value
+                            }' )
+
+echo $JSON_STRING
+
+Create_DBX_TenantID_Secret=$(curl -X POST -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
+                            -H "X-Databricks-Azure-SP-Management-Token: $DBRKS_MANAGEMENT_TOKEN" \
+                            -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
+                            -H 'Content-Type: application/json' \
+                            -d $JSON_STRING \
+                            https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
+
+
+
 
 
 echo "Create Azure Resources Secrets Scope...."

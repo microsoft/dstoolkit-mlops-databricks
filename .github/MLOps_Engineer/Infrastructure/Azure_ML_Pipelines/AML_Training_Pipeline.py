@@ -40,11 +40,11 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         #    'myparam2': pipeline_param},
         run_name='Databricks_Feature_Engineering',
         compute_target=databricks_compute,
-        existing_cluster_id="0323-095026-ibph8gox",
+        existing_cluster_id="0327-230505-5m9ke7k7",
         allow_reuse=True
     )
 
-    Databricks_Model_Training = DatabricksStep(
+    Databricks_Model_Training_Step = DatabricksStep(
         name="Databricks_Model_Training",
         
         notebook_path="/Workspace/Repos/841ba6d9-a509-44ee-bf40-c0876b4ac6bb/Sandbox/Data_Scientist/modelTraining",
@@ -52,11 +52,22 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         #    'myparam2': pipeline_param},
         run_name='Databricks_Model_Training',
         compute_target=databricks_compute,
-        existing_cluster_id="0323-095026-ibph8gox",
+        existing_cluster_id="0327-230505-5m9ke7k7",
         allow_reuse=True
     )
 
-    step_sequence = StepSequence(steps=[Databricks_Featurization_Step, Databricks_Model_Training])
+    Databricks_Model_Inference_Step = DatabricksStep(
+        name="Databricks_Model_Inference",
+        notebook_path="/Repos/841ba6d9-a509-44ee-bf40-c0876b4ac6bb/Sandbox/Data_Scientist/modelInference",
+        #notebook_params={'myparam': 'testparam', 
+        #    'myparam2': pipeline_param},
+        run_name='Databricks_Model_Inference',
+        compute_target=databricks_compute,
+        existing_cluster_id="0327-230505-5m9ke7k7",
+        allow_reuse=True
+    )
+
+    step_sequence = StepSequence(steps=[Databricks_Featurization_Step, Databricks_Model_Training_Step, Databricks_Model_Inference_Step])
     pipeline = Pipeline(workspace=workspace, steps=step_sequence)
     pipeline.validate()
     

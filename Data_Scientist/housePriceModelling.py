@@ -1,4 +1,8 @@
 # Databricks notebook source
+
+%pip install sklearn_pandas
+%pip install azureml-sdk
+%pip install azureml-mlflow
 # COMMAND ----------
 import os
 import numpy as np
@@ -28,7 +32,7 @@ print('The azureml.core version is {}'.format(azureml.core.VERSION))
 # COMMAND ----------
 
 #Provide the Subscription ID of your existing Azure subscription
-subscription_id = "2a834239-8f89-42e1-8cf1-c3c10090f51c"
+subscription_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="SUBSCRIPTION_ID"),
 
 #Replace the name below with the name of your resource group
 resource_group = "databricks-sandbox-rg"
@@ -69,6 +73,7 @@ pd_df_california_housing = pd.DataFrame(california_housing.data, columns = calif
 pd_df_california_housing['target'] = pd.Series(california_housing.target)
 
 # COMMAND ----------
+import mlflow
 
 mlflow.set_tracking_uri("databricks") 
 mlflow.set_experiment("/Shared/houseprice_modeling")
