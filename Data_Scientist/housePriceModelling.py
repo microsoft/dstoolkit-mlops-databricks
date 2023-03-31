@@ -4,6 +4,11 @@
 %pip install azureml-sdk
 %pip install azureml-mlflow
 # COMMAND ----------
+
+print("test again")
+print("new test")
+
+# COMMAND ----------
 import os
 import numpy as np
 import pandas as pd
@@ -57,7 +62,7 @@ svc_pr = ServicePrincipalAuthentication(
 
 
 ws = Workspace(
-        subscription_id=subscription_id,
+        subscription_id="2a834239-8f89-42e1-8cf1-c3c10090f51c",
         resource_group=resource_group,
         workspace_name=workspace_name,
         auth=svc_pr
