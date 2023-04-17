@@ -214,7 +214,7 @@ jobs:
 #################################/
 # 15. AML Pipeline
       - name:                       Build AML Pipelines
-        run:                        python .github/MLOps_Engineer/Infrastructure/Azure_ML_Pipelines/AML_Training_Pipeline.py
+        run:                        ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/AML_Training_Pipeline.py
         env:
           DATABRICKS_COMPUTE_NAME: 'mlclusterlink'
           ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
