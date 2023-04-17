@@ -151,7 +151,7 @@ jobs:
 ##  Create Cluster                                           
 #################################/
       - name:                     Create Databricks Clusters
-        run:                      python .github/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateCluster.py
 
 
 #################################/
