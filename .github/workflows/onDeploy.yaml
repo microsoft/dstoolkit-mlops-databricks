@@ -7,9 +7,9 @@ on:
         type: choice
         description: Python or Bash (Databricks API)
         options:
-          - Python
-          - Bash
-        default: Python
+          - python
+          - bash
+        default: python
 
 jobs:
   ReuseableMatrixJobForDeployment:
