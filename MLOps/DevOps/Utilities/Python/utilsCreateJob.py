@@ -90,7 +90,7 @@ if __name__ == "__main__":
         'Content-Type': 'application/json'
     }
 
-    # Extract array from Json object
+    # Extract array from Json object.
     buildJobs = buildJobs['Jobs']
     existingClusters = listClusters(tokenRequestHeaders, databricksInstance=DATABRICKS_INSTANCE)
     print(existingClusters)

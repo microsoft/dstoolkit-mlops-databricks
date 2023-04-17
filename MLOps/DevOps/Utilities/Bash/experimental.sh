@@ -1,7 +1,7 @@
 echo "Bool Git"
 echo $(CheckInfraGitPathChange.enableInfraDeploy)
 
-echo "Source Branch Name"
+echo "Source Branch Name."
 echo "$(Build.SourceBranchName)"
 
 echo "System.PR.SourceBranch"
