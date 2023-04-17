@@ -1,13 +1,5 @@
 # Databricks notebook source
 
-%pip install sklearn_pandas
-%pip install azureml-sdk
-%pip install azureml-mlflow
-# COMMAND ----------
-
-print("test again")
-print("new test")
-
 # COMMAND ----------
 import os
 import numpy as np
@@ -79,9 +71,9 @@ pd_df_california_housing['target'] = pd.Series(california_housing.target)
 
 # COMMAND ----------
 import mlflow
-
-mlflow.set_tracking_uri("databricks") 
-mlflow.set_experiment("/Shared/houseprice_modeling")
+mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()) 
+#mlflow.set_tracking_uri("databricks") 
+mlflow.set_experiment("/Shared/houseprice_modeling_Experiment")
 
 # COMMAND ----------
 
@@ -155,7 +147,8 @@ with mlflow.start_run(run_name="exp-adb-aml-connection") as run:            #Sta
 # COMMAND ----------
 
 import mlflow
-mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()) 
+mlflow.set_tracking_uri("databricks") 
+#mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()) 
 print("MLflow tracking URI to point to your Azure ML Workspace setup complete.")
 
 aml_uri = ws.get_mlflow_tracking_uri()
