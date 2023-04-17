@@ -72,6 +72,8 @@ pd_df_california_housing['target'] = pd.Series(california_housing.target)
 # COMMAND ----------
 import mlflow
 mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()) 
+aml_uri = ws.get_mlflow_tracking_uri()
+print(aml_uri)
 #mlflow.set_tracking_uri("databricks") 
 mlflow.set_experiment("/Shared/houseprice_modeling_Experiment")
 
@@ -147,12 +149,11 @@ with mlflow.start_run(run_name="exp-adb-aml-connection") as run:            #Sta
 # COMMAND ----------
 
 import mlflow
+print("MLflow tracking URI to point to your Databricks Workspace setup complete.")
 mlflow.set_tracking_uri("databricks") 
 #mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()) 
-print("MLflow tracking URI to point to your Azure ML Workspace setup complete.")
-
-aml_uri = ws.get_mlflow_tracking_uri()
-print(aml_uri)
+#aml_uri = ws.get_mlflow_tracking_uri()
+#print(aml_uri)
 
 # Ensure You Have RBAC Set
 experiment_name = 'exp-adb-aml-connection'
