@@ -124,7 +124,7 @@ jobs:
         run: |
           pip3 install wheel
           ls
-          cd MLOps/ModelOps/DataScience/NewYorkTaxiModelling/pyWheels/Helper_Functions
+          cd MLOps/AIOps/DataScience/NewYorkTaxiModelling/pyWheels/Helper_Functions
           ls
           python setup.py sdist bdist_wheel
 
@@ -189,8 +189,8 @@ jobs:
           pip install dbx
           dbx configure --enable-inplace-jinja-support
           
-          dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
-          MULTI_TASK -e Sandbox --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
+          dbx deploy --deployment-file MLOps/AIOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
+          MULTI_TASK -e Sandbox --jinja-variables-file=MLOps/AIOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
 
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
