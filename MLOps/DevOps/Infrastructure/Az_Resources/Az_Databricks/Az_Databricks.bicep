@@ -25,7 +25,7 @@ var roleDefinitionUser = guid('${resourceGroup().id}/8e3af657-a8ff-443c-a75c-2fe
 // ################################################################################################################################################################//
 //                                                             Deploy AzDatabricks Workspace                                                                     
 // ################################################################################################################################################################//
-resource azDatabricksWS 'Microsoft.Databricks/workspaces@2021-04-01-preview' = {
+resource azDatabricksWS 'Microsoft.Databricks/workspaces@2023-02-01' = {
   name: varworkspaceName
   
   location: location
