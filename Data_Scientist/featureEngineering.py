@@ -20,6 +20,14 @@ from helperFunctions.helperFunction import *
 
 
 # COMMAND ----------
+args = dbutils.notebook.entry_point.getCurrentBindings()
+print(args)
+
+# COMMAND ----------
+
+experiment_id = dbutils.widgets.get("--AZUREML_EXPERIMENT_ID")
+print(experiment_id)
+# COMMAND ----------
 
 # Ingest Parameters Files
 

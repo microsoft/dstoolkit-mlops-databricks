@@ -41,7 +41,7 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         run_name='Databricks_Feature_Engineering',
         compute_target=databricks_compute,
         existing_cluster_id="0327-230505-5m9ke7k7",
-        allow_reuse=True
+        allow_reuse=False
     )
 
     Databricks_Model_Training_Step = DatabricksStep(
@@ -53,7 +53,7 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         run_name='Databricks_Model_Training',
         compute_target=databricks_compute,
         existing_cluster_id="0327-230505-5m9ke7k7",
-        allow_reuse=True
+        allow_reuse=False
     )
 
     Databricks_Model_Inference_Step = DatabricksStep(
@@ -64,7 +64,7 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         run_name='Databricks_Model_Inference',
         compute_target=databricks_compute,
         existing_cluster_id="0327-230505-5m9ke7k7",
-        allow_reuse=True
+        allow_reuse=False
     )
 
     step_sequence = StepSequence(steps=[Databricks_Featurization_Step, Databricks_Model_Training_Step, Databricks_Model_Inference_Step])
