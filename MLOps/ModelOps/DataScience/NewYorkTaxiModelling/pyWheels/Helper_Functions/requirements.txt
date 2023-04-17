@@ -63,8 +63,8 @@ widgetsnbextension==3.6.0
 wrapt==1.12.1
 xgboost==1.6.2
 zipp==3.6.0
-azureml-mlflow==1.49.0
-azureml-core==1.49.0
+azureml-mlflow==1.50.0
+azureml-core==1.50.0
 azure-ai-ml==1.4.0
 sklearn_pandas==2.2.0
 azureml-sdk==1.50.0
