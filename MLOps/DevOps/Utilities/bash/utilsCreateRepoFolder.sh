@@ -1,5 +1,5 @@
 echo "Ingest JSON File"
-JSON=$( jq '.' .github/MLOps_Engineer/Variables/$ENVIRONMENT/Repos.json)
+JSON=$( jq '.' MLOps/DevOps/Variables/$ENVIRONMENT/Repos.json)
 
 #echo "${JSON}" | jq
 

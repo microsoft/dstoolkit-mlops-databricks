@@ -40,7 +40,7 @@ def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, manage
 
 if __name__ == "__main__":
 
-    with open('.github/MLOps_Engineer/Variables/' + os.environ['ENVIRONMENT'] +'/Repos.json', 'r') as f:
+    with open('MLOps/DevOps/Variables/' + os.environ['ENVIRONMENT'] +'/Repos.json', 'r') as f:
         json = json.load(f)
 
     gitConfigs = json['Git_Configuration']

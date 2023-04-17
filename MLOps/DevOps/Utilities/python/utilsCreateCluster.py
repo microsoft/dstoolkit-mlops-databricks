@@ -97,7 +97,7 @@ def manageClusterState():
 if __name__ == "__main__":
     ENVIRONMENT = os.environ['ENVIRONMENT']
     print(ENVIRONMENT)
-    with open('.github/MLOps_Engineer/Variables/' + ENVIRONMENT + '/Clusters.json', 'r') as f:
+    with open('MLOps/DevOps/Variables/' + ENVIRONMENT + '/Clusters.json', 'r') as f:
         buildClusters = json.load(f)
     
     # Extract array from Json object

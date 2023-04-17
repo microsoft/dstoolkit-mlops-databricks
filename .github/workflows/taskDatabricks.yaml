@@ -112,7 +112,7 @@ jobs:
 ##  RBAC Assignments                                           
 #################################/
       - name:                     Assign RBAC Permissions 
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRoleBasedAccess.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateRoleBasedAccess.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
@@ -124,7 +124,7 @@ jobs:
         run: |
           pip3 install wheel
           ls
-          cd Data_Scientist/pyWheels/Helper_Functions
+          cd MLOps/ModelOps/DataScience/NewYorkTaxiModelling/pyWheels/Helper_Functions/helperFunctions
           ls
           python setup.py sdist bdist_wheel
 
@@ -133,13 +133,13 @@ jobs:
 ##  PAT Token                                           
 #################################/
       - name:                     Create And Store PAT Token In Key Vault
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksToken.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateDatabricksToken.sh
 
 #################################/
 ##  Secret Scopes                                           
 #################################/
       - name:                     Save Databricks SP Credentials Within Secret Scopes
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateSecretScopes.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateSecretScopes.sh
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -159,7 +159,7 @@ jobs:
 #################################/
   
       - name:                     Git Config
-        run:                      python .github/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsGitConfiguration.py
         env:
           PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
 
@@ -167,7 +167,7 @@ jobs:
 ##  Create Repos                                           
 #################################/
       - name:                     Create Databricks Repos
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRepoFolder.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateRepoFolder.sh
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
 
@@ -176,7 +176,7 @@ jobs:
 ##  Configure CLI                                           
 #################################/
       - name:                     Install + Configure Databricks CLI
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsDatabricksCLIConfig.sh
+        run:                      bash MLOps/DevOps/Variables/Utilities/Bash/utilsDatabricksCLIConfig.sh
 
 
 #################################/
@@ -189,8 +189,8 @@ jobs:
           pip install dbx
           dbx configure --enable-inplace-jinja-support
           
-          dbx deploy --deployment-file DBX_Workflows/CICD_Deployments/DBX_Workflow_Deployments.yaml \
-          MULTI_TASK -e Sandbox --jinja-variables-file=DBX_Workflows/CICD_Deployments/DBX_Workflow_Parameters.yaml
+          dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
+          MULTI_TASK -e Sandbox --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
 
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
@@ -201,7 +201,7 @@ jobs:
 #################################/
 # 15. Databricks Repo Pull
       - name:                     Repo Pull
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
+        run:                      bash MLOps/DevOps/Variables/Utilities/Bash/utilsRepoPull.sh
         env:
           UPDATE_FOLDER:          ${{ inputs.UPDATE_FOLDER}} 
           PULL_BRANCH:            ${{ github.ref_name }}
