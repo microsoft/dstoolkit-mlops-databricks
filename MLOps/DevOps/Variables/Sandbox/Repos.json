@@ -17,7 +17,27 @@
                                 "path":  "DataOps",
                                 "sparse_checkout":  {
                                     "patterns": [
-                                        "MLOps/DataOps"
+                                        "/MLOps/DataOps/"
+                                    ]
+                                }
+                            },
+                            {
+                                "url":  "https://github.com/ciaran28/dstoolkit-mlops-databricks",
+                                "provider":  "gitHub",
+                                "path":  "AIOps",
+                                "sparse_checkout":  {
+                                    "patterns": [
+                                        "/MLOps/AIOps/"
+                                    ]
+                                }
+                            },
+                            {
+                                "url":  "https://github.com/ciaran28/dstoolkit-mlops-databricks",
+                                "provider":  "gitHub",
+                                "path":  "DevOps",
+                                "sparse_checkout":  {
+                                    "patterns": [
+                                        "/MLOps/DevOps/"
                                     ]
                                 }
                             }
