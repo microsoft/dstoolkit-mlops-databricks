@@ -124,7 +124,7 @@ jobs:
         run: |
           pip3 install wheel
           ls
-          cd MLOps/ModelOps/DataScience/NewYorkTaxiModelling/pyWheels/Helper_Functions/helperFunctions
+          cd MLOps/ModelOps/DataScience/NewYorkTaxiModelling/pyWheels/Helper_Functions
           ls
           python setup.py sdist bdist_wheel
 
