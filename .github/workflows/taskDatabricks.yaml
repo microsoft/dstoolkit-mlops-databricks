@@ -176,7 +176,7 @@ jobs:
 ##  Configure CLI                                           
 #################################/
       - name:                     Install + Configure Databricks CLI
-        run:                      bash MLOps/DevOps/Variables/Utilities/bash/utilsDatabricksCLIConfig.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsDatabricksCLIConfig.sh
 
 
 #################################/
