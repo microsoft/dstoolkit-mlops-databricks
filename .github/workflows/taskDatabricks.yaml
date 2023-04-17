@@ -8,6 +8,9 @@ on:
       RELEASE_BRANCH:
         required: false
         type: string
+      SCRIPT_LANGUAGE:
+          required: false
+          type: string
     secrets:
       ARM_TENANT_ID:
         required: true
@@ -97,7 +100,7 @@ jobs:
 ##  Generate AAD Tokens                                              
 #################################/
       - name:                     Generate AAD Tokens
-        run:                      python .github/MLOps_Engineer/Utilities/Python/utilsCreateAuthenticationTokens.py
+        run:                      python .github/MLOps_Engineer/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateAuthenticationTokens.py
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    

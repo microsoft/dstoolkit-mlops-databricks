@@ -2,6 +2,15 @@
 name:                         onDeploy Databricks
 on:                             
   workflow_dispatch:
+    inputs:
+      script_language: 
+        type: choice
+        description: Python or Bash (Databricks API)
+        options:
+          - Python
+          - Bash
+        default: Python
+
 jobs:
   ReuseableMatrixJobForDeployment:
     name:                     Master Deployment
@@ -12,6 +21,7 @@ jobs:
     with:
       ENVIRONMENT:            ${{ matrix.targetEnvironment }}
       RELEASE_BRANCH:         'release/1'
+      SCRIPT_LANGUAGE:        ${{ github.event.inputs.script_language }}
     secrets:
       ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
