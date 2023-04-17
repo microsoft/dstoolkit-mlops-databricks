@@ -15,8 +15,6 @@ on:
         required: true
       ARM_CLIENT_SECRET:
         required: true
-      PAT_GITHUB:
-        required: true
       RELEASE_BRANCH:
         required: false
 
@@ -149,7 +147,7 @@ jobs:
       - name: Git Config
         run: python .github/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
         env:
-          PAT_GITHUB: ${{ secrets.PAT_GITHUB }}
+          PAT_GITHUB: ${{ secrets.GITHUB_TOKEN }}
 
       #################################/
       ##  Create Repos
