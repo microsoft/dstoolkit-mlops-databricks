@@ -1,0 +1,24 @@
+
+{
+    "ciaran_components":  [
+            
+        {
+            "script":  "train.py",
+            "parameters": {
+                            "test_data":  {"type":  "uri_folder"},
+                            "train_data":  {"type":  "uri_folder"},
+                            "test_labels":  {"type":  "uri_folder"},
+                            "train_labels":  {"type":  "uri_folder"},
+                            "model":  {"type":  "uri_folder"},
+                            "model_name":  {"type":  "string"},
+                            "model_type":  {"type":  "string"},
+                            "model_params":  {"type":  "string"},
+                            "model_params_file":  {"type":  "uri_file"}
+                        },
+            "outputs": {
+                            "model":  {"type":  "uri_folder"}
+                        },
+            "environments": "test"
+        }
+    ]
+}
