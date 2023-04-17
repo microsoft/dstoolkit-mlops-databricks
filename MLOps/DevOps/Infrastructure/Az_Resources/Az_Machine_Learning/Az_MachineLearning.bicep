@@ -24,14 +24,17 @@ resource amlBlob 'Microsoft.Storage/storageAccounts@2021-08-01' =  {
 resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2022-10-01' = {
   name: varamlwsname
   location: location
+
   identity: {
     type: 'SystemAssigned'
   }
+  
   properties: {
     publicNetworkAccess: 'Enabled'
     applicationInsights: azAppInsightsID
     storageAccount: amlBlob.id
     keyVault: azKeyVaultID
+    
   
     
 
@@ -39,6 +42,7 @@ resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2022-10
   
   sku: {
     name: 'Enterprise'
+    
 
   }
   
