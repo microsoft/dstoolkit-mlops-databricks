@@ -21,7 +21,7 @@ resource amlBlob 'Microsoft.Storage/storageAccounts@2021-08-01' =  {
     }
 }
 
-resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2022-12-01-preview' = {
+resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2022-10-01' = {
   name: varamlwsname
   location: location
   identity: {
@@ -32,8 +32,11 @@ resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2022-12
     applicationInsights: azAppInsightsID
     storageAccount: amlBlob.id
     keyVault: azKeyVaultID
+  
+    
 
   }
+  
   sku: {
     name: 'Enterprise'
 

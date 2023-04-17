@@ -33,9 +33,9 @@ resource azDatabricksWS 'Microsoft.Databricks/workspaces@2021-04-01-preview' = {
     managedResourceGroupId: '${subscription().id}/resourceGroups/${managedResourceGroupName}'
     publicNetworkAccess: 'Enabled'
     parameters: {
-      //amlWorkspaceId: {
-      //  value: azMachineLearningWSId
-      //}
+      amlWorkspaceId: {
+        value: azMachineLearningWSId
+      }
   
     }
     authorizations: [
