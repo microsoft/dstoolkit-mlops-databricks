@@ -176,7 +176,7 @@ jobs:
 ##  Configure CLI                                           
 #################################/
       - name:                     Install + Configure Databricks CLI
-        run:                      bash MLOps/DevOps/Variables/Utilities/Bash/utilsDatabricksCLIConfig.sh
+        run:                      bash MLOps/DevOps/Variables/Utilities/bash/utilsDatabricksCLIConfig.sh
 
 
 #################################/
@@ -201,7 +201,7 @@ jobs:
 #################################/
 # 15. Databricks Repo Pull
       - name:                     Repo Pull
-        run:                      bash MLOps/DevOps/Variables/Utilities/Bash/utilsRepoPull.sh
+        run:                      bash MLOps/DevOps/Variables/Utilities/bash/utilsRepoPull.sh
         env:
           UPDATE_FOLDER:          ${{ inputs.UPDATE_FOLDER}} 
           PULL_BRANCH:            ${{ github.ref_name }}
