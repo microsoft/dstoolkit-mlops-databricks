@@ -17,7 +17,7 @@
                                 "path":  "DataOps",
                                 "sparse_checkout":  {
                                     "patterns": [
-                                        "/MLOps/DataOps/"
+                                        "MLOps/DataOps"
                                     ]
                                 }
                             },
@@ -27,7 +27,7 @@
                                 "path":  "AIOps",
                                 "sparse_checkout":  {
                                     "patterns": [
-                                        "/MLOps/AIOps/"
+                                        "MLOps/AIOps"
                                     ]
                                 }
                             },
@@ -37,7 +37,7 @@
                                 "path":  "DevOps",
                                 "sparse_checkout":  {
                                     "patterns": [
-                                        "/MLOps/DevOps/"
+                                        "MLOps/DevOps"
                                     ]
                                 }
                             }
