@@ -32,12 +32,11 @@ resource azDatabricksWS 'Microsoft.Databricks/workspaces@2023-02-01' = {
   properties: {
     managedResourceGroupId: '${subscription().id}/resourceGroups/${managedResourceGroupName}'
     publicNetworkAccess: 'Enabled'
-    parameters: {
-      amlWorkspaceId: {
-        value: azMachineLearningWSId
-      }
-  
-    }
+    //parameters: {
+    //  amlWorkspaceId: {
+    //    value: azMachineLearningWSId
+    //  }
+    //}
     authorizations: [
       {
         principalId: '0e3c30b0-dd4e-4937-96ca-3fe88bd8f259'
