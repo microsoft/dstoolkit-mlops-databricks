@@ -36,7 +36,7 @@ jobs:
 ##  Git File Changes Check                                               
 ##################################/
       - name:                     Check Infra Git Path Change
-        run:                      bash MLOps/DevOps/Utilities/Bash/utilsGitFileChanges.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsGitFileChanges.sh
         env:
             PATH_FILTER:          MLOps/DevOps/Infrastructure
             VAR_NAME:             enableInfraDeploy
@@ -72,7 +72,7 @@ jobs:
 ##  Authenticate/Login To Azure                                               
 #################################/
       - name:                     Service Principal Login
-        run:                      bash MLOps/DevOps/Utilities/Bash/utilsAzureLogin.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsAzureLogin.sh
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -92,7 +92,7 @@ jobs:
 ##  Save Dynamically Generated Env Variable                                               
 #################################/
       - name:                     Set Env Variables 
-        run:                      bash MLOps/DevOps/Utilities/Bash/utilsSetEnvVariables.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsSetEnvVariables.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
@@ -101,7 +101,7 @@ jobs:
 ##  Generate AAD Tokens                                              
 #################################/
       - name:                     Generate AAD Tokens
-        run:                      python .github/MLOps_Engineer/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateAuthenticationTokens.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateAuthenticationTokens.py
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
