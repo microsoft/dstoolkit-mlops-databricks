@@ -15,6 +15,7 @@ SUBSCRIPTION_ID = os.environ['SUBSCRIPTION_ID']
 ARM_CLIENT_SECRET = os.environ['ARM_CLIENT_SECRET']
 ARM_TENANT_ID = os.environ['ARM_TENANT_ID']
 ARM_CLIENT_ID = os.environ['ARM_CLIENT_ID']
+DBRKS_CLUSTER_ID = os.environ['DBRKS_CLUSTER_ID']
 
 print(DATABRICKS_COMPUTE_NAME)
 print(RESOURCE_GROUP_NAME)
@@ -31,24 +32,24 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
 
     Databricks_Featurization_Step = DatabricksStep(
         name="Databricks_Feature_Engineering",
-        notebook_path="/Repos/841ba6d9-a509-44ee-bf40-c0876b4ac6bb/Sandbox/Data_Scientist/featureEngineering",
+        notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/MLOps/ModelOps/DataScience/NewYorkTaxiModelling/featureEngineering",
         #notebook_params={'myparam': 'testparam', 
         #    'myparam2': pipeline_param},
         run_name='Databricks_Feature_Engineering',
         compute_target=databricks_compute,
-        existing_cluster_id="0323-095026-ibph8gox",
+        existing_cluster_id=DBRKS_CLUSTER_ID,
         allow_reuse=True
     )
 
     Databricks_Model_Training = DatabricksStep(
         name="Databricks_Model_Training",
         
-        notebook_path="/Repos/841ba6d9-a509-44ee-bf40-c0876b4ac6bb/Sandbox/Data_Scientist/modelTraining",
+        notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/MLOps/ModelOps/DataScience/NewYorkTaxiModelling/modelTraining",
         #notebook_params={'myparam': 'testparam', 
         #    'myparam2': pipeline_param},
         run_name='Databricks_Model_Training',
         compute_target=databricks_compute,
-        existing_cluster_id="0323-095026-ibph8gox",
+        existing_cluster_id=DBRKS_CLUSTER_ID,
         allow_reuse=True
     )
 
