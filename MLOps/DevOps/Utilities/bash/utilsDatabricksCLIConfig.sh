@@ -20,11 +20,10 @@ if [ $DevOps_Agent == "GitHub" ]; then
 
 else
     echo "Running in Azure DevOps"
-    databricks configure --token <<-EOF
+    << EOF >> databricks configure --token
     $DATABRICKS_HOST
     $DATABRICKS_TOKEN
-    EOF
-
+EOF
 fi
 
 #databricks configure --token <<EOF
