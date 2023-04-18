@@ -7,17 +7,30 @@ DATABRICKS_TOKEN=$(az keyvault secret show --name "dbkstoken" --vault-name $AZ_K
 
 echo $DATABRICKS_HOST
 echo $DATABRICKS_TOKEN
+echo $DevOps_Agent
 
 
 # Change absolutely NOTHING.
 # DATABRICKS_HOST : It Must Start As https:// : It Must Not End In '/'
 # DATABRICKS_TOKEN : It Must Not Be Expired..
 
+if [ $DevOps_Agent == "GitHub" ]; then
+    echo "Running in GitHub Actions"
+    databricks configure --token
 
-databricks configure --token <<EOF
-$DATABRICKS_HOST
-$DATABRICKS_TOKEN
-EOF
+else
+    echo "Running in Azure DevOps"
+    databricks configure --token <<EOF
+    $DATABRICKS_HOST
+    $DATABRICKS_TOKEN
+    EOF
+
+fi
+
+#databricks configure --token <<EOF
+#$DATABRICKS_HOST
+#$DATABRICKS_TOKEN
+#EOF
 
 # Different behaviour between Github Actions Bash and ADO AzCLI. The former authenticates with databricks configure --token only.
 #databricks configure --token 

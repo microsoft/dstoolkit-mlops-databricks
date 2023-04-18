@@ -11,6 +11,10 @@ on:
       SCRIPT_LANGUAGE:
           required: false
           type: string
+      DevOps_Agent:
+        required: true
+        type: string 
+        default: GitHub
     secrets:
       ARM_TENANT_ID:
         required: true
@@ -22,6 +26,7 @@ on:
         required: true
       RELEASE_BRANCH:
         required: false
+
 
 jobs:
   build:
@@ -177,6 +182,8 @@ jobs:
 #################################/
       - name:                     Install + Configure Databricks CLI
         run:                      bash MLOps/DevOps/Utilities/bash/utilsDatabricksCLIConfig.sh
+        env:
+          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
 
 #################################/
