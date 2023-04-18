@@ -211,12 +211,10 @@ jobs:
 #################################/
 # 15. Databricks Repo Pull
       - name:                     Repo Pull
-        run:                      bash MLOps/DevOps/Variables/Utilities/bash/utilsRepoPull.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsRepoPull.sh
         env:
-          UPDATE_FOLDER:          ${{ inputs.UPDATE_FOLDER}} 
           PULL_BRANCH:            ${{ github.ref_name }}
           RELEASE_BRANCH:         ${{ inputs.RELEASE_BRANCH}} 
-
 
 #################################/
 ##  Build AML Pipelines (Running Databricks Notebooks From AML Pipeline)  
