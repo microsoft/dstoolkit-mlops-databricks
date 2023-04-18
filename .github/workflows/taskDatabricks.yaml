@@ -45,6 +45,7 @@ jobs:
         env:
             PATH_FILTER:          MLOps/DevOps/Infrastructure
             VAR_NAME:             enableInfraDeploy
+            DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
 #################################/
 ##  Set Python                                          

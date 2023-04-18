@@ -3,6 +3,7 @@
 
 echo $PATH_FILTER
 echo $VAR_NAME
+echo $DevOps_Agent
 
 CHANGED_FILES=$(git diff HEAD HEAD~ --name-only)
 MATCH_COUNT=0
@@ -20,7 +21,17 @@ done
 
 echo "$MATCH_COUNT match(es) for filter '$PATH_FILTER' found."
 if [[ $MATCH_COUNT -gt 0 ]]; then
-    echo "$VAR_NAME=true" >> $GITHUB_ENV
+    if [[ $DevOps_Agent == "GitHub" ]]; then
+        echo "Running in GitHub Actions"
+        echo "$VAR_NAME=true" >> $GITHUB_ENV
+    else
+        echo "Running in Azure DevOps"
+        echo "##vso[task.setvariable variable="VAR_NAME";isOutput=true;]true"
+    fi  
 else
-    echo "$VAR_NAME=false" >> $GITHUB_ENV
+    if [[ $DevOps_Agent == "GitHub" ]]; then
+        echo "$VAR_NAME=false" >> $GITHUB_ENV
+    else
+        echo "##vso[task.setvariable variable="VAR_NAME";isOutput=true;]false"
+    fi  
 fi
