@@ -142,6 +142,8 @@ jobs:
 #################################/
       - name:                     Create And Store PAT Token In Key Vault
         run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateDatabricksToken.sh
+        env:
+          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
 #################################/
 ##  Secret Scopes                                           
