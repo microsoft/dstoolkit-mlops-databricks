@@ -1,4 +1,5 @@
 import os
+import requests
 from azureml.core import Workspace, Experiment
 from azureml.core.compute import ComputeTarget, AmlCompute
 from azureml.pipeline.steps import PythonScriptStep, DatabricksStep
@@ -26,6 +27,18 @@ print(ARM_CLIENT_SECRET)
 print(ARM_TENANT_ID)
 print(ARM_CLIENT_ID)
 
+def listClusters():
+    """
+        Returns a Json object containing a list of existing Databricks Clusters.
+    """
+
+    response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/list', headers=DBRKS_REQ_HEADERS)
+
+    if response.status_code != 200:
+        raise Exception(response.content)
+
+    else:
+        return response.json()
 
 def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspace):
     print('Creating the pipeline structure')
@@ -97,6 +110,10 @@ except ComputeTargetException:
     databricks_compute.wait_for_completion(True)
 
 #
+
+existingClusters = listClusters()
+
+
 #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "/Data_Scientist/featureEngineering.py")
 notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
 
