@@ -29,26 +29,6 @@ Features to be included in future releases:
 - Metrics & Monitoring 
 ---
 
-## Sections:
-- [Youtube Demo](#Youtube-Demo)
-- [About This Repository](#About-This-Repository)
-- [Prerequisites](#Prerequisites)
-- [Details of The Solution Accelerator](#Details-of-The-Solution-Accelerator)
-- [Databricks as Infrastructure](#Databricks-as-Infrastructure)
-- [Continuous Deployment and Branching Strategy](#Continuous-Deployment-And-Branching-Strategy)
-- [Create Repository](#Create-Repository)
-- [Login to Azure](#Login-To-Azure)
-- [Provide SubscriptionID ](#Provide-SubscriptionID)
-- [Create Main Service Principal](#Create-Main-Service-Principal)
-- [Final Snapshot of Github Secrets](#Final-Snapshot-of-Github-Secrets)
-- [Retrieve Object ID's](#Retrieve-Object-IDs)
-- [Update Yaml Pipeline Parameters Files](#Update-Yaml-Pipeline-Parameters-Files)
-- [Deploy the Azure Environments](#Deploy-The-Azure-Environments)
-- [Run Machine Learning Scripts](#Run-Machine-Learning-Scripts)
-
-
----
----
 
 ## Youtube Demo 
 
