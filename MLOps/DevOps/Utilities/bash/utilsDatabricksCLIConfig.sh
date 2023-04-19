@@ -15,8 +15,12 @@ echo $DevOps_Agent
 # DATABRICKS_TOKEN : It Must Not Be Expired..
 
 if [ $DevOps_Agent == "GitHub" ]; then
-    echo "Running in GitHub Actions"
-    databricks configure --token
+    #echo "Running in GitHub Actions"
+    << EOF >> databricks configure --token
+    $DATABRICKS_HOST
+    $DATABRICKS_TOKEN
+EOF
+    #databricks configure --token
 
 else
     echo "Running in Azure DevOps"
