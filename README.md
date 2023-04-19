@@ -30,9 +30,10 @@ Features to be included in future releases:
 ---
 
 
-## Youtube Demo 
+## Youtube Demo - Slightly Outdated
 
-Version 2 of the Demo video now released below!
+A deployment instructions for the video are a little outdated (albeit still usefull). 
+Please follow instructions below instead. The video still provides useful content for concepts outwith the deployment. 
 
 [![Youtube Demo](docs/images/YoutubeThumbNail.png)](https://youtu.be/g57N3GYXuDI)
 
