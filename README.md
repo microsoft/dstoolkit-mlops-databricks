@@ -215,7 +215,7 @@ Secrets in GitHub should look exactly like below. The secrets are case sensitive
 # Repo Guidance 
 
 ## Databricks as Infrastructure
-<details open>
+<details close>
 <summary>Click Dropdown... </summary>
 
 <br>
@@ -239,6 +239,9 @@ In a nutshell, Continuous **Development** _is a partly manual process where deve
 
  ## Continuous Deployment And Branching Strategy
 
+<details close>
+<summary>Click Dropdown... </summary>
+
 The Branching Strategy I have chosen is configured automatically as part of the accelerator. It follows a GitHub Flow paradigm in order to facilitate rapid Continuous Integration, with some nuances. (see Footnote 1 which contains the SST Git Flow Article written by Willie Ahlers for the Data Science Toolkit - This provides a narrative explaining the numbers below)[^1]
 
 
@@ -255,7 +258,7 @@ The branching strategy is easy to change via updating the "if conditions" within
   - Feature Branches: "feature/<insertname>"
   - Main Branch: "main"
   - Release branch "release/<insertname>"
-
+</details>
 ---
 ---
 ## MLOps Paradigm: Deploy Code, not Models
