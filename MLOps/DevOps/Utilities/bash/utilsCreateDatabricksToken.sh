@@ -55,8 +55,10 @@ else
     echo "Databricks Token As Environment Variable..."
 
     if [[ $DevOps_Agent == "GitHub" ]]; then
+        echo $DevOps_Agent
         echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
     else
+        echo $DevOps_Agent
         echo "##vso[task.setvariable variable="DATABRICKS_TOKEN";isOutput=true;]$DATABRICKS_TOKEN"
     fi  
 fi
