@@ -1,3 +1,5 @@
+#IMPORTANT - AZUREML_MLFLOW PYPI PACKAGE IS INSTALLED ONTO CLUSTER
+# This allows us to use the MLFlow API to log metrics and artifacts to the MLFlow Tracking Server in AML 
 
 import requests
 import time

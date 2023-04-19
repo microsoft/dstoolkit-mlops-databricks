@@ -11,7 +11,14 @@
             "autoscale":  {
                             "min_workers":  2,
                             "max_workers":  3
-                        }
+                        },
+            "libraries": [
+                {
+                    "pypi": {
+                        "package": "azureml-mlflow==1.50.0"
+                    }
+                }
+            ]
         }
     ]
 }
