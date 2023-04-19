@@ -185,10 +185,10 @@ jobs:
 #################################/
 ##  Configure CLI                                           
 #################################/
-      #- name:                     Install + Configure Databricks CLI
-      #  run:                      bash MLOps/DevOps/Utilities/bash/utilsDatabricksCLIConfig.sh
-      #  env:
-      #    DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
+      - name:                     Install + Configure Databricks CLI
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsDatabricksCLIConfig.sh
+        env:
+          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
 
 #################################/
