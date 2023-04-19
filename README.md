@@ -107,9 +107,7 @@ The net effect is a disproportionate amount of the Data Scientist/Engineers time
 
 
 ---
----
-
-# Deploy
+# Deployment Instructions 
 
 ## Create Repository
 <details open>
@@ -121,7 +119,6 @@ The net effect is a disproportionate amount of the Data Scientist/Engineers time
 - Within your VS Code click, "View", then "Command Pallette", "Git: Clone", and finally select your Repo
 </details>
 
----
 ---
  
 ## Login To Azure
@@ -157,11 +154,6 @@ echo "From root execute... "
 
 
 ```
-
----
----
-
----
 ---
 
 ## Create Environments 
