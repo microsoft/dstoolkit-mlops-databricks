@@ -10,6 +10,7 @@ from azureml.core.authentication import ServicePrincipalAuthentication
 
 
 DATABRICKS_COMPUTE_NAME = os.environ['DATABRICKS_COMPUTE_NAME']
+DATABRICKS_CLUSTER_NAME = os.environ['DATABRICKS_CLUSTER_NAME']
 RESOURCE_GROUP_NAME = os.environ['RESOURCE_GROUP_NAME']
 DATABRICKS_TOKEN = os.environ['DATABRICKS_TOKEN']
 DATABRICKS_INSTANCE = os.environ['DATABRICKS_INSTANCE']
