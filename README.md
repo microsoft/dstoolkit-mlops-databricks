@@ -206,31 +206,19 @@ az login
 
 ```
 
-
-## Provide SubscriptionID 
+## GitHub
 ```ps
-$SubscriptionId=( az account show --query id -o tsv )
+echo "Enter Your Git Username... "
+# Example: "Ciaran28"
+$Git_Configuration = "Enter your GitHub Username"
 ```
 
-## Create Main Service Principal 
-**Why** : The Service Principal is a conduit for which we can authenticate into Azure. Personify it as as a User, with rights to access Azure Resources (as defined by Role Base Access conferred to it). If we have the Service Principal's secrets/credentials such as the Client Secret, Client ID and Tenant ID, all the powers held by the Service Principal will flow to the requestor. In this example, it will be the Github Action Runner/VM. 
-
-```ps
-# Create The Service Principal
-# WARNING: DO NOT DELETE OUTPUT
-
-$main_sp_name="main_sp_"+$(Get-Random -Minimum 1000 -Maximum 9999)
-
-# use --sdk-auth flag if using GitHub Action Azure Authenticator 
-$DBX_CREDENTIALS=( az ad sp create-for-rbac -n $main_sp_name --role Owner --scopes /subscriptions/$SubscriptionId --query "{ARM_TENANT_ID:tenant, ARM_CLIENT_ID:appId, ARM_CLIENT_SECRET:password}")
-
-
-# Service Principal Credentials
-$DBX_CREDENTIALS=( $DBX_CREDENTIALS | convertfrom-json )
-echo $DBX_CREDENTIALS
-$Client_ID=( $DBX_CREDENTIALS.ARM_CLIENT_ID )
-
+  ```ps
+echo "Enter Your Git Repo Url... "
+# Example: ""  
+$Repo_ConfigurationURL = "https://github.com/ciaran28/dstoolkit-mlops-databricks"
 ```
+
 
 ---
 ---
@@ -263,107 +251,6 @@ We are using the same Service Principal for each environment, which is not reali
 Secrets in GitHub should look exactly like below. The secrets are case sensitive, therefore be very cautious when creating. 
 
 <img width="587" alt="image" src="https://user-images.githubusercontent.com/108273509/205921220-9ad2116a-7c85-4725-a70c-e178a0af2914.png">
-
-
-
-
----
----
- 
-## Retrieve Object IDs 
-
-**Why**: The Object IDs will be used when assigning RBAC permissions at a later stage. 
-
-1. Retrieve ObjectID of Databricks Service Principal:  
-```ps
-$main_sp_name_obj_id=( az ad sp show --id $Client_ID --query "{roleBeneficiaryObjID:id}" -o tsv )
-
-echo "Back Stop Command For Older Azure CLI Command"
- 
-if ($main_sp_name_obj_id -eq "None" ) { $main_sp_name_obj_id=( az ad sp show --id $Client_ID --query "{roleBeneficiaryObjID:objectId}" -o tsv ) }
- 
-```
-
----
-
-2. Retrieve your own ObectID:  
-```ps
- 
-$User_ObjID=( az ad signed-in-user show --query "{roleBeneficiaryObjID:id}" -o tsv )
- 
-echo "Back Stop Command For Older Azure CLI Command"
- 
-if ($User_ObjID -eq "None" ) { $User_ObjID=( az ad signed-in-user show --query "{roleBeneficiaryObjID: objectId}" -o tsv ) }
- 
-```
----
----
- 
-## Update Yaml Pipeline Variables Files
-
-- The Parameters file can be thought of as a quasi ARM Template for Databricks
-
-We will update the variables files contained within .github/MLOps_Engineer/Variables/ . Enter scripts below into VS Code PowerShell Terminal.
-  
-```ps
-echo "Enter Your Git Username... "
-# Example: "Ciaran28"
-$Git_Configuration = "Enter your GitHub Username"
-```
-  
-  ```ps
-echo "Enter Your Git Repo Url... "
-# Example: ""  
-$Repo_ConfigurationURL = "https://github.com/ciaran28/dstoolkit-mlops-databricks"
-```
-  
-  
-```ps
-echo "Update The Variable Files"
-$environments = @('Sandbox', 'Development', 'UAT', 'Production')
-foreach ($environment in $environments)
-{
-   $JsonData = Get-Content .github\MLOps_Engineer\Variables\$environment\Repos.json -raw | ConvertFrom-Json
-   foreach ($Obj in $JsonData.Git_Configuration)
-   {
-       ($Obj.git_username = $Git_Configuration )
-   }
-   foreach ($Obj in $JsonData.Repo_Configuration)
-   {
-       ($Obj.url = $Repo_ConfigurationURL )
-   }
-   $JsonData | ConvertTo-Json -Depth 4  | set-content .github\MLOps_Engineer\Variables\$environment\Repos.json -NoNewline
-}
- 
-foreach ($environment in $environments)
-{
-  $JsonData = Get-Content .github\MLOps_Engineer\Variables\$environment\RBAC.json -raw | ConvertFrom-Json
-  $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Your Object ID'){$_.roleBeneficiaryObjID=$User_ObjID}}
-  $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Databricks SPN'){$_.roleBeneficiaryObjID=$main_sp_name_obj_id}}
-  $JsonData | ConvertTo-Json -Depth 4  | set-content .github\MLOps_Engineer\Variables\$environment\RBAC.json -NoNewline
-}
-
-
-```
-
-
-## Update GitHub Repo - Git Push
-
-- There is a tendency for EOF to default to Windows CRLF (\r\n) in VS Code. Our deployment will use an Ubuntu Image for the GitHub Action Runner, which will not recognise carriage return \r\n
-- The command below will convert \r\n to \n , which is the equivalent to changing all files in VS Code from CRLF to LF. It will then promote our local changes to the remote repository
-- Run the command below from root folder
-
-```ps
-git add . 
-git commit . -m 'Demo Deployment Commit'
-
-git config core.autocrlf false
-git rm --cached -r .
-git reset --hard
-git push
-
-```
-
 
 
 ---

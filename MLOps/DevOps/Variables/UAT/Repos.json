@@ -1,7 +1,7 @@
 {
     "Git_Configuration":  [
                               {
-                                  "git_username":  "ciaran28",
+                                  "git_username":  "Ciaran28",
                                   "git_provider":  "gitHub"
                               }
                           ],
@@ -9,7 +9,7 @@
                                {
                                    "url":  "https://github.com/ciaran28/dstoolkit-mlops-databricks",
                                    "provider":  "gitHub",
-                                   "path":  "UATFolder"
+                                   "path":  "DevelopmentFolder"
                                }
                            ]
 }
