@@ -185,10 +185,10 @@ jobs:
 #################################/
 ##  Configure CLI                                           
 #################################/
-      - name:                     Install + Configure Databricks CLI
-        run:                      bash MLOps/DevOps/Utilities/bash/utilsDatabricksCLIConfig.sh
-        env:
-          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
+      #- name:                     Install + Configure Databricks CLI
+      #  run:                      bash MLOps/DevOps/Utilities/bash/utilsDatabricksCLIConfig.sh
+      #  env:
+      #    DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
 
 #################################/
@@ -197,15 +197,11 @@ jobs:
       - shell:                    bash
         name:                     DBX Deploy - Workflow Artifacts (CD) 
         run: |
-          DATABRICKS_TOKEN=$(az keyvault secret show --name "dbkstoken" --vault-name $AZ_KEYVAULT_NAME --query "value" -o tsv)
-          
-          if [[ $DevOps_Agent == "GitHub" ]]; then
-            echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
-          else
-            echo "##vso[task.setvariable variable="DATABRICKS_TOKEN";isOutput=true;]$DATABRICKS_TOKEN"
-          fi
 
+          # Environment Variables below will be used for DBX Configure Auth 
           echo $DATABRICKS_TOKEN
+          echo $DATABRICKS_HOST
+
           pip install dbx
           dbx configure --enable-inplace-jinja-support
           
