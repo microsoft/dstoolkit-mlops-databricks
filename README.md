@@ -6,8 +6,8 @@
 
  # Version History And Updates 
 
-## Major updates coming this week - Azure Machine Learning and Databricks MLFLow Integration 
-There may be stability issues as changes trickle through between 20th - 31th March
+## Azure ML Integration Now Live For GitHub Deployment.
+Azure DevOps Deployment in Progress (expect instability)
 
 
 
