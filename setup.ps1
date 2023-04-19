@@ -65,5 +65,10 @@ git rm --cached -r .
 git reset --hard
 git push
 
-# Secret Configuration 
+# Secret Configuration
+
+clear
+
+echo "Credentials Used In Later Step - Do Not Delete"
+echo "Enter $DBX_CREDENTIALS In Case Of Accidental Deletion"
 echo $DBX_CREDENTIALS
