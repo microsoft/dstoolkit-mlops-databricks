@@ -109,7 +109,7 @@ if __name__ == "__main__":
     print(f" AML Workspace Properties: {ws} ")
 
     try:
-        DATABRICKS_COMPUTE_NAME = DatabricksCompute(workspace=ws, name=DATABRICKS_COMPUTE_NAME)
+        databricks_compute = DatabricksCompute(workspace=ws, name=DATABRICKS_COMPUTE_NAME)
         print('Compute target {} already exists'.format(DATABRICKS_COMPUTE_NAME))
 
     except ComputeTargetException:
