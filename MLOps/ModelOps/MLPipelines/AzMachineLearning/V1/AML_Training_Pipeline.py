@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
 
     #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "/Data_Scientist/featureEngineering.py")
-    notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
+    #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
 
     pipeline = create_pipeline_structure(compute_target=databricks_compute,  workspace=ws, cluster_id=cluster_id)
 
