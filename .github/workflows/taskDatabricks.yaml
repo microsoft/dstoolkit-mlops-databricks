@@ -214,6 +214,7 @@ jobs:
           HOUSE_PRICE_MODELS -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
 
 #################################/
