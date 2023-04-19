@@ -15,7 +15,7 @@
                                                "Storage Blob Data Contributor",
                                                "AzureML Data Scientist"
                                            ],
-                                 "roleBeneficiaryObjID":  "8f2c7bd6-e46f-48a6-895a-6d90c6249deb",
+                                 "roleBeneficiaryObjID":  "5dd2dbea-e941-4599-a10b-e3250710c9a8",
                                  "Description":  "Databricks SPN",
                                  "principalType":  "ServicePrincipal"
                              }
