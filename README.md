@@ -210,13 +210,13 @@ az login
 ```ps
 echo "Enter Your Git Username... "
 # Example: "Ciaran28"
-$Git_Configuration = "<GitHub Username>"
+$Git_Configuration = "GitHub_Username"
 ```
 
   ```ps
 echo "Enter Your Git Repo Url... "
-# Example: ""  
-$Repo_ConfigurationURL = "https://github.com/<username>/dstoolkit-mlops-databricks"
+# Example: "https://github.com/ciaran28/dstoolkit-mlops-databricks" 
+$Repo_ConfigurationURL = ""
 ```
 
 ## Updates Parameter Files & Git Push To Remote
