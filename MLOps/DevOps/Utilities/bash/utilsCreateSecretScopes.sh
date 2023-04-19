@@ -40,25 +40,6 @@ echo "Inserting Service Principal + Other Secrets Into Scope.... "
 
 
 
-JSON_STRING=$( jq -n -c \
-                --arg scope "DBX_SP_Credentials" \
-                --arg key "DBX_SP_Client_ID" \
-                --arg value "$SUBSCRIPTION_ID"  \
-                '{
-                    scope: $scope,
-                    key: $key,
-                    string_value: $value
-                }' )
-
-
-echo $JSON_STRING
-
-Create_DBX_Client_Secret=$(curl -X POST -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
-                            -H "X-Databricks-Azure-SP-Management-Token: $DBRKS_MANAGEMENT_TOKEN" \
-                            -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
-                            -H 'Content-Type: application/json' \
-                            -d $JSON_STRING \
-                            https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
 
 JSON_STRING=$( jq -n -c \
                 --arg scope "DBX_SP_Credentials" \
@@ -129,7 +110,7 @@ JSON_STRING=$( jq -n -c --arg scope "DBX_SP_Credentials" --arg key "SUBSCRIPTION
 
 echo $JSON_STRING
 
-Create_DBX_TenantID_Secret=$(curl -X POST -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
+CREATE_SUBSCRIPTIONID=$(curl -X POST -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
                             -H "X-Databricks-Azure-SP-Management-Token: $DBRKS_MANAGEMENT_TOKEN" \
                             -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
                             -H 'Content-Type: application/json' \
@@ -159,7 +140,39 @@ JSON_STRING=$( jq -n -c --arg scope "AzureResourceSecrets" --arg key "appi_ik" -
                                 string_value: $value
                             }' )
 
-Create_APP_INSIGHT_INSTRUMENT_KEY_SecretD=$(curl -X POST \
+Create_APP_INSIGHT_INSTRUMENT_KEY_Secret=$(curl -X POST \
+                            -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
+                            -H "X-Databricks-Azure-SP-Management-Token: $DBRKS_MANAGEMENT_TOKEN" \
+                            -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
+                            -H 'Content-Type: application/json' \
+                            -d $JSON_STRING \
+                            https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
+
+
+JSON_STRING=$( jq -n -c --arg scope "AzureResourceSecrets" --arg key "RESOURCE_GROUP_NAME" --arg value "$RESOURCE_GROUP_NAME"  \
+                            '{
+                                scope: $scope,
+                                key: $key,
+                                string_value: $value
+                            }' )
+
+CREATE_RESOURCE_GROUP_NAME_SECRET=$(curl -X POST \
+                            -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
+                            -H "X-Databricks-Azure-SP-Management-Token: $DBRKS_MANAGEMENT_TOKEN" \
+                            -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
+                            -H 'Content-Type: application/json' \
+                            -d $JSON_STRING \
+                            https://$DATABRICKS_INSTANCE/api/2.0/secrets/put )
+
+
+JSON_STRING=$( jq -n -c --arg scope "AzureResourceSecrets" --arg key "AML_WS_NAME" --arg value "$AML_WS_NAME"  \
+                            '{
+                                scope: $scope,
+                                key: $key,
+                                string_value: $value
+                            }' )
+
+CREATE_AML_WS_NAME_SECRET=$(curl -X POST \
                             -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
                             -H "X-Databricks-Azure-SP-Management-Token: $DBRKS_MANAGEMENT_TOKEN" \
                             -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
