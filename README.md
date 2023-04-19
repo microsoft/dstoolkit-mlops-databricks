@@ -153,9 +153,7 @@ Follow the naming convention (case sensitive)
 In addition generate a GitHub Personal Access Token and use it to create a secret named ^**PAT_GITHUB**:
 
 <img width="883" alt="image" src="https://user-images.githubusercontent.com/108273509/205918329-9592e20f-439b-4e1b-b7c4-983579e295de.png">
-
-We are using the same Service Principal for each environment, which is not realistic. We might want to have different SPs for each environment, especially Production which is usually more locked down. We are also deploying to the same subscription, which you can change in order to strengthen isolation. 
-
+ 
 ---
 ---
 
