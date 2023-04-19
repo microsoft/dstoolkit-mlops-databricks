@@ -109,6 +109,58 @@ The net effect is a disproportionate amount of the Data Scientist/Engineers time
 ---
 ---
 
+# Deploy
+
+## Create Repository
+<details open>
+<summary>Click Dropdown... </summary>
+<br>
+  
+- Fork this repository [here](https://github.com/microsoft/dstoolkit-mlops-databricks/fork) 
+- In your Forked Repo, click on 'Actions' and then 'Enable'
+- Within your VS Code click, "View", then "Command Pallette", "Git: Clone", and finally select your Repo
+</details>
+
+---
+---
+ 
+## Login To Azure
+- All Code Throughout To Go Into VS Code **PowerShell Terminal** 
+
+ ```ps
+az login
+
+# If There Are Multiple Tenants In Your Subscription, Ensure You Specify The Correct Tenant "az login --tenant"
+
+# ** Microsoft Employees Use: az login --tenant fdpo.onmicrosoft.com (New Non Prod Tenant )
+
+```
+
+## GitHub
+```ps
+echo "Enter Your Git Username... "
+# Example: "Ciaran28"
+$Git_Configuration = "GitHub_Username"
+```
+
+  ```ps
+echo "Enter Your Git Repo Url... "
+# Example: "https://github.com/ciaran28/dstoolkit-mlops-databricks" 
+$Repo_ConfigurationURL = ""
+```
+
+## Updates Parameter Files & Git Push To Remote
+  ```ps
+echo "From root execute... "
+
+./setup.ps1
+
+
+```
+
+---
+---
+
 ## Databricks as Infrastructure
 <details open>
 <summary>Click Dropdown... </summary>
@@ -176,57 +228,6 @@ To solve those problems, a concept called feature store was developed, so that:
 - Features can be served in real-time with low latency
 
 ![image](https://user-images.githubusercontent.com/108273509/216114586-0c4dea68-a98c-4cf6-938a-ceecf11b12a8.png)
-
----
----
-
-
-## Create Repository
-<details open>
-<summary>Click Dropdown... </summary>
-<br>
-  
-- Fork this repository [here](https://github.com/microsoft/dstoolkit-mlops-databricks/fork) 
-- In your Forked Repo, click on 'Actions' and then 'Enable'
-- Within your VS Code click, "View", then "Command Pallette", "Git: Clone", and finally select your Repo
-</details>
-
----
----
- 
-## Login To Azure
-- All Code Throughout To Go Into VS Code **PowerShell Terminal** 
-
- ```ps
-az login
-
-# If There Are Multiple Tenants In Your Subscription, Ensure You Specify The Correct Tenant "az login --tenant"
-
-# ** Microsoft Employees Use: az login --tenant fdpo.onmicrosoft.com (New Non Prod Tenant )
-
-```
-
-## GitHub
-```ps
-echo "Enter Your Git Username... "
-# Example: "Ciaran28"
-$Git_Configuration = "GitHub_Username"
-```
-
-  ```ps
-echo "Enter Your Git Repo Url... "
-# Example: "https://github.com/ciaran28/dstoolkit-mlops-databricks" 
-$Repo_ConfigurationURL = ""
-```
-
-## Updates Parameter Files & Git Push To Remote
-  ```ps
-echo "From root execute... "
-
-./setup.ps1
-
-
-```
 
 ---
 ---
