@@ -171,7 +171,7 @@ Secrets in GitHub should look exactly like below. The secrets are case sensitive
  
 ## Deploy The Azure Environments 
 
-- In GitHub you can manually run the pipeline to deploy the environments to Azure using "onDeploy.yml" found [here](.github/workflows/onDeploy.yml). Use the instructions below to run the workflow.
+- In GitHub you can manually run the pipeline to deploy the environments to Azure using "onDeploy.yml" found [here](dstoolkit-mlops-databricks/.github/workflows/onDeploy.yml). Use the instructions below to run the workflow.
 
 <img width="893" alt="image" src="https://user-images.githubusercontent.com/108273509/205954210-c123c407-4c83-4952-ab4b-cd6c485efc2f.png">
 
