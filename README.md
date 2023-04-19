@@ -219,6 +219,14 @@ echo "Enter Your Git Repo Url... "
 $Repo_ConfigurationURL = "https://github.com/ciaran28/dstoolkit-mlops-databricks"
 ```
 
+## Updates Parameter Files & Git Push To Remote
+  ```ps
+echo "From root execute... "
+
+./setup.ps1
+
+
+```
 
 ---
 ---
