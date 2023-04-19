@@ -13,15 +13,10 @@ echo $DevOps_Agent
 # Change absolutely NOTHING.
 # DATABRICKS_HOST : It Must Start As https:// : It Must Not End In '/'
 # DATABRICKS_TOKEN : It Must Not Be Expired..
+databricks configure --token
 
 if [ $DevOps_Agent == "GitHub" ]; then
-    #echo "Running in GitHub Actions"
-    << EOF >> databricks configure --token
-    $DATABRICKS_HOST
-    $DATABRICKS_TOKEN
-EOF
-    #databricks configure --token
-
+    databricks configure --token
 else
     echo "Running in Azure DevOps"
     << EOF >> databricks configure --token
