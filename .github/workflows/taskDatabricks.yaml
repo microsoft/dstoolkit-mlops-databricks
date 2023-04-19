@@ -232,7 +232,7 @@ jobs:
 ## Functionality Under Development (Not yet parameterized to work on general deployments)                                        
 #################################/
 # 15. AML Pipeline
-      - name:                       AML Pipeline For Databricks Notebooks
+      - name:                       Azure Machine Learning Pipeline For DBX Notebooks
         run:                        ${{ inputs.SCRIPT_LANGUAGE }} MLOps/ModelOps/MLPipelines/AzMachineLearning/V1/AML_Training_Pipeline.py
         env:
           DATABRICKS_COMPUTE_NAME:  'mlclusterlink'
