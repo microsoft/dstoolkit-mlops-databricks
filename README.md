@@ -161,6 +161,59 @@ echo "From root execute... "
 ---
 ---
 
+---
+---
+
+## Create Environments 
+Follow the naming convention (case sensitive)
+<img width="971" alt="image" src="https://user-images.githubusercontent.com/108273509/205917146-a7deb2ae-674a-4ec1-a9b8-4859bcdce25f.png">
+
+
+## Secrets
+
+**For each environment** create GitHub Secrets entitled **ARM_CLIENT_ID**, **ARM_CLIENT_SECRET** and **ARM_TENANT_ID** using the output in VS Code PowerShell Terminal from previous step.
+(Note: The Service Principal below was destroyed, and therefore the credentials are useless )
+
+<img width="656" alt="image" src="https://user-images.githubusercontent.com/108273509/194619649-2ef7e325-a6bb-4760-9a82-1e3b4775adbd.png">
+
+In addition generate a GitHub Personal Access Token and use it to create a secret named ^**PAT_GITHUB**:
+
+<img width="883" alt="image" src="https://user-images.githubusercontent.com/108273509/205918329-9592e20f-439b-4e1b-b7c4-983579e295de.png">
+
+We are using the same Service Principal for each environment, which is not realistic. We might want to have different SPs for each environment, especially Production which is usually more locked down. We are also deploying to the same subscription, which you can change in order to strengthen isolation. 
+
+---
+---
+
+
+ 
+## Final Snapshot of GitHub Secrets
+
+Secrets in GitHub should look exactly like below. The secrets are case sensitive, therefore be very cautious when creating. 
+
+<img width="587" alt="image" src="https://user-images.githubusercontent.com/108273509/205921220-9ad2116a-7c85-4725-a70c-e178a0af2914.png">
+
+
+---
+---
+ 
+## Deploy The Azure Environments 
+
+- In GitHub you can manually run the pipeline to deploy the environments to Azure using "onDeploy.yml" found [here](.github/workflows/onDeploy.yml). Use the instructions below to run the workflow.
+
+<img width="893" alt="image" src="https://user-images.githubusercontent.com/108273509/205954210-c123c407-4c83-4952-ab4b-cd6c485efc2f.png">
+
+- Azure Resources created (Production Environment snapshot)
+  
+<img width="1175" alt="image" src="https://user-images.githubusercontent.com/108273509/194638664-fa6e1809-809e-45b2-9655-9312f32f24bb.png">
+
+
+---
+---
+ 
+
+# Repo Guidance 
+
 ## Databricks as Infrastructure
 <details open>
 <summary>Click Dropdown... </summary>
@@ -229,57 +282,3 @@ To solve those problems, a concept called feature store was developed, so that:
 
 ![image](https://user-images.githubusercontent.com/108273509/216114586-0c4dea68-a98c-4cf6-938a-ceecf11b12a8.png)
 
----
----
-
-## Create Environments 
-Follow the naming convention (case sensitive)
-<img width="971" alt="image" src="https://user-images.githubusercontent.com/108273509/205917146-a7deb2ae-674a-4ec1-a9b8-4859bcdce25f.png">
-
-
-## Secrets
-
-**For each environment** create GitHub Secrets entitled **ARM_CLIENT_ID**, **ARM_CLIENT_SECRET** and **ARM_TENANT_ID** using the output in VS Code PowerShell Terminal from previous step.
-(Note: The Service Principal below was destroyed, and therefore the credentials are useless )
-
-<img width="656" alt="image" src="https://user-images.githubusercontent.com/108273509/194619649-2ef7e325-a6bb-4760-9a82-1e3b4775adbd.png">
-
-In addition generate a GitHub Personal Access Token and use it to create a secret named ^**PAT_GITHUB**:
-
-<img width="883" alt="image" src="https://user-images.githubusercontent.com/108273509/205918329-9592e20f-439b-4e1b-b7c4-983579e295de.png">
-
-We are using the same Service Principal for each environment, which is not realistic. We might want to have different SPs for each environment, especially Production which is usually more locked down. We are also deploying to the same subscription, which you can change in order to strengthen isolation. 
-
----
----
-
-
- 
-## Final Snapshot of GitHub Secrets
-
-Secrets in GitHub should look exactly like below. The secrets are case sensitive, therefore be very cautious when creating. 
-
-<img width="587" alt="image" src="https://user-images.githubusercontent.com/108273509/205921220-9ad2116a-7c85-4725-a70c-e178a0af2914.png">
-
-
----
----
- 
-## Deploy The Azure Environments 
-
-- In GitHub you can manually run the pipeline to deploy the environments to Azure using "onDeploy.yml" found [here](.github/workflows/onDeploy.yml). Use the instructions below to run the workflow.
-
-<img width="893" alt="image" src="https://user-images.githubusercontent.com/108273509/205954210-c123c407-4c83-4952-ab4b-cd6c485efc2f.png">
-
-- Azure Resources created (Production Environment snapshot)
-  
-<img width="1175" alt="image" src="https://user-images.githubusercontent.com/108273509/194638664-fa6e1809-809e-45b2-9655-9312f32f24bb.png">
-
----
----
-
-## Run Machine Learning Scripts
-- Find the script at Data_Scientist/**
-
----
----
