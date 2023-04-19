@@ -22,6 +22,7 @@ ARM_CLIENT_ID = os.environ['ARM_CLIENT_ID']
 DBRKS_BEARER_TOKEN = os.environ['DBRKS_BEARER_TOKEN']
 DBRKS_MANAGEMENT_TOKEN = os.environ['DBRKS_MANAGEMENT_TOKEN']
 ENVIRONMENT = os.environ['ENVIRONMENT']
+AML_WS_NAME = os.environ['AML_WS_NAME']
 
 DBRKS_REQ_HEADERS = {
     'Authorization': f'Bearer {DBRKS_BEARER_TOKEN}',
@@ -40,6 +41,7 @@ print(SUBSCRIPTION_ID)
 print(ARM_CLIENT_SECRET)
 print(ARM_TENANT_ID)
 print(ARM_CLIENT_ID)
+print(AML_WS_NAME)
 
 def listClusters():
     """
@@ -99,7 +101,7 @@ if __name__ == "__main__":
     ws = Workspace(
             subscription_id=SUBSCRIPTION_ID,
             resource_group=RESOURCE_GROUP_NAME,
-            workspace_name=DATABRICKS_INSTANCE,
+            workspace_name=AML_WS_NAME,
             auth=svc_pr
             )
 
