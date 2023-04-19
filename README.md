@@ -114,15 +114,16 @@ az login
 
 ```
 
-## GitHub
+## GitHub Account
 ```ps
 echo "Enter Your Git Username... "
 # Example: "Ciaran28"
 $Git_Configuration = "GitHub_Username"
 ```
 
+## GitHub Repos Within Databricks
   ```ps
-echo "Enter Your Git Repo Url... "
+echo "Enter Your Git Repo Url (this could be any Repository In Your Account )... "
 # Example: "https://github.com/ciaran28/dstoolkit-mlops-databricks" 
 $Repo_ConfigurationURL = ""
 ```
