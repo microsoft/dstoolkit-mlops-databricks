@@ -32,10 +32,10 @@ print('The azureml.core version is {}'.format(azureml.core.VERSION))
 subscription_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="SUBSCRIPTION_ID"),
 
 #Replace the name below with the name of your resource group
-resource_group = "databricks-sandbox-rg"
+resource_group = dbutils.secrets.get(scope="AzureResourceSecrets",key="RESOURCE_GROUP_NAME")
 
 #Replace the name below with the name of your Azure Machine Learning workspace
-workspace_name = "amlsandbox-eco3"
+workspace_name = dbutils.secrets.get(scope="AzureResourceSecrets",key="AML_WS_NAME")
 
 print(subscription_id)
 print(resource_group)
