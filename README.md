@@ -150,7 +150,7 @@ Follow the naming convention (case sensitive)
 
 <img width="656" alt="image" src="https://user-images.githubusercontent.com/108273509/194619649-2ef7e325-a6bb-4760-9a82-1e3b4775adbd.png">
 
-In addition generate a GitHub Personal Access Token and use it to create a secret named ^**PAT_GITHUB**:
+In addition generate a GitHub Personal Access Token and use it to create a secret named **PAT_GITHUB**:
 
 <img width="883" alt="image" src="https://user-images.githubusercontent.com/108273509/205918329-9592e20f-439b-4e1b-b7c4-983579e295de.png">
  
