@@ -234,7 +234,7 @@ jobs:
         run: |
 
           # Environment Variables below will be used for DBX Configure Auth. We are using the Databricks Personal Access Token, and 
-          # not the Databricks AAD Token 
+          # not the Databricks AAD Token.
 
           echo $DATABRICKS_TOKEN
           echo $DATABRICKS_HOST
