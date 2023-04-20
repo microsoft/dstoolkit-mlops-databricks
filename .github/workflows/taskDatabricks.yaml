@@ -221,6 +221,7 @@ jobs:
       - shell:                    bash
         name:                     DBX Deploy - Workflow Artifacts (CD) 
         run: |
+          echo $DATABRICKS_AAD_TOKEN
           DATABRICKS_TOKEN=($DATABRICKS_AAD_TOKEN)
           echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
 
@@ -235,7 +236,7 @@ jobs:
           # Environment Variables below will be used for DBX Configure Auth 
           echo $DATABRICKS_AAD_TOKEN
           echo $DATABRICKS_HOST
-                  
+
           dbx configure --enable-inplace-jinja-support
           
           dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
