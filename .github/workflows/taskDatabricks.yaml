@@ -226,12 +226,12 @@ jobs:
         run: |
 
           # Environment Variables below will be used for DBX Configure Auth 
-          echo $DATABRICKS_TOKEN
+          echo $DATABRICKS_AAD_TOKEN
           echo $DATABRICKS_HOST
         
           databricks configure --aad-token <<EOF
           $DATABRICKS_HOST
-          $DATABRICKS_TOKEN
+          $DATABRICKS_AAD_TOKEN
           EOF
         
           dbx configure --enable-inplace-jinja-support
@@ -242,7 +242,8 @@ jobs:
           dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
           HOUSE_PRICE_MODELS -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
         env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}   
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 
+
         
 
 

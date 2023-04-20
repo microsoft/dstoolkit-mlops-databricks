@@ -1,5 +1,5 @@
 REPOS_WITH_MANAGEMENT_PERMISSIONS=$(curl -X GET \
-                -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+                -H "Authorization: Bearer $DATABRICKS_AAD_TOKEN" \
                 -H "X-Databricks-Azure-SP-Management-Token: $DATABRICKS_MANAGEMENT_TOKEN" \
                 -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
                 -H 'Content-Type: application/json' \
@@ -38,7 +38,7 @@ for row in $(echo "${JSON}" | jq -r '.Repo_Configuration[] | @base64'); do
 
 
     GIT_PULL_RESPONSE=$(curl -X PATCH \
-    -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+    -H "Authorization: Bearer $DATABRICKS_AAD_TOKEN" \
     -H "X-Databricks-Azure-SP-Management-Token: $DATABRICKS_MANAGEMENT_TOKEN" \
     -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
     -H 'Content-Type: application/json' \

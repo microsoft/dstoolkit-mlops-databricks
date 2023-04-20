@@ -35,7 +35,7 @@ else
     # Must Assign SP Minimum Contributor Permissions. Must also give the SP Key Vault Administrator Privileges (Need to Set these in YAML)
 
     PAT_TOKEN_RESPONSE=$(curl -X POST \
-                        -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+                        -H "Authorization: Bearer $DATABRICKS_AAD_TOKEN" \
                         -H "X-Databricks-Azure-SP-Management-Token: $DATABRICKS_MANAGEMENT_TOKEN" \
                         -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" -d \
                         '{
@@ -59,8 +59,8 @@ else
     echo "Databricks Token As Environment Variable..."
 
     #if [[ $DevOps_Agent == "GitHub" ]]; then
-    #    echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
+    #    echo "DATABRICKS_AAD_TOKEN=$DATABRICKS_AAD_TOKEN" >> $GITHUB_ENV
     #else
-    #    echo "##vso[task.setvariable variable="DATABRICKS_TOKEN";isOutput=true;]$DATABRICKS_TOKEN"
+    #    echo "##vso[task.setvariable variable="DATABRICKS_AAD_TOKEN";isOutput=true;]$DATABRICKS_AAD_TOKEN"
     #fi  
 fi

@@ -49,7 +49,7 @@ if __name__ == "__main__":
         response = configureGit(gitConfig=gitConfig, 
                                 workspaceId=os.environ['WORKSPACE_ID'], 
                                 databricksInstance=os.environ['DATABRICKS_INSTANCE'], 
-                                bearerToken=os.environ['DATABRICKS_TOKEN'], 
+                                bearerToken=os.environ['DATABRICKS_AAD_TOKEN'], 
                                 managementToken=os.environ['DATABRICKS_MANAGEMENT_TOKEN'], 
                                 githubToken=os.environ['PAT_GITHUB'], 
                                 environment=os.environ['ENVIRONMENT'])       

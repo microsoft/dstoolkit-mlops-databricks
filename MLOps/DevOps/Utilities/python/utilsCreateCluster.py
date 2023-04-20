@@ -8,12 +8,12 @@ import json
 
 WORKSPACE_ID = os.environ['WORKSPACE_ID']
 DATABRICKS_INSTANCE = os.environ['DATABRICKS_INSTANCE']
-DATABRICKS_TOKEN = os.environ['DATABRICKS_TOKEN']
+DATABRICKS_AAD_TOKEN = os.environ['DATABRICKS_AAD_TOKEN']
 DATABRICKS_MANAGEMENT_TOKEN = os.environ['DATABRICKS_MANAGEMENT_TOKEN']
 ENVIRONMENT = os.environ['ENVIRONMENT']
 
 DBRKS_REQ_HEADERS = {
-    'Authorization': f'Bearer {DATABRICKS_TOKEN}',
+    'Authorization': f'Bearer {DATABRICKS_AAD_TOKEN}',
     'X-Databricks-Azure-SP-Management-Token': f'{DATABRICKS_MANAGEMENT_TOKEN}',
     'X-Databricks-Azure-Workspace-Resource-Id': f'{WORKSPACE_ID}',
     'Content-Type': 'application/json'
