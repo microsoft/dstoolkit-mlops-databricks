@@ -66,7 +66,7 @@ jobs:
           # Do a python pip install so that modules can be found from python tasks
           python -m pip install requests
           pip3 install azure-mgmt-storage==21.0.0
-          pip3 install  azure-databricks-sdk-python
+          #pip3 install  azure-databricks-sdk-python
           pip3 install --upgrade azure-cli
           az extension add -n azure-cli-ml
           pip3 install azureml
@@ -224,6 +224,10 @@ jobs:
           echo $DATABRICKS_TOKEN
           echo $DATABRICKS_HOST
         
+          databricks configure --aad-token <<EOF
+          $DATABRICKS_HOST
+          $DATABRICKS_TOKEN
+          EOF
           
           pip install dbx
           dbx configure --enable-inplace-jinja-support
