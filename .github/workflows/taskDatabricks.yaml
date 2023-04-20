@@ -145,25 +145,7 @@ jobs:
         env:
           DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
-#################################/
-##  Secret Scopes                                           
-#################################/
-      - name:                     Save Databricks SP Credentials Within Secret Scopes
-        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateSecretScopes.sh
-        env:
-          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
           
-
-
-#################################/
-##  Create Cluster                                           
-#################################/
-      - name:                     Create Databricks Clusters
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateCluster.py
-
-
 #################################/
 ##  Git Config                                           
 #################################/
@@ -183,6 +165,16 @@ jobs:
 
 
 #################################/
+##  Secret Scopes                                           
+#################################/
+      - name:                     Save Databricks SP Credentials Within Secret Scopes
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateSecretScopes.sh
+        env:
+          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
+          
+#################################/
 ##  Configure CLI                                           
 #################################/
       #- name:                     Install + Configure Databricks CLI
@@ -200,6 +192,12 @@ jobs:
           PULL_BRANCH:            ${{ github.ref_name }}
           RELEASE_BRANCH:         ${{ inputs.RELEASE_BRANCH}} 
 
+
+#################################/
+##  Create Cluster                                           
+#################################/
+      - name:                     Create Databricks Clusters
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateCluster.py
 
 #################################/
 ##  DBX Deploy Jobs / Workflows                                            
