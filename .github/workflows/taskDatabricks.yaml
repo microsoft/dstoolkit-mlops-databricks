@@ -222,6 +222,7 @@ jobs:
         name:                     Set Up DBX Environment Variables
         run: |
           DATABRICKS_TOKEN=$(az keyvault secret show --name "dbkstoken" --vault-name $AZ_KEYVAULT_NAME --query "value" -o tsv)
+          echo $DATABRICKS_TOKEN
           echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
 
 
@@ -233,7 +234,7 @@ jobs:
         run: |
 
           # Environment Variables below will be used for DBX Configure Auth 
-          echo $DATABRICKS_AAD_TOKEN
+          echo $DATABRICKS_TOKEN
           echo $DATABRICKS_HOST
 
           dbx configure --enable-inplace-jinja-support
