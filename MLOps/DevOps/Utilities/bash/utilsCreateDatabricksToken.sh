@@ -35,8 +35,8 @@ else
     # Must Assign SP Minimum Contributor Permissions. Must also give the SP Key Vault Administrator Privileges (Need to Set these in YAML)
 
     PAT_TOKEN_RESPONSE=$(curl -X POST \
-                        -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
-                        -H "X-Databricks-Azure-SP-Management-Token: $DBRKS_MANAGEMENT_TOKEN" \
+                        -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+                        -H "X-Databricks-Azure-SP-Management-Token: $DATABRICKS_MANAGEMENT_TOKEN" \
                         -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" -d \
                         '{
                             "lifetime_seconds": "30000000", 
@@ -46,15 +46,15 @@ else
     echo "PAT Token Creation Response...."
     echo $PAT_TOKEN_RESPONSE
 
-    DATABRICKS_TOKEN=$(jq .token_value -r <<< "$PAT_TOKEN_RESPONSE")
+    DATABRICKS_PAT_TOKEN=$(jq .token_value -r <<< "$PAT_TOKEN_RESPONSE")
     echo "PAT Token Creation...."
-    echo $DATABRICKS_TOKEN
+    echo $DATABRICKS_PAT_TOKEN
 
     echo "Store PAT In Key Vault...."
     az keyvault secret set \
         --vault-name $AZ_KEYVAULT_NAME \
         --name $SECRET_NAME \
-        --value $DATABRICKS_TOKEN
+        --value $DATABRICKS_PAT_TOKEN
     
     echo "Databricks Token As Environment Variable..."
 
