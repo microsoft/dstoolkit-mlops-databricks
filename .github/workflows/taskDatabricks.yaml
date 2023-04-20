@@ -134,14 +134,6 @@ jobs:
           ls
           python setup.py sdist bdist_wheel
 
-#################################/
-##  Create Repos                                           
-#################################/
-      - name:                     Create Databricks Repos
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateCluster.py
-        env:
-          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
-
 
 #################################/
 ##  PAT Token                                           
@@ -161,6 +153,13 @@ jobs:
         env:
           PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
 
+#################################/
+##  Create Repos                                           
+#################################/
+      - name:                     Create Databricks Repos
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateCluster.py
+        env:
+          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
 
 #################################/
 ##  Secret Scopes                                           
