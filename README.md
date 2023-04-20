@@ -7,7 +7,7 @@
  # Version History And Updates 
 
 ## Azure ML Integration Now Live For GitHub Deployment.
-Development for Azure DevOps Deployment in Progress (expect instability)
+Development for Azure DevOps Deployment in Progress (expect instability until end of April)
 
 
 
