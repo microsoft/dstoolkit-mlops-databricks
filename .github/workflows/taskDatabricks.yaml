@@ -228,11 +228,8 @@ jobs:
           # Environment Variables below will be used for DBX Configure Auth 
           echo $DATABRICKS_AAD_TOKEN
           echo $DATABRICKS_HOST
-        
-          databricks configure --aad-token <<EOF
-          $DATABRICKS_HOST
-          $DATABRICKS_AAD_TOKEN
-          EOF
+
+          DATABRICKS_TOKEN=($DATABRICKS_AAD_TOKEN)
         
           dbx configure --enable-inplace-jinja-support
           
