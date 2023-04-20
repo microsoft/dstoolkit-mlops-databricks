@@ -1,5 +1,11 @@
 **/.vscode/
 .venv
 .databricks
+deprecated
+ModelOps/DataScience/deprecated
+.dbx/sync
+localdev
+
+
 
 

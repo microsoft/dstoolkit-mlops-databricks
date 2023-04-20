@@ -1,0 +1,37 @@
+ML_PIPELINE_FILES:
+    FEATURE_ENGINEERING: 
+        FILE_PATH: 'file://MLOps/ModelOps/DataScience/NewYorkTaxiModelling/featureEngineering.py'
+        WHL_PATH: 'file://MLOps/ModelOps/DataScience/NewYorkTaxiModelling/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml'
+            EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/feauture_engineering'
+
+    MODEL_TRAINING:
+        FILE_PATH: 'file://MLOps/ModelOps/DataScience/NewYorkTaxiModelling/modelTraining.py'
+        WHL_PATH: 'file://MLOps/ModelOps/DataScience/NewYorkTaxiModelling/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml'
+            EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/model_training'
+
+    MODEL_INFERENCE:
+        FILE_PATH: 'file://MLOps/ModelOps/DataScience/NewYorkTaxiModelling/modelInference.py'
+        WHL_PATH: 'file://MLOps/ModelOps/DataScience/NewYorkTaxiModelling/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml'
+            EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/model_inference'
+
+    HOUSE_PRICE_MODELS:
+        FILE_PATH: 'file://MLOps/ModelOps/DataScience/HousePriceModelling/housePriceModelling.py'
+        WHL_PATH: 'file://MLOps/ModelOps/DataScience/NewYorkTaxiModelling/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml'
+            EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/model_inference'
+
+
+
+
+
