@@ -6,7 +6,6 @@ REPOS_WITH_MANAGEMENT_PERMISSIONS=$(curl -X GET \
                 https://$DATABRICKS_INSTANCE/api/2.0/repos )
 
 
-
 echo "Ingest JSON File"
 JSON=$( jq '.' MLOps/DevOps/Variables/$ENVIRONMENT/Repos.json)
 for row in $(echo "${JSON}" | jq -r '.Repo_Configuration[] | @base64'); do
