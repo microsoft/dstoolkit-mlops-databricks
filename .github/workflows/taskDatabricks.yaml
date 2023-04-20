@@ -209,9 +209,10 @@ jobs:
         run: |
 
           # Environment Variables below will be used for DBX Configure Auth 
-          echo $DBRKS_BEARER_TOKEN
+          echo $DATABRICKS_TOKEN
           echo $DATABRICKS_HOST
-
+        
+          
           pip install dbx
           dbx configure --enable-inplace-jinja-support
           
@@ -223,6 +224,7 @@ jobs:
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
           DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
+          
 
 
 #################################/

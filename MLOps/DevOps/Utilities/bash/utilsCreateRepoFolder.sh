@@ -24,8 +24,8 @@ for row in $(echo "${JSON}" | jq -r '.Repo_Configuration[] | @base64'); do
     #echo "JSON -D String "
     #echo $JSON_STRING
 
-    CREATE_REPO_RESPONSE=$(curl -X POST -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
-                -H "X-Databricks-Azure-SP-Management-Token: $DBRKS_MANAGEMENT_TOKEN" \
+    CREATE_REPO_RESPONSE=$(curl -X POST -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+                -H "X-Databricks-Azure-SP-Management-Token: $DATABRICKS_MANAGEMENT_TOKEN" \
                 -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
                 -H 'Content-Type: application/json' \
                 -d $JSON_STRING \

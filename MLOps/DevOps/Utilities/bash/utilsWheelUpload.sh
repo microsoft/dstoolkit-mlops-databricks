@@ -68,8 +68,8 @@ for row in $(echo "${JSON}" | jq -r '.WheelFiles[] | @base64'); do
     if [ upload_to_cluster ]
     then
 
-        LIST_CLUSTERS=$(curl -X GET -H "Authorization: Bearer $DBRKS_BEARER_TOKEN" \
-                            -H "X-Databricks-Azure-SP-Management-Token: $DBRKS_MANAGEMENT_TOKEN" \
+        LIST_CLUSTERS=$(curl -X GET -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+                            -H "X-Databricks-Azure-SP-Management-Token: $DATABRICKS_MANAGEMENT_TOKEN" \
                             -H "X-Databricks-Azure-Workspace-Resource-Id: $WORKSPACE_ID" \
                             -H 'Content-Type: application/json' \
                             https://$DATABRICKS_INSTANCE/api/2.0/clusters/list )

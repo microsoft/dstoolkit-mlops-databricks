@@ -55,17 +55,17 @@ if __name__ == "__main__":
                                             tokenBaseURL=tokenBaseURL
                     )
 
-    os.environ['DBRKS_BEARER_TOKEN'] = bearerToken 
-    os.environ['DBRKS_MANAGEMENT_TOKEN'] = managementToken 
+    os.environ['DATABRICKS_TOKEN'] = bearerToken 
+    os.environ['DATABRICKS_MANAGEMENT_TOKEN'] = managementToken 
 
-    print("DBRKS_BEARER_TOKEN",os.environ['DBRKS_BEARER_TOKEN'])
-    print("DBRKS_MANAGEMENT_TOKEN",os.environ['DBRKS_MANAGEMENT_TOKEN'])
+    print("DATABRICKS_TOKEN",os.environ['DATABRICKS_TOKEN'])
+    print("DATABRICKS_MANAGEMENT_TOKEN",os.environ['DATABRICKS_MANAGEMENT_TOKEN'])
 
     with open(os.getenv('GITHUB_ENV'), 'a') as env:
-        print(f'DBRKS_BEARER_TOKEN={bearerToken}', file=env)
-        print(f'DBRKS_MANAGEMENT_TOKEN={managementToken}', file=env)
+        print(f'DATABRICKS_TOKEN={bearerToken}', file=env)
+        print(f'DATABRICKS_MANAGEMENT_TOKEN={managementToken}', file=env)
 
 
     
-    #print("##vso[task.setvariable variable=DBRKS_BEARER_TOKEN;isOutput=true;]{b}".format(b=bearerToken))
-    #print("##vso[task.setvariable variable=DBRKS_MANAGEMENT_TOKEN;isOutput=true;]{b}".format(b=managementToken))
+    #print("##vso[task.setvariable variable=DATABRICKS_TOKEN;isOutput=true;]{b}".format(b=bearerToken))
+    #print("##vso[task.setvariable variable=DATABRICKS_MANAGEMENT_TOKEN;isOutput=true;]{b}".format(b=managementToken))
