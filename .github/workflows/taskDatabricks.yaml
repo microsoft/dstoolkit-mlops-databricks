@@ -63,12 +63,17 @@ jobs:
         run: |
           echo $enableInfraDeploy
           sudo apt update && sudo apt install jq -y
+          az extension add -n azure-cli-ml
           # Do a python pip install so that modules can be found from python tasks
           python -m pip install requests
+          
+          pip3 install --upgrade pip
+          pip3 install --upgrade azure-cli
           pip3 install azure-mgmt-storage==21.0.0
           #pip3 install  azure-databricks-sdk-python
-          pip3 install --upgrade azure-cli
-          az extension add -n azure-cli-ml
+          
+          pip3 install dbx
+          
           pip3 install azureml
           pip3 install azureml-core
           pip3 install azureml.pipeline
@@ -228,8 +233,7 @@ jobs:
           $DATABRICKS_HOST
           $DATABRICKS_TOKEN
           EOF
-          
-          pip install dbx
+        
           dbx configure --enable-inplace-jinja-support
           
           dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
