@@ -1,0 +1,84 @@
+
+
+name: onRelease Databricks
+on: 
+  pull_request:
+    branches:
+      - main
+      - feature/**
+      - release/**
+    tags:
+      - 'v**'
+    types:
+      - opened
+      - closed
+
+jobs:
+  pr_CI_Development:
+
+    if:                         github.event_name == 'pull_request' && github.event.action == 'opened' && github.base_ref == 'main'
+    name:                       Checks
+    runs-on:                    ubuntu-latest
+    steps:
+      - run: |
+          echo "Insert Continuous Integration Tests"
+
+  prApproved_CD_Development:
+    if:                         github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && contains(github.head_ref, 'feature') && github.base_ref == 'main'
+    uses:                       ./.github/workflows/taskDatabricks.yaml
+    with:
+      ENVIRONMENT:              Development
+    secrets:
+      ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}    
+      ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
+      PAT_GITHUB:               ${{ secrets.PAT_GITHUB }}
+
+  pr_CI_UAT:
+
+    if:                         github.event_name == 'pull_request' && github.event.action == 'opened' && contains(github.base_ref, 'release')
+    name:                       Checks
+    runs-on:                    ubuntu-latest
+    steps:
+      - run: |
+          echo "Insert Continuous Integration Tests"
+      - run: |
+          echo "${{ github.head_ref }}"
+          echo "${{ github.base_ref }}"
+
+  prApproved_CD_UAT:
+    if:                         github.event_name == 'pull_request' && github.event.action == 'closed' && github.head_ref == 'main' && contains(github.base_ref, 'release')
+    uses:                       ./.github/workflows/taskDatabricks.yaml
+    with:
+      ENVIRONMENT:              UAT
+    secrets:
+      ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}    
+      ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
+      PAT_GITHUB:               ${{ secrets.PAT_GITHUB }}
+
+    
+# git tag -a v1.0.1 -m "my version 1.0.1"
+# git tag -l
+# git push origin v1.0.1
+# git tag -d v1.0.1
+# ( Create Security Rule That Only Allow Release Branch to be Tagged). 
+
+  prApproved_CD_Production:
+    if:                         ${{ startsWith(github.ref, 'refs/tags/v') }}
+    uses:                       ./.github/workflows/taskDatabricks.yaml
+    with:
+      ENVIRONMENT:              Production
+      RELEASE_BRANCH:           'release/1'
+    secrets:
+      ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}    
+      ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
+      PAT_GITHUB:               ${{ secrets.PAT_GITHUB }}
+      
+    
+
+
+
+
+      

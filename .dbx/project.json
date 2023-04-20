@@ -1,0 +1,28 @@
+{
+    "environments": {
+        "Sandbox": {
+            "profile": "Sandbox",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/cicd_workflow/sandbox",
+                "artifact_location": "dbfs:/Shared/cicd_workflow/sandbox"
+            }
+        },
+        "Ciaran_Sandbox": {
+            "profile": "Ciaran_Sandbox",
+            "workspace_dir": "/Shared/ciaran_sandbox",
+            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx_ciaran_experiments"
+        },
+        "default": {
+            "profile": "DEFAULT",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/dbx/projects/dstoolkit-mlops-databricks",
+                "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks"
+            }
+        }
+    },
+    "inplace_jinja_support": true,
+    "failsafe_cluster_reuse_with_assets": false,
+    "context_based_upload_for_execute": false
+}
