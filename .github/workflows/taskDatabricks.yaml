@@ -87,10 +87,10 @@ jobs:
 #################################/
 ## Deploy Azure Infrastructure                                               
 #################################/
-      - name:                     Deploy DBX CICD Azure Resources
-        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateAzureResources.sh
-        env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+      #- name:                     Deploy DBX CICD Azure Resources
+      #  run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateAzureResources.sh
+      #  env:
+      #    ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 
@@ -123,8 +123,6 @@ jobs:
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
-
-
 #################################/
 ##  Generate Python Wheel Files                                            
 #################################/
@@ -136,14 +134,22 @@ jobs:
           ls
           python setup.py sdist bdist_wheel
 
+#################################/
+##  Create Repos                                           
+#################################/
+      - name:                     Create Databricks Repos
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateCluster.py
+        env:
+          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
+
 
 #################################/
 ##  PAT Token                                           
 #################################/
-      - name:                     Create And Store PAT Token In Key Vault
-        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateDatabricksToken.sh
-        env:
-          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
+#      - name:                     Create And Store PAT Token In Key Vault
+#        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateDatabricksToken.sh
+#        env:
+#          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
           
 #################################/
@@ -154,14 +160,6 @@ jobs:
         run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsGitConfiguration.py
         env:
           PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
-
-#################################/
-##  Create Repos                                           
-#################################/
-      - name:                     Create Databricks Repos
-        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateRepoFolder.sh
-        env:
-          ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
 
 
 #################################/
@@ -237,8 +235,7 @@ jobs:
           dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
           HOUSE_PRICE_MODELS -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
         env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
-          DevOps_Agent:           ${{ inputs.DevOps_Agent }}   
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}   
         
 
 
