@@ -230,6 +230,7 @@ jobs:
           echo $DATABRICKS_HOST
 
           DATABRICKS_TOKEN=($DATABRICKS_AAD_TOKEN)
+          echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
         
           dbx configure --enable-inplace-jinja-support
           
