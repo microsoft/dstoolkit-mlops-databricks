@@ -8,6 +8,13 @@ on:
       RELEASE_BRANCH:
         required: false
         type: string
+      SCRIPT_LANGUAGE:
+          required: false
+          type: string
+      DevOps_Agent:
+        required: true
+        type: string 
+        default: GitHub
     secrets:
       ARM_TENANT_ID:
         required: true
@@ -19,6 +26,7 @@ on:
         required: true
       RELEASE_BRANCH:
         required: false
+
 
 jobs:
   build:
@@ -33,10 +41,11 @@ jobs:
 ##  Git File Changes Check                                               
 ##################################/
       - name:                     Check Infra Git Path Change
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsGitFileChanges.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsGitFileChanges.sh
         env:
-            PATH_FILTER:         '.github/MLOps_Engineer/Infrastructure'
+            PATH_FILTER:          MLOps/DevOps/Infrastructure
             VAR_NAME:             enableInfraDeploy
+            DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
 #################################/
 ##  Set Python                                          
@@ -69,7 +78,7 @@ jobs:
 ##  Authenticate/Login To Azure                                               
 #################################/
       - name:                     Service Principal Login
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsAzureLogin.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsAzureLogin.sh
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -79,25 +88,27 @@ jobs:
 ## Deploy Azure Infrastructure                                               
 #################################/
       - name:                     Deploy DBX CICD Azure Resources
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateAzureResources.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateAzureResources.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+
 
 
 #################################/
 ##  Save Dynamically Generated Env Variable                                               
 #################################/
       - name:                     Set Env Variables 
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsSetEnvVariables.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsSetEnvVariables.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
 
 #################################/
 ##  Generate AAD Tokens                                              
 #################################/
       - name:                     Generate AAD Tokens
-        run:                      python .github/MLOps_Engineer/Utilities/Python/utilsCreateAuthenticationTokens.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateAuthenticationTokens.py
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
@@ -108,9 +119,10 @@ jobs:
 ##  RBAC Assignments                                           
 #################################/
       - name:                     Assign RBAC Permissions 
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRoleBasedAccess.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateRoleBasedAccess.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+
 
 
 #################################/
@@ -120,7 +132,7 @@ jobs:
         run: |
           pip3 install wheel
           ls
-          cd Data_Scientist/pyWheels/Helper_Functions
+          cd MLOps/ModelOps/DataScience/NewYorkTaxiModelling/pyWheels/Helper_Functions
           ls
           python setup.py sdist bdist_wheel
 
@@ -129,13 +141,15 @@ jobs:
 ##  PAT Token                                           
 #################################/
       - name:                     Create And Store PAT Token In Key Vault
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateDatabricksToken.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateDatabricksToken.sh
+        env:
+          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
 #################################/
 ##  Secret Scopes                                           
 #################################/
       - name:                     Save Databricks SP Credentials Within Secret Scopes
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateSecretScopes.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateSecretScopes.sh
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -147,7 +161,7 @@ jobs:
 ##  Create Cluster                                           
 #################################/
       - name:                     Create Databricks Clusters
-        run:                      python .github/MLOps_Engineer/Utilities/Python/utilsCreateCluster.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateCluster.py
 
 
 #################################/
@@ -155,7 +169,7 @@ jobs:
 #################################/
   
       - name:                     Git Config
-        run:                      python .github/MLOps_Engineer/Utilities/Python/utilsGitConfiguration.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsGitConfiguration.py
         env:
           PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
 
@@ -163,7 +177,7 @@ jobs:
 ##  Create Repos                                           
 #################################/
       - name:                     Create Databricks Repos
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsCreateRepoFolder.sh
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateRepoFolder.sh
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
 
@@ -171,9 +185,34 @@ jobs:
 #################################/
 ##  Configure CLI                                           
 #################################/
-      - name:                     Install + Configure Databricks CLI
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsDatabricksCLIConfig.sh
+      #- name:                     Install + Configure Databricks CLI
+      #  run:                      bash MLOps/DevOps/Utilities/bash/utilsDatabricksCLIConfig.sh
+      #  env:
+      #    DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
+#################################/
+##  Repo Pull                                           
+#################################/
+# 15. Databricks Repo Pull
+      - name:                     Repo Pull
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsRepoPull.sh
+        env:
+          PULL_BRANCH:            ${{ github.ref_name }}
+          RELEASE_BRANCH:         ${{ inputs.RELEASE_BRANCH}} 
+
+#################################/
+##  Build AML Pipelines (Running Databricks Notebooks From AML Pipeline)  
+## Functionality Under Development (Not yet parameterized to work on general deployments)                                        
+#################################/
+# 15. AML Pipeline
+      - name:                       Azure Machine Learning Pipeline For DBX Notebooks
+        run:                        ${{ inputs.SCRIPT_LANGUAGE }} MLOps/ModelOps/MLPipelines/AzMachineLearning/V1/AML_Training_Pipeline.py
+        env:
+          DATABRICKS_COMPUTE_NAME:  'mlclusterlink'
+          DATABRICKS_CLUSTER_NAME:  'ml_cluster'
+          ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
 
 #################################/
 ##  DBX Deploy Jobs / Workflows                                            
@@ -181,41 +220,23 @@ jobs:
       - shell:                    bash
         name:                     DBX Deploy - Workflow Artifacts (CD) 
         run: |
-          echo $DATABRICKS_TOKEN
+
+          # Environment Variables below will be used for DBX Configure Auth 
+          echo $DBRKS_BEARER_TOKEN
+          echo $DATABRICKS_HOST
+
           pip install dbx
           dbx configure --enable-inplace-jinja-support
           
-          dbx deploy --deployment-file DBX_Workflows/CICD_Deployments/DBX_Workflow_Deployments.yaml \
-          MULTI_TASK -e Sandbox --jinja-variables-file=DBX_Workflows/CICD_Deployments/DBX_Workflow_Parameters.yaml
+          dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
+          MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml \
 
+          dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
+          HOUSE_PRICE_MODELS -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
-
-#################################/
-##  Repo Pull                                           
-#################################/
-# 15. Databricks Repo Pull
-      - name:                     Repo Pull
-        run:                      bash .github/MLOps_Engineer/Utilities/Bash/utilsRepoPull.sh
-        env:
-          UPDATE_FOLDER:          ${{ inputs.UPDATE_FOLDER}} 
-          PULL_BRANCH:            ${{ github.ref_name }}
-          RELEASE_BRANCH:         ${{ inputs.RELEASE_BRANCH}} 
-
-
-#################################/
-##  Build AML Pipelines (Running Databricks Notebooks From AML Pipeline)  
-## Functionality Under Development (Not yet parameterized to work on general deployments)                                        
-#################################/
-# 15. AML Pipeline
-      - name:                       Build AML Pipelines
-        run:                        python .github/MLOps_Engineer/Infrastructure/Azure_ML_Pipelines/AML_Training_Pipeline.py
-        env:
-          DATABRICKS_COMPUTE_NAME: 'mlclusterlink'
-          ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
           
         
 
