@@ -12,7 +12,7 @@ from azureml.core.authentication import ServicePrincipalAuthentication
 DATABRICKS_COMPUTE_NAME = os.environ['DATABRICKS_COMPUTE_NAME']
 DATABRICKS_CLUSTER_NAME = os.environ['DATABRICKS_CLUSTER_NAME']
 RESOURCE_GROUP_NAME = os.environ['RESOURCE_GROUP_NAME']
-DATABRICKS_TOKEN = os.environ['DATABRICKS_TOKEN']
+#DATABRICKS_TOKEN = os.environ['DATABRICKS_TOKEN']
 DATABRICKS_INSTANCE = os.environ['DATABRICKS_INSTANCE']
 DATABRICKS_WS_NAME = os.environ['DATABRICKS_WS_NAME']
 WORKSPACE_ID = os.environ['WORKSPACE_ID']
@@ -117,12 +117,12 @@ if __name__ == "__main__":
         print('db_compute_name {}'.format(DATABRICKS_COMPUTE_NAME))
         print('db_resource_group {}'.format(RESOURCE_GROUP_NAME))
         print('db_workspace_name {}'.format(DATABRICKS_WS_NAME))
-        print('db_access_token {}'.format(DATABRICKS_TOKEN))
+        print('db_access_token {}'.format(DBRKS_BEARER_TOKEN))
 
         config = DatabricksCompute.attach_configuration(
             resource_group = RESOURCE_GROUP_NAME,
             workspace_name = DATABRICKS_WS_NAME,
-            access_token= DATABRICKS_TOKEN)
+            access_token= DBRKS_BEARER_TOKEN)
         databricks_compute=ComputeTarget.attach(ws, DATABRICKS_COMPUTE_NAME, config)
         databricks_compute.wait_for_completion(True)
 

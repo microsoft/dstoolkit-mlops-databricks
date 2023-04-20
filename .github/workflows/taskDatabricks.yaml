@@ -200,19 +200,6 @@ jobs:
           PULL_BRANCH:            ${{ github.ref_name }}
           RELEASE_BRANCH:         ${{ inputs.RELEASE_BRANCH}} 
 
-#################################/
-##  Build AML Pipelines (Running Databricks Notebooks From AML Pipeline)  
-## Functionality Under Development (Not yet parameterized to work on general deployments)                                        
-#################################/
-# 15. AML Pipeline
-      - name:                       Azure Machine Learning Pipeline For DBX Notebooks
-        run:                        ${{ inputs.SCRIPT_LANGUAGE }} MLOps/ModelOps/MLPipelines/AzMachineLearning/V1/AML_Training_Pipeline.py
-        env:
-          DATABRICKS_COMPUTE_NAME:  'mlclusterlink'
-          DATABRICKS_CLUSTER_NAME:  'ml_cluster'
-          ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
 
 #################################/
 ##  DBX Deploy Jobs / Workflows                                            
@@ -236,6 +223,21 @@ jobs:
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
           DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
+
+
+#################################/
+##  Build AML Pipelines (Running Databricks Notebooks From AML Pipeline)  
+## Functionality Under Development (Not yet parameterized to work on general deployments)                                        
+#################################/
+# 15. AML Pipeline
+      - name:                       Azure Machine Learning Pipeline For DBX Notebooks
+        run:                        ${{ inputs.SCRIPT_LANGUAGE }} MLOps/ModelOps/MLPipelines/AzMachineLearning/V1/AML_Training_Pipeline.py
+        env:
+          DATABRICKS_COMPUTE_NAME:  'mlclusterlink'
+          DATABRICKS_CLUSTER_NAME:  'ml_cluster'
+          ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
 
           
         

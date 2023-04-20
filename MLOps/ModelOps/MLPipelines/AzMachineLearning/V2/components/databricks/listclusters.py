@@ -108,11 +108,11 @@ if __name__ == "__main__":
 
     tokenRequestBody = {
         'grant_type': 'client_credentials',
-        'client_id': '841ba6d9-a509-44ee-bf40-c0876b4ac6bb',
-        'client_secret': 'IQG8Q~hQDGO5eFcRos~YN9waI0gE-Gsx8sMx5bJQ'
+        'client_id': ' ',
+        'client_secret': ' '
     } 
     tokenRequestHeaders = {'Content-Type': 'application/x-www-form-urlencoded'}
-    tokenBaseURL = 'https://login.microsoftonline.com/' + '16b3c013-d300-468d-ac64-7eda0820b6d3' + '/oauth2/token'
+    tokenBaseURL = 'https://login.microsoftonline.com/' + ' ' + '/oauth2/token'
 
     DBRKS_BEARER_TOKEN = createBearerToken(tokenRequestBody=tokenRequestBody, 
                                     tokenRequestHeaders=tokenRequestHeaders, 
@@ -128,10 +128,10 @@ if __name__ == "__main__":
     DBRKS_REQ_HEADERS = {
     'Authorization': f'Bearer {DBRKS_BEARER_TOKEN}',
     'X-Databricks-Azure-SP-Management-Token': f'{DBRKS_MANAGEMENT_TOKEN}',
-    'X-Databricks-Azure-Workspace-Resource-Id': '/subscriptions/2a834239-8f89-42e1-8cf1-c3c10090f51c/resourceGroups/databricks-sandbox-rg/providers/Microsoft.Databricks/workspaces/dbxwssandbox-eco3',
+    'X-Databricks-Azure-Workspace-Resource-Id': '/subscriptions/<>/resourceGroups/databricks-sandbox-rg/providers/Microsoft.Databricks/workspaces/dbxwssandbox-eco3',
     'Content-Type': 'application/json'
 }
-    DATABRICKS_INSTANCE = "adb-2041102092454885.5.azuredatabricks.net"
+    DATABRICKS_INSTANCE = "adb-204110209##.#.azuredatabricks.net"
 
     existingClusters = listClusters(DBRKS_REQ_HEADERS, DATABRICKS_INSTANCE)
 
