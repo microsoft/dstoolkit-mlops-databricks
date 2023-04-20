@@ -30,21 +30,32 @@ Features to be included in future releases:
 ---
 
 ## Sections:
-- [Youtube Demo](#Youtube-Demo)
-- [About This Repository](#About-This-Repository)
-- [Prerequisites](#Prerequisites)
-- [Details of The Solution Accelerator](#Details-of-The-Solution-Accelerator)
-- [Databricks as Infrastructure](#Databricks-as-Infrastructure)
-- [Continuous Deployment and Branching Strategy](#Continuous-Deployment-And-Branching-Strategy)
-- [Create Repository](#Create-Repository)
-- [Login to Azure](#Login-To-Azure)
-- [Provide SubscriptionID ](#Provide-SubscriptionID)
-- [Create Main Service Principal](#Create-Main-Service-Principal)
-- [Final Snapshot of Github Secrets](#Final-Snapshot-of-Github-Secrets)
-- [Retrieve Object ID's](#Retrieve-Object-IDs)
-- [Update Yaml Pipeline Parameters Files](#Update-Yaml-Pipeline-Parameters-Files)
-- [Deploy the Azure Environments](#Deploy-The-Azure-Environments)
-- [Run Machine Learning Scripts](#Run-Machine-Learning-Scripts)
+- [Version History And Updates](#version-history-and-updates)
+  - [Major updates coming this week - Azure Machine Learning and Databricks MLFLow Integration](#major-updates-coming-this-week---azure-machine-learning-and-databricks-mlflow-integration)
+  - [Version 1.0.1](#version-101)
+- [MLOps for Databricks with CI/CD (GitHub Actions)](#mlops-for-databricks-with-cicd-github-actions)
+  - [MLOps Architecture](#mlops-architecture)
+  - [Sections:](#sections)
+  - [Youtube Demo](#youtube-demo)
+  - [About This Repository](#about-this-repository)
+  - [Prerequisites](#prerequisites)
+  - [Details of The Solution Accelerator](#details-of-the-solution-accelerator)
+  - [Databricks as Infrastructure](#databricks-as-infrastructure)
+  - [Continuous Deployment And Branching Strategy](#continuous-deployment-and-branching-strategy)
+  - [MLOps Paradigm: Deploy Code, not Models](#mlops-paradigm-deploy-code-not-models)
+  - [Feature Store Integration](#feature-store-integration)
+  - [Create Repository](#create-repository)
+  - [Login To Azure](#login-to-azure)
+  - [Provide SubscriptionID](#provide-subscriptionid)
+  - [Create Main Service Principal](#create-main-service-principal)
+  - [Create Environments](#create-environments)
+  - [Secrets](#secrets)
+  - [Final Snapshot of GitHub Secrets](#final-snapshot-of-github-secrets)
+  - [Retrieve Object IDs](#retrieve-object-ids)
+  - [Update Yaml Pipeline Variables Files](#update-yaml-pipeline-variables-files)
+  - [Update GitHub Repo - Git Push](#update-github-repo---git-push)
+  - [Deploy The Azure Environments](#deploy-the-azure-environments)
+  - [Run Machine Learning Scripts](#run-machine-learning-scripts)
 
 
 ---
@@ -209,27 +220,20 @@ az login
 
 ## Provide SubscriptionID 
 ```ps
-$SubscriptionId=( az account show --query id -o tsv )
+(base) ➜  mlplatform-databrick-sample git:(main) SubscriptionId=$(az account show --query id -o tsv)
+(base) ➜  mlplatform-databrick-sample git:(main) echo $SubscriptionId                               
 ```
 
 ## Create Main Service Principal 
 **Why** : The Service Principal is a conduit for which we can authenticate into Azure. Personify it as as a User, with rights to access Azure Resources (as defined by Role Base Access conferred to it). If we have the Service Principal's secrets/credentials such as the Client Secret, Client ID and Tenant ID, all the powers held by the Service Principal will flow to the requestor. In this example, it will be the Github Action Runner/VM. 
 
 ```ps
-# Create The Service Principal
-# WARNING: DO NOT DELETE OUTPUT
-
-$main_sp_name="main_sp_"+$(Get-Random -Minimum 1000 -Maximum 9999)
-
-# use --sdk-auth flag if using GitHub Action Azure Authenticator 
-$DBX_CREDENTIALS=( az ad sp create-for-rbac -n $main_sp_name --role Owner --scopes /subscriptions/$SubscriptionId --query "{ARM_TENANT_ID:tenant, ARM_CLIENT_ID:appId, ARM_CLIENT_SECRET:password}")
-
-
-# Service Principal Credentials
-$DBX_CREDENTIALS=( $DBX_CREDENTIALS | convertfrom-json )
-echo $DBX_CREDENTIALS
-$Client_ID=( $DBX_CREDENTIALS.ARM_CLIENT_ID )
-
+(base) ➜  mlplatform-databrick-sample git:(main) main_sp_name="main_sp_1054"
+(base) ➜  mlplatform-databrick-sample git:(main) DBX_CREDENTIALS=$(az ad sp create-for-rbac -n $main_sp_name --role Owner --scopes /subscriptions/$SubscriptionId --query "{ARM_TENANT_ID:tenant, ARM_CLIENT_ID:appId, ARM_CLIENT_SECRET:password}")
+WARNING: Creating 'Owner' role assignment under scope '/subscriptions/344e1385-8b86-420c-9b2f-84503d281291'
+WARNING: The output includes credentials that you must protect. Be sure that you do not include these credentials in your code or check the credentials into your source control. For more information, see https://aka.ms/azadsp-cli
+(base) ➜  mlplatform-databrick-sample git:(main) DBX_CREDENTIALS=$($DBX_CREDENTIALS | convertfrom-json)
+zsh: command not found: {\n  "ARM_CLIENT_ID": "48df2ff4-9d4c-49fa-a9a5-6f8e35a2df00",\n  "ARM_CLIENT_SECRET": "c1t8Q~.~tFWs9ntq.k8m5Kek4bK1B_ebYxqCDbM5",\n  "ARM_TENANT_ID": "81c11a3e-e312-4d68-81b0-xfasdf"\n}
 ```
 
 ---
