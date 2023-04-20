@@ -52,8 +52,8 @@ if [[ $DevOps_Agent == "GitHub" ]]; then
     echo "Set Databricks Host As Environment Variable..."
     echo "DATABRICKS_HOST=https://$DATABRICKS_INSTANCE" >> $GITHUB_ENV
 
-    echo "Set Databricks Token ID As Environment Variable..."
-    echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
+    #echo "Set Databricks Token ID As Environment Variable..."
+    #echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
 
     echo "Set SUBSCRIPTION_ID As Environment Variable..."
     echo "SUBSCRIPTION_ID=$SUBSCRIPTION_ID" >> $GITHUB_ENV

@@ -222,7 +222,7 @@ jobs:
         run: |
 
           # Environment Variables below will be used for DBX Configure Auth 
-          echo $DATABRICKS_TOKEN
+          echo $DBRKS_BEARER_TOKEN
           echo $DATABRICKS_HOST
 
           pip install dbx

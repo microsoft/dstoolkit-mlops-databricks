@@ -23,11 +23,11 @@ if [ $SECRET_EXISTS == true ]; then
 
     echo "Secret Value: $DATABRICKS_TOKEN"
 
-    if [[ $DevOps_Agent == "GitHub" ]]; then
-        echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
-    else
-        echo "##vso[task.setvariable variable="DATABRICKS_TOKEN";isOutput=true;]$DATABRICKS_TOKEN"
-    fi  
+   # if [[ $DevOps_Agent == "GitHub" ]]; then
+   #     echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
+   # else
+   #     echo "##vso[task.setvariable variable="DATABRICKS_TOKEN";isOutput=true;]$DATABRICKS_TOKEN"
+   # fi  
     
 
 else
@@ -58,9 +58,9 @@ else
     
     echo "Databricks Token As Environment Variable..."
 
-    if [[ $DevOps_Agent == "GitHub" ]]; then
-        echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
-    else
-        echo "##vso[task.setvariable variable="DATABRICKS_TOKEN";isOutput=true;]$DATABRICKS_TOKEN"
-    fi  
+    #if [[ $DevOps_Agent == "GitHub" ]]; then
+    #    echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
+    #else
+    #    echo "##vso[task.setvariable variable="DATABRICKS_TOKEN";isOutput=true;]$DATABRICKS_TOKEN"
+    #fi  
 fi
