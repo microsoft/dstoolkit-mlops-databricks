@@ -190,31 +190,6 @@ jobs:
       #  env:
       #    DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
-
-#################################/
-##  DBX Deploy Jobs / Workflows                                            
-#################################/
-      - shell:                    bash
-        name:                     DBX Deploy - Workflow Artifacts (CD) 
-        run: |
-
-          # Environment Variables below will be used for DBX Configure Auth 
-          echo $DATABRICKS_TOKEN
-          echo $DATABRICKS_HOST
-
-          pip install dbx
-          dbx configure --enable-inplace-jinja-support
-          
-          dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
-          MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml \
-
-          dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
-          HOUSE_PRICE_MODELS -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
-        env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
-          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
-
-
 #################################/
 ##  Repo Pull                                           
 #################################/
@@ -238,6 +213,29 @@ jobs:
           ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
+
+#################################/
+##  DBX Deploy Jobs / Workflows                                            
+#################################/
+      - shell:                    bash
+        name:                     DBX Deploy - Workflow Artifacts (CD) 
+        run: |
+
+          # Environment Variables below will be used for DBX Configure Auth 
+          echo $DATABRICKS_TOKEN
+          echo $DATABRICKS_HOST
+
+          pip install dbx
+          dbx configure --enable-inplace-jinja-support
+          
+          dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
+          MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml \
+
+          dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
+          HOUSE_PRICE_MODELS -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
+        env:
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+          DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
           
         
