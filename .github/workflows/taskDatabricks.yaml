@@ -219,10 +219,9 @@ jobs:
 
 
       - shell:                    bash
-        name:                     DBX Deploy - Workflow Artifacts (CD) 
+        name:                     Set Up DBX Environment Variables
         run: |
-          echo $DATABRICKS_AAD_TOKEN
-          DATABRICKS_TOKEN=($DATABRICKS_AAD_TOKEN)
+          DATABRICKS_TOKEN=$(az keyvault secret show --name "dbkstoken" --vault-name $AZ_KEYVAULT_NAME --query "value" -o tsv)
           echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
 
 
