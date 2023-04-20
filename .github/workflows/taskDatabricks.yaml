@@ -157,7 +157,7 @@ jobs:
 ##  Create Repos                                           
 #################################/
       - name:                     Create Databricks Repos
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateCluster.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateRepoFolder.py
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
 
