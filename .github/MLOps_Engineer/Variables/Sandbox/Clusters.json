@@ -1,0 +1,17 @@
+{
+    "Clusters":  [
+        {
+            "cluster_name":  "ml_cluster",
+            "spark_version":  "11.3.x-cpu-ml-scala2.12",
+            "node_type_id":  "Standard_DS3_v2",
+            "spark_conf":  {
+                        },
+            "autotermination_minutes":  30,
+            "runtime_engine":  "STANDARD",
+            "autoscale":  {
+                            "min_workers":  2,
+                            "max_workers":  3
+                        }
+        }
+    ]
+}
