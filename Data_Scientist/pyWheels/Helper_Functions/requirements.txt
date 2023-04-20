@@ -36,7 +36,7 @@ ipython-genutils==0.2.0
 ipywidgets==7.7.0
 Jinja2==2.11.3
 jupyter-client==6.1.12
-jupyter-core==4.8.1
+jupyter-core==4.11.2
 jupyterlab-pygments==0.1.2
 jupyterlab-widgets==1.0.0
 mlflow-databricks-artifacts==2.0.0
