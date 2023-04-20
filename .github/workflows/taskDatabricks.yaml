@@ -92,10 +92,10 @@ jobs:
 #################################/
 ## Deploy Azure Infrastructure                                               
 #################################/
-      #- name:                     Deploy DBX CICD Azure Resources
-      #  run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateAzureResources.sh
-      #  env:
-      #    ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+      - name:                     Deploy DBX CICD Azure Resources
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateAzureResources.sh
+        env:
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 
@@ -235,7 +235,7 @@ jobs:
 
           # Environment Variables below will be used for DBX Configure Auth. We are using the Databricks Personal Access Token, and 
           # not the Databricks AAD Token 
-          
+
           echo $DATABRICKS_TOKEN
           echo $DATABRICKS_HOST
 
