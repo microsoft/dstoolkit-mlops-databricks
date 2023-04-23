@@ -1,6 +1,7 @@
 ![B
 
-https://user-images.githubusercontent.com/108273509/233846206-75d4b4be-16f6-4cd0-a1d4-0a92d7481947.mp4
+
+![Untitled video](https://user-images.githubusercontent.com/108273509/233846235-88fb83d3-42a8-4ae1-b183-9690e156a85e.gif)
 
 anner](docs/images/MLOps_for_databricks_Solution_Acclerator_logo.JPG)
 ---
