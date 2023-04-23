@@ -1,4 +1,8 @@
-![Banner](docs/images/MLOps_for_databricks_Solution_Acclerator_logo.JPG)
+![B
+
+https://user-images.githubusercontent.com/108273509/233846206-75d4b4be-16f6-4cd0-a1d4-0a92d7481947.mp4
+
+anner](docs/images/MLOps_for_databricks_Solution_Acclerator_logo.JPG)
 ---
 ---
  <br>
