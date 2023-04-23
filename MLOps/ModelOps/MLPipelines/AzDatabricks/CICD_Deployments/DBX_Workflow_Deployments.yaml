@@ -69,7 +69,14 @@ environments:
             ]
             depends_on:
               - task_key: "two"
-      
+      - name: HOUSE_PRICE_MODELS
+        <<: *dev-cluster-config
+        spark_python_task:
+          python_file: "{{var['ML_PIPELINE_FILES']['HOUSE_PRICE_MODELS']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['HOUSE_PRICE_MODELS']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['HOUSE_PRICE_MODELS']['PARAMETERS']['FILE']}}"]
+        libraries: [ 
+          whl: "{{var['ML_PIPELINE_FILES']['HOUSE_PRICE_MODELS']['WHL_PATH']}}" 
+        ]
     
   UAT:
     workflows:
@@ -256,16 +263,16 @@ environments:
           python_file: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['FILE_PATH']}}"
           parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['FILE']}}"]
         libraries: [ 
-          whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+          whl: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['WHL_PATH']}}" 
         ]
 
       - name: HOUSE_PRICE_MODELS
         <<: *dev-cluster-config
         spark_python_task:
-          python_file: "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['FILE_PATH']}}"
-          parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_INFERENCE']['PARAMETERS']['FILE']}}"]
+          python_file: "{{var['ML_PIPELINE_FILES']['HOUSE_PRICE_MODELS']['FILE_PATH']}}"
+          parameters: ["{{var['ML_PIPELINE_FILES']['HOUSE_PRICE_MODELS']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['HOUSE_PRICE_MODELS']['PARAMETERS']['FILE']}}"]
         libraries: [ 
-          whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
+          whl: "{{var['ML_PIPELINE_FILES']['HOUSE_PRICE_MODELS']['WHL_PATH']}}" 
         ]
 
   #Sandbox2:

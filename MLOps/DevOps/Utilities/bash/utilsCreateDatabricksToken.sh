@@ -56,7 +56,7 @@ else
         --name $SECRET_NAME \
         --value $DATABRICKS_PAT_TOKEN
     
-    echo "Databricks Token As Environment Variable..."
+    #echo "Databricks Token As Environment Variable..."
 
     #if [[ $DevOps_Agent == "GitHub" ]]; then
     #    echo "DATABRICKS_AAD_TOKEN=$DATABRICKS_AAD_TOKEN" >> $GITHUB_ENV

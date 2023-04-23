@@ -83,9 +83,11 @@ module logAnalytics '../Az_Resources/Az_AppInsights/Az_AppInsights.bicep' = {
     appinsightname: appInsightswsname
   }
 }
+
+
 // ################################################################################################################################################################//
 //                                                                       Module for Creating Azure Machine Learning Workspace
-// Outputs AzDatabricks Workspace ID, which is used when Assigning RBACs
+// Outputs AzDatabricks Workspace ID, which is used when Assigning RBACs.
 // ################################################################################################################################################################//
 module azMachineLearning'../Az_Resources/Az_Machine_Learning/Az_MachineLearning.bicep' =  {
   dependsOn: [

@@ -8,6 +8,21 @@
                 "artifact_location": "dbfs:/Shared/cicd_workflow/sandbox"
             }
         },
+        "Development": {
+            "profile": "Development",
+            "workspace_dir": "/Shared/development",
+            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/development"
+        },
+        "UAT": {
+            "profile": "UAT",
+            "workspace_dir": "/Shared/uat",
+            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/uat"
+        },
+        "Production": {
+            "profile": "Production",
+            "workspace_dir": "/Shared/production",
+            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/production"
+        },
         "Ciaran_Sandbox": {
             "profile": "Ciaran_Sandbox",
             "workspace_dir": "/Shared/ciaran_sandbox",
