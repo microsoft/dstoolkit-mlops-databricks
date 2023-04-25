@@ -248,7 +248,7 @@ jobs:
           
 
           dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
-          HOUSE_PRICE_MODELS,MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
+          --workflows=HOUSE_PRICE_MODELS,MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
 
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 
