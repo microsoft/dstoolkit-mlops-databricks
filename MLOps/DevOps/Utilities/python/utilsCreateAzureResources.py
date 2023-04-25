@@ -2,8 +2,8 @@ import os
 import subprocess
 import json
 
-#ENVIRONMENT = os.environ['ENVIRONMENT']
-ENVIRONMENT = "Sandbox"
+ENVIRONMENT = os.environ['ENVIRONMENT']
+
 
 def load_json_params():
     with open( 'MLOps/DevOps/Infrastructure/DBX_CICD_Deployment/Bicep_Params/' + ENVIRONMENT + '/Bicep.parameters.json', 'r') as f:

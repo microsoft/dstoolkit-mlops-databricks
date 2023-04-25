@@ -13,6 +13,8 @@ def run_cmd(cmd):
     process = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True)
     output = process.stdout.decode().split('\n')
     output = [line.strip('\n').strip('\r') for line in output]
+
+    print(f"Return Code: {process.returncode}")
     if process.returncode != 0:
         raise RuntimeError('\n'.join(output))
     return output
