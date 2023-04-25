@@ -93,16 +93,18 @@ if __name__ == '__main__':
     app_insight_key = get_app_insight_key(app_insight_name)
     print(app_insight_key)
 
-    scope_name = "DBX_SP_Credentials"
 
+    # Create Secret Scopes
     create_secret_scopes(scope_name="DBX_SP_Credentials", initial_manage_principal="users")
     create_secret_scopes(scope_name="AzureResourceSecrets", initial_manage_principal="users")
 
+    # Insert Secrets into Secret Scope "DBX_SP_Credentials"
     insert_secret(secret_value=ARM_CLIENT_ID, scope_name="DBX_SP_Credentials", key="DBX_SP_Client_ID")
     insert_secret(secret_value=ARM_CLIENT_SECRET, scope_name="DBX_SP_Credentials", key="DBX_SP_Client_Secret")
     insert_secret(secret_value=ARM_TENANT_ID, scope_name="DBX_SP_Credentials", key="DBX_SP_Tenant_ID")
     insert_secret(secret_value=SUBSCRIPTION_ID, scope_name="DBX_SP_Credentials", key="SUBSCRIPTION_ID")
 
+    # Insert Secrets into Secret Scope "AzureResourceSecrets"
     insert_secret(secret_value=app_insight_key, scope_name="AzureResourceSecrets", key="AppInsightsKey")
     insert_secret(secret_value=RESOURCE_GROUP_NAME, scope_name="AzureResourceSecrets", key="RESOURCE_GROUP_NAME")
     insert_secret(secret_value=AML_WS_NAME, scope_name="AzureResourceSecrets", key="AML_WS_NAME")

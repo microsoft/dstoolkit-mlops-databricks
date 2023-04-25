@@ -242,7 +242,7 @@ jobs:
           echo $DATABRICKS_TOKEN
           echo $DATABRICKS_HOST
 
-          databricks configure --profile $ENVIRONMENT --aad-token
+          databricks configure --profile $ENVIRONMENT --token
           dbx configure --enable-inplace-jinja-support --profile $ENVIRONMENT
           
           echo "Check Configuration Was Successful"
