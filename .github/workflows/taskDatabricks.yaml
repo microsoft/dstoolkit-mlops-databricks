@@ -75,9 +75,9 @@ jobs:
           az config set extension.use_dynamic_install=yes_without_prompt
           
           
-          #pip3 install azureml
-          #pip3 install azureml-core
-          #pip3 install azureml.pipeline
+          pip3 install azureml
+          pip3 install azureml-core
+          pip3 install azureml.pipeline
           
 
 #################################/
