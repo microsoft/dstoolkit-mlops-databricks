@@ -33,8 +33,6 @@ def deploy_azure_resources():
     print("Deploying Azure Resources... This Make Take A Few Minutes")
     run_cmd(az_deploy_cmd)
 
-def main():
-    deploy_azure_resources()
 
 if __name__ == "__main__":
-    main()
+    deploy_azure_resources()

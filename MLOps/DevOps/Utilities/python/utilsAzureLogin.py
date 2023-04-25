@@ -25,8 +25,6 @@ def azure_login():
     print("Logging In To Azure")
     run_cmd(az_login_cmd)
 
-def main():
-    azure_login()
     
 if __name__ == '__main__':
-    main()
+    azure_login()
