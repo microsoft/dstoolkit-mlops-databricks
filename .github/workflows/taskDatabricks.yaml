@@ -94,7 +94,7 @@ jobs:
 ## Deploy Azure Infrastructure                                               
 #################################/
       - name:                     Deploy DBX CICD Azure Resources
-        run:                       ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateAzureResources.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateAzureResources.py
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
@@ -171,7 +171,7 @@ jobs:
 ##  Secret Scopes                                           
 #################################/
       - name:                     Save Databricks SP Credentials Within Secret Scopes
-        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateSecretScopes.sh
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateSecretScopes.sh
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
