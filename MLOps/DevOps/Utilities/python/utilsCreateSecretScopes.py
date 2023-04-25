@@ -63,8 +63,8 @@ def create_secret_scopes(scope_name=str, initial_manage_principal=str):
         'https://' + DATABRICKS_INSTANCE + '/api/2.0/secrets/scopes/create', headers=DBRKS_REQ_HEADERS, json=postjson
     )
 
-    if response.status_code != 200:
-        raise Exception(response.text)
+    #if response.status_code != 200:
+    #    raise Exception(response.text)
 
     print(response.json())
 
@@ -90,7 +90,7 @@ def insert_secret(secret_value=str, scope_name=str, key=str):
 if __name__ == '__main__':
     app_insight_name = get_app_insight_name()[0]
     print(app_insight_name)
-    app_insight_key = get_app_insight_key(app_insight_name)
+    app_insight_key = get_app_insight_key(app_insight_name)[0]
     print(app_insight_key)
 
 
