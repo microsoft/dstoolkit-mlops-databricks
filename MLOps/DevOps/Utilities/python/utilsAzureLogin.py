@@ -8,7 +8,7 @@ ARM_CLIENT_SECRET = os.environ['ARM_CLIENT_SECRET']
 ARM_TENANT_ID = os.environ['ARM_TENANT_ID']
 
 
-def run_cmd(cmd):
+def _run_cmd(cmd):
     #May Need To Rmove shell=True
     process = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True)
     output = process.stdout.decode().split('\n')
@@ -23,7 +23,7 @@ def azure_login():
     #az_login_cmd = ["az", "login", "--tenant", "fdpo.onmicrosoft.com"]
     az_login_cmd = ["az", "login", "--service-principal", "-u", ARM_CLIENT_ID, "-p", ARM_CLIENT_SECRET, "--tenant", ARM_TENANT_ID]
     print("Logging In To Azure")
-    run_cmd(az_login_cmd)
+    _run_cmd(az_login_cmd)
 
     
 if __name__ == '__main__':
