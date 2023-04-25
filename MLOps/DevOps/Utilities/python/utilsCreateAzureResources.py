@@ -2,6 +2,8 @@ import os
 import subprocess
 import json
 
+__here__ = os.path.dirname(__file__)
+
 ENVIRONMENT = os.environ['ENVIRONMENT']
 
 
