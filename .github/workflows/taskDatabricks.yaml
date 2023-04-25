@@ -245,8 +245,7 @@ jobs:
           databricks fs ls
 
           dbx configure --enable-inplace-jinja-support --profile $ENVIRONMENT
-          
-
+        
           dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
           --workflows=HOUSE_PRICE_MODELS,MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
 
