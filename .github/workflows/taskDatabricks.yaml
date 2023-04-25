@@ -74,9 +74,9 @@ jobs:
           
           pip3 install dbx
           
-          pip3 install azureml
-          pip3 install azureml-core
-          pip3 install azureml.pipeline
+          #pip3 install azureml
+          #pip3 install azureml-core
+          #pip3 install azureml.pipeline
           
 
 #################################/
