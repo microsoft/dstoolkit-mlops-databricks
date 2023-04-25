@@ -236,13 +236,11 @@ jobs:
 
           # Environment Variables below will be used for DBX Configure Auth. We are using the Databricks Personal Access Token, and 
           # not the Databricks AAD Token 
-          pip3 install databricks-cli --upgrade
           pip3 install dbx
 
           echo $DATABRICKS_TOKEN
           echo $DATABRICKS_HOST
 
-          databricks configure --token
           databricks -h 
           databricks fs ls
 
