@@ -63,6 +63,7 @@ def create_secret_scopes(scope_name=str, initial_manage_principal=str):
         'https://' + DATABRICKS_INSTANCE + '/api/2.0/secrets/scopes/create', headers=DBRKS_REQ_HEADERS, json=postjson
     )
 
+    print(response.status_code)
     #if response.status_code != 200:
     #    raise Exception(response.text)
 
