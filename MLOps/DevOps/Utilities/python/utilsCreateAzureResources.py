@@ -14,7 +14,7 @@ def load_json_params():
 
 def run_cmd(cmd):
     #May Need To Rmove shell=True
-    process = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(cmd, stdout=subprocess.PIPE)
     print(process)
     output = process.stdout.decode().split('\n')
     print(output)

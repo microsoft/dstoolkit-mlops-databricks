@@ -10,7 +10,7 @@ ARM_TENANT_ID = os.environ['ARM_TENANT_ID']
 
 def run_cmd(cmd):
     #May Need To Rmove shell=True
-    process = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(cmd, stdout=subprocess.PIPE)
     output = process.stdout.decode().split('\n')
     print(output)
     output = [line.strip('\n').strip('\r') for line in output]
