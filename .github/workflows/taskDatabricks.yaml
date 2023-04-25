@@ -171,7 +171,7 @@ jobs:
 ##  Secret Scopes                                           
 #################################/
       - name:                     Save Databricks SP Credentials Within Secret Scopes
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateSecretScopes.sh
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateSecretScopes.py
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
