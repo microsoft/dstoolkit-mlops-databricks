@@ -32,8 +32,7 @@ def deploy_azure_resources():
     run_cmd(az_deploy_cmd)
 
 def main():
-    response = deploy_azure_resources()
-    print(response)
+    deploy_azure_resources()
 
 if __name__ == "__main__":
     main()
