@@ -17,8 +17,9 @@ def run_cmd(cmd):
     process = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True)
     print(process)
     output = process.stdout.decode().split('\n')
-    output = [line.strip('\n').strip('\r') for line in output]
     print(output)
+    output = [line.strip('\n').strip('\r') for line in output]
+    #print(output)
     if process.returncode != 0:
         raise RuntimeError('\n'.join(output))
     return output
