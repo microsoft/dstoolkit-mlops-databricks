@@ -23,7 +23,7 @@ def run_cmd(cmd):
         if line.strip('\n').strip('\r')
     ]
     #import pdb; pdb.set_trace()
-    #print(f"Return Code: {process.returncode}")
+    #print(f"Return Code: {process.returncode}").
     if process.returncode != 0:
         raise RuntimeError('\n'.join(output))
     return output, process.returncode
