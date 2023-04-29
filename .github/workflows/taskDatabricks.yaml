@@ -147,7 +147,7 @@ jobs:
 ##  PAT Token                                           
 #################################/
       - name:                     Create And Store PAT Token In Key Vault
-        if: ${{ false }}
+        #if: ${{ false }}
         run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateDatabricksToken.sh
         env:
           DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
@@ -158,7 +158,7 @@ jobs:
 #################################/
   
       - name:                     Git Config
-        if: ${{ false }}
+        #if: ${{ false }}
         run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsGitConfiguration.py
         env:
           PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
