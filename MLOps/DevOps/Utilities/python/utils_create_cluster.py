@@ -86,7 +86,7 @@ def _get_dbrks_cluster_info(cluster_id):
     print(f"VITAL: custer_id {cluster_id}")
     response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/get', headers=DBRKS_REQ_HEADERS, params=cluster_id)
     print(response.status_code)
-    print(response)
+    print(response.content)
 
     if response.status_code == 200:
         return json.loads(response.content)
@@ -97,6 +97,7 @@ def _manage_cluster_state(cluster_id):
     """
         Returns a Json object containing information about the Cluster State
     """
+    tmp_cluster_id = cluster_id
     await_cluster = True
     start_time = time.time()
     loop_time = 1200  # 20 Minutes
@@ -105,13 +106,13 @@ def _manage_cluster_state(cluster_id):
         elapsed_time = current_time - start_time
         if elapsed_time > loop_time:
             raise Exception('Error: Loop took over {} seconds to run.'.format(loop_time))
-        if _get_dbrks_cluster_info(cluster_id)['state'] == 'TERMINATED':
+        if _get_dbrks_cluster_info(tmp_cluster_id)['state'] == 'TERMINATED':
             print('Starting Terminated Cluster')
             raise ValueError("Failed to create cluster, cluster teminated")
-        elif _get_dbrks_cluster_info(cluster_id)['state'] == 'RESTARTING':
+        elif _get_dbrks_cluster_info(tmp_cluster_id)['state'] == 'RESTARTING':
             print('Cluster is Restarting')
             time.sleep(60)
-        elif _get_dbrks_cluster_info(cluster_id)['state'] == 'PENDING':
+        elif _get_dbrks_cluster_info(tmp_cluster_id)['state'] == 'PENDING':
             print('Cluster is Pending Start')
             time.sleep(60)
         else:
