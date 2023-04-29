@@ -125,7 +125,7 @@ jobs:
 ##  RBAC Assignments                                           
 #################################/
       - name:                     Assign RBAC Permissions 
-        if: ${{ false }}
+        #if: ${{ false }}
         run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateRoleBasedAccess.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
@@ -196,7 +196,7 @@ jobs:
 #################################/
 # 15. Databricks Repo Pull
       - name:                     Repo Pull
-        if: ${{ false }}
+        #if: ${{ false }}
         run:                      bash MLOps/DevOps/Utilities/bash/utilsRepoPull.sh
         env:
           PULL_BRANCH:            ${{ github.ref_name }}
