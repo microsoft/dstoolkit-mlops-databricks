@@ -37,7 +37,15 @@ jobs:
       - name:                     Checkout
         uses:                     actions/checkout@v2
 
-
+#################################/
+##  Git File Changes Check                                               
+##################################/
+      - name:                     Check Infra Git Path Change
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsGitFileChanges.sh
+        env:
+            PATH_FILTER:          MLOps/DevOps/Infrastructure
+            VAR_NAME:             enableInfraDeploy
+            DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
 
 #################################/
 ##  Set Python                                          
@@ -53,19 +61,18 @@ jobs:
       - shell: bash
         name:  Tests and Dependency Install
         run: |
-        
-          sudo apt update && sudo apt upgrade && sudo apt install jq -y
-          pip3 install --upgrade pip
-
+          echo $enableInfraDeploy
+          sudo apt update && sudo apt install jq -y
           az extension add -n azure-cli-ml
-          
           # Do a python pip install so that modules can be found from python tasks
           python -m pip install requests
           
+          pip3 install --upgrade pip
           pip3 install --upgrade azure-cli
           pip3 install azure-mgmt-storage==21.0.0
-          pip3 install  azure-databricks-sdk-python
-          az config set extension.use_dynamic_install=yes_without_prompt
+          #pip3 install  azure-databricks-sdk-python
+          
+          pip3 install dbx
           
           pip3 install azureml
           pip3 install azureml-core
@@ -76,7 +83,7 @@ jobs:
 ##  Authenticate/Login To Azure                                               
 #################################/
       - name:                     Service Principal Login
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utils_azure_login.py
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsAzureLogin.sh
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -86,7 +93,7 @@ jobs:
 ## Deploy Azure Infrastructure                                               
 #################################/
       - name:                     Deploy DBX CICD Azure Resources
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateAzureResources.py
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateAzureResources.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
@@ -163,7 +170,7 @@ jobs:
 ##  Secret Scopes                                           
 #################################/
       - name:                     Save Databricks SP Credentials Within Secret Scopes
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateSecretScopes.py
+        run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateSecretScopes.sh
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -192,7 +199,7 @@ jobs:
 ##  Create Cluster                                           
 #################################/
       - name:                     Create Databricks Clusters
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utils_create_cluster.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateCluster.py
 
 
         
@@ -228,19 +235,16 @@ jobs:
 
           # Environment Variables below will be used for DBX Configure Auth. We are using the Databricks Personal Access Token, and 
           # not the Databricks AAD Token 
-          pip3 install dbx
 
           echo $DATABRICKS_TOKEN
           echo $DATABRICKS_HOST
 
-          databricks -h 
-          databricks fs ls
-
-          dbx configure --enable-inplace-jinja-support --profile $ENVIRONMENT
-        
+          dbx configure --enable-inplace-jinja-support
           dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
-          --workflows=HOUSE_PRICE_MODELS,MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
+          MULTI_TASK -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
 
+          dbx deploy --deployment-file MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Deployments.yaml \
+          HOUSE_PRICE_MODELS -e $ENVIRONMENT --jinja-variables-file=MLOps/ModelOps/MLPipelines/AzDatabricks/CICD_Deployments/DBX_Workflow_Parameters.yaml
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 
 
