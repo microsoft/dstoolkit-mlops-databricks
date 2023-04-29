@@ -42,7 +42,8 @@ def start_azure_login():
                     "--tenant", ARM_TENANT_ID
                     ]
     print("Logging In To Azure")
-    _, returncode = run_cmd(az_login_cmd)
+    #_, returncode = run_cmd(az_login_cmd)
+    output, returncode = run_cmd(az_login_cmd)
     return returncode
 
 

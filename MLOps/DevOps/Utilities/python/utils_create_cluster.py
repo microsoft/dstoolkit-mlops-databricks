@@ -48,6 +48,7 @@ def _list_clusters():
         Returns a Json object containing a list of existing Databricks Clusters.
     """
     dbkrs_req_headers = create_api_headers()
+    print(f"Dataricks Req Headers: {dbkrs_req_headers}")
     response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/list',
                             headers=dbkrs_req_headers
                             )
