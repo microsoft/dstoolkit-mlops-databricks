@@ -18,7 +18,7 @@ def run_cmd(cmd):
         Run a command and return the output as a list of lines
         shell=false for devops pipelines
     """
-    process = subprocess.run(cmd, stdout=subprocess.PIPE, check=True, shell=True)
+    process = subprocess.run(cmd, stdout=subprocess.PIPE, check=True, shell=False)
     output = process.stdout.decode().split('\n')
     print(output)
     output = [
