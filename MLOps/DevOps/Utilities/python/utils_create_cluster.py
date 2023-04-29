@@ -16,7 +16,12 @@ DATABRICKS_AAD_TOKEN = os.environ.get("DATABRICKS_AAD_TOKEN")
 DATABRICKS_MANAGEMENT_TOKEN = os.environ.get("DATABRICKS_MANAGEMENT_TOKEN")
 ENVIRONMENT = os.environ.get("ENVIRONMENT")
 
-
+DBRKS_REQ_HEADERS = {
+    'Authorization': f'Bearer {DATABRICKS_AAD_TOKEN}',
+    'X-Databricks-Azure-SP-Management-Token': f'{DATABRICKS_MANAGEMENT_TOKEN}',
+    'X-Databricks-Azure-Workspace-Resource-Id': f'{WORKSPACE_ID}',
+    'Content-Type': 'application/json'
+}
 #WORKSPACE_ID = os.environ['WORKSPACE_ID']
 #DATABRICKS_INSTANCE = os.environ['DATABRICKS_INSTANCE']
 #DATABRICKS_AAD_TOKEN = os.environ['DATABRICKS_AAD_TOKEN']
@@ -28,11 +33,9 @@ def _create_cluster(postjson):
     """
         Takes Json object for cluster creation, and invokes the Databricks API.
     """
-
-    dbkrs_req_headers = create_api_headers()
     response = requests.post(
         'https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/create', 
-        headers=dbkrs_req_headers,
+        headers=DBRKS_REQ_HEADERS,
         json=postjson
     )
 
@@ -47,10 +50,9 @@ def _list_clusters():
     """
         Returns a Json object containing a list of existing Databricks Clusters.
     """
-    dbkrs_req_headers = create_api_headers()
-    print(f"Dataricks Req Headers: {dbkrs_req_headers}")
+
     response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/list',
-                            headers=dbkrs_req_headers
+                            headers=DBRKS_REQ_HEADERS
                             )
     #import pdb; pdb.set_trace()
     if response.status_code != 200:
@@ -141,6 +143,7 @@ def create_api_headers():
         'X-Databricks-Azure-Workspace-Resource-Id': f'{WORKSPACE_ID}',
         'Content-Type': 'application/json'
         }
+    
     return dbkrs_req_headers
 
 def main():
@@ -151,9 +154,6 @@ def main():
         if deploy_cluster_bool:
             response, cluster_id = _create_cluster(cluster)
             _manage_cluster_state(cluster_id)
-
-
-
 
 if __name__ == "__main__":
     main()
