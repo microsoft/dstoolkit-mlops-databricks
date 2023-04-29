@@ -9,6 +9,9 @@ import json
 import time
 import requests
 import os
+from utilsCreateAuthenticationTokens import createBearerToken, createManagementToken
+
+
 
 WORKSPACE_ID = os.environ.get("WORKSPACE_ID")
 DATABRICKS_INSTANCE = os.environ.get("DATABRICKS_INSTANCE")
@@ -33,6 +36,7 @@ DBRKS_REQ_HEADERS = {
     'Content-Type': 'application/json'
 }
 
+
 print(f"DBRKS_REQ_HEADERS {DBRKS_REQ_HEADERS}")
 #WORKSPACE_ID = os.environ['WORKSPACE_ID']
 #DATABRICKS_INSTANCE = os.environ['DATABRICKS_INSTANCE']
@@ -55,6 +59,7 @@ def _create_cluster(postjson):
         raise Exception(response.text)
 
     cluster_id = response.json()["cluster_id"]
+    print(cluster_id)
     return response.status_code, cluster_id
 
 
@@ -77,9 +82,9 @@ def _get_dbrks_cluster_info(cluster_id):
         Returns a Json object containing information about a specific Databricks Cluster.
     
     """
-    dbkrs_req_headers = create_api_headers()
+    print(f"VITAL: custer_id {cluster_id}")
     response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/get',
-                            headers=dbkrs_req_headers,
+                            headers=DBRKS_REQ_HEADERS,
                             params=cluster_id
                             )
 
@@ -160,11 +165,16 @@ def create_api_headers():
 
 def main():
     json_cluster_param_file = ingest_json_parameters_file()
+    print(json_cluster_param_file)
     for cluster in json_cluster_param_file:
         existing_clusters_arr = list_existing_clusters()
+        print(f"existing_clusters_arr {existing_clusters_arr}")
         deploy_cluster_bool = cluster_check(existing_clusters_arr, cluster)
+        print(f"deploy_cluster_bool {deploy_cluster_bool}")
         if deploy_cluster_bool:
             response, cluster_id = _create_cluster(cluster)
+            print(f"response {response}")
+            print(f"cluster_id {cluster_id}")
             _manage_cluster_state(cluster_id)
 
 if __name__ == "__main__":
