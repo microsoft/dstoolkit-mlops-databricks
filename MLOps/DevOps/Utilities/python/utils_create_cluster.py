@@ -84,6 +84,7 @@ def _get_dbrks_cluster_info(cluster_id):
     """
 
     tmp_cluster_id = cluster_id
+    print(tmp_cluster_id)
 
     print(f"VITAL: custer_id {cluster_id}")
     response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/get', headers=DBRKS_REQ_HEADERS, params=tmp_cluster_id)
@@ -100,6 +101,8 @@ def _manage_cluster_state(cluster_id):
         Returns a Json object containing information about the Cluster State
     """
     tmp_cluster_id = cluster_id
+    print(tmp_cluster_id)
+    
     await_cluster = True
     start_time = time.time()
     loop_time = 1200  # 20 Minutes
