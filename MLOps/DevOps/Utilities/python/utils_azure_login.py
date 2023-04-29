@@ -20,7 +20,6 @@ def run_cmd(cmd):
     """
     process = subprocess.run(cmd, stdout=subprocess.PIPE, check=True, shell=True)
     output = process.stdout.decode().split('\n')
-    #print(output)
     output = [
         line.strip('\n').strip('\r').strip('"') for line in output
         if line.strip('\n').strip('\r')
