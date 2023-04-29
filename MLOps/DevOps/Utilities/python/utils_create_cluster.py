@@ -82,11 +82,11 @@ def _get_dbrks_cluster_info(cluster_id):
         Returns a Json object containing information about a specific Databricks Cluster.
     
     """
+
     print(f"VITAL: custer_id {cluster_id}")
-    response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/get',
-                            headers=DBRKS_REQ_HEADERS,
-                            params=cluster_id
-                            )
+    response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/get', headers=DBRKS_REQ_HEADERS, params=cluster_id)
+    print(response.status_code)
+    print(response)
 
     if response.status_code == 200:
         return json.loads(response.content)
