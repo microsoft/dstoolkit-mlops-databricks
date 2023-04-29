@@ -83,8 +83,10 @@ def _get_dbrks_cluster_info(cluster_id):
     
     """
 
+    tmp_cluster_id = cluster_id
+
     print(f"VITAL: custer_id {cluster_id}")
-    response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/get', headers=DBRKS_REQ_HEADERS, params=cluster_id)
+    response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/get', headers=DBRKS_REQ_HEADERS, params=tmp_cluster_id)
     print(response.status_code)
     print(response.content)
 
