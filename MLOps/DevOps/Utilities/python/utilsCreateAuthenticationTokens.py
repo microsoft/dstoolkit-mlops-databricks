@@ -7,7 +7,7 @@ def create_management_token(token_request_body, token_request_headers, token_bas
         Uses Our Service Principal Credentials To
         Generate Azure Active Directory Tokens
     """
-    token_request_headers['resource'] = '2ff814a6-3304-4ab8-85cb-cd0e6f879c1d'  #https://management.core.windows.net/  
+    token_request_headers['resource'] = 'https://management.core.windows.net/'  #https://management.core.windows.net/
     response = requests.get(token_base_url,
                             headers=token_request_headers,
                             data=token_request_body
@@ -25,7 +25,7 @@ def create_bearer_token(token_request_body, token_request_headers, token_base_ur
         Uses Our Service Principal Credentials To
         Generate Azure Active Directory Tokens
     """
-    token_request_body['resource'] = 'https://management.core.windows.net/' #2ff814a6-3304-4ab8-85cb-cd0e6f879c1d
+    token_request_body['resource'] = '2ff814a6-3304-4ab8-85cb-cd0e6f879c1d' #2ff814a6-3304-4ab8-85cb-cd0e6f879c1d
     response = requests.get(token_base_url,
                             headers=token_request_headers,
                             data=token_request_body
