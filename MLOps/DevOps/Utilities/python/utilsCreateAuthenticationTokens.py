@@ -46,10 +46,10 @@ if __name__ == "__main__":
         'client_secret': os.environ['ARM_CLIENT_SECRET']
     }
 
+    print(f"token_request_body: {token_request_body}")
+
     token_request_headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-    token_base_url = 'https://login.microsoftonline.com/' + \
-        os.environ['ARM_TENANT_ID'] + \
-        '/oauth2/token'
+    token_base_url = 'https://login.microsoftonline.com/' + os.environ['ARM_TENANT_ID'] + '/oauth2/token'
 
     bearer_token = create_bearer_token(
         token_request_body=token_request_body,
