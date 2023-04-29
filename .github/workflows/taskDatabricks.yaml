@@ -41,6 +41,7 @@ jobs:
 ##  Git File Changes Check                                               
 ##################################/
       - name:                     Check Infra Git Path Change
+        if: ${{ false }}
         run:                      bash MLOps/DevOps/Utilities/bash/utilsGitFileChanges.sh
         env:
             PATH_FILTER:          MLOps/DevOps/Infrastructure
@@ -53,7 +54,7 @@ jobs:
       - name:                     Setup Python
         uses:                     actions/setup-python@v4
         with:
-          python-version:         3.8
+          python-version:         '3.9'
     
 #################################/
 ##  Dependencies/ Install                                              
@@ -84,7 +85,7 @@ jobs:
 ##  Authenticate/Login To Azure                                               
 #################################/
       - name:                     Service Principal Login
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsAzureLogin.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utils_azure_login.py
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -125,6 +126,7 @@ jobs:
 ##  RBAC Assignments                                           
 #################################/
       - name:                     Assign RBAC Permissions 
+        if: ${{ false }}
         run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateRoleBasedAccess.sh
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
@@ -133,6 +135,7 @@ jobs:
 ##  Generate Python Wheel Files                                            
 #################################/
       - name:                     'Create Helper_Functions Package Wheel File'
+        if: ${{ false }}
         run: |
           pip3 install wheel
           ls
@@ -145,6 +148,7 @@ jobs:
 ##  PAT Token                                           
 #################################/
       - name:                     Create And Store PAT Token In Key Vault
+        if: ${{ false }}
         run:                      bash MLOps/DevOps/Utilities/bash/utilsCreateDatabricksToken.sh
         env:
           DevOps_Agent:           ${{ inputs.DevOps_Agent }} 
@@ -155,6 +159,7 @@ jobs:
 #################################/
   
       - name:                     Git Config
+        if: ${{ false }}
         run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsGitConfiguration.py
         env:
           PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
@@ -163,6 +168,7 @@ jobs:
 ##  Create Repos                                           
 #################################/
       - name:                     Create Databricks Repos
+        if: ${{ false }}
         run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateRepoFolder.py
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
@@ -171,6 +177,7 @@ jobs:
 ##  Secret Scopes                                           
 #################################/
       - name:                     Save Databricks SP Credentials Within Secret Scopes
+        if: ${{ false }}
         run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateSecretScopes.py
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
@@ -190,6 +197,7 @@ jobs:
 #################################/
 # 15. Databricks Repo Pull
       - name:                     Repo Pull
+        if: ${{ false }}
         run:                      bash MLOps/DevOps/Utilities/bash/utilsRepoPull.sh
         env:
           PULL_BRANCH:            ${{ github.ref_name }}
@@ -200,7 +208,7 @@ jobs:
 ##  Create Cluster                                           
 #################################/
       - name:                     Create Databricks Clusters
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateCluster.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utils_create_cluster.py
 
 
         
@@ -210,6 +218,7 @@ jobs:
 #################################/
 # 15. AML Pipeline
       - name:                       Azure Machine Learning Pipeline For DBX Notebooks
+        if: ${{ false }}
         run:                        ${{ inputs.SCRIPT_LANGUAGE }} MLOps/ModelOps/MLPipelines/AzMachineLearning/V1/AML_Training_Pipeline.py
         env:
           DATABRICKS_COMPUTE_NAME:  'mlclusterlink'
@@ -220,6 +229,7 @@ jobs:
 
 
       - shell:                    bash
+        if: ${{ false }}
         name:                     Set Up DBX Environment Variables
         run: |
           DATABRICKS_TOKEN=$(az keyvault secret show --name "dbkstoken" --vault-name $AZ_KEYVAULT_NAME --query "value" -o tsv)
@@ -231,6 +241,7 @@ jobs:
 ##  DBX Deploy Jobs / Workflows                                            
 #################################/
       - shell:                    bash
+        if: ${{ false }}
         name:                     DBX Deploy - Workflow Artifacts (CD) 
         run: |
 
