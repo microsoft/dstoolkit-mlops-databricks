@@ -55,7 +55,7 @@ class TestListClusters(unittest.TestCase):
         
         # If the response is not 200, then the main code "utils_crate_cluster.py" throws an error exception
         # The below is presumable capturing that error as a "good" things, as we expect this behaviour 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception): 
             _list_clusters()
     
 
