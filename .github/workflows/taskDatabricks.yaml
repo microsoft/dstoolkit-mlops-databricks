@@ -93,10 +93,10 @@ jobs:
 #################################/
 ## Deploy Azure Infrastructure                                               
 #################################/
-      #- name:                     Deploy DBX CICD Azure Resources
-      #  run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateAzureResources.py
-      #  env:
-      #    ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+      - name:                     Deploy DBX CICD Azure Resources
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} MLOps/DevOps/Utilities/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateAzureResources.py
+        env:
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 
