@@ -48,8 +48,8 @@ import os
 from azureml.core.authentication import ServicePrincipalAuthentication
 
 svc_pr = ServicePrincipalAuthentication(
-                        tenant_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_TenantID"),
-                        service_principal_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_ClientID"),
+                        tenant_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Tenant_ID"),
+                        service_principal_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_ID"),
                         service_principal_password = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret") )
 
 

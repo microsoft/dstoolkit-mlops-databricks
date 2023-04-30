@@ -75,7 +75,7 @@ def insert_secret(secret_value=str, scope_name=str, key=str):
     """
     postjson = {
         "scope": scope_name,
-        "key": "key",
+        "key": key,
         "string_value": secret_value
     }
 
@@ -83,8 +83,8 @@ def insert_secret(secret_value=str, scope_name=str, key=str):
         'https://' + DATABRICKS_INSTANCE + '/api/2.0/secrets/put', headers=DBRKS_REQ_HEADERS, json=postjson
     )
     print(response.status_code)
-    #if response.status_code != 200:
-    #    raise Exception(response.text)
+    if response.status_code != 200:
+        raise Exception(response.text)
 
     print(response.json())
     

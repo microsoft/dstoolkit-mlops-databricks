@@ -58,13 +58,13 @@ jobs:
           pip3 install --upgrade pip
 
           az extension add -n azure-cli-ml
-          
+
           # Do a python pip install so that modules can be found from python tasks
           python -m pip install requests
           
           pip3 install --upgrade azure-cli
           pip3 install azure-mgmt-storage==21.0.0
-          pip3 install  azure-databricks-sdk-python
+          #pip3 install  azure-databricks-sdk-python
           az config set extension.use_dynamic_install=yes_without_prompt
           
           pip3 install azureml
