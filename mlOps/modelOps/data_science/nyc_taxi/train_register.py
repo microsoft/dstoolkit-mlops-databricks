@@ -1,14 +1,17 @@
 # Databricks notebook source
 
+
 # COMMAND ----------
-%pip install databricks-feature-store 
-%pip install lightgbm
+
+# MAGIC %pip install databricks-feature-store 
+# MAGIC %pip install lightgbm
 
 # COMMAND ----------
 
 dbutils.library.restartPython()
 
 # COMMAND ----------
+
 # Modules.
 
 from pyspark.sql import *
@@ -29,7 +32,9 @@ import yaml
 import pathlib
 import sys
 from argparse import ArgumentParser
+
 # COMMAND ----------
+
 import mlflow
 import mlflow.azureml
 import azureml.mlflow
@@ -62,6 +67,7 @@ print(resource_group)
 print(workspace_name)
 
 # COMMAND ----------
+
 import os
 from azureml.core.authentication import ServicePrincipalAuthentication
 
@@ -109,6 +115,7 @@ else:
 mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()) 
 
 # COMMAND ----------
+
 rounded_unix_timestamp_udf = udf(rounded_unix_timestamp, IntegerType())
 #raw_data = spark.read.format("delta").load("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
 raw_data = spark.read.table("feature_store_taxi_example.nyc_yellow_taxi_with_zips")
@@ -116,6 +123,7 @@ taxi_data = rounded_taxi_data(raw_data)
 display(taxi_data)
 
 # COMMAND ----------
+
 pickup_features_table = "feature_store_taxi_example.trip_pickup_features"
 dropoff_features_table = "feature_store_taxi_example.trip_dropoff_features"
 
@@ -137,6 +145,23 @@ dropoff_feature_lookups = [
 
 
 # COMMAND ----------
+
+import os
+
+output_folder = 'outputs'
+model_file_name1 = 'taxi_example_fare_packaged.pkl'
+model_file_name2 = 'pyfunc_taxi_fare_packaged.pkl'
+code_file_name = "ModelBuilding"
+
+dbutils.fs.mkdirs(output_folder)
+model_file_path1 = os.path.join('/dbfs', output_folder, model_file_name1)
+model_file_path2 = os.path.join('/dbfs', output_folder, model_file_name2)
+
+code_file_path = os.path.join('/dbfs', output_folder, code_file_name)
+print(code_file_path)
+
+# COMMAND ----------
+
 mlflow.end_run()
 mlflow.start_run() 
 mlflow.autolog(exclusive=False)
@@ -182,6 +207,15 @@ model = lgb.train(
 
 
 # COMMAND ----------
+
+import joblib
+
+joblib.dump(model, open(model_file_path1,'wb'))      #Save The Model 
+mlflow.end_run()
+
+# COMMAND ----------
+
+#Register/Log The Model (Should this be done after scoring ?)
 fs.log_model(
   model,
   artifact_path="model_packaged",
@@ -191,7 +225,13 @@ fs.log_model(
 )
 
 # COMMAND ----------
+
+
+
+# COMMAND ----------
+
 pyfunc_model = fareClassifier(model)
+joblib.dump(pyfunc_model, open(model_file_path2,'wb'))      #Save The Model 
 
 # End the current MLflow run and start a new one to log the new pyfunc model
 mlflow.end_run()
@@ -205,6 +245,10 @@ with mlflow.start_run() as run:
       training_set=training_set,
       registered_model_name="pyfunc_taxi_fare_packaged",
   )
+
+# COMMAND ----------
+
+model = mlflow.pyfunc.load_model(model_file_path2)
 
 # COMMAND ----------
 
@@ -273,4 +317,5 @@ with mlflow.start_run() as run:
 #    description='Model to predict taxi fares in NYC.')
 
 # COMMAND ----------
+
 
