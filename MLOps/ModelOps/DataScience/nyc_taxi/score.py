@@ -10,7 +10,8 @@ from pyspark.sql.types import FloatType, IntegerType, StringType
 
 fs = feature_store.FeatureStoreClient()
 
-new_taxi_data = spark.read.format("delta").load("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
+#new_taxi_data = spark.read.format("delta").load("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
+new_taxi_data = spark.read.table("feature_store_taxi_example.nyc_yellow_taxi_with_zips")
 new_taxi_data = rounded_taxi_data(new_taxi_data)
 
 

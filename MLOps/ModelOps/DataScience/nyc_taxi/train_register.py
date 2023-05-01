@@ -110,7 +110,8 @@ mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 
 # COMMAND ----------
 rounded_unix_timestamp_udf = udf(rounded_unix_timestamp, IntegerType())
-raw_data = spark.read.format("delta").load("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
+#raw_data = spark.read.format("delta").load("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
+raw_data = spark.read.table("feature_store_taxi_example.nyc_yellow_taxi_with_zips")
 taxi_data = rounded_taxi_data(raw_data)
 display(taxi_data)
 
