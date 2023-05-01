@@ -1,10 +1,9 @@
 # Databricks notebook source
-
-%pip install uszipcode
+# MAGIC %pip install uszipcode
 
 # COMMAND ----------
 
-%md ## Define data preprocessing helper functions
+# MAGIC %md ## Define data preprocessing helper functions
 
 # COMMAND ----------
 
@@ -139,12 +138,12 @@ def write_to_table(df, database, table):
 
 # COMMAND ----------
 
-%sql 
-CREATE DATABASE IF NOT EXISTS feature_store_taxi_example;
+# MAGIC %sql 
+# MAGIC CREATE DATABASE IF NOT EXISTS feature_store_taxi_example;
 
 # COMMAND ----------
 
-%md ## Generate DataFrame and write to table
+# MAGIC %md ## Generate DataFrame and write to table
 
 # COMMAND ----------
 
@@ -174,5 +173,3 @@ raw_data = spark.read.table("feature_store_taxi_example.nyc_yellow_taxi_with_zip
 # COMMAND ----------
 
 display(raw_data)
-
-# COMMAND ----------
