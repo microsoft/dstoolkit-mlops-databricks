@@ -55,8 +55,8 @@ else:
 # COMMAND ----------
 
 #Inggest Data
-
-raw_data = spark.read.format("delta").load("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
+raw_data = spark.read.table("feature_store_taxi_example.nyc_yellow_taxi_with_zips")
+#raw_data = spark.read.format("delta").load("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
 display(raw_data)
 
 

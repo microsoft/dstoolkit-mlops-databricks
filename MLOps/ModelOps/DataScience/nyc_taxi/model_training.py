@@ -1,6 +1,14 @@
 # Databricks notebook source
 
+# COMMAND ----------
+%pip install databricks-feature-store 
+%pip install lightgbm
 
+# COMMAND ----------
+
+dbutils.library.restartPython()
+
+# COMMAND ----------
 # Modules.
 
 from pyspark.sql import *
@@ -37,6 +45,39 @@ from azure.ai.ml.constants import AssetTypes
 import datetime
 from azure.ai.ml.entities import ManagedOnlineEndpoint, ManagedOnlineDeployment
 
+
+# COMMAND ----------
+
+#Provide the Subscription ID of your existing Azure subscription
+subscription_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="SUBSCRIPTION_ID"),
+
+#Replace the name below with the name of your resource group
+resource_group = dbutils.secrets.get(scope="AzureResourceSecrets",key="RESOURCE_GROUP_NAME")
+
+#Replace the name below with the name of your Azure Machine Learning workspace
+workspace_name = dbutils.secrets.get(scope="AzureResourceSecrets",key="AML_WS_NAME")
+
+print(subscription_id)
+print(resource_group)
+print(workspace_name)
+
+# COMMAND ----------
+import os
+from azureml.core.authentication import ServicePrincipalAuthentication
+
+svc_pr = ServicePrincipalAuthentication(
+                        tenant_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Tenant_ID"),
+                        service_principal_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_ID"),
+                        service_principal_password = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret") )
+
+
+ws = Workspace(
+        subscription_id="2a834239-8f89-42e1-8cf1-c3c10090f51c",
+        resource_group=resource_group,
+        workspace_name=workspace_name,
+        auth=svc_pr
+        )
+
 # COMMAND ----------
 
 p = ArgumentParser()
@@ -45,11 +86,12 @@ namespace = p.parse_known_args(sys.argv[1:])[0]
 display(namespace)
 
 # COMMAND ----------
-for i in range(0, 10):
-    print(i)
-# COMMAND ----------
 
-# COMMAND ----------
+# Build this out with three options
+# 1. If it is run locally (else)
+# 2. If it is being deployed from Databricks Job Cluster (namespace.env is not None )
+# 3. If it is being deployed from AML Pipeline (to do more)
+
 if namespace.env is not None:
     display(namespace.env)
     params = yaml.safe_load(pathlib.Path(namespace.env).read_text())
@@ -60,8 +102,11 @@ if namespace.env is not None:
 
 else:
     display("Set The Parameters Manually, As We Are Deploying From UI")
-    mlflow.set_experiment("/Shared/dbxDevelopment") 
+    mlflow.set_experiment("/Shared/experiments/ciaran_ex") 
 
+# COMMAND ----------
+
+mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()) 
 
 # COMMAND ----------
 rounded_unix_timestamp_udf = udf(rounded_unix_timestamp, IntegerType())
@@ -93,6 +138,7 @@ dropoff_feature_lookups = [
 # COMMAND ----------
 mlflow.end_run()
 mlflow.start_run() 
+mlflow.autolog(exclusive=False)
 exclude_columns = ["rounded_pickup_datetime", "rounded_dropoff_datetime"]
 
 fs = feature_store.FeatureStoreClient()
@@ -149,6 +195,7 @@ pyfunc_model = fareClassifier(model)
 # End the current MLflow run and start a new one to log the new pyfunc model
 mlflow.end_run()
 
+mlflow.autolog(exclusive=False)
 with mlflow.start_run() as run:
   fs.log_model(
       pyfunc_model,
@@ -162,58 +209,58 @@ with mlflow.start_run() as run:
 
 # Set Up AML MLFlow 
 
-workspace_name = "amlsandbox-eco3"
-resource_group = "databricks-sandbox-rg"
+#workspace_name = "amlsandbox-eco3"
+#resource_group = "databricks-sandbox-rg"
 
-subscription_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="SUBSCRIPTION_ID")
-DBX_SP_Client_Secret = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret")
-DBX_SP_ClientID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_ClientID")
-DBX_SP_TenantID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_TenantID")
+#subscription_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="SUBSCRIPTION_ID")
+#DBX_SP_Client_Secret = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_Client_Secret")
+#DBX_SP_ClientID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_ClientID")
+#DBX_SP_TenantID = dbutils.secrets.get(scope="DBX_SP_Credentials",key="DBX_SP_TenantID")
 
-print(f"Test: {DBX_SP_ClientID}")
-print(f"Test: {DBX_SP_Client_Secret}")
-print(DBX_SP_TenantID)
+#print(f"Test: {DBX_SP_ClientID}")
+#print(f"Test: {DBX_SP_Client_Secret}")
+#print(DBX_SP_TenantID)
 
-os.environ["AZURE_CLIENT_ID"] = DBX_SP_ClientID
-os.environ["AZURE_CLIENT_SECRET"] = DBX_SP_Client_Secret
-os.environ["AZURE_TENANT_ID"] = DBX_SP_TenantID
+#os.environ["AZURE_CLIENT_ID"] = DBX_SP_ClientID
+#os.environ["AZURE_CLIENT_SECRET"] = DBX_SP_Client_Secret
+#os.environ["AZURE_TENANT_ID"] = DBX_SP_TenantID
 
 # COMMAND ----------
 
 # Use AzureML SDK To Authenticate. 
 
-from azureml.core.authentication import ServicePrincipalAuthentication
+#from azureml.core.authentication import ServicePrincipalAuthentication
 
-svc_pr = ServicePrincipalAuthentication(
-                        tenant_id=DBX_SP_TenantID,
-                        service_principal_id= DBX_SP_ClientID,
-                        service_principal_password=DBX_SP_Client_Secret)
+#svc_pr = ServicePrincipalAuthentication(
+#                        tenant_id=DBX_SP_TenantID,
+#                        service_principal_id= DBX_SP_ClientID,
+#                        service_principal_password=DBX_SP_Client_Secret)
 
-ws = Workspace(
-        subscription_id=subscription_id,
-        resource_group=resource_group,
-        workspace_name=workspace_name,
-        auth=svc_pr
-        )
+#ws = Workspace(
+#        subscription_id=subscription_id,
+#        resource_group=resource_group,
+#        workspace_name=workspace_name,
+#        auth=svc_pr
+#        )
 
-print(ws)
+#print(ws)
 
-aml_uri = ws.get_mlflow_tracking_uri()
-print(aml_uri)
+#aml_uri = ws.get_mlflow_tracking_uri()
+#print(aml_uri)
 
 
-import mlflow
-mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()) 
-print("MLflow tracking URI to point to your Azure ML Workspace setup complete.")
+#import mlflow
+#mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()) 
+#print("MLflow tracking URI to point to your Azure ML Workspace setup complete.")
 
-mlflow.end_run()
-mlflow.set_experiment("/Shared/dbxDevelopment") 
-with mlflow.start_run():
+#mlflow.end_run()
+#mlflow.set_experiment("/Shared/dbxDevelopment") 
+#with mlflow.start_run():
     # Log mlflow attributes for mlflow UI
-    mlflow.log_param("alpha", "test")
-    mlflow.log_param("l1_ratio", "random")
-    mlflow.log_metric("rmse", 3)
-    mlflow.sklearn.log_model(pyfunc_model, "model")
+#    mlflow.log_param("alpha", "test")
+#    mlflow.log_param("l1_ratio", "random")
+#    mlflow.log_metric("rmse", 3)
+#    mlflow.sklearn.log_model(pyfunc_model, "model")
 
 # COMMAND ----------
 
