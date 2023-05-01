@@ -1,6 +1,11 @@
 # Databricks notebook source
 
 # COMMAND ----------
+
+%pip install databricks-feature-store 
+%pip install lightgbm
+
+# COMMAND ----------
 from databricks import feature_store
 from pyspark.sql.types import *
 from helperFunctions.helperFunction import *
