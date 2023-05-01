@@ -2,6 +2,10 @@
 
 
 # COMMAND ----------
+%pip install databricks-feature-store 
+%pip install lightgbm
+
+# COMMAND ----------
 
 # Packages Install.
 
@@ -30,10 +34,6 @@ print(experiment_id)
 # COMMAND ----------
 
 # Ingest Parameters Files
-
-%pip install databricks-feature-store 
-%pip install lightgbm
-
 # COMMAND ----------
 p = ArgumentParser()
 p.add_argument("--env", required=False, type=str)
