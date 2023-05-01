@@ -44,7 +44,10 @@ p.add_argument("--env", required=False, type=str)
 namespace = p.parse_known_args(sys.argv[1:])[0]
 display(namespace)
 
-
+# COMMAND ----------
+for i in range(0, 10):
+    print(i)
+# COMMAND ----------
 
 # COMMAND ----------
 if namespace.env is not None:

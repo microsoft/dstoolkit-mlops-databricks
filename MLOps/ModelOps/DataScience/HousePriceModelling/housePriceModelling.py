@@ -28,6 +28,29 @@ print('The azureml.core version is {}'.format(azureml.core.VERSION))
 
 # COMMAND ----------
 
+from databricks.connect import DatabricksSession
+from databricks.sdk.core import Config
+
+config = Config(profile = "DEFAULT")
+spark = DatabricksSession.builder.sdkConfig(config).getOrCreate()
+
+
+
+print(spark)
+
+from pyspark.dbutils import DBUtils
+
+sub_id = DBUtils(spark).secrets.get(scope = "DBX_SP_Credentials", key = "SUBSCRIPTION_ID")
+
+print(sub_id)
+
+exit()
+
+
+
+# COMMAND ----------
+
+
 #Provide the Subscription ID of your existing Azure subscription
 subscription_id = dbutils.secrets.get(scope="DBX_SP_Credentials",key="SUBSCRIPTION_ID"),
 
