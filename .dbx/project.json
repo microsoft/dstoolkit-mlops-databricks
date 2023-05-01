@@ -1,39 +1,40 @@
 {
     "environments": {
-        "Sandbox": {
-            "profile": "Sandbox",
+        "sandbox": {
+            "profile": "sandbox",
+            "workspace_dir": "/Shared/cicd_workflows/sandbox",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/cicd_workflow/sandbox",
-                "artifact_location": "dbfs:/Shared/cicd_workflow/sandbox"
+                "workspace_directory": "/Shared/cicd_workflows/sandbox",
+                "artifact_location": "dbfs:/Shared/cicd_workflows/sandbox"
             }
         },
-        "Development": {
-            "profile": "Development",
+        "development": {
+            "profile": "development",
             "workspace_dir": "/Shared/development",
-            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/development"
+            "artifact_location": "dbfs:/Shared/cicd_workflows/development"
         },
-        "UAT": {
-            "profile": "UAT",
-            "workspace_dir": "/Shared/uat",
-            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/uat"
+        "uat": {
+            "profile": "uat",
+            "workspace_dir": "/Shared/uat/uat",
+            "artifact_location": "dbfs:/Shared/cicd_workflows/uat"
         },
-        "Production": {
-            "profile": "Production",
+        "production": {
+            "profile": "production",
             "workspace_dir": "/Shared/production",
-            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/production"
+            "artifact_location": "dbfs:/Shared/cicd_workflows/production"
         },
-        "Ciaran_Sandbox": {
-            "profile": "Ciaran_Sandbox",
+        "ciaran_sandbox": {
+            "profile": "ciaran_sandbox",
             "workspace_dir": "/Shared/ciaran_sandbox",
-            "artifact_location": "dbfs:/Shared/e2e_mlops/dbx/projects/e2e_mlops_dbx_ciaran_experiments"
+            "artifact_location": "dbfs:/Shared/cicd_workflows/ciaran_sandbox"
         },
         "default": {
-            "profile": "DEFAULT",
+            "profile": "default",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/dbx/projects/dstoolkit-mlops-databricks",
-                "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks"
+                "workspace_directory": "/Shared/cicd_workflows/default",
+                "artifact_location": "dbfs:/Shared/cicd_workflows/default"
             }
         }
     },

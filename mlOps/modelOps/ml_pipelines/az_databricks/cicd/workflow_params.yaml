@@ -1,0 +1,36 @@
+ML_PIPELINE_FILES:
+    DATA_PREP:
+        FILE_PATH: 'file://mlOps/dataOps/nyc_taxi/data_prep.py'
+        WHL_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml'
+            EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/feauture_engineering'
+
+    FEATURE_ENG: 
+        FILE_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/feature_eng.py'
+        WHL_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml'
+            EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/feauture_engineering'
+
+    TRAIN_REGISTER:
+        FILE_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/train_register.py'
+        WHL_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml'
+            EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/train_register'
+    SCORE:
+        FILE_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/score.py'
+        WHL_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml'
+            EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/score'
+
+
+
+
+

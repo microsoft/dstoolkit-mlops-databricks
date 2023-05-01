@@ -4,11 +4,6 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install databricks-feature-store 
-# MAGIC %pip install lightgbm
-
-# COMMAND ----------
-
 # Packages Install.
 
 import mlflow 

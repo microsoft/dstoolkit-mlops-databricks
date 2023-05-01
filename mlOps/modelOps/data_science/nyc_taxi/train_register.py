@@ -1,14 +1,6 @@
 # Databricks notebook source
 
 
-# COMMAND ----------
-
-# MAGIC %pip install databricks-feature-store 
-# MAGIC %pip install lightgbm
-
-# COMMAND ----------
-
-dbutils.library.restartPython()
 
 # COMMAND ----------
 
