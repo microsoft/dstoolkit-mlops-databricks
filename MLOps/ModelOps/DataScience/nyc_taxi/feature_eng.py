@@ -31,7 +31,10 @@ print(experiment_id)
 
 # Ingest Parameters Files
 
+%pip install databricks-feature-store 
+%pip install lightgbm
 
+# COMMAND ----------
 p = ArgumentParser()
 p.add_argument("--env", required=False, type=str)
 namespace = p.parse_known_args(sys.argv[1:])[0]
