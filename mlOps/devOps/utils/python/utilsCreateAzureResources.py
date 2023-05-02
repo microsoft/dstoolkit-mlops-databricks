@@ -8,7 +8,7 @@ ENVIRONMENT = os.environ['ENVIRONMENT']
 
 
 def load_json_params():
-    with open( 'MLOps/DevOps/Infrastructure/DBX_CICD_Deployment/Bicep_Params/' + ENVIRONMENT + '/Bicep.parameters.json', 'r') as f:
+    with open( 'mlOps/devOps/infra/master_templates/params/' + ENVIRONMENT + '/bicep.parameters.json', 'r') as f:
         repos_config = json.load(f)
     return repos_config
 
