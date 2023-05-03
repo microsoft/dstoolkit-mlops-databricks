@@ -7,10 +7,25 @@ __here__ = os.path.dirname(__file__)
 ENVIRONMENT = os.environ['ENVIRONMENT']
 
 
-def load_json_params():
-    with open( 'mlOps/devOps/infra/master_templates/params/' + ENVIRONMENT + '/bicep.parameters.json', 'r') as f:
-        repos_config = json.load(f)
-    return repos_config
+class LoadJson():
+    def __init__(self):
+        self.json_file = 'mlOps/devOps/infra/master_templates/params/' + ENVIRONMENT + '/bicep.parameters.json'
+
+    def load_json(self):
+        with open(self.json_file, 'r') as f:
+            repos_config = json.load(f)
+        return repos_config
+    
+    def get_param_file_path(self):
+        return self.load_json()['parameters']['TemplateParamFilePath']['value']
+    
+    def get_template_file_path(self):
+        return self.load_json()['parameters']['TemplateFilePath']['value']
+    
+    def get_location(self):
+        return self.load_json()['parameters']['location']['value']
+
+
 
 def run_cmd(cmd):
     #May Need To Rmove shell=True
@@ -25,12 +40,19 @@ def run_cmd(cmd):
     return output
 
 def deploy_azure_resources():
-    template_param_file_path = load_json_params()['parameters']['TemplateParamFilePath']['value']
-    template_file_path = load_json_params()['parameters']['TemplateFilePath']['value']
-    location = load_json_params()['parameters']['location']['value']
+    json_obj = LoadJson()
+    template_param_file_path = json_obj.get_param_file_path()
+    template_file_path = json_obj.get_template_file_path()
+    location  = json_obj.get_location()
 
-    az_deploy_cmd = ["az", "deployment", "sub", "create", "--location", location, "--template-file", template_file_path, "--parameters", template_param_file_path, "--name", ENVIRONMENT, "--only-show-errors"  ]
+    az_deploy_cmd = ["az", "deployment", "sub", "create",
+                    "--location", location,
+                    "--template-file", template_file_path,
+                    "--parameters", template_param_file_path,
+                    "--name", ENVIRONMENT,
+                    "--only-show-errors"  ]
     
+
     print("Deploying Azure Resources... This Make Take A Few Minutes")
     run_cmd(az_deploy_cmd)
 
