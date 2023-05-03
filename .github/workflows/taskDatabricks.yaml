@@ -227,7 +227,7 @@ jobs:
         run: |
 
           # Environment Variables below will be used for DBX Configure Auth. We are using the Databricks Personal Access Token, and 
-          # not the Databricks AAD Token 
+          # not the Databricks AAD Token. 
           pip3 install dbx
 
           echo $DATABRICKS_TOKEN
@@ -239,7 +239,7 @@ jobs:
           dbx configure --enable-inplace-jinja-support --profile $ENVIRONMENT
         
           dbx deploy NYC_TAXI --deployment-file mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow.yaml \
-          -e $ENVIRONMENT --jinja-variables-file=mlOps/modelOps/ml_pipelines/az_databricks/experiments/workflow_params.yaml
+          -e $ENVIRONMENT --jinja-variables-file=mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml
 
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 
