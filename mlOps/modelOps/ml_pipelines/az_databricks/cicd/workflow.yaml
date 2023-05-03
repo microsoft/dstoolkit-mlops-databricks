@@ -109,10 +109,10 @@ environments:
           - task_key: "One_Feature_Engineering"
             <<: *dev-cluster-config
             spark_python_task:
-              python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENG']['FILE_PATH']}}"
-              parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENG']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENG']['PARAMETERS']['FILE']}}"]
+              python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['FILE']}}"]
             libraries: [ 
-              whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENG']['WHL_PATH']}}" 
+              whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
             ]
 
           - task_key: "Two_Train_Register"

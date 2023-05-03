@@ -6,7 +6,7 @@ ML_PIPELINE_FILES:
             ENV:  '--env'
             FILE: 'file:fuse://mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml'
             EXPERIMENT_NAME: '/Shared/cicd_workflow/nyc_taxi_experiments/feauture_engineering'
-    FEATURE_ENG:
+    FEATURE_ENGINEERING:
         FILE_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/feature_eng.py'
         WHL_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
         PARAMETERS:
