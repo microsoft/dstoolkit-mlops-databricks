@@ -26,7 +26,6 @@ class LoadJson():
         return self.load_json()['parameters']['location']['value']
 
 
-
 def run_cmd(cmd):
     #May Need To Rmove shell=True
     process = subprocess.run(cmd, stdout=subprocess.PIPE)
@@ -38,6 +37,7 @@ def run_cmd(cmd):
     if process.returncode != 0:
         raise RuntimeError('\n'.join(output))
     return output
+
 
 def deploy_azure_resources():
     json_obj = LoadJson()
