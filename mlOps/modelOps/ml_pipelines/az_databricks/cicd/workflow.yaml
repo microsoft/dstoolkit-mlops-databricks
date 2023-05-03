@@ -29,7 +29,7 @@ build:
   no_build: true
 
 environments:
-  development:
+  sandbox:
     workflows:
       - name: NYC_TAXI     
         tasks:
