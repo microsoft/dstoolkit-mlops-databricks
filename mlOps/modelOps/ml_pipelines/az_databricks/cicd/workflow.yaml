@@ -36,7 +36,7 @@ environments:
     workflows:
       - name: NYC_TAXI     
         tasks:
-          - task_key: "FEAT_ENG"
+          - task_key: "FEATURE_ENG"
             <<: *dev-cluster-config
             spark_python_task:
               python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENG']['FILE_PATH']}}"
@@ -54,7 +54,7 @@ environments:
               whl: "{{var['ML_PIPELINE_FILES']['TRAIN_REGISTER']['WHL_PATH']}}" 
             ]
             depends_on:
-              - task_key: "FEAT_ENG"
+              - task_key: "FEATURE_ENG"
 
           - task_key: "SCORE"
             <<: *dev-cluster-config
@@ -106,7 +106,7 @@ environments:
     workflows:
       - name: NYC_TAXI     
         tasks:
-          - task_key: "FEAT_ENG"
+          - task_key: "One_Feature_Engineering"
             <<: *dev-cluster-config
             spark_python_task:
               python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENG']['FILE_PATH']}}"
@@ -115,7 +115,7 @@ environments:
               whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENG']['WHL_PATH']}}" 
             ]
 
-          - task_key: "TRAIN_REGISTER"
+          - task_key: "Two_Train_Register"
             <<: *dev-cluster-config
             spark_python_task:
               python_file: "{{var['ML_PIPELINE_FILES']['TRAIN_REGISTER']['FILE_PATH']}}"
@@ -124,7 +124,7 @@ environments:
               whl: "{{var['ML_PIPELINE_FILES']['TRAIN_REGISTER']['WHL_PATH']}}" 
             ]
             depends_on:
-              - task_key: "FEAT_ENG"
+              - task_key: "One_Feature_Engineering"
 
           - task_key: "SCORE"
             <<: *dev-cluster-config
@@ -135,7 +135,7 @@ environments:
               whl: "{{var['ML_PIPELINE_FILES']['SCORE']['WHL_PATH']}}" 
             ]
             depends_on:
-              - task_key: "TRAIN_REGISTER"
+              - task_key: "Two_Train_Register"
 
 
   production:
