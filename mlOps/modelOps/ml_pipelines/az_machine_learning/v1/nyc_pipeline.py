@@ -61,7 +61,7 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
 
     Databricks_Featurization_Step = DatabricksStep(
         name="Databricks_Feature_Engineering",
-        notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/MLOps/ModelOps/DataScience/NewYorkTaxiModelling/featureEngineering",
+        notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/mlOps/modelOps/data_science/nyc_taxi/feature_eng.py",
         #notebook_params={'myparam': 'testparam', 
         #    'myparam2': pipeline_param},
         run_name='Databricks_Feature_Engineering',
@@ -73,7 +73,7 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
     Databricks_Model_Training = DatabricksStep(
         name="Databricks_Model_Training",
         
-        notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/MLOps/ModelOps/DataScience/NewYorkTaxiModelling/modelTraining",
+        notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/mlOps/modelOps/data_science/nyc_taxi/train_register.py",
         #notebook_params={'myparam': 'testparam', 
         #    'myparam2': pipeline_param},
         run_name='Databricks_Model_Training',
@@ -82,7 +82,19 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         allow_reuse=True
     )
 
-    step_sequence = StepSequence(steps=[Databricks_Featurization_Step, Databricks_Model_Training])
+    Databricks_Model_Scoring = DatabricksStep(
+        name="Databricks_Scoring",
+        notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/mlOps/modelOps/data_science/nyc_taxi/score.py",
+        #notebook_params={'myparam': 'testparam', 
+        #    'myparam2': pipeline_param},
+        run_name='Databricks_Scoring',
+        compute_target=databricks_compute,
+        existing_cluster_id=cluster_id,
+        allow_reuse=True
+    )
+
+
+    step_sequence = StepSequence(steps=[Databricks_Featurization_Step, Databricks_Model_Training, Databricks_Model_Scoring])
     pipeline = Pipeline(workspace=workspace, steps=step_sequence)
     pipeline.validate()
     

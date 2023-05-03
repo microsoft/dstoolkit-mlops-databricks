@@ -202,7 +202,7 @@ jobs:
 #################################/
 # 15. AML Pipeline
       - name:                       Azure Machine Learning Pipeline For DBX Notebooks
-        run:                        ${{ inputs.SCRIPT_LANGUAGE }} mlOps\modelOps\ml_pipelines\az_machine_learning\v1\nyc_pipeline.py
+        run:                        ${{ inputs.SCRIPT_LANGUAGE }} mlOps/modelOps/ml_pipelines/az_machine_learning/v1/nyc_pipeline.py
         env:
           DATABRICKS_COMPUTE_NAME:  'mlclusterlink'
           DATABRICKS_CLUSTER_NAME:  'ml_cluster'
@@ -238,8 +238,8 @@ jobs:
 
           dbx configure --enable-inplace-jinja-support --profile $ENVIRONMENT
         
-          dbx deploy --deployment-file mlOps\modelOps\ml_pipelines\az_databricks\cicd\workflows.yaml \
-          --workflows=NYC_TAXI -e $ENVIRONMENT --jinja-variables-file=mlOps\modelOps\ml_pipelines\az_databricks\experiments\workflow_params.yaml \
+          dbx deploy --deployment-file mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflows.yaml \
+          --workflows=NYC_TAXI -e $ENVIRONMENT --jinja-variables-file=mlOps/modelOps/ml_pipelines/az_databricks/experiments/workflow_params.yaml \
 
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 
