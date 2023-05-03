@@ -107,7 +107,7 @@ def ingest_json_parameters_file():
     """
         Ingests the Json Parameters File for Cluster Creation
     """
-    with open('MLOps/DevOps/Variables/' + ENVIRONMENT + '/Clusters.json', 'r') as file:
+    with open('mlOps/devOps/params/' + ENVIRONMENT + '/clusters.json', 'r') as file:
         json_cluster_param_file = json.load(file)
         json_cluster_param_file = json_cluster_param_file['Clusters']
         return json_cluster_param_file
