@@ -1,5 +1,4 @@
 ML_PIPELINE_FILES:
-
     MODEL_TRAINING_CIARAN:
         FILE_PATH: file://Data_Scientist/modelTraining.py
         WHL_PATH: 'file://Data_Scientist/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
