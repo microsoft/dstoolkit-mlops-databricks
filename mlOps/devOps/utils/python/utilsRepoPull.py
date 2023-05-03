@@ -66,7 +66,7 @@ def Update_Repo(Repo_ID, Update_Branch):
 if __name__ == "__main__":
     ENVIRONMENT = os.environ['ENVIRONMENT']
     print(ENVIRONMENT)
-    with open('AdvancedCacheManagementService/Build/parameters/' + ENVIRONMENT + '/Repos.json', 'r') as f:
+    with open('mlOps/devOps/params/' + ENVIRONMENT + '/repos.json', 'r') as f:
         Repos_Config = json.load(f)
     
     # Extract array from Json object

@@ -7,7 +7,7 @@ REPOS_WITH_MANAGEMENT_PERMISSIONS=$(curl -X GET \
 
 
 echo "Ingest JSON File"
-JSON=$( jq '.' MLOps/DevOps/Variables/$ENVIRONMENT/Repos.json)
+JSON=$( jq '.' mlOps/devOps/params/$ENVIRONMENT/repos.json)
 for row in $(echo "${JSON}" | jq -r '.Repo_Configuration[] | @base64'); do
     _jq() {
         echo ${row} | base64 --decode | jq -r ${1}
