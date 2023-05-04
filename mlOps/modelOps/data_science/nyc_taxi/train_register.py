@@ -45,8 +45,7 @@ from azureml.core.authentication import ServicePrincipalAuthentication
 
 # COMMAND ----------
 
-%md
-## Ingest Args (If Triggered From Pipeline)
+# MAGIC %md ## Ingest Args (If Triggered From Pipeline)
 
 # COMMAND ----------
 
@@ -57,9 +56,7 @@ display(namespace)
 
 # COMMAND ----------
 
-%md
-
-## Set Azure ML Configs
+# MAGIC %md ## Set Azure ML Configs
 
 # COMMAND ----------
 
@@ -91,9 +88,7 @@ ws = Workspace(
 
 # COMMAND ----------
 
-%md
-
-## Set MLFlow Tracking Server
+# MAGIC %md ## Set MLFlow Tracking Server
 
 # COMMAND ----------
 
