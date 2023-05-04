@@ -5,6 +5,10 @@
 # If Deploying To MLFlow in Azure ML: mlflow.setexperiment must be a single experiment name "ciaran_experiment"
 # Contrast this with Databricks which requires a foder structure --> shared/ciaranex
 
+# Install python helper function wheel file (in dist) to cluster 
+# Install pypi packages azureml-sdk[databricks], lightgbm, uszipcode
+# The above will be automated in due course 
+
 from pyspark.sql import *
 from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import IntegerType

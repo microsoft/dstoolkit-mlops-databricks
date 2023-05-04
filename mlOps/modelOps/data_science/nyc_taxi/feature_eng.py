@@ -4,6 +4,10 @@
 
 # COMMAND ----------
 
+# Install python helper function wheel file (in dist) to cluster 
+# Install pypi packages azureml-sdk[databricks], lightgbm, uszipcode
+# The above will be automated in due course 
+
 # Packages Install.
 
 import mlflow 
