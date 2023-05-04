@@ -29,10 +29,20 @@ build:
   no_build: true
 
 environments:
+  
   sandbox:
     workflows:
       - name: NYC_TAXI     
         tasks:
+
+          - task_key: "Data_Ingestion_And_Prep"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['DATA_INGEST_PREP']['FILE_PATH']}}"
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['DATA_INGEST_PREP']['WHL_PATH']}}" 
+            ]
+
           - task_key: "Feature_Engineering"
             <<: *dev-cluster-config
             spark_python_task:
@@ -41,6 +51,8 @@ environments:
             libraries: [ 
               whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
             ]
+            depends_on:
+              - task_key: "Data_Ingestion_And_Prep"
 
           - task_key: "Train_Register"
             <<: *dev-cluster-config
@@ -68,6 +80,15 @@ environments:
     workflows:
       - name: NYC_TAXI     
         tasks:
+
+          - task_key: "Data_Ingestion_And_Prep"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['DATA_INGEST_PREP']['FILE_PATH']}}"
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['DATA_INGEST_PREP']['WHL_PATH']}}" 
+            ]
+
           - task_key: "Feature_Engineering"
             <<: *dev-cluster-config
             spark_python_task:
@@ -76,6 +97,8 @@ environments:
             libraries: [ 
               whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
             ]
+            depends_on:
+              - task_key: "Data_Ingestion_And_Prep"
 
           - task_key: "Train_Register"
             <<: *dev-cluster-config
@@ -102,6 +125,15 @@ environments:
     workflows:
       - name: NYC_TAXI     
         tasks:
+
+          - task_key: "Data_Ingestion_And_Prep"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['DATA_INGEST_PREP']['FILE_PATH']}}"
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['DATA_INGEST_PREP']['WHL_PATH']}}" 
+            ]
+
           - task_key: "Feature_Engineering"
             <<: *dev-cluster-config
             spark_python_task:
@@ -110,6 +142,8 @@ environments:
             libraries: [ 
               whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
             ]
+            depends_on:
+              - task_key: "Data_Ingestion_And_Prep"
 
           - task_key: "Train_Register"
             <<: *dev-cluster-config
@@ -137,6 +171,15 @@ environments:
     workflows:
       - name: NYC_TAXI     
         tasks:
+
+          - task_key: "Data_Ingestion_And_Prep"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['DATA_INGEST_PREP']['FILE_PATH']}}"
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['DATA_INGEST_PREP']['WHL_PATH']}}" 
+            ]
+
           - task_key: "Feature_Engineering"
             <<: *dev-cluster-config
             spark_python_task:
@@ -145,6 +188,8 @@ environments:
             libraries: [ 
               whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
             ]
+            depends_on:
+              - task_key: "Data_Ingestion_And_Prep"
 
           - task_key: "Train_Register"
             <<: *dev-cluster-config

@@ -45,8 +45,7 @@ from azureml.core.authentication import ServicePrincipalAuthentication
 
 # COMMAND ----------
 
-%md
-## Ingest Args (If Triggered From Pipeline)
+# MAGIC %md ## Ingest Args (If Triggered From Pipeline)
 
 # COMMAND ----------
 
@@ -57,9 +56,7 @@ display(namespace)
 
 # COMMAND ----------
 
-%md
-
-## Set Azure ML Configs
+# MAGIC %md ## Set Azure ML Configs
 
 # COMMAND ----------
 
@@ -91,9 +88,7 @@ ws = Workspace(
 
 # COMMAND ----------
 
-%md
-
-## Set MLFlow Tracking Server
+# MAGIC %md ## Set MLFlow Tracking Server
 
 # COMMAND ----------
 
@@ -102,8 +97,8 @@ track_in_azure_ml = False
 
 if namespace.env is not None:
     params = yaml.safe_load(pathlib.Path(namespace.env).read_text())
-    experiment_name = params['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['EXPERIMENT_NAME']
-    track_in_azure_ml = params['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['TRACK_IN_AZURE_ML']
+    experiment_name = params['ML_PIPELINE_FILES']['TRAIN_REGISTER']['PARAMETERS']['EXPERIMENT_NAME']
+    track_in_azure_ml = params['ML_PIPELINE_FILES']['TRAIN_REGISTER']['PARAMETERS']['TRACK_IN_AZURE_ML']
 
     if track_in_azure_ml:
         if track_in_azure_ml: 
@@ -183,7 +178,7 @@ display(training_df)
 
 # COMMAND ----------
 
-from sklearn.metrics import mean_squared_log_error
+from sklearn import metrics
 
 features_and_label = training_df.columns
 
@@ -198,8 +193,6 @@ y_test = test.fare_amount
 
 
 import joblib
-
-joblib.dump(model, open(model_file_path1,'wb'))      #Save The Model 
 
 mlflow.end_run()
 mlflow.autolog(exclusive=False)
@@ -220,6 +213,8 @@ with mlflow.start_run():
     model = lgb.train(
     param, train_lgb_dataset, num_rounds
     )
+
+    joblib.dump(model, open(model_file_path1,'wb'))      #Save The Model 
 
     expected_y  = y_test
     predicted_y = model.predict(X_test)

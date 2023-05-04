@@ -69,6 +69,6 @@ sklearn_pandas==2.2.0
 azureml-sdk==1.50.0
 uszipcode
 lightgbm
-azureml-sdk[databricks]
+azureml-sdk[databricks]==1.50.0
 
 
