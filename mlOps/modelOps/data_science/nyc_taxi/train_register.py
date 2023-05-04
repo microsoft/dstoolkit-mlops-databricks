@@ -97,8 +97,8 @@ track_in_azure_ml = False
 
 if namespace.env is not None:
     params = yaml.safe_load(pathlib.Path(namespace.env).read_text())
-    experiment_name = params['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['EXPERIMENT_NAME']
-    track_in_azure_ml = params['ML_PIPELINE_FILES']['MODEL_TRAINING']['PARAMETERS']['TRACK_IN_AZURE_ML']
+    experiment_name = params['ML_PIPELINE_FILES']['TRAIN_REGISTER']['PARAMETERS']['EXPERIMENT_NAME']
+    track_in_azure_ml = params['ML_PIPELINE_FILES']['TRAIN_REGISTER']['PARAMETERS']['TRACK_IN_AZURE_ML']
 
     if track_in_azure_ml:
         if track_in_azure_ml: 
