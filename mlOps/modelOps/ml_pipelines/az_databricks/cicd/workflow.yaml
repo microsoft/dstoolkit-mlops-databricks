@@ -51,6 +51,8 @@ environments:
             libraries: [ 
               whl: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['WHL_PATH']}}" 
             ]
+            depends_on:
+              - task_key: "Data_Ingestion_And_Prep"
 
           - task_key: "Train_Register"
             <<: *dev-cluster-config
