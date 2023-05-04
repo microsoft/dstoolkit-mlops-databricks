@@ -34,10 +34,10 @@ if ($User_ObjID -eq "None" ) { $User_ObjID=( az ad signed-in-user show --query "
 
 
 echo "Update The Variable Files"
-$environments = @('Sandbox', 'Development', 'UAT', 'Production')
+$environments = @('sandbox', 'development', 'uat', 'production')
 foreach ($environment in $environments)
 {
-   $JsonData = Get-Content MLOps\DevOps\Variables\$environment\Repos.json -raw | ConvertFrom-Json
+   $JsonData = Get-Content mlOps/devOps/params/$environment/repos.json -raw | ConvertFrom-Json
    foreach ($Obj in $JsonData.Git_Configuration)
    {
        ($Obj.git_username = $Git_Configuration )
@@ -46,15 +46,15 @@ foreach ($environment in $environments)
    {
        ($Obj.url = $Repo_ConfigurationURL )
    }
-   $JsonData | ConvertTo-Json -Depth 4  | set-content MLOps\DevOps\Variables\$environment\Repos.json -NoNewline
+   $JsonData | ConvertTo-Json -Depth 4  | set-content mlOps/devOps/params/$environment/repos.json -NoNewline
 }
  
 foreach ($environment in $environments)
 {
-  $JsonData = Get-Content MLOps\DevOps\Variables\$environment\RBAC.json -raw | ConvertFrom-Json
+  $JsonData = Get-Content mlOps/devOps/params/$environment/rbac.json -raw | ConvertFrom-Json
   $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Your Object ID'){$_.roleBeneficiaryObjID=$User_ObjID}}
   $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Databricks SPN'){$_.roleBeneficiaryObjID=$main_sp_name_obj_id}}
-  $JsonData | ConvertTo-Json -Depth 4  | set-content MLOps\DevOps\Variables\$environment\RBAC.json -NoNewline
+  $JsonData | ConvertTo-Json -Depth 4  | set-content mlOps/devOps/params/$environment/rbac.json -NoNewline
 }
 
 git add . 
