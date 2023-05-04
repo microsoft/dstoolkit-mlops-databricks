@@ -183,7 +183,7 @@ display(training_df)
 
 # COMMAND ----------
 
-from sklearn.metrics import mean_squared_log_error
+from sklearn import metrics
 
 features_and_label = training_df.columns
 
@@ -198,8 +198,6 @@ y_test = test.fare_amount
 
 
 import joblib
-
-joblib.dump(model, open(model_file_path1,'wb'))      #Save The Model 
 
 mlflow.end_run()
 mlflow.autolog(exclusive=False)
@@ -220,6 +218,8 @@ with mlflow.start_run():
     model = lgb.train(
     param, train_lgb_dataset, num_rounds
     )
+
+    joblib.dump(model, open(model_file_path1,'wb'))      #Save The Model 
 
     expected_y  = y_test
     predicted_y = model.predict(X_test)
