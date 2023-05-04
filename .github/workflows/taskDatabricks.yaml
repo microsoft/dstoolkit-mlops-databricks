@@ -26,7 +26,7 @@ on:
         required: true
       RELEASE_BRANCH:
         required: false
-        
+
 jobs:
   build:
     name:                         ${{ inputs.ENVIRONMENT }} Environment Deployment
@@ -237,7 +237,7 @@ jobs:
 
           dbx configure --enable-inplace-jinja-support --profile $ENVIRONMENT
         
-          dbx deploy NYC_TAXI --deployment-file mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow.yaml \
+          dbx deploy NYC_TAXI --no-package --deployment-file mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow.yaml \
           -e $ENVIRONMENT --jinja-variables-file=mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml
 
         env:
