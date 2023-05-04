@@ -51,10 +51,11 @@ class GetClusterID():
         """
             Returns Cluster ID for a given cluster name.
         """
-        for cluster in self.clusters_obj['clusters']:
+        for cluster in self.clusters_obj:
             if cluster['cluster_name'] ==  self.cluster_name:
                 print("ml_cluster exists")
                 cluster_id = cluster['cluster_id']
+                print(cluster_id)
                 return cluster_id
     def list_clusters(self):
         """
@@ -111,26 +112,23 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
 
 
 if __name__ == "__main__":
-
     svc_pr = ServicePrincipalAuthentication(
-                            tenant_id = ARM_TENANT_ID,
-                            service_principal_id = ARM_CLIENT_ID,
-                            service_principal_password = ARM_CLIENT_SECRET 
-                            )
-
+        tenant_id = ARM_TENANT_ID,
+        service_principal_id = ARM_CLIENT_ID,
+        service_principal_password = ARM_CLIENT_SECRET 
+    )
     ws = Workspace(
-            subscription_id=SUBSCRIPTION_ID,
-            resource_group=RESOURCE_GROUP_NAME,
-            workspace_name=AML_WS_NAME,
-            auth=svc_pr
-            )
+        subscription_id=SUBSCRIPTION_ID,
+        resource_group=RESOURCE_GROUP_NAME,
+        workspace_name=AML_WS_NAME,
+        auth=svc_pr
+    )
 
     print(f" AML Workspace Properties: {ws} ")
 
     try:
         databricks_compute = DatabricksCompute(workspace=ws, name=DATABRICKS_COMPUTE_NAME)
         print('Compute target {} already exists'.format(DATABRICKS_COMPUTE_NAME))
-
     except ComputeTargetException:
         print('Compute not found, will use below parameters to attach new one')
         print('db_compute_name {}'.format(DATABRICKS_COMPUTE_NAME))
