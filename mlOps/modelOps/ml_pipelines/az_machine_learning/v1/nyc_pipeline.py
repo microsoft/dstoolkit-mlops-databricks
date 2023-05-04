@@ -43,18 +43,28 @@ print(ARM_TENANT_ID)
 print(ARM_CLIENT_ID)
 print(AML_WS_NAME)
 
-def listClusters():
-    """
-        Returns a Json object containing a list of existing Databricks Clusters.
-    """
-
-    response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/list', headers=DBRKS_REQ_HEADERS)
-
-    if response.status_code != 200:
-        raise Exception(response.content)
-
-    else:
-        return response.json()
+class GetClusterID():
+    def __init__(self, cluster_name):
+        self.clusters_obj = self.list_clusters()['clusters']
+        self.cluster_name = cluster_name
+    def get_cluster_id(self):
+        """
+            Returns Cluster ID for a given cluster name.
+        """
+        for cluster in self.clusters_obj['clusters']:
+            if cluster['cluster_name'] ==  self.cluster_name:
+                print("ml_cluster exists")
+                cluster_id = cluster['cluster_id']
+                return cluster_id
+    def list_clusters(self):
+        """
+            Returns a Json object containing a list of existing Databricks Clusters.
+        """
+        response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/list', headers=DBRKS_REQ_HEADERS)
+        if response.status_code != 200:
+            raise Exception(response.content)
+        else:
+            return response.json()
 
 def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspace, cluster_id):
     print('Creating the pipeline structure')
@@ -93,12 +103,10 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         allow_reuse=True
     )
 
-
     step_sequence = StepSequence(steps=[Databricks_Featurization_Step, Databricks_Model_Training, Databricks_Model_Scoring])
     pipeline = Pipeline(workspace=workspace, steps=step_sequence)
     pipeline.validate()
     
-
     return pipeline
 
 
@@ -138,21 +146,24 @@ if __name__ == "__main__":
         databricks_compute.wait_for_completion(True)
 
     
-    existingClusters = listClusters()['clusters']
-    for cluster in existingClusters:
-        if cluster['cluster_name'] == "ml_cluster":
-            print("ml_cluster exists")
-            cluster_id = cluster['cluster_id']
-            print(cluster_id)
-        else:
-            print("ml_cluster does not exist: cannot continue")
+    cluster_obj = GetClusterID("ml_cluster")
+    cluster_id = cluster_obj.get_cluster_id()
 
 
+
+    #existingClusters = listClusters()['clusters']
+    #for cluster in existingClusters:
+    #    if cluster['cluster_name'] == "ml_cluster":
+    #        print("ml_cluster exists")
+    #        cluster_id = cluster['cluster_id']
+    #        print(cluster_id)
+    #    else:
+    #        print("ml_cluster does not exist: cannot continue")
     #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "/Data_Scientist/featureEngineering.py")
     #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
 
-    pipeline = create_pipeline_structure(compute_target=databricks_compute,  workspace=ws, cluster_id=cluster_id)
 
+    pipeline = create_pipeline_structure(compute_target=databricks_compute,  workspace=ws, cluster_id=cluster_id)
     published_pipeline = pipeline.publish("databricks_pipeline", version="1.0.0", description="Databricks Pipeline")
 
 
