@@ -2,7 +2,8 @@
 .venv
 .databricks
 deprecated
-ModelOps/DataScience/deprecated
+mlOps/modelOps/data_science/deprecated
+mlOps/devOps/params/deprecated
 .dbx/sync
 localdev
 azureDevOps
