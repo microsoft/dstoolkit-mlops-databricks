@@ -23,43 +23,6 @@ from pyspark.sql.types import FloatType, IntegerType, StringType
 from pytz import timezone
 from helperFunctions.helperFunction import *
 
-
-# COMMAND ----------
-
-args = dbutils.notebook.entry_point.getCurrentBindings()
-print(args)
-
-# COMMAND ----------
-
-#experiment_id = dbutils.widgets.get("--AZUREML_EXPERIMENT_ID")
-#print(experiment_id)
-
-# COMMAND ----------
-
-# Ingest Parameters Files
-
-# COMMAND ----------
-
-p = ArgumentParser()
-p.add_argument("--env", required=False, type=str)
-namespace = p.parse_known_args(sys.argv[1:])[0]
-display(namespace)
-
-
-if namespace.env is not None:
-    display(namespace.env)
-    params = yaml.safe_load(pathlib.Path(namespace.env).read_text())
-    display(params)
-    experiment_name = params['ML_PIPELINE_FILES']['FEATURE_ENGINEERING']['PARAMETERS']['EXPERIMENT_NAME']
-    display(experiment_name)
-    mlflow.set_experiment(experiment_name=experiment_name) 
-
-else:
-    display("Set The Parameters Manually, As We Are Deploying From UI")
-    mlflow.set_experiment("/Shared/dbxDevelopment") 
-
-
-
 # COMMAND ----------
 
 #Inggest Data
