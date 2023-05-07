@@ -7,6 +7,8 @@ mlOps/devOps/params/deprecated
 .dbx/sync
 localdev
 azureDevOps
+venv_dbx_connect
+
 
 
 
