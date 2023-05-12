@@ -23,6 +23,10 @@ jobs:
       - run: |
           echo "Insert Continuous Integration Tests"
 
+          cd mlOps/devOps/utils
+
+          python -m pytest -v
+
   prApproved_CD_Development:
     if:                         github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && contains(github.head_ref, 'feature') && github.base_ref == 'main'
     uses:                       ./.github/workflows/taskDatabricks.yaml
