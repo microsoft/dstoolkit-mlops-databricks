@@ -8,6 +8,8 @@ mlOps/devOps/params/deprecated
 localdev
 azureDevOps
 venv_dbx_connect
+.env
+
 
 
 
