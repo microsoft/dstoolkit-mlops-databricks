@@ -105,7 +105,7 @@ jobs:
 ##  Generate AAD Tokens                                              
 #################################/
       - name:                     Generate AAD Tokens
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateAuthenticationTokens.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utils_create_authentication_tokens.py
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
