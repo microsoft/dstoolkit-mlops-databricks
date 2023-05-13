@@ -55,13 +55,7 @@ jobs:
         run: |
 
           pip3 install --upgrade pip
-          #################################/
-          # Self Hosted Packages
-          pip3 install packaging
-          python3.8 -m pip install requests
-          pip3 install urllib3
-          #################################/
-        
+
           #sudo apt update && sudo apt upgrade && sudo apt install jq -y
           
 
@@ -69,6 +63,9 @@ jobs:
 
           # Do a python pip install so that modules can be found from python tasks
           python -m pip install requests
+          python -m pip install python-dotenv
+
+        
           
 
 
