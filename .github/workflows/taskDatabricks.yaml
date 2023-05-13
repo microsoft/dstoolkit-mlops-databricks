@@ -62,7 +62,7 @@ jobs:
           pip3 install urllib3
           #################################/
         
-          sudo apt update && sudo apt upgrade && sudo apt install jq -y
+          #sudo apt update && sudo apt upgrade && sudo apt install jq -y
           
 
           az extension add -n azure-cli-ml
