@@ -57,11 +57,11 @@ def create_databricks_repos(postjson):
 
     #400: Already Exists
     print(f"Response: {response.content}")
-    if response.status_code != 200 or response.status_code != 400:
-        raise Exception(response.status_code)
-    else:
+
+    if response.status_code == 200 or response.status_code == 400:
         print(f"Status Code: {response.status_code}")
-        return response.status_code
+    else:
+        raise Exception(response.status_code)
 
 
 def main():
