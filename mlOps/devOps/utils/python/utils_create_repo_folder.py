@@ -55,6 +55,7 @@ def create_databricks_repos(postjson):
         'https://' + DATABRICKS_INSTANCE + '/api/2.0/repos', headers=DBRKS_REQ_HEADERS, json=postjson
     )
 
+    #400: Already Exists
     print(f"Response: {response.content}")
     if response.status_code != 200 or response.status_code != 400:
         raise Exception(response.status_code)
