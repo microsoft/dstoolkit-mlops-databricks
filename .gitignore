@@ -10,6 +10,7 @@ azureDevOps
 venv_dbx_connect
 venv_dbx
 .env
+.linux_venv
 
 
 
