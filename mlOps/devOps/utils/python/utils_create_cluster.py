@@ -80,12 +80,13 @@ def _list_existing_clusters():
 def _get_cluster_names(existing_clusters):
         existing_clusters_name_arr = []
         
-        if existing_clusters_name_arr:
+        
+        if not existing_clusters_name_arr: # If Clusters Exist (Array Is Not Empty), Return Cluster Names
             for existing_cluster in existing_clusters['clusters']:
                 
                 existing_clusters_name_arr.append(existing_cluster['cluster_name'])  
             return existing_clusters_name_arr
-        else:
+        else: # If No Clusters Exist, Return Empty Array
             return existing_clusters_name_arr
     
 

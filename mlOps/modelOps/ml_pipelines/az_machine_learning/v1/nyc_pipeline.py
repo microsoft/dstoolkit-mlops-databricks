@@ -67,7 +67,7 @@ class GetClusterID():
         else:
             return response.json()
 
-def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspace, cluster_id):
+def create_pipeline_structure(databricks_compute, ws, cluster_id):
     print('Creating the pipeline structure')
 
     Databricks_Featurization_Step = DatabricksStep(
@@ -78,7 +78,8 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         run_name='Databricks_Feature_Engineering',
         compute_target=databricks_compute,
         existing_cluster_id=cluster_id,
-        allow_reuse=True
+        allow_reuse=True,
+        num_workers=3
     )
 
     Databricks_Model_Training = DatabricksStep(
@@ -90,7 +91,8 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         run_name='Databricks_Model_Training',
         compute_target=databricks_compute,
         existing_cluster_id=cluster_id,
-        allow_reuse=True
+        allow_reuse=True,
+        num_workers=3
     )
 
     Databricks_Model_Scoring = DatabricksStep(
@@ -106,7 +108,7 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
     )
 
     step_sequence = StepSequence(steps=[Databricks_Featurization_Step, Databricks_Model_Training, Databricks_Model_Scoring])
-    pipeline = Pipeline(workspace=workspace, steps=step_sequence)
+    pipeline = Pipeline(workspace=ws, steps=step_sequence)
     pipeline.validate()
     
     return pipeline
@@ -162,7 +164,7 @@ if __name__ == "__main__":
     #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
 
 
-    pipeline = create_pipeline_structure(compute_target=databricks_compute,  workspace=ws, cluster_id=cluster_id)
+    pipeline = create_pipeline_structure(compute_target=databricks_compute, ws=ws, cluster_id=cluster_id)
     published_pipeline = pipeline.publish("databricks_pipeline", version="1.0.0", description="Databricks Pipeline")
 
 
