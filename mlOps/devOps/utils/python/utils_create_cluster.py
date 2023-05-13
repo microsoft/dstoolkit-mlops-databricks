@@ -77,10 +77,14 @@ def _list_existing_clusters():
 
 def _get_cluster_names(existing_clusters):
         existing_clusters_name_arr = []
-        for existing_cluster in existing_clusters['clusters']:
-            
-            existing_clusters_name_arr.append(existing_cluster['cluster_name'])  
-        return existing_clusters_name_arr
+        
+        if existing_clusters_name_arr:
+            for existing_cluster in existing_clusters['clusters']:
+                
+                existing_clusters_name_arr.append(existing_cluster['cluster_name'])  
+            return existing_clusters_name_arr
+        else:
+            return existing_clusters_name_arr
     
 
 def _create_cluster(cluster):
