@@ -164,7 +164,7 @@ if __name__ == "__main__":
     #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
 
 
-    pipeline = create_pipeline_structure(compute_target=databricks_compute, ws=ws, cluster_id=cluster_id)
+    pipeline = create_pipeline_structure(databricks_compute=databricks_compute, ws=ws, cluster_id=cluster_id)
     published_pipeline = pipeline.publish("databricks_pipeline", version="1.0.0", description="Databricks Pipeline")
 
 
