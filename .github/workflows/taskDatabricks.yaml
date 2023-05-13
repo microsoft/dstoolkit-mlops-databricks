@@ -53,6 +53,8 @@ jobs:
       - shell: bash
         name:  Tests and Dependency Install
         run: |
+
+          pip3 install --upgrade pip
           #################################/
           # Self Hosted Packages
           python3.8 -m pip install packaging
@@ -63,7 +65,7 @@ jobs:
           #################################/
         
           sudo apt update && sudo apt upgrade && sudo apt install jq -y
-          pip3 install --upgrade pip
+          
 
           az extension add -n azure-cli-ml
 
