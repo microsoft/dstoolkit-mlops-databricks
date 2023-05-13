@@ -13,9 +13,9 @@ pr:                                       none
 # After The First Environment Deployment, This YAML Pipeline is Triggering Alongside onRealease. I have Set
 # pr == none For Now To Prevent This Behaviour 
 
-
-pool:
-  vmImage:                                'ubuntu-latest'
+runs-on: self-hosted
+#pool:
+#  vmImage:                                'ubuntu-latest'
 
 #Secrets
 variables:
