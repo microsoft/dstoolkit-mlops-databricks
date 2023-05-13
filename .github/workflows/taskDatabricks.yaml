@@ -53,6 +53,11 @@ jobs:
       - shell: bash
         name:  Tests and Dependency Install
         run: |
+          #################################/
+          # Self Hosted Packages
+          pip3 install packaging
+          pip3 install urllib3
+          #################################/
         
           sudo apt update && sudo apt upgrade && sudo apt install jq -y
           pip3 install --upgrade pip
@@ -62,11 +67,7 @@ jobs:
           # Do a python pip install so that modules can be found from python tasks
           python -m pip install requests
           
-          #################################/
-          # Self Hosted Packages
-          pip3 install packaging
-          pip3 install urllib3
-          #################################/
+
 
 
           pip3 install --upgrade azure-cli
