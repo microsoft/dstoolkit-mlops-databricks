@@ -56,7 +56,7 @@ def create_databricks_repos(postjson):
     )
 
     print(f"Response: {response.content}")
-    if response.status_code != 200:
+    if response.status_code != 200 or response.status_code != 400:
         raise Exception(response.status_code)
     else:
         print(f"Status Code: {response.status_code}")
