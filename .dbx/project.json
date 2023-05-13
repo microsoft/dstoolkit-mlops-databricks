@@ -1,8 +1,7 @@
 {
     "environments": {
-        "sandbox": {
-            "profile": "cicd_experiments",
-            "workspace_dir": "/Shared/cicd_workflows/cicd",
+        "default": {
+            "profile": "DEFAULT",
             "storage_type": "mlflow",
             "properties": {
                 "workspace_directory": "/Shared/cicd_dbx_workflows",

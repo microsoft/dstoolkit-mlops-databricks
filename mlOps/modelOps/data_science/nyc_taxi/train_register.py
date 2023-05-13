@@ -1,5 +1,4 @@
 # Databricks notebook source
-# COMMAND ----------
 # Modules.
 
 # If Deploying To MLFlow in Azure ML: mlflow.setexperiment must be a single experiment name "ciaran_experiment"
@@ -8,7 +7,9 @@
 # Install python helper function wheel file (in dist) to cluster 
 # Install pypi packages azureml-sdk[databricks], lightgbm, uszipcode
 # The above will be automated in due course 
+
 # COMMAND ----------
+
 from pyspark.sql import *
 from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import IntegerType
@@ -18,7 +19,7 @@ import mlflow.pyfunc
 from databricks.feature_store import FeatureLookup
 import mlflow
 from helperFunctions.helperFunction import *
-from helperFunctions.helperFunction import test
+#from helperFunctions.helperFunction import test
 from sklearn.model_selection import train_test_split
 from mlflow.tracking import MlflowClient
 import lightgbm as lgb
@@ -57,17 +58,18 @@ p = ArgumentParser()
 p.add_argument("--env", required=False, type=str)
 namespace = p.parse_known_args(sys.argv[1:])[0]
 display(namespace)
+print(namespace)
 
 # COMMAND ----------
 
 # MAGIC %md ## Set Azure ML Configs
 
-
 # COMMAND ----------
+
 class SparkRunner:
     def __init__(self):
         self.spark = SparkSession.builder.getOrCreate()
-        self.is_running_locally = self.check_running_locally()
+        #self.is_running_locally = self.check_running_locally()
     
     def get_dbutils(self) -> DBUtils:
         """
@@ -171,16 +173,16 @@ class MachineLearningExperiment:
                 experiment_name = "/Shared/" + experiment_name
                 mlflow.set_experiment(experiment_name) 
         else:
-            if track_in_azure_ml: 
+            if self.track_in_azure_ml: 
                 mlflow.set_tracking_uri(self.ws.get_mlflow_tracking_uri()) 
                 mlflow.set_experiment(experiment_name) 
             else:
                 mlflow.set_tracking_uri('databricks') 
-                experiment_name = "/Shared/" + experiment_name
+                experiment_name = "/Shared/" + self.experiment_name
                 mlflow.set_experiment(experiment_name) 
         print(experiment_name)
     
-    def load_data(self, data_path: str) -> DataFrame:
+    def load_data(self, spark, data_path, fs_data_version) -> DataFrame:
         """
         Loads the data from the given path into a Spark DataFrame
         :param data_path: The path to the data
@@ -190,7 +192,10 @@ class MachineLearningExperiment:
         """
         rounded_unix_timestamp_udf = udf(rounded_unix_timestamp, IntegerType())
         #raw_data = spark.read.format("delta").load("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
-        raw_data = self.spark.read.table(data_path) # "feature_store_taxi_example.nyc_yellow_taxi_with_zips"
+        print(spark)
+        #raw_data = spark.read.table("feature_store_taxi_example.nyc_yellow_taxi_with_zips") # "feature_store_taxi_example.nyc_yellow_taxi_with_zips"
+        raw_data = spark.read.format("delta").option("versionAsOf", fs_data_version).load("dbfs:/user/hive/warehouse/feature_store_taxi_example.db/nyc_yellow_taxi_with_zips")
+
         taxi_data = rounded_taxi_data(raw_data)
         #display(taxi_data)
         return taxi_data
@@ -236,7 +241,7 @@ class MachineLearningExperiment:
         return model_file_path
 
 
-    def get_taining_data(self, fs: object, data: DataFrame, feature_lookups: List[FeatureLookup], label: str, exclude_columns: List[str]) -> DataFrame:
+    def get_taining_data(self, fs, data, feature_lookups, label, exclude_columns):
         """
         Creates a training set from the given data
         :param data: The data to create the training set from
@@ -250,18 +255,27 @@ class MachineLearningExperiment:
         :returns: The training set
         :rtype: DataFrame
         """
+    
+
         training_set = fs.create_training_set(
             data,
-            feature_lookups = feature_lookups,
+            feature_lookups = feature_lookups, #ERROR HERE
             label = label,
             exclude_columns = exclude_columns
         )
         training_df = training_set.load_df()
-        return training_df
+        return training_df, training_set
 
 
 
-    def train_model(self, fs: object, training_df: DataFrame, model_params: Dict[str, str], model_name: str) -> PipelineModel:
+    def train_model(
+        self,
+        training_df,
+        training_set,
+        fs,
+        model_params: Dict[str, str],
+        model_name: str
+        ):
         """
         Trains the model
         :param training_df: The training set
@@ -322,11 +336,14 @@ class MachineLearningExperiment:
             num_rounds
             )
             
-            #Save The Model 
+            #Save The Model  
+            model_file_path = self.get_model_file_path("taxi_example_fare_packaged")
+            print(f"ModelFilePath: {model_file_path}")
             joblib.dump(
                 model, 
-                open(MachineLearningExperiment.get_model_file_path,'wb')
-                )      
+                open(model_file_path,'wb')
+            )
+            mlflow.log_param("local_model_file_path", model_file_path)  
 
             expected_y  = y_test
             predicted_y = model.predict(X_test)
@@ -335,16 +352,17 @@ class MachineLearningExperiment:
                 expected_y, 
                 predicted_y
                 )
+
             mlflow.log_metric(
                 "r2",
                 r2)
             
             fs.log_model(
-            model,
-            artifact_path="model_packaged",
-            flavor=mlflow.lightgbm,
-            training_set=training_df,
-            registered_model_name=model_name
+                model,
+                artifact_path="model_packaged",
+                flavor=mlflow.lightgbm,
+                training_set=training_set,
+                registered_model_name=model_name
             )
 
             return model
@@ -352,65 +370,76 @@ class MachineLearningExperiment:
 
 # COMMAND ----------
 
+#raw_data = spark.read.table("feature_store_taxi_example.nyc_yellow_taxi_with_zips")
+
+# COMMAND ----------
+
 
 def main():
-    spark_runner_object = SparkRunner()
-    subscription_id = spark_runner_object.get_secret(
+    experiment_name = "ciaran_experiment_nyc_taxi"
+    spark_obj = SparkRunner()
+    spark = spark_obj.spark
+    print(spark)
+    subscription_id = spark_obj.get_secret(
         "DBX_SP_Credentials",
         "SUBSCRIPTION_ID"
         )
-    resource_group = spark_runner_object.get_secret(
+    resource_group = spark_obj.get_secret(
         "AzureResourceSecrets",
         "RESOURCE_GROUP_NAME"
         )
-    workspace_name = spark_runner_object.get_secret(
+    workspace_name = spark_obj.get_secret(
         "AzureResourceSecrets", 
         "AML_WS_NAME"
         )
-    tenant_id = spark_runner_object.get_secret(
+    tenant_id = spark_obj.get_secret(
         "DBX_SP_Credentials",
         "DBX_SP_Tenant_ID"
         )
-    service_principal_id = spark_runner_object.get_secret(
+    service_principal_id = spark_obj.get_secret(
         "DBX_SP_Credentials",
         "DBX_SP_Client_ID"
         )
-    service_principal_password = spark_runner_object.get_secret(
+    service_principal_password = spark_obj.get_secret(
         "DBX_SP_Credentials",
         "DBX_SP_Client_Secret"
         )
 
     azure_ml_obj = AzureMLConfiguration(
-        spark="spark",
+        spark=spark,
         tenant_id=tenant_id,
         service_principal_id=service_principal_id,
         service_principal_password=service_principal_password,
         subscription_id=subscription_id,
         resource_group=resource_group,
-        workspace_name=workspace_name
+        workspace_name=workspace_name,
+        workspace_region="uksouth"
         )
     ws = azure_ml_obj.get_workspace_auth()
 
-    MachineLearningExperiment(
-        spark="spark",
-        experiment_name="ciaran_experiment",
+    ml_ex_obj = MachineLearningExperiment(
+        spark=spark,
+        experiment_name=experiment_name,
         namespace=namespace,
         workspace=ws
         )
+
+
     
-    MachineLearningExperiment.set_experiment()
+    ml_ex_obj.set_experiment()
 
-    taxi_data = MachineLearningExperiment.load_data(
-        "feature_store_taxi_example.nyc_yellow_taxi_with_zips"
-        )
+    # Provide The Data Version of The Feature Store
+    # This Allows Model Development Whilst Ensuring The Underlying Data Is Not Changed Downstream By Feature Enginers / Data Engineers
+    fs_data_version = 0
+    taxi_data = ml_ex_obj.load_data(spark=spark, data_path="feature_store_taxi_example.nyc_yellow_taxi_with_zips", fs_data_version)
 
-    pickup_feature_lookups = MachineLearningExperiment.feature_lookup(
+    pickup_feature_lookups = ml_ex_obj.feature_lookup(
         feature_table_name="feature_store_taxi_example.trip_pickup_features", 
         feature_lookups=["mean_fare_window_1h_pickup_zip", "count_trips_window_1h_pickup_zip"],
         lookup_key=["pickup_zip", "rounded_pickup_datetime"]  
     )
 
-    dropoff_feature_lookups = MachineLearningExperiment.feature_lookup(
+    dropoff_feature_lookups = ml_ex_obj.feature_lookup(
         feature_table_name="feature_store_taxi_example.trip_dropoff_features", 
         feature_lookups=["count_trips_window_30m_dropoff_zip", "dropoff_is_weekend"],
         lookup_key=["dropoff_zip", "rounded_dropoff_datetime"]  
@@ -418,38 +447,33 @@ def main():
     
     fs = feature_store.FeatureStoreClient()
 
-    training_df = MachineLearningExperiment.create_training_set(
-        data=taxi_data, fs=fs,
-        feature_lookups=[pickup_feature_lookups + dropoff_feature_lookups], 
+    training_df, training_set = ml_ex_obj.get_taining_data(
+        fs,
+        taxi_data,
+        pickup_feature_lookups + dropoff_feature_lookups,
         label="fare_amount",
-        exclude_columns=["rounded_pickup_datetime", "rounded_dropoff_datetime"
-        ])
+         exclude_columns=[
+            "rounded_pickup_datetime",
+            "rounded_dropoff_datetime"
+        ]
+    )
+
+
+    print(fs)
+
+    model1 = ml_ex_obj.train_model(
+        training_df, 
+        training_set, # Feature Store Object Prior to df conversion (above)
+        fs,
+        model_params={
+            "num_leaves": 32,
+            "objective": "regression",
+            "metric": "rmse"
+        },
+        model_name="taxi_example_fare_packaged"
+    )
     
-
-    model1 = MachineLearningExperiment.train_model(training_df, 
-                                          fs=fs,
-                                          model_params={"num_leaves": 32, "objective": "regression", "metric": "rmse"},
-                                          model_name="taxi_example_fare_packaged.pkl")
     
-    model2 = MachineLearningExperiment.train_model(training_df, 
-                                        fs=fs,
-                                        model_params={"num_leaves": 32, "objective": "regression", "metric": "rmse"},
-                                        model_name="pyfunc_taxi_fare_packaged.pkl")
-    
-    
-
-    
-  
-
-
-
-
-
-
-
-    
-
-
 if __name__ == "__main__":
     main()
 
