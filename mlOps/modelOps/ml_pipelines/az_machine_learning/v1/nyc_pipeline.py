@@ -101,7 +101,8 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         run_name='Databricks_Scoring',
         compute_target=databricks_compute,
         existing_cluster_id=cluster_id,
-        allow_reuse=True
+        allow_reuse=True,
+        num_workers=3
     )
 
     step_sequence = StepSequence(steps=[Databricks_Featurization_Step, Databricks_Model_Training, Databricks_Model_Scoring])

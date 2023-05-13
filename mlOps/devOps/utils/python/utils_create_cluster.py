@@ -33,6 +33,7 @@ def create_clusters():
     cluster_param_file = _ingest_cluster_param_file('mlOps/devOps/params/' + ENVIRONMENT + '/clusters.json') 
     existing_clusters, _ = _list_existing_clusters()
     existing_clusters_name_arr = _get_cluster_names(existing_clusters)
+    print(existing_clusters_name_arr)
     for cluster in cluster_param_file:
         if cluster['cluster_name'] not in existing_clusters_name_arr:
             print(f"Cluster {cluster} does not exist - Deploy.")
@@ -67,6 +68,7 @@ def _list_existing_clusters():
     status_code = response.status_code
     
     response_content = response.json()
+    print(response_content)
 
     if status_code != 200:
         raise Exception(status_code)
@@ -109,6 +111,8 @@ def _create_cluster(cluster):
         headers=DBRKS_REQ_HEADERS,
         json=cluster
     )
+
+    print(response.status_code)
 
     if response.status_code != 200:
         #import pdb; pdb.set_trace()
