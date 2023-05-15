@@ -20,7 +20,7 @@ blis==0.7.8
 boto3==1.21.18
 botocore==1.24.18
 cachetools==5.2.0
-certifi==2021.10.8
+certifi==2022.12.7
 cffi==1.14.6
 chardet==4.0.0
 charset-normalizer==2.0.4
