@@ -93,10 +93,10 @@ jobs:
 #################################/
 ## Deploy Azure Infrastructure                                               
 #################################/
-      #- name:                     Deploy Azure Resources
-      #  run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utils_create_azure_resources.py
-      #  env:
-      #    ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+      - name:                     Deploy Azure Resources
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utils_create_azure_resources.py
+        env:
+          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 
