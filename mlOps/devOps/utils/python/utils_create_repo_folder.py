@@ -12,7 +12,7 @@ load_dotenv(".env") # load environment variables
 
 def _ingest_repo_param_file(filename):
     """
-        Ingests the Json Parameters File for Cluster Creation
+        Ingests the Json Parameters File for Databricks Repo Creation
     """
     with open(filename, 'r') as file:
         

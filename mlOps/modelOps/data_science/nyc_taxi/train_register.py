@@ -259,7 +259,7 @@ class MachineLearningExperiment:
 
         training_set = fs.create_training_set(
             data,
-            feature_lookups = feature_lookups, #ERROR HERE
+            feature_lookups = feature_lookups,
             label = label,
             exclude_columns = exclude_columns
         )
@@ -431,7 +431,13 @@ def main():
     # Provide The Data Version of The Feature Store
     # This Allows Model Development Whilst Ensuring The Underlying Data Is Not Changed Downstream By Feature Enginers / Data Engineers
     fs_data_version = 0
-    taxi_data = ml_ex_obj.load_data(spark=spark, data_path="feature_store_taxi_example.nyc_yellow_taxi_with_zips", fs_data_version)
+    data_path = "dbfs:/user/hive/warehouse/feature_store_taxi_example.db/nyc_yellow_taxi_with_zips"
+    
+    taxi_data = ml_ex_obj.load_data(spark=spark, data_path=data_path, fs_data_version=fs_data_version)
+    
+    #taxi_data = ml_ex_obj.load_data(spark=spark, data_path="feature_store_taxi_example.nyc_yellow_taxi_with_zips", fs_data_version=fs_data_version)
+    # dbfs:/user/hive/warehouse/feature_store_taxi_example.db/nyc_yellow_taxi_with_zips
+
 
     pickup_feature_lookups = ml_ex_obj.feature_lookup(
         feature_table_name="feature_store_taxi_example.trip_pickup_features", 
