@@ -55,6 +55,8 @@ def update_repo(repo_id, update_branch):
         Invoked Databricks API to update repo
     """
 
+    repo_id = str(repo_id)
+
     WORKSPACE_ID = os.environ.get("WORKSPACE_ID")
     DATABRICKS_INSTANCE = os.environ.get("DATABRICKS_INSTANCE")
     DATABRICKS_AAD_TOKEN = os.environ.get("DATABRICKS_AAD_TOKEN")
@@ -97,12 +99,16 @@ def main():
     print(f"Repos To Connect {repo_param_file}")
 
     repos_with_management_permissions, status_code = get_repos_with_management_permissions()
-
+    
     for repo in repo_param_file:
+
+  
         update_folder = repo['path']
         update_branch = repo['branch']
+        
         for item in repos_with_management_permissions:
             print(f" The Update Folder is {update_folder} and path is  {item['path']}")
+            
             if update_folder in item['path']:
                 print(f" The Update Folder {update_folder} is Contained within the Path {item['path']}")
                 print("Retrieve the Repo ID")
@@ -110,7 +116,10 @@ def main():
                 repo_id = str(item['id'])
 
                 #Update repo
+                #import pdb; pdb.set_trace()
                 status_code = update_repo(repo_id, update_branch)
+    
+    return status_code
 
 
 if __name__ == "__main__":
