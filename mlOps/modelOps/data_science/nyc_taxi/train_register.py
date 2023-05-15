@@ -157,7 +157,7 @@ class MachineLearningExperiment:
         self.track_in_azure_ml = False
         self.namespace = namespace
         self.ws = workspace
-        self.model_folder = "outputs"
+        self.model_folder = "cached_models"
         self.dbutils = SparkRunner().get_dbutils()
 
 

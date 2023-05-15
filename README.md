@@ -175,29 +175,12 @@ Secrets in GitHub should look exactly like below. The secrets are case sensitive
 
 ---
 ---
- 
 
-# Repo Guidance 
+## Running Pipelines
 
-## Databricks as Infrastructure
-<details close>
-<summary>Click Dropdown... </summary>
+- The end to end machine learning pipleine will be pre-configured in the "workflows" section in databricks. This utilises a Job Cluster which will automatically upload the necessary dependencies contained within a python wheel file 
 
-<br>
-There are many ways that a User may create Databricks Jobs, Notebooks, Clusters, Secret Scopes etc. <br>
-<br>
-For example, they may interact with the Databricks API/CLI by using: <br>
-<br>
-i. VS Code on their local machine, <br>
-ii. the Databricks GUI online; or <br>
-iii. a YAML Pipeline deployment on a DevOps Agent (e.g. GitHub Actions or Azure DevOps etc). <br>
-<br>
- 
-The programmatic way in which the first two scenarios allow us to interact with the Databricks API is akin to "Continuous **Development**", as opposed to "Continuous **Deployment**". The former is strong on flexibility, however, it is somewhat weak on governance, accountability and reproducibility. <br>
-
-In a nutshell, Continuous **Development** _is a partly manual process where developers can deploy any changes to customers by simply clicking a button, while continuous **Deployment** emphasizes automating the entire process_.
-
-</details>
+- If you wish to run the machine learning scripts from the Notebook instead, first upload the dependencies (automatic upload is in development). Simply navigate to python wheel file contained within the dist/ folder. Manually upload the python wheel file to the cluster that you wish to run for the Notebook. 
 
 ---
 ---
