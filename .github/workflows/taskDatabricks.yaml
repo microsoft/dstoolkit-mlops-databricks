@@ -228,15 +228,6 @@ jobs:
 
 
 #################################/
-##  Update Databricks Workflow File With Cluster ID                                            
-#################################/
-      - shell:                    bash
-        name:                     Pass In Cluster ID
-        run: |
-          grep -n 'cluster_id' mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow.yaml | cut -d ':' -f1
-          sed -i 's/cluster_id: .*/cluster_id: '"$test"' /g' mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow.yaml 
-
-#################################/
 ##  DBX Deploy Jobs / Workflows                                            
 #################################/
       - shell:                    bash
