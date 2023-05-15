@@ -193,7 +193,7 @@ class MachineLearningExperiment:
         rounded_unix_timestamp_udf = udf(rounded_unix_timestamp, IntegerType())
         #raw_data = spark.read.format("delta").load("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
         print(spark)
-        #raw_data = spark.read.table("feature_store_taxi_example.nyc_yellow_taxi_with_zips") # "feature_store_taxi_example.nyc_yellow_taxi_with_zips"
+        #raw_data = spark.read.table("feature_store_taxi_example.nyc_yellow_taxi_with_zips") # "feature_store_taxi_example.nyc_yellow_taxi_with_zips" 
         raw_data = spark.read.format("delta").option("versionAsOf", fs_data_version).load("dbfs:/user/hive/warehouse/feature_store_taxi_example.db/nyc_yellow_taxi_with_zips")
 
         taxi_data = rounded_taxi_data(raw_data)
