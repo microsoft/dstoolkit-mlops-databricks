@@ -8,6 +8,9 @@
 # Install pypi packages azureml-sdk[databricks], lightgbm, uszipcode
 # The above will be automated in due course 
 
+
+# https://learn.microsoft.com/en-us/azure/databricks/_extras/notebooks/source/machine-learning/automl-feature-store-example.html
+
 # COMMAND ----------
 
 from pyspark.sql import *
@@ -337,6 +340,9 @@ class MachineLearningExperiment:
             )
             
             #Save The Model  
+
+            self.create_model_folder()
+
             model_file_path = self.get_model_file_path("taxi_example_fare_packaged")
             print(f"ModelFilePath: {model_file_path}")
             joblib.dump(
