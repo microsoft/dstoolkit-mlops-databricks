@@ -63,9 +63,120 @@ class GetReposWithManagementPermissions(unittest.TestCase):
 
         mock_get.return_value.status_code = 200
 
+        mock_return = {
+            "repos":[
+                {
+                    "id":61449681029719,
+                    "path":"/Repos/***/test_dbx_repo_folder_one",
+                    "url":"https://github.com/test_repo_profile/test_repo_one",
+                    "provider":"gitHub",
+                    "branch":"main",
+                    "head_commit_id":"test_commit_id"
+                 },
+                 {
+                     "id":2806425392675498,
+                     "path":"/Repos/***/test_dbx_repo_folder_two",
+                     "url":"https://github.com/test_repo_profile/test_repo_two",
+                     "provider":"gitHub",
+                     "branch":"main",
+                     "head_commit_id":"test_commit_id"
+                }
+            ]
+        }
+
+        mock_get.return_value.json.return_value = mock_return
+
+        repos_with_management_permissions, status_code = get_repos_with_management_permissions()
+
+        assert repos_with_management_permissions == mock_return["repos"]
+        assert status_code == 200
+
+
+        expected_dbkrs_req_headers = {
+            'Authorization': 'Bearer test_databricks_aad_token',
+            'X-Databricks-Azure-SP-Management-Token': 'test_databricks_management_token',
+            'X-Databricks-Azure-Workspace-Resource-Id': 'test_workspace_id',
+            'Content-Type': 'application/json'}
+        
+        mock_get.assert_once_called_with(
+            "https://test_databricks_instance/api/2.0/repos",
+            headers=expected_dbkrs_req_headers
+            )
+        
+        
+        @patch('requests.get')
+        def test_get_repos_with_management_permissions_failure(mock_get):
+            monkeypatch = MonkeyPatch()
+
+            monkeypatch.setenv('ARM_CLIENT_ID', 'test_arm_client_id')
+            monkeypatch.setenv('WORKSPACE_ID', 'test_workspace_id')
+            monkeypatch.setenv('DATABRICKS_MANAGEMENT_TOKEN', 'test_databricks_management_token')
+            monkeypatch.setenv('DATABRICKS_AAD_TOKEN', 'test_databricks_aad_token')
+            monkeypatch.setenv('DATABRICKS_INSTANCE', 'test_databricks_instance')
+
+            mock_get.return_value.status_code = 500
+
+            with pytest.raises(Exception) as e:
+                status_code = get_repos_with_management_permissions()
+                assert status_code == 500
+
+
+# update_repo
+
+class UpdateRepo(unittest.TestCase):
+    
+    @patch('requests.post')
+    def test_update_repo_success(mock_post):
+        monkeypatch = MonkeyPatch()
+        monkeypatch.setenv('ARM_CLIENT_ID', 'test_arm_client_id')
+        monkeypatch.setenv('WORKSPACE_ID', 'test_workspace_id')
+        monkeypatch.setenv('DATABRICKS_MANAGEMENT_TOKEN', 'test_databricks_management_token')
+        monkeypatch.setenv('DATABRICKS_AAD_TOKEN', 'test_databricks_aad_token')
+        monkeypatch.setenv('DATABRICKS_INSTANCE', 'test_databricks_instance')
+
+        mock_repo_id = 123456789
+        mock_update_branch = "test_main_branch"
+
+        mock_post.return_value.status_code = 200
+
+        status_code = update_repo(mock_repo_id, mock_update_branch )
+
+        assert status_code == 200
+
+
+        expected_dbkrs_req_headers = {
+            'Authorization': 'Bearer test_databricks_aad_token',
+            'X-Databricks-Azure-SP-Management-Token': 'test_databricks_management_token',
+            'X-Databricks-Azure-Workspace-Resource-Id': 'test_workspace_id',
+            'Content-Type': 'application/json'}
+        
+        mock_post.assert_once_called_with(
+            "https://test_databricks_instance/api/2.0/repos/" + str(mock_repo_id),
+            headers=expected_dbkrs_req_headers,
+            json={
+                "branch": mock_update_branch
+            }
+        )
+
+    def test_update_repo_failure(mock_post):
+
+        mock_repo_id = 123456789
+        mock_update_branch = "test_main_branch"
+        
+        mock_post.return_value.status_code = 500
+
+        with pytest.raises(Exception) as e:
+            status_code = update_repo(mock_repo_id, mock_update_branch )
+            assert status_code == 500
+
+
+
+
+
+
         
 
 
 
 
-        pass
+

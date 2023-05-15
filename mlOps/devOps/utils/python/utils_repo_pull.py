@@ -40,12 +40,14 @@ def get_repos_with_management_permissions():
     'https://' + DATABRICKS_INSTANCE + '/api/2.0/repos', headers=DBRKS_REQ_HEADERS
     )
 
+    status_code = response.status_code
+    repos_with_management_permissions = response.json()
+
     if response.status_code != 200:
-        raise Exception(response.content)
+        raise Exception(response.status_code)
     else:
-        repos_with_management_permissions = response.json()
         repos_with_management_permissions = repos_with_management_permissions['repos']
-        return repos_with_management_permissions
+        return repos_with_management_permissions, status_code
 
 
 def update_repo(repo_id, update_branch):
@@ -82,6 +84,7 @@ def update_repo(repo_id, update_branch):
     else:
         print(f"Status Code: {response.status_code}")
         print(response.json())
+        return response.status_code
   
 
 def main():
@@ -93,7 +96,7 @@ def main():
 
     print(f"Repos To Connect {repo_param_file}")
 
-    repos_with_management_permissions = get_repos_with_management_permissions()
+    repos_with_management_permissions, status_code = get_repos_with_management_permissions()
 
     for repo in repo_param_file:
         update_folder = repo['path']
@@ -107,7 +110,7 @@ def main():
                 repo_id = str(item['id'])
 
                 #Update repo
-                update_repo(repo_id, update_branch)
+                status_code = update_repo(repo_id, update_branch)
 
 
 if __name__ == "__main__":
