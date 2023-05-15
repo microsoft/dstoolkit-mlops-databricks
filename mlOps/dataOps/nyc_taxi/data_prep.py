@@ -138,8 +138,7 @@ def write_to_table(df, database, table):
 
 # COMMAND ----------
 
-# MAGIC %sql 
-# MAGIC CREATE DATABASE IF NOT EXISTS feature_store_taxi_example;
+spark.sql("CREATE DATABASE IF NOT EXISTS feature_store_taxi_example;")
 
 # COMMAND ----------
 
