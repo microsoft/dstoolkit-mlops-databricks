@@ -247,8 +247,8 @@ jobs:
           dbx configure --enable-inplace-jinja-support --profile default
         
           # -e replaced with "default" instead of $ENVIRONMENT
-          dbx deploy NYC_TAXI --no-package --deployment-file mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow.yaml \
-          -e default --jinja-variables-file=mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml --tags "E2E ML NYC Pipeline" 
+          dbx deploy JOB_WORKFLOW_NYC_TAXI --no-package --deployment-file mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow.yaml \
+          -e default --jinja-variables-file=mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml 
 
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 
