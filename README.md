@@ -168,7 +168,7 @@ Secrets in GitHub should look exactly like below. The secrets are case sensitive
 
 <img width="893" alt="image" src="https://user-images.githubusercontent.com/108273509/205954210-c123c407-4c83-4952-ab4b-cd6c485efc2f.png">
 
-- Azure Resources created (Production Environment snapshot)
+- Azure Resources created (Production Environment snapshot - For speed I have hashed out all environment deployments except Sandbox. Update onDeploy.yaml to deploy all environments)
   
 <img width="1175" alt="image" src="https://user-images.githubusercontent.com/108273509/194638664-fa6e1809-809e-45b2-9655-9312f32f24bb.png">
 
