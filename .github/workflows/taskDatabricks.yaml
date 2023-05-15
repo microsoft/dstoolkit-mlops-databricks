@@ -31,6 +31,7 @@ jobs:
   build:
     name:                         ${{ inputs.ENVIRONMENT }} Environment Deployment
     runs-on:                      ubuntu-latest
+    #runs-on: self-hosted
     environment:                  ${{ inputs.ENVIRONMENT }}
     steps:      
       - name:                     Checkout
@@ -44,7 +45,7 @@ jobs:
       - name:                     Setup Python
         uses:                     actions/setup-python@v4
         with:
-          python-version:         3.8
+          python-version:         "3.8"
     
 #################################/
 ##  Dependencies/ Install                                              
@@ -52,15 +53,23 @@ jobs:
       - shell: bash
         name:  Tests and Dependency Install
         run: |
-        
-          sudo apt update && sudo apt upgrade && sudo apt install jq -y
+
           pip3 install --upgrade pip
+
+          #sudo apt update && sudo apt upgrade && sudo apt install jq -y
+          
 
           az extension add -n azure-cli-ml
 
           # Do a python pip install so that modules can be found from python tasks
           python -m pip install requests
+          python -m pip install python-dotenv
+
+        
           
+
+
+
           pip3 install --upgrade azure-cli
           pip3 install azure-mgmt-storage==21.0.0
           #pip3 install  azure-databricks-sdk-python
@@ -105,7 +114,7 @@ jobs:
 ##  Generate AAD Tokens                                              
 #################################/
       - name:                     Generate AAD Tokens
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateAuthenticationTokens.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utils_create_authentication_tokens.py
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
@@ -146,7 +155,7 @@ jobs:
 #################################/
   
       - name:                     Git Config
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utilsGitConfiguration.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utils_git_configuration.py
         env:
           PAT_GITHUB:             ${{ secrets.PAT_GITHUB }}
 
@@ -154,7 +163,7 @@ jobs:
 ##  Create Repos                                           
 #################################/
       - name:                     Create Databricks Repos
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateRepoFolder.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utils_create_repo_folder.py
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }} 
 
@@ -162,7 +171,7 @@ jobs:
 ##  Secret Scopes                                           
 #################################/
       - name:                     Save Databricks SP Credentials Within Secret Scopes
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utilsCreateSecretScopes.py
+        run:                      ${{ inputs.SCRIPT_LANGUAGE }} mlOps/devOps/utils/${{ inputs.SCRIPT_LANGUAGE }}/utils_create_secret_scopes.py
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
@@ -235,10 +244,11 @@ jobs:
           databricks -h 
           databricks fs ls
 
-          dbx configure --enable-inplace-jinja-support --profile $ENVIRONMENT
+          dbx configure --enable-inplace-jinja-support --profile default
         
-          dbx deploy NYC_TAXI --no-package --deployment-file mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow.yaml \
-          -e $ENVIRONMENT --jinja-variables-file=mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml
+          # -e replaced with "default" instead of $ENVIRONMENT
+          dbx deploy --workflows JOB_WORKFLOW_NYC_TAXI,TRAIN_REGISTER --no-package --deployment-file mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow.yaml \
+          -e default --jinja-variables-file=mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml 
 
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 

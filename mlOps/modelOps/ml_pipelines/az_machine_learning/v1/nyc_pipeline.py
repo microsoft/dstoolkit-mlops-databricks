@@ -43,20 +43,31 @@ print(ARM_TENANT_ID)
 print(ARM_CLIENT_ID)
 print(AML_WS_NAME)
 
-def listClusters():
-    """
-        Returns a Json object containing a list of existing Databricks Clusters.
-    """
+class GetClusterID():
+    def __init__(self, cluster_name):
+        self.clusters_obj = self.list_clusters()['clusters']
+        self.cluster_name = cluster_name
+    def get_cluster_id(self):
+        """
+            Returns Cluster ID for a given cluster name.
+        """
+        for cluster in self.clusters_obj:
+            if cluster['cluster_name'] ==  self.cluster_name:
+                print("ml_cluster exists")
+                cluster_id = cluster['cluster_id']
+                print(cluster_id)
+                return cluster_id
+    def list_clusters(self):
+        """
+            Returns a Json object containing a list of existing Databricks Clusters.
+        """
+        response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/list', headers=DBRKS_REQ_HEADERS)
+        if response.status_code != 200:
+            raise Exception(response.content)
+        else:
+            return response.json()
 
-    response = requests.get('https://' + DATABRICKS_INSTANCE + '/api/2.0/clusters/list', headers=DBRKS_REQ_HEADERS)
-
-    if response.status_code != 200:
-        raise Exception(response.content)
-
-    else:
-        return response.json()
-
-def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspace, cluster_id):
+def create_pipeline_structure(databricks_compute, ws, cluster_id):
     print('Creating the pipeline structure')
 
     Databricks_Featurization_Step = DatabricksStep(
@@ -67,7 +78,8 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         run_name='Databricks_Feature_Engineering',
         compute_target=databricks_compute,
         existing_cluster_id=cluster_id,
-        allow_reuse=True
+        allow_reuse=True,
+        num_workers=3
     )
 
     Databricks_Model_Training = DatabricksStep(
@@ -79,7 +91,8 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         run_name='Databricks_Model_Training',
         compute_target=databricks_compute,
         existing_cluster_id=cluster_id,
-        allow_reuse=True
+        allow_reuse=True,
+        num_workers=3
     )
 
     Databricks_Model_Scoring = DatabricksStep(
@@ -90,39 +103,35 @@ def create_pipeline_structure(compute_target: ComputeTarget, workspace: Workspac
         run_name='Databricks_Scoring',
         compute_target=databricks_compute,
         existing_cluster_id=cluster_id,
-        allow_reuse=True
+        allow_reuse=True,
+        num_workers=3
     )
 
-
     step_sequence = StepSequence(steps=[Databricks_Featurization_Step, Databricks_Model_Training, Databricks_Model_Scoring])
-    pipeline = Pipeline(workspace=workspace, steps=step_sequence)
+    pipeline = Pipeline(workspace=ws, steps=step_sequence)
     pipeline.validate()
     
-
     return pipeline
 
 
 if __name__ == "__main__":
-
     svc_pr = ServicePrincipalAuthentication(
-                            tenant_id = ARM_TENANT_ID,
-                            service_principal_id = ARM_CLIENT_ID,
-                            service_principal_password = ARM_CLIENT_SECRET 
-                            )
-
+        tenant_id = ARM_TENANT_ID,
+        service_principal_id = ARM_CLIENT_ID,
+        service_principal_password = ARM_CLIENT_SECRET 
+    )
     ws = Workspace(
-            subscription_id=SUBSCRIPTION_ID,
-            resource_group=RESOURCE_GROUP_NAME,
-            workspace_name=AML_WS_NAME,
-            auth=svc_pr
-            )
+        subscription_id=SUBSCRIPTION_ID,
+        resource_group=RESOURCE_GROUP_NAME,
+        workspace_name=AML_WS_NAME,
+        auth=svc_pr
+    )
 
     print(f" AML Workspace Properties: {ws} ")
 
     try:
         databricks_compute = DatabricksCompute(workspace=ws, name=DATABRICKS_COMPUTE_NAME)
         print('Compute target {} already exists'.format(DATABRICKS_COMPUTE_NAME))
-
     except ComputeTargetException:
         print('Compute not found, will use below parameters to attach new one')
         print('db_compute_name {}'.format(DATABRICKS_COMPUTE_NAME))
@@ -138,21 +147,24 @@ if __name__ == "__main__":
         databricks_compute.wait_for_completion(True)
 
     
-    existingClusters = listClusters()['clusters']
-    for cluster in existingClusters:
-        if cluster['cluster_name'] == "ml_cluster":
-            print("ml_cluster exists")
-            cluster_id = cluster['cluster_id']
-            print(cluster_id)
-        else:
-            print("ml_cluster does not exist: cannot continue")
+    cluster_obj = GetClusterID("ml_cluster")
+    cluster_id = cluster_obj.get_cluster_id()
 
 
+
+    #existingClusters = listClusters()['clusters']
+    #for cluster in existingClusters:
+    #    if cluster['cluster_name'] == "ml_cluster":
+    #        print("ml_cluster exists")
+    #        cluster_id = cluster['cluster_id']
+    #        print(cluster_id)
+    #    else:
+    #        print("ml_cluster does not exist: cannot continue")
     #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "/Data_Scientist/featureEngineering.py")
     #notebook_path=os.getenv("DATABRICKS_NOTEBOOK_PATH", "databricks.ipynb")
 
-    pipeline = create_pipeline_structure(compute_target=databricks_compute,  workspace=ws, cluster_id=cluster_id)
 
+    pipeline = create_pipeline_structure(databricks_compute=databricks_compute, ws=ws, cluster_id=cluster_id)
     published_pipeline = pipeline.publish("databricks_pipeline", version="1.0.0", description="Databricks Pipeline")
 
 

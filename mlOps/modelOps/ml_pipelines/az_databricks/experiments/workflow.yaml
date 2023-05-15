@@ -25,36 +25,28 @@ custom:
     new_cluster:
       <<: *default-cluster-spec
             
-
-
 build:
   no_build: true
 
-environments:            
-  Ciaran_Sandbox:
+environments:
+  
+  default:
     workflows:
-      - name: FEATURE_ENGINEERING_CIARAN
-        existing_cluster_id: "0327-230505-5m9ke7k7"
-        spark_python_task:
-          python_file: "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING_CIARAN']['FILE_PATH']}}"
-          parameters: ["{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['FEATURE_ENGINEERING_CIARAN']['PARAMETERS']['FILE']}}"]
+      - name: CIARAN_INTERACTIVE_DATA_PREP_NYC_TAXI     
+        tasks:
+          - task_key: "Data_Ingestion_And_Prep1"
+            existing_cluster_id: "0503-131453-pg5lypb0"
+            notebook_task:
+              notebook_path: "{{var['ML_PIPELINE_FILES']['DATA_INGEST_PREP']['FILE_PATH']}}"
+              source: WORKSPACE
+              base_parameters:
+                - key: "env"
+                  value: "{{var['ML_PIPELINE_FILES']['DATA_INGEST_PREP']['FILE_PATH']}}"
 
-
-      - name: MODEL_TRAINING_CIARAN
-        existing_cluster_id: "0327-230505-5m9ke7k7"
-        spark_python_task:
-          python_file: "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING_CIARAN']['FILE_PATH']}}"
-          parameters: ["{{var['ML_PIPELINE_FILES']['MODEL_TRAINING_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['MODEL_TRAINING_CIARAN']['PARAMETERS']['FILE']}}"]
-
-
-      - name: DEMO_DIABETES_CIARAN
-        existing_cluster_id: "0327-230505-5m9ke7k7"
-        spark_python_task:
-          python_file: "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['FILE_PATH']}}"
-          parameters: ["{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['FILE']}}"]
-
-      - name: HOUSE_PRICE_MODELLING
-        existing_cluster_id: "0327-230505-5m9ke7k7"
-        spark_python_task:
-          python_file: "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['FILE_PATH']}}"
-          parameters: ["{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['DEMO_DIABETES_CIARAN']['PARAMETERS']['FILE']}}"]
+      - name: CIARAN_INTERACTIVE_MODEL_TRAIN_NYC_TAXI     
+        tasks:
+          - task_key: "Model_Train_And_Register"
+            existing_cluster_id: "0503-131453-pg5lypb0"
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['TRAIN_REGISTER']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['TRAIN_REGISTER']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['TRAIN_REGISTER']['PARAMETERS']['FILE']}}"]

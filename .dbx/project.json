@@ -1,41 +1,17 @@
 {
     "environments": {
-        "sandbox": {
-            "profile": "sandbox",
-            "workspace_dir": "/Shared/cicd_workflows/sandbox",
+        "default": {
+            "profile": "DEFAULT",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/cicd_workflows/sandbox",
-                "artifact_location": "dbfs:/Shared/cicd_workflows/sandbox"
+                "workspace_directory": "/Shared/cicd_dbx_workflows",
+                "artifact_location": "dbfs:/Shared/cicd_dbx_workflows"
             }
-        },
-        "development": {
-            "profile": "development",
-            "workspace_dir": "/Shared/development",
-            "artifact_location": "dbfs:/Shared/cicd_workflows/development"
-        },
-        "uat": {
-            "profile": "uat",
-            "workspace_dir": "/Shared/uat/uat",
-            "artifact_location": "dbfs:/Shared/cicd_workflows/uat"
-        },
-        "production": {
-            "profile": "production",
-            "workspace_dir": "/Shared/production",
-            "artifact_location": "dbfs:/Shared/cicd_workflows/production"
         },
         "ciaran_sandbox": {
             "profile": "ciaran_sandbox",
             "workspace_dir": "/Shared/ciaran_sandbox",
             "artifact_location": "dbfs:/Shared/cicd_workflows/ciaran_sandbox"
-        },
-        "default": {
-            "profile": "default",
-            "storage_type": "mlflow",
-            "properties": {
-                "workspace_directory": "/Shared/cicd_workflows/default",
-                "artifact_location": "dbfs:/Shared/cicd_workflows/default"
-            }
         }
     },
     "inplace_jinja_support": true,

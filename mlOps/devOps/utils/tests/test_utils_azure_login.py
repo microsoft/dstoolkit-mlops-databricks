@@ -31,7 +31,7 @@ class TestAzureLogin(unittest.TestCase):
         self.assertEqual(return_code, 0) # 0 is the expected return code for a successful login
 
         # This must be assessing the correct parameters are being passed to the run_cmd function
-        # If someone changes the code, then the tests will fail. 
+        # If someone changes the code, then the tests will fail
         mock_run_cmd.assert_called_once_with(
             [
                 'az', 'login',
