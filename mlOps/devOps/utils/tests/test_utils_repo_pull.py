@@ -47,3 +47,25 @@ class TestIngestRepoParamFile(unittest.TestCase):
             }
         ]
         assert result == expected_result
+
+#get_repos_with_management_permissions
+class GetReposWithManagementPermissions(unittest.TestCase):
+
+    @patch('requests.get')
+    def test_get_repos_with_management_permissions_success(mock_get):
+        monkeypatch = MonkeyPatch()
+
+        monkeypatch.setenv('ARM_CLIENT_ID', 'test_arm_client_id')
+        monkeypatch.setenv('WORKSPACE_ID', 'test_workspace_id')
+        monkeypatch.setenv('DATABRICKS_MANAGEMENT_TOKEN', 'test_databricks_management_token')
+        monkeypatch.setenv('DATABRICKS_AAD_TOKEN', 'test_databricks_aad_token')
+        monkeypatch.setenv('DATABRICKS_INSTANCE', 'test_databricks_instance')
+
+        mock_get.return_value.status_code = 200
+
+        
+
+
+
+
+        pass
