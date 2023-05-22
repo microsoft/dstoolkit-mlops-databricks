@@ -65,9 +65,6 @@ jobs:
           python -m pip install requests
           python -m pip install python-dotenv
 
-        
-          
-
 
 
           pip3 install --upgrade azure-cli
