@@ -11,6 +11,11 @@ venv_dbx_connect
 venv_dbx
 .env
 .linux_venv
+venv_delete
+venv_dbx_connect13
+venv_delete2
+venv_delete3
+dev.env
 
 
 
