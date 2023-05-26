@@ -44,11 +44,11 @@ else
                         }' https://$DATABRICKS_INSTANCE/api/2.0/token/create )
 
     echo "PAT Token Creation Response...."
-    echo $PAT_TOKEN_RESPONSE
+    #echo $PAT_TOKEN_RESPONSE
 
     DATABRICKS_PAT_TOKEN=$(jq .token_value -r <<< "$PAT_TOKEN_RESPONSE")
     echo "PAT Token Creation...."
-    echo $DATABRICKS_PAT_TOKEN
+    #echo $DATABRICKS_PAT_TOKEN
 
     echo "Store PAT In Key Vault...."
     az keyvault secret set \
