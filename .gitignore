@@ -15,6 +15,7 @@ venv_delete
 venv_dbx_connect13
 venv_delete2
 venv_delete3
+dbx_connect_venv
 dev.env
 data_science/src_nyc_taxi/build
 data_science/src_nyc_taxi/dist

@@ -5,9 +5,6 @@
 # COMMAND ----------
 
 # Install python helper function wheel file (in dist) to cluster 
-# Install pypi packages azureml-sdk[databricks], lightgbm, uszipcode
-# The above will be automated in due course 
-
 # Packages Install.
 
 import mlflow 
@@ -22,7 +19,7 @@ from pyspark.sql.functions import *
 from pyspark.sql.types import FloatType, IntegerType, StringType
 from pytz import timezone
 from utils import *
-from transform_features import *
+from feature_table_refresh import *
 from training import *
 
 
@@ -77,7 +74,7 @@ def filter_df_by_ts(df, ts_column, start_date, end_date):
 
 # COMMAND ----------
 
-
+# PICKUP NEEDS TO BE A FUNCITON HERE 
 pickup_features = pickup_features_fn(
     raw_data, ts_column="tpep_pickup_datetime", start_date=datetime(2016, 1, 1), end_date=datetime(2016, 1, 31)
 )
@@ -95,17 +92,15 @@ display(pickup_features)
 
 # MAGIC %md First, create the database where the feature tables will be stored.
 
-# COMMAND ----------
 
-spark.sql("CREATE DATABASE IF NOT EXISTS feature_store_taxi_example;")
-
-# COMMAND ----------
 
 # MAGIC %md Next, create an instance of the Feature Store client.
 
 # COMMAND ----------
 
-fs = feature_store.FeatureStoreClient()
+
+def get_feature_store_client():
+    return feature_store.FeatureStoreClient()
 
 # COMMAND ----------
 
@@ -119,6 +114,22 @@ fs = feature_store.FeatureStoreClient()
 
 
 spark.conf.set("spark.sql.shuffle.partitions", "5")
+
+def create_fs_table(name, fs=None, df=None, primary_keys=None, timestamp_key=None, description=None):
+    fs = get_feature_store_client()
+    try:
+        fs.create_feature_table(
+            name=name,
+            keys=primary_keys,
+            schema=df.schema,
+            description=description,
+            timestamp_key=timestamp_key,
+        )
+    except Exception as e:
+        print(e)
+    if df is not None:
+        fs.write_table(name=name, df=df, mode="overwrite")
+
 
 fs.create_table(
     name="feature_store_taxi_example.trip_pickup_features",
