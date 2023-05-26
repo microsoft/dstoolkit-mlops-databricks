@@ -1,17 +1,4 @@
 # Databricks notebook source
-# Modules.
-
-# If Deploying To MLFlow in Azure ML: mlflow.setexperiment must be a single experiment name "ciaran_experiment"
-# Contrast this with Databricks which requires a foder structure --> shared/ciaranex
-
-# Install python helper function wheel file (in dist) to cluster 
-# Install pypi packages azureml-sdk[databricks], lightgbm, uszipcode
-# The above will be automated in due course 
-
-
-# https://learn.microsoft.com/en-us/azure/databricks/_extras/notebooks/source/machine-learning/automl-feature-store-example.html
-
-# COMMAND ----------
 
 from pyspark.sql import *
 from pyspark.sql.functions import current_timestamp
@@ -55,15 +42,6 @@ from pyspark.sql import SparkSession
 
 # MAGIC %md ## Ingest Args (If Triggered From Pipeline)
 
-# COMMAND ----------
-
-p = ArgumentParser()
-p.add_argument("--env", required=False, type=str)
-namespace = p.parse_known_args(sys.argv[1:])[0]
-#display(namespace)
-print(namespace)
-
-# COMMAND ----------
 
 # MAGIC %md ## Set Azure ML Configs
 
@@ -151,12 +129,12 @@ class AzureMLConfiguration:
 
 
 class MachineLearningExperiment:
-    def __init__(self, spark: SparkSession, experiment_name: str, namespace: str, workspace: Workspace):
+    def __init__(self, spark: SparkSession, experiment_name: str, namespace: str, aml_workspace: Workspace):
         self.spark = spark
         self.experiment_name = experiment_name
         self.track_in_azure_ml = False
         self.namespace = namespace
-        self.ws = workspace
+        self.ws = aml_workspace
         self.model_folder = "cached_models"
         self.dbutils = SparkRunner().get_dbutils()
 
@@ -271,7 +249,7 @@ class MachineLearningExperiment:
 
 
 
-    def train_model(
+    def train_model_lgbm(
         self,
         training_df,
         training_set,
@@ -306,72 +284,83 @@ class MachineLearningExperiment:
         y_test = test.fare_amount
 
 
-        mlflow.end_run()
-        mlflow.autolog(exclusive=False)
-        with mlflow.start_run():
+        #mlflow.end_run()
+        #mlflow.autolog(exclusive=False)
+        #with mlflow.start_run():
             #mlflow.lightgbm.autolog()
-            train_lgb_dataset = lgb.Dataset(
-                X_train, 
-                label=y_train.values
-                )
-            
-            test_lgb_dataset = lgb.Dataset(
-                X_test, 
-                label=y_test.values
-                )
-            
-            mlflow.log_param("num_leaves", "32")
-            mlflow.log_param("objective", "regression")
-            mlflow.log_param( "metric", "rmse")
-            mlflow.log_param("learn_rate", "100")
 
-            param = { 
-                        "num_leaves": 32, 
-                        "objective": "regression", 
-                        "metric": "rmse"
-                    }
-            num_rounds = 100
-
-            # Train a lightGBM model
-            model = lgb.train(
-            param, 
-            train_lgb_dataset, 
-            num_rounds
+        
+        train_lgb_dataset = lgb.Dataset(
+            X_train, 
+            label=y_train.values
             )
-            
-            #Save The Model  
-
-            self.create_model_folder()
-
-            model_file_path = self.get_model_file_path("taxi_example_fare_packaged")
-            print(f"ModelFilePath: {model_file_path}")
-            joblib.dump(
-                model, 
-                open(model_file_path,'wb')
+        
+        test_lgb_dataset = lgb.Dataset(
+            X_test, 
+            label=y_test.values
             )
-            mlflow.log_param("local_model_file_path", model_file_path)  
+        
+        mlflow.log_param("num_leaves", "32")
+        mlflow.log_param("objective", "regression")
+        mlflow.log_param( "metric", "rmse")
+        mlflow.log_param("learn_rate", "100")
 
-            expected_y  = y_test
-            predicted_y = model.predict(X_test)
+        param = { 
+                    "num_leaves": 32, 
+                    "objective": "regression", 
+                    "metric": "rmse"
+                }
+        num_rounds = 100
 
-            r2 = metrics.r2_score(
-                expected_y, 
-                predicted_y
-                )
+        # Train a lightGBM model
+        model = lgb.train(
+        param, 
+        train_lgb_dataset, 
+        num_rounds
+        )
 
-            mlflow.log_metric(
-                "r2",
-                r2)
-            
-            fs.log_model(
-                model,
-                artifact_path="model_packaged",
-                flavor=mlflow.lightgbm,
-                training_set=training_set,
-                registered_model_name=model_name
+
+
+        # Below Should be In Predict
+
+
+
+        #Save The Model  
+
+        self.create_model_folder()
+
+        model_file_path = self.get_model_file_path("taxi_example_fare_packaged")
+        print(f"ModelFilePath: {model_file_path}")
+        joblib.dump(
+            model, 
+            open(model_file_path,'wb')
+        )
+        mlflow.log_param("local_model_file_path", model_file_path)  
+
+        expected_y  = y_test
+        predicted_y = model.predict(X_test)
+
+        r2 = metrics.r2_score(
+            expected_y, 
+            predicted_y
             )
 
-            return model
+        mlflow.log_metric(
+            "r2",
+            r2)
+        
+
+        # log the model
+        
+        fs.log_model(
+            model,
+            artifact_path="model_packaged",
+            flavor=mlflow.lightgbm,
+            training_set=training_set,
+            registered_model_name=model_name
+        )
+
+        return model
               
 
 # COMMAND ----------
@@ -381,35 +370,49 @@ class MachineLearningExperiment:
 # COMMAND ----------
 
 
-def main():
+if __name__ == "__main__":
+    p = ArgumentParser()
+    p.add_argument("--env", required=False, type=str)
+    namespace = p.parse_known_args(sys.argv[1:])[0]
+    #display(namespace)
+    print(namespace)
+
     experiment_name = "ciaran_experiment_nyc_taxi"
+
     spark_obj = SparkRunner()
     spark = spark_obj.spark
-    print(spark)
+
+
     subscription_id = spark_obj.get_secret(
         "DBX_SP_Credentials",
         "SUBSCRIPTION_ID"
-        )
+    )
+
     resource_group = spark_obj.get_secret(
         "AzureResourceSecrets",
         "RESOURCE_GROUP_NAME"
-        )
+    )
+
     workspace_name = spark_obj.get_secret(
         "AzureResourceSecrets", 
         "AML_WS_NAME"
-        )
+    )
+
     tenant_id = spark_obj.get_secret(
         "DBX_SP_Credentials",
         "DBX_SP_Tenant_ID"
-        )
+    )
+
     service_principal_id = spark_obj.get_secret(
         "DBX_SP_Credentials",
         "DBX_SP_Client_ID"
-        )
+    )
+
     service_principal_password = spark_obj.get_secret(
         "DBX_SP_Credentials",
         "DBX_SP_Client_Secret"
-        )
+    )
+
 
     azure_ml_obj = AzureMLConfiguration(
         spark=spark,
@@ -423,28 +426,26 @@ def main():
         )
     ws = azure_ml_obj.get_workspace_auth()
 
+
     ml_ex_obj = MachineLearningExperiment(
         spark=spark,
         experiment_name=experiment_name,
         namespace=namespace,
-        workspace=ws
+        aml_workspace=ws
         )
-
-
     
     ml_ex_obj.set_experiment()
 
     # Provide The Data Version of The Feature Store
     # This Allows Model Development Whilst Ensuring The Underlying Data Is Not Changed Downstream By Feature Enginers / Data Engineers
-    fs_data_version = 0
-    data_path = "dbfs:/user/hive/warehouse/feature_store_taxi_example.db/nyc_yellow_taxi_with_zips"
-    
-    taxi_data = ml_ex_obj.load_data(spark=spark, data_path=data_path, fs_data_version=fs_data_version)
-    
     #taxi_data = ml_ex_obj.load_data(spark=spark, data_path="feature_store_taxi_example.nyc_yellow_taxi_with_zips", fs_data_version=fs_data_version)
     # dbfs:/user/hive/warehouse/feature_store_taxi_example.db/nyc_yellow_taxi_with_zips
+    fs_data_version = 0
+    data_path = "dbfs:/user/hive/warehouse/feature_store_taxi_example.db/nyc_yellow_taxi_with_zips"
+    taxi_data = ml_ex_obj.load_data(spark=spark, data_path=data_path, fs_data_version=fs_data_version)
 
-
+    # Feature Selection & Transform
+    fs = feature_store.FeatureStoreClient()
     pickup_feature_lookups = ml_ex_obj.feature_lookup(
         feature_table_name="feature_store_taxi_example.trip_pickup_features", 
         feature_lookups=["mean_fare_window_1h_pickup_zip", "count_trips_window_1h_pickup_zip"],
@@ -456,8 +457,6 @@ def main():
         feature_lookups=["count_trips_window_30m_dropoff_zip", "dropoff_is_weekend"],
         lookup_key=["dropoff_zip", "rounded_dropoff_datetime"]  
         )
-    
-    fs = feature_store.FeatureStoreClient()
 
     training_df, training_set = ml_ex_obj.get_taining_data(
         fs,
@@ -469,11 +468,10 @@ def main():
             "rounded_dropoff_datetime"
         ]
     )
+    #training_df, training_set = df_feature_lookup(taxi_data=taxi_data, ml_ex_obj=ml_ex_obj, fs=fs)
 
 
-    print(fs)
-
-    model1 = ml_ex_obj.train_model(
+    model = ml_ex_obj.train_model_lgbm(
         training_df, 
         training_set, # Feature Store Object Prior to df conversion (above)
         fs,
@@ -484,10 +482,24 @@ def main():
         },
         model_name="taxi_example_fare_packaged"
     )
-    
-    
-if __name__ == "__main__":
-    main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
