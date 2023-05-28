@@ -284,83 +284,78 @@ class MachineLearningExperiment:
         y_test = test.fare_amount
 
 
-        #mlflow.end_run()
-        #mlflow.autolog(exclusive=False)
-        #with mlflow.start_run():
-            #mlflow.lightgbm.autolog()
+        mlflow.end_run()
+        mlflow.autolog(exclusive=False)
+        with mlflow.start_run():
+            train_lgb_dataset = lgb.Dataset(
+                X_train, 
+                label=y_train.values
+                )
+            
+            test_lgb_dataset = lgb.Dataset(
+                X_test, 
+                label=y_test.values
+                )
+            
+            mlflow.log_param("num_leaves", "32")
+            mlflow.log_param("objective", "regression")
+            mlflow.log_param( "metric", "rmse")
+            mlflow.log_param("learn_rate", "100")
 
-        
-        train_lgb_dataset = lgb.Dataset(
-            X_train, 
-            label=y_train.values
-            )
-        
-        test_lgb_dataset = lgb.Dataset(
-            X_test, 
-            label=y_test.values
-            )
-        
-        mlflow.log_param("num_leaves", "32")
-        mlflow.log_param("objective", "regression")
-        mlflow.log_param( "metric", "rmse")
-        mlflow.log_param("learn_rate", "100")
+            param = { 
+                        "num_leaves": 32, 
+                        "objective": "regression", 
+                        "metric": "rmse"
+                    }
+            num_rounds = 100
 
-        param = { 
-                    "num_leaves": 32, 
-                    "objective": "regression", 
-                    "metric": "rmse"
-                }
-        num_rounds = 100
-
-        # Train a lightGBM model
-        model = lgb.train(
-        param, 
-        train_lgb_dataset, 
-        num_rounds
-        )
-
-
-
-        # Below Should be In Predict
-
-
-
-        #Save The Model  
-
-        self.create_model_folder()
-
-        model_file_path = self.get_model_file_path("taxi_example_fare_packaged")
-        print(f"ModelFilePath: {model_file_path}")
-        joblib.dump(
-            model, 
-            open(model_file_path,'wb')
-        )
-        mlflow.log_param("local_model_file_path", model_file_path)  
-
-        expected_y  = y_test
-        predicted_y = model.predict(X_test)
-
-        r2 = metrics.r2_score(
-            expected_y, 
-            predicted_y
+            # Train a lightGBM model
+            model = lgb.train(
+            param, 
+            train_lgb_dataset, 
+            num_rounds
             )
 
-        mlflow.log_metric(
-            "r2",
-            r2)
-        
 
-        # log the model
-        
-        fs.log_model(
-            model,
-            artifact_path="model_packaged",
-            flavor=mlflow.lightgbm,
-            training_set=training_set,
-            registered_model_name=model_name
-        )
 
-        return model
+            # Below Should be In Predict
+
+
+
+            #Save The Model  
+
+            self.create_model_folder()
+
+            model_file_path = self.get_model_file_path("taxi_example_fare_packaged")
+            print(f"ModelFilePath: {model_file_path}")
+            joblib.dump(
+                model, 
+                open(model_file_path,'wb')
+            )
+            mlflow.log_param("local_model_file_path", model_file_path)  
+
+            expected_y  = y_test
+            predicted_y = model.predict(X_test)
+
+            r2 = metrics.r2_score(
+                expected_y, 
+                predicted_y
+                )
+
+            mlflow.log_metric(
+                "r2",
+                r2)
+        
+            
+            fs.log_model(
+                model,
+                artifact_path="model_packaged",
+                flavor=mlflow.lightgbm,
+                training_set=training_set,
+                registered_model_name=model_name
+            )
+
+            return model, model_file_path
               
 
 # COMMAND ----------
