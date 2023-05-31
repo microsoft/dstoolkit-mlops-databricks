@@ -1,7 +1,0 @@
-evaluation
-feature_tbl_refresh
-model_serving
-prediction
-registration
-training
-utils
