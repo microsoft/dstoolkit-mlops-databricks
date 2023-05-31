@@ -1,15 +1,27 @@
+# Databricks notebook source
+
 from mlflow.tracking import MlflowClient
 import math
 from datetime import timedelta
 from pytz import timezone
 from pyspark.sql.types import FloatType, IntegerType, StringType
 import mlflow
-from databricks import feature_store
+#from databricks import feature_store
 from pyspark.sql.functions import *
 from pyspark.sql.types import FloatType, IntegerType, StringType
 from pytz import timezone
 import mlflow 
 
+
+
+
+
+def utils_test_function():
+    a = 8
+    b = 10
+
+    c = a + b
+    return c
 
 @udf(returnType=IntegerType())
 def is_weekend(dt):
@@ -42,7 +54,10 @@ def rounded_unix_timestamp(dt, num_minutes=15):
 rounded_unix_timestamp_udf = udf(rounded_unix_timestamp, IntegerType())
 
 
-def rounded_taxi_data(taxi_data_df):
+def rounded_taxi_data(
+        spark,
+        taxi_data_df
+    ):
     # Round the taxi data timestamp to 15 and 30 minute intervals so we can join with the pickup and dropoff features
     # respectively
     taxi_data_df = (
@@ -59,7 +74,7 @@ def rounded_taxi_data(taxi_data_df):
     )
     taxi_data_df.createOrReplaceTempView("taxi_data")
     return taxi_data_df
-  
+
 def get_latest_model_version(model_name):
     latest_version = 1
     

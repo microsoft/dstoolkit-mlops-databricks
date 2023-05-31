@@ -13,6 +13,8 @@ dev.env
 data_science/src_nyc_taxi/build
 data_science/src_nyc_taxi/dist
 data_science/src_nyc_taxi/nyc_taxi_src.egg-info
+.linux_venv
+experiments
 
 
 

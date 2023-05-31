@@ -4,8 +4,8 @@
             "profile": "DEFAULT",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/cicd_dbx_workflows",
-                "artifact_location": "dbfs:/Shared/cicd_dbx_workflows"
+                "workspace_directory": "/Shared/dbx/projects/dstoolkit-mlops-databricks",
+                "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks"
             }
         },
         "ciaran_sandbox": {

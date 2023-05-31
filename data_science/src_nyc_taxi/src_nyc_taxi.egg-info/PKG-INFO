@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: src-nyc-taxi
+Version: 0.0.1
+Summary: NYC Taxi Data Source
+Home-page: UNKNOWN
+Author: Ciaran Hamill Diamond
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Python: ==3.10.*
+Description-Content-Type: text/markdown; charset=UTF-8
+Provides-Extra: test
+Provides-Extra: build
+
+UNKNOWN
+
