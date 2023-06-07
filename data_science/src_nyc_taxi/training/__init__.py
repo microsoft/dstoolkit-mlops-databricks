@@ -35,7 +35,7 @@ from azureml.core import Workspace
 import os
 from azureml.core.authentication import ServicePrincipalAuthentication
 from dotenv import load_dotenv
-from utils import * # Custom Package
+from ds_utils import * # Custom Package
 import base64
 import datetime
 
@@ -194,7 +194,12 @@ def get_azure_ml_obj(
     )
 
 
-def set_mlflow(namespace, ws, experiment_name, track_in_azure_ml=False):
+def set_mlflow(
+    namespace,
+    ws,
+    experiment_name,
+    track_in_azure_ml=False
+    ):
     if namespace.env is not None:
         params = yaml.safe_load(pathlib.Path(namespace.env).read_text())
         experiment_name = params['ML_PIPELINE_FILES']['TRAIN_REGISTER']['PARAMETERS']['EXPERIMENT_NAME']
@@ -316,14 +321,49 @@ def get_training_data(
     return training_df, training_set
 
 
-def create_model_folder():
-    pass
-
 def save_model_dbfs(model, model_file_path):
     joblib.dump(
         model, 
         open(model_file_path,'wb')
     )
+
+
+
+# Move This Into Evaluation Script, and Import it as a module
+def evaluate(training_df,random_state, model):
+
+    evaluation_dict = {
+        "r2": None,
+    }
+
+    features_and_label = training_df.columns
+    data = training_df.toPandas()[features_and_label]
+    train, test = train_test_split(data, random_state=random_state)
+
+    X_test = test.drop(["fare_amount"], axis=1)
+    y_test = test.fare_amount
+
+    expected_y  = y_test
+    predicted_y = model.predict(X_test)
+
+    from sklearn import metrics
+    r2 = metrics.r2_score(
+        expected_y, 
+        predicted_y
+        )
+
+    evaluation_dict["r2"] = r2
+
+    #import pdb; pdb.set_trace()
+    
+    mlflow.log_metric(
+        "r2",
+        r2
+    )
+
+    return evaluation_dict
+
+
 
 def train_model_lgbm(
     spark,
@@ -354,9 +394,8 @@ def train_model_lgbm(
     data = training_df.toPandas()[features_and_label]
     train, test = train_test_split(data, random_state=123)
     X_train = train.drop(["fare_amount"], axis=1)
-    X_test = test.drop(["fare_amount"], axis=1)
     y_train = train.fare_amount
-    y_test = test.fare_amount
+
 
 
     mlflow.end_run()
@@ -367,26 +406,28 @@ def train_model_lgbm(
             label=y_train.values
             )
         
-        test_lgb_dataset = lgb.Dataset(
-            X_test, 
-            label=y_test.values
-            )
+        #test_lgb_dataset = lgb.Dataset(
+        #    X_test, 
+        #    label=y_test.values
+        #    )
         
         mlflow.log_param("num_leaves", "32")
         mlflow.log_param("objective", "regression")
         mlflow.log_param( "metric", "rmse")
         mlflow.log_param("learn_rate", "100")
 
-        param = { 
-                    "num_leaves": 32, 
-                    "objective": "regression", 
-                    "metric": "rmse"
-                }
+        #param = { 
+        #            "num_leaves": 32, 
+        #            "objective": "regression", 
+        #            "metric": "rmse"
+        #        }
+        
         num_rounds = 100
 
         # Train a lightGBM model
         model = lgb.train(
-        param, 
+        #param, 
+        model_params,
         train_lgb_dataset, 
         num_rounds
         )
@@ -394,19 +435,17 @@ def train_model_lgbm(
 
         mlflow.log_param("local_model_file_path", model_file_path)  
 
-        expected_y  = y_test
-        predicted_y = model.predict(X_test)
-
-        r2 = metrics.r2_score(
-            expected_y, 
-            predicted_y
+        evaulation_dict = evaluate(
+            training_df=training_df,
+            random_state=123,
+            model=model
             )
 
-        mlflow.log_metric(
-            "r2",
-            r2)
-    
+        #import pdb; pdb.set_trace()
         
+        mlflow.log_metrics(evaulation_dict)
+    
+    
         fs.log_model(
             model,
             artifact_path="model_packaged",
@@ -461,7 +500,11 @@ def save_model_dbfs(model, model_file_path):
     )
 
 
-def run():
+def run_training(
+    experiment_name,
+    model_name,
+    model_params,
+    ):
 
     external_parameters = get_extenal_parameters()
     
@@ -476,7 +519,7 @@ def run():
     set_mlflow(
         external_parameters,
         ws,
-        experiment_name="ciaran_experiment_nyc_taxi",
+        experiment_name,
         track_in_azure_ml=False
     )
 
@@ -536,13 +579,13 @@ def run():
         training_df=training_df, 
         training_set=training_set, # Feature Store Object Prior to df conversion (above)
         fs=fs,
-        model_params={
-            "num_leaves": 32,
-            "objective": "regression",
-            "metric": "rmse"
-        },
-        model_name="taxi_example_fare_packaged"
+        model_params=model_params,
+        model_name=model_name
     )
+
+    latest_model_version = get_latest_model_version(model_name)
+    #mlflow.log_param("model_version", latest_model_version)
+    mlflow.set_tag("model_version", latest_model_version)
 
 
     save_model_dbfs(model, model_file_path)
@@ -566,41 +609,31 @@ def dbx_execute_functions():
     get_model_file_path(
         spark=spark,
         model_folder_name=model_folder_name,
-        model_name="taxi_example_fare_packaged"
+        model_name="taxi_example_fare_packaged",
     )
     
 
 # COMMAND ----------
 
-
-
 if __name__ == "__main__":
-    run()
+    run_training(
+        experiment_name = "ciaran_experiment_nyc_taxi",
+        model_name = "taxi_example_fare_packaged",
+        model_params = {
+            "objective": "regression",
+            "metric": "rmse",
+            "num_leaves": 32,
+            "learning_rate": 0.1,
+            "bagging_fraction": 0.9,
+            "feature_fraction": 0.9,
+            "bagging_seed": 42,
+            "verbosity": -1,
+            "seed": 42
+        }
+        )
+
     #dbx_execute_functions()
 # COMMAND ----------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     #model_file_name1 = 'taxi_example_fare_packaged.pkl'
     #model_file_name2 = 'pyfunc_taxi_fare_packaged.pkl'

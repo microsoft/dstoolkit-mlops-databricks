@@ -7,7 +7,7 @@ from databricks import feature_store
 from pyspark.sql.functions import *
 from pyspark.sql.types import FloatType, IntegerType, StringType
 from pytz import timezone
-from utils import *
+from ds_utils import *
 from pyspark.sql import SparkSession
 import logging
 
@@ -215,7 +215,7 @@ def run_feature_store_refresh():
 
     # Create Spark Session
     spark = SparkSession.builder.getOrCreate()
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     spark.conf.set("spark.sql.shuffle.partitions", "5")
     
     # Create Feature Store Client
