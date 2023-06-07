@@ -1,6 +1,6 @@
 # Databricks notebook source
 
-
+from databricks.sdk.runtime import *
 from databricks import feature_store
 from pyspark.sql.types import *
 from pyspark.sql.functions import *

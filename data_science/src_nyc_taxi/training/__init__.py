@@ -8,7 +8,7 @@
 
 #dbutils.library.restartPython()
 # COMMAND ----------
-
+from databricks.sdk.runtime import *
 import os
 from sklearn import metrics
 import joblib
@@ -38,6 +38,7 @@ from dotenv import load_dotenv
 from ds_utils import * # Custom Package
 import base64
 import datetime
+from pyspark.dbutils import DBUtils
 
 
 # COMMAND ----------
@@ -114,6 +115,10 @@ def get_secret(scope: str, secret_name: str) -> str:
 
     if os.environ.get(secret_name):
         return os.environ.get(secret_name)
+    
+    from pyspark.dbutils import DBUtils
+    spark = SparkSession.builder.getOrCreate()
+    dbutils = DBUtils(spark)
     return dbutils.secrets.get(scope=scope, key=secret_name)
 
 def databricks_sdk_secrets(scope, secret_name):

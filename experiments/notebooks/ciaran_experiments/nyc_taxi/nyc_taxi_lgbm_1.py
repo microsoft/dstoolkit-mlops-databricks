@@ -1,16 +1,11 @@
 # Databricks notebook source
 
-#from featurization import run_feature_store_refresh
-%run /Users/admin@mngenvmcap557827.onmicrosoft.com/.ide/dev/data_science/src_nyc_taxi/featurization/__init__
-# COMMAND ----------
-
+from featurization import run_feature_store_refresh
 run_feature_store_refresh()
 
 # COMMAND ----------
 from training import run_training
-%run /Users/admin@mngenvmcap557827.onmicrosoft.com/.ide/dev3/data_science/src_nyc_taxi/featurization/__init__
-# COMMAND ----------
-
+from databricks.sdk.runtime import *
 run_training(
     experiment_name = "ciaran_experiment_nyc_taxi",
     model_name = "taxi_example_fare_packaged",
@@ -26,5 +21,9 @@ run_training(
         "seed": 42
     }
 )
-
 # COMMAND ----------
+from databricks.sdk.runtime import *
+from registration import run_registration
+run_registration(
+    model_name = "taxi_example_fare_packaged"
+)
