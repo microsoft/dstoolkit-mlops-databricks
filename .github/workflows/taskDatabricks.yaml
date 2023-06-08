@@ -207,7 +207,7 @@ jobs:
 #################################/
 # 15. AML Pipeline
       - name:                       Azure Machine Learning Pipeline For DBX Notebooks
-        run:                        ${{ inputs.SCRIPT_LANGUAGE }} mlOps/modelOps/ml_pipelines/az_machine_learning/v1/nyc_pipeline.py
+        run:                        ${{ inputs.SCRIPT_LANGUAGE }} mlOps/nyc_taxi/aml_pipelines/v1/nyc_pipeline.py
         env:
           DATABRICKS_COMPUTE_NAME:  'mlclusterlink'
           DATABRICKS_CLUSTER_NAME:  'Unity_Cluster_13_ML'
