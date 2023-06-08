@@ -84,8 +84,8 @@ def update_repo(repo_id, update_branch):
     if response.status_code != 200:
         raise Exception(response.content)
     else:
-        print(f"Status Code: {response.status_code}")
-        print(response.json())
+        #print(f"Status Code: {response.status_code}")
+        #print(response.json())
         return response.status_code
   
 

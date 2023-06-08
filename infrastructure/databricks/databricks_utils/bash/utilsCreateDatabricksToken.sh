@@ -21,7 +21,7 @@ if [ $SECRET_EXISTS == true ]; then
                     --query "value" \
                     -o tsv )
 
-    echo "Secret Value: $DATABRICKS_TOKEN"
+    #echo "Secret Value: $DATABRICKS_TOKEN"
 
    # if [[ $DevOps_Agent == "GitHub" ]]; then
    #     echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
