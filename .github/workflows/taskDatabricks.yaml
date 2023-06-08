@@ -88,7 +88,7 @@ jobs:
           ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
 
 #################################/
-## Deploy Azure Infrastructure                                               
+## Deploy Azure Infrastructure.                                               
 #################################/
       #- name:                     Deploy Azure Resources
       #  run:                      ${{ inputs.SCRIPT_LANGUAGE }} infrastructure/databricks/databricks_utils/${{ inputs.SCRIPT_LANGUAGE }}/utils_create_azure_resources.py
