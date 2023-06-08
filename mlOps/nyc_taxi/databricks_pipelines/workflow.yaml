@@ -75,13 +75,13 @@ environments:
             depends_on:
               - task_key: "Train_Register"
 
-      - name: TRAIN_REGISTER     
+      - name: NYC_TAXI     
         tasks:
-          - task_key: "Train_Register"
+          - task_key: "NYC_TAXI"
             <<: *dev-cluster-config
             spark_python_task:
-              python_file: "{{var['ML_PIPELINE_FILES']['TRAIN_REGISTER']['FILE_PATH']}}"
-              parameters: ["{{var['ML_PIPELINE_FILES']['TRAIN_REGISTER']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['TRAIN_REGISTER']['PARAMETERS']['FILE']}}"]
+              python_file: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['NYC_TAXI']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['PARAMETERS']['FILE']}}"]
             libraries: [ 
-              whl: "{{var['ML_PIPELINE_FILES']['TRAIN_REGISTER']['WHL_PATH']}}" 
+              whl: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['WHL_PATH']}}" 
             ]

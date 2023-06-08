@@ -1,7 +1,15 @@
 ML_PIPELINE_FILES:
-    DATA_INGEST_PREP:
-        FILE_PATH: 'file://mlOps/dataOps/nyc_taxi/data_prep.py'
-        WHL_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
+    NYC_TAXI:
+        FILE_PATH: 'file://data_science/src_nyc_taxi/src.py'
+        WHL_PATH: 'file://data_science/src_nyc_taxi/dist/src_nyc_taxi-0.0.1-py3-none-any.whl'
+        PARAMETERS:
+            ENV:  '--env'
+            FILE: 'file:fuse://mlOps/nyc_taxi/databricks_pipelines/hyper_params.yaml'
+            EXPERIMENT_NAME: 'dbx_workflow_nyc_taxi'
+            TRACK_IN_AZURE_ML: True
+
+
+
 
     FEATURE_ENGINEERING: 
         FILE_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/feature_eng.py'
@@ -12,23 +20,6 @@ ML_PIPELINE_FILES:
             EXPERIMENT_NAME: 'dbx_workflow_fe'
             TRACK_IN_AZURE_ML: True
 
-    TRAIN_REGISTER:
-        FILE_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/train_register.py'
-        WHL_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
-        PARAMETERS:
-            ENV:  '--env'
-            FILE: 'file:fuse://mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml'
-            EXPERIMENT_NAME: 'dbx_workflow_train'
-            TRACK_IN_AZURE_ML: True
-
-    MODEL_INFERENCE:
-        FILE_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/score.py'
-        WHL_PATH: 'file://mlOps/modelOps/data_science/nyc_taxi/pyWheels/Helper_Functions/dist/helperfunctions-0.0.1-py3-none-any.whl'
-        PARAMETERS:
-            ENV:  '--env'
-            FILE: 'file:fuse://mlOps/modelOps/ml_pipelines/az_databricks/cicd/workflow_params.yaml'
-            EXPERIMENT_NAME: 'dbx_workflow_inference'
-            TRACK_IN_AZURE_ML: True
 
 
 

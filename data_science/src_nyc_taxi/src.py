@@ -6,12 +6,8 @@ run_feature_store_refresh()
 # COMMAND ----------
 from training import run_training 
 
-
-
-
-
 run_training(
-    experiment_name = "ciaran_experiment_nyc_taxi",
+    experiment_name = "nyc_e2e_mlops",
     model_name = "taxi_example_fare_packaged",
     model_params = {
         "objective": "regression",
