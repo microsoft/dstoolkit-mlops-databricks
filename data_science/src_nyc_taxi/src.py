@@ -18,7 +18,8 @@ run_training(
         "feature_fraction": 0.9,
         "bagging_seed": 42,
         "verbosity": -1,
-        "seed": 42
+        "seed": 42,
+        "num_rounds": 100
     }
 )
 from registration import run_registration
