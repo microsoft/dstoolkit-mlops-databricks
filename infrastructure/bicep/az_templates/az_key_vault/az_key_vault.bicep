@@ -23,33 +23,6 @@ resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
     enableSoftDelete: true
     enabledForTemplateDeployment: true
     accessPolicies: [
-        {
-          //applicationId: '<>' // Application ID of databricks SPN
-          permissions: {
-            // Give it the ability to set secrets // we can then get rid of the Key Vault Admin permission set in the main pipeline
-              // Can we do this for the main spn , the equivalent of serviceConnect1
-            secrets: [
-            'set'
-            'list'
-            'get'
-          ]
-          }
-          tenantId: subscription().tenantId
-          objectId: '<>'
-        }
-        
-        {
-        //applicationId: '<>' // Application ID of serviceConnect1
-        permissions: {
-          secrets: [
-            'set'
-            'list'
-            'get'
-          ]
-        }
-        tenantId: subscription().tenantId
-        objectId: '<>'
-      }
     ]
   }
   
