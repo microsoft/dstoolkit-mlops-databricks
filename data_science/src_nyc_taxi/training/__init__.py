@@ -416,19 +416,7 @@ def train_model_lgbm(
         #    label=y_test.values
         #    )
         
-        mlflow.log_param("num_leaves", "32")
-        mlflow.log_param("objective", "regression")
-        mlflow.log_param( "metric", "rmse")
-        mlflow.log_param("learn_rate", "100")
-
-        #param = { 
-        #            "num_leaves": 32, 
-        #            "objective": "regression", 
-        #            "metric": "rmse"
-        #        }
         
-        num_rounds = 100
-
         # Train a lightGBM model
         model = lgb.train(
         #param, 
