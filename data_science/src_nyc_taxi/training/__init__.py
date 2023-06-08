@@ -207,8 +207,8 @@ def set_mlflow(
     ):
     if namespace.env is not None:
         params = yaml.safe_load(pathlib.Path(namespace.env).read_text())
-        experiment_name = params['ML_PIPELINE_FILES']['TRAIN_REGISTER']['PARAMETERS']['EXPERIMENT_NAME']
-        track_in_azure_ml = params['ML_PIPELINE_FILES']['TRAIN_REGISTER']['PARAMETERS']['TRACK_IN_AZURE_ML']
+        experiment_name = params['Global']['ExperimentName']
+        track_in_azure_ml = params['Global']['AMLTraking']
 
         if track_in_azure_ml:
             if track_in_azure_ml: 
