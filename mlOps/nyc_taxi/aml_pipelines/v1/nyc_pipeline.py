@@ -71,7 +71,7 @@ def create_pipeline_structure(databricks_compute, ws, cluster_id):
     print('Creating the pipeline structure')
 
     nyc_taxi_e2e_mlops = DatabricksStep(
-        name="Databricks_Feature_Engineering",
+        name="nyc_taxi_e2e_mlops",
         notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/data_science/src_nyc_taxi/src.py",
         #notebook_params={'myparam': 'testparam', 
         #    'myparam2': pipeline_param},
