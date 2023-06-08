@@ -7,7 +7,7 @@ REPOS_WITH_MANAGEMENT_PERMISSIONS=$(curl -X GET \
 
 
 echo "Ingest JSON File"
-JSON=$( jq '.' mlOps/devOps/params/$ENVIRONMENT/repos.json)
+JSON=$( jq '.' infrastructure/databricks/databricks_configs/$ENVIRONMENT/repos.json)
 for row in $(echo "${JSON}" | jq -r '.Repo_Configuration[] | @base64'); do
     _jq() {
         echo ${row} | base64 --decode | jq -r ${1}

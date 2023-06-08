@@ -93,7 +93,7 @@ def main():
 
     ENVIRONMENT = os.environ.get("ENVIRONMENT")
 
-    file_name = 'mlOps/devOps/params/' + ENVIRONMENT + '/repos.json'
+    file_name = 'infrastructure/databricks/databricks_configs/' + ENVIRONMENT + '/repos.json'
     repo_param_file = _ingest_repo_param_file(file_name)
 
     print(f"Repos To Connect {repo_param_file}")

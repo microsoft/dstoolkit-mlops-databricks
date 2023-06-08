@@ -2,7 +2,7 @@
 
 echo $ENVIRONMENT
 echo "Ingest JSON File"
-JSON=$( jq '.' MLOps/DevOps/Infrastructure/DBX_CICD_Deployment/Bicep_Params/$ENVIRONMENT/Bicep.parameters.json)
+JSON=$( jq '.' infrastructure/bicep/params/$ENVIRONMENT/bicep.parameters.json)
 
 TemplateParamFilePath=$( jq -r '.parameters.TemplateParamFilePath.value' <<< "$JSON")
 echo "Parm File Path: $TemplateParamFilePath"

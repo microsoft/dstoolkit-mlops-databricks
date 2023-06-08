@@ -4,7 +4,7 @@
 echo $ENVIRONMENT
 
 echo "Ingest JSON File"
-JSON=$( jq '.' mlOps/devOps/infra/master_templates/params/$ENVIRONMENT/bicep.parameters.json)
+JSON=$( jq '.' infrastructure/bicep/params/$ENVIRONMENT/bicep.parameters.json)
 
 
 RESOURCE_GROUP_NAME=$( jq -r '.parameters.resourceGroupName.value' <<< "$JSON")

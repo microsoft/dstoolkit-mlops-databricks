@@ -1,5 +1,5 @@
 echo "Ingest JSON File"
-JSON=$( jq '.' mlOps/devOps/params/$ENVIRONMENT/repos.json)
+JSON=$( jq '.' infrastructure/databricks/databricks_configs/$ENVIRONMENT/repos.json)
 
 #echo "${JSON}" | jq
 

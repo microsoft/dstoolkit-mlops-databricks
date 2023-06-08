@@ -30,7 +30,7 @@ def _ingest_cluster_param_file(filename):
 
 def create_clusters():   
     ENVIRONMENT = os.environ.get("ENVIRONMENT")
-    cluster_param_file = _ingest_cluster_param_file('mlOps/devOps/params/' + ENVIRONMENT + '/clusters.json') 
+    cluster_param_file = _ingest_cluster_param_file('infrastructure/databricks/databricks_configs/' + ENVIRONMENT + '/clusters.json') 
     existing_clusters, _ = _list_existing_clusters()
     existing_clusters_name_arr = _get_cluster_names(existing_clusters)
     print(existing_clusters_name_arr)
