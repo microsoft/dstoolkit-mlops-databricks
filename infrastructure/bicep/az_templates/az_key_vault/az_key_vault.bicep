@@ -24,7 +24,7 @@ resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
     enabledForTemplateDeployment: true
     accessPolicies: [
         {
-          //applicationId: 'ce79c2ef-170d-4f1c-a706-7814efb94898' // Application ID of databricks SPN
+          //applicationId: '<>' // Application ID of databricks SPN
           permissions: {
             // Give it the ability to set secrets // we can then get rid of the Key Vault Admin permission set in the main pipeline
               // Can we do this for the main spn , the equivalent of serviceConnect1
@@ -35,11 +35,11 @@ resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
           ]
           }
           tenantId: subscription().tenantId
-          objectId: 'ab926dd1-657d-4bb2-9987-c7857046d0dd'
+          objectId: '<>'
         }
         
         {
-        //applicationId: '5d57ca95-aca6-453d-9110-97f687d9dff6' // Application ID of serviceConnect1
+        //applicationId: '<>' // Application ID of serviceConnect1
         permissions: {
           secrets: [
             'set'
@@ -48,7 +48,7 @@ resource azKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
           ]
         }
         tenantId: subscription().tenantId
-        objectId: '47527038-bf92-4422-8632-961c5851c21b'
+        objectId: '<>'
       }
     ]
   }
