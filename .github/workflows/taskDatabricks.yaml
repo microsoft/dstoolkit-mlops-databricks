@@ -90,10 +90,10 @@ jobs:
 #################################/
 ## Deploy Azure Infrastructure                                               
 #################################/
-      - name:                     Deploy Azure Resources
-        run:                      ${{ inputs.SCRIPT_LANGUAGE }} infrastructure/databricks/databricks_utils/${{ inputs.SCRIPT_LANGUAGE }}/utils_create_azure_resources.py
-        env:
-          ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
+      #- name:                     Deploy Azure Resources
+      #  run:                      ${{ inputs.SCRIPT_LANGUAGE }} infrastructure/databricks/databricks_utils/${{ inputs.SCRIPT_LANGUAGE }}/utils_create_azure_resources.py
+      #  env:
+      #    ENVIRONMENT:            ${{ inputs.ENVIRONMENT }}
 
 
 
@@ -206,14 +206,14 @@ jobs:
 ## Functionality Under Development (Not yet parameterized to work on general deployments)                                        
 #################################/
 # 15. AML Pipeline
-#      - name:                       Azure Machine Learning Pipeline For DBX Notebooks
-#        run:                        ${{ inputs.SCRIPT_LANGUAGE }} mlOps/modelOps/ml_pipelines/az_machine_learning/v1/nyc_pipeline.py
-#        env:
-#          DATABRICKS_COMPUTE_NAME:  'mlclusterlink'
-#          DATABRICKS_CLUSTER_NAME:  'ml_cluster'
-#          ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
-#          ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
-#          ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
+      - name:                       Azure Machine Learning Pipeline For DBX Notebooks
+        run:                        ${{ inputs.SCRIPT_LANGUAGE }} mlOps/modelOps/ml_pipelines/az_machine_learning/v1/nyc_pipeline.py
+        env:
+          DATABRICKS_COMPUTE_NAME:  'mlclusterlink'
+          DATABRICKS_CLUSTER_NAME:  'Unity_Cluster_13_ML'
+          ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
 
 
       - shell:                    bash

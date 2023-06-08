@@ -70,44 +70,20 @@ class GetClusterID():
 def create_pipeline_structure(databricks_compute, ws, cluster_id):
     print('Creating the pipeline structure')
 
-    Databricks_Featurization_Step = DatabricksStep(
+    nyc_taxi_e2e_mlops = DatabricksStep(
         name="Databricks_Feature_Engineering",
-        notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/mlOps/modelOps/data_science/nyc_taxi/feature_eng.py",
+        notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/data_science/src_nyc_taxi/src.py",
         #notebook_params={'myparam': 'testparam', 
         #    'myparam2': pipeline_param},
-        run_name='Databricks_Feature_Engineering',
+        run_name='nyc_taxi_e2e_mlops',
         compute_target=databricks_compute,
         existing_cluster_id=cluster_id,
         allow_reuse=True,
         num_workers=3
     )
 
-    Databricks_Model_Training = DatabricksStep(
-        name="Databricks_Model_Training",
-        
-        notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/mlOps/modelOps/data_science/nyc_taxi/train_register.py",
-        #notebook_params={'myparam': 'testparam', 
-        #    'myparam2': pipeline_param},
-        run_name='Databricks_Model_Training',
-        compute_target=databricks_compute,
-        existing_cluster_id=cluster_id,
-        allow_reuse=True,
-        num_workers=3
-    )
 
-    Databricks_Model_Scoring = DatabricksStep(
-        name="Databricks_Scoring",
-        notebook_path="/Repos/"+ ARM_CLIENT_ID + "/Sandbox/mlOps/modelOps/data_science/nyc_taxi/score.py",
-        #notebook_params={'myparam': 'testparam', 
-        #    'myparam2': pipeline_param},
-        run_name='Databricks_Scoring',
-        compute_target=databricks_compute,
-        existing_cluster_id=cluster_id,
-        allow_reuse=True,
-        num_workers=3
-    )
-
-    step_sequence = StepSequence(steps=[Databricks_Featurization_Step, Databricks_Model_Training, Databricks_Model_Scoring])
+    step_sequence = StepSequence(steps=[nyc_taxi_e2e_mlops])
     pipeline = Pipeline(workspace=ws, steps=step_sequence)
     pipeline.validate()
     
