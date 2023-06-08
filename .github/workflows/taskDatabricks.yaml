@@ -220,7 +220,7 @@ jobs:
         name:                     Set Up DBX Environment Variables
         run: |
           DATABRICKS_TOKEN=$(az keyvault secret show --name "dbkstoken" --vault-name $AZ_KEYVAULT_NAME --query "value" -o tsv)
-          echo $DATABRICKS_TOKEN
+          #echo $DATABRICKS_TOKEN
           echo "DATABRICKS_TOKEN=$DATABRICKS_TOKEN" >> $GITHUB_ENV
 
 
@@ -235,8 +235,8 @@ jobs:
           # not the Databricks AAD Token. 
           pip3 install dbx
 
-          echo $DATABRICKS_TOKEN
-          echo $DATABRICKS_HOST
+          #echo $DATABRICKS_TOKEN
+          #echo $DATABRICKS_HOST
 
           databricks -h 
           databricks fs ls

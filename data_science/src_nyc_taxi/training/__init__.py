@@ -358,8 +358,6 @@ def evaluate(training_df,random_state, model):
         )
 
     evaluation_dict["r2"] = r2
-
-    #import pdb; pdb.set_trace()
     
     mlflow.log_metric(
         "r2",
@@ -398,10 +396,9 @@ def train_model_lgbm(
     # Collect data into a Pandas array for training
     data = training_df.toPandas()[features_and_label]
     train, test = train_test_split(data, random_state=123)
+    
     X_train = train.drop(["fare_amount"], axis=1)
     y_train = train.fare_amount
-
-
 
     mlflow.end_run()
     mlflow.autolog(exclusive=False)
@@ -416,16 +413,16 @@ def train_model_lgbm(
         #    label=y_test.values
         #    )
         
-        
+        num_rounds = model_params["num_rounds"]
+
         # Train a lightGBM model
         model = lgb.train(
-        #param, 
         model_params,
         train_lgb_dataset, 
         num_rounds
         )
 
-
+        mlflow.log_param("num_rounds", num_rounds)
         mlflow.log_param("local_model_file_path", model_file_path)  
 
         evaulation_dict = evaluate(
@@ -433,11 +430,8 @@ def train_model_lgbm(
             random_state=123,
             model=model
             )
-
-        #import pdb; pdb.set_trace()
         
         mlflow.log_metrics(evaulation_dict)
-    
     
         fs.log_model(
             model,
@@ -621,7 +615,8 @@ if __name__ == "__main__":
             "feature_fraction": 0.9,
             "bagging_seed": 42,
             "verbosity": -1,
-            "seed": 42
+            "seed": 42,
+            "num_rounds": 100
         }
         )
 

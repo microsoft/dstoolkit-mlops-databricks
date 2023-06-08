@@ -29,11 +29,11 @@ def run_cmd(cmd):
     #May Need To Rmove shell=True
     process = subprocess.run(cmd, stdout=subprocess.PIPE)
     output = process.stdout.decode().split('\n')
-    print(output)
+    #print(output)
     output = [line.strip('\n').strip('\r') for line in output]
 
 
-    print(f"Return Code: {process.returncode}")
+    #print(f"Return Code: {process.returncode}")
     if process.returncode != 0:
         raise RuntimeError('\n'.join(output))
     return output
@@ -63,11 +63,11 @@ def create_secret_scopes(scope_name=str, initial_manage_principal=str):
         'https://' + DATABRICKS_INSTANCE + '/api/2.0/secrets/scopes/create', headers=DBRKS_REQ_HEADERS, json=postjson
     )
 
-    print(response.status_code)
+    #print(response.status_code)
     #if response.status_code != 200:
     #    raise Exception(response.text)
 
-    print(response.json())
+    #print(response.json())
 
 def insert_secret(secret_value=str, scope_name=str, key=str):
     """
@@ -82,18 +82,18 @@ def insert_secret(secret_value=str, scope_name=str, key=str):
     response = requests.post(
         'https://' + DATABRICKS_INSTANCE + '/api/2.0/secrets/put', headers=DBRKS_REQ_HEADERS, json=postjson
     )
-    print(response.status_code)
+    #print(response.status_code)
     if response.status_code != 200:
         raise Exception(response.text)
 
-    print(response.json())
+    #print(response.json())
     
 
 if __name__ == '__main__':
     app_insight_name = get_app_insight_name()[0]
-    print(app_insight_name)
+    #print(app_insight_name)
     app_insight_key = get_app_insight_key(app_insight_name)[0]
-    print(app_insight_key)
+    #print(app_insight_key)
 
 
     # Create Secret Scopes

@@ -31,17 +31,17 @@ DBRKS_REQ_HEADERS = {
     'Content-Type': 'application/json'
 }
 
-print(DATABRICKS_COMPUTE_NAME)
-print(WORKSPACE_ID)
-print(RESOURCE_GROUP_NAME)
-print(DATABRICKS_AAD_TOKEN)
-print(DATABRICKS_MANAGEMENT_TOKEN)
-print(DATABRICKS_INSTANCE)
-print(SUBSCRIPTION_ID)
-print(ARM_CLIENT_SECRET)
-print(ARM_TENANT_ID)
-print(ARM_CLIENT_ID)
-print(AML_WS_NAME)
+#print(DATABRICKS_COMPUTE_NAME)
+#print(WORKSPACE_ID)
+#print(RESOURCE_GROUP_NAME)
+#print(DATABRICKS_AAD_TOKEN)
+#print(DATABRICKS_MANAGEMENT_TOKEN)
+#print(DATABRICKS_INSTANCE)
+#print(SUBSCRIPTION_ID)
+#print(ARM_CLIENT_SECRET)
+#print(ARM_TENANT_ID)
+#print(ARM_CLIENT_ID)
+#print(AML_WS_NAME)
 
 class GetClusterID():
     def __init__(self, cluster_name):
@@ -103,17 +103,17 @@ if __name__ == "__main__":
         auth=svc_pr
     )
 
-    print(f" AML Workspace Properties: {ws} ")
+    #print(f" AML Workspace Properties: {ws} ")
 
     try:
         databricks_compute = DatabricksCompute(workspace=ws, name=DATABRICKS_COMPUTE_NAME)
         print('Compute target {} already exists'.format(DATABRICKS_COMPUTE_NAME))
     except ComputeTargetException:
-        print('Compute not found, will use below parameters to attach new one')
-        print('db_compute_name {}'.format(DATABRICKS_COMPUTE_NAME))
-        print('db_resource_group {}'.format(RESOURCE_GROUP_NAME))
-        print('db_workspace_name {}'.format(DATABRICKS_WS_NAME))
-        print('db_access_token {}'.format(DATABRICKS_AAD_TOKEN))
+        #print('Compute not found, will use below parameters to attach new one')
+        #print('db_compute_name {}'.format(DATABRICKS_COMPUTE_NAME))
+        #print('db_resource_group {}'.format(RESOURCE_GROUP_NAME))
+        #print('db_workspace_name {}'.format(DATABRICKS_WS_NAME))
+        #print('db_access_token {}'.format(DATABRICKS_AAD_TOKEN))
 
         config = DatabricksCompute.attach_configuration(
             resource_group = RESOURCE_GROUP_NAME,

@@ -25,9 +25,9 @@ jobs:
 
           # IMPORTANT: The testing framework is not yet implemented, and therefore still under development. 
 
-          cd mlOps/devOps/utils
+          #cd mlOps/devOps/utils
 
-          python -m pytest -v
+          #python -m pytest -v
 
   prApproved_CD_Development:
     if:                         github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && contains(github.head_ref, 'feature') && github.base_ref == 'main'

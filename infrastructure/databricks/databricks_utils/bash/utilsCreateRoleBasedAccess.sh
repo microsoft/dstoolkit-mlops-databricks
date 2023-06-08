@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-echo "Resource Group Name: $RESOURCE_GROUP_NAME"
+#echo "Resource Group Name: $RESOURCE_GROUP_NAME"
 echo "ENVIRONMENT: $ENVIRONMENT"
 RESOURCE_GROUP_ID=$( az group show -n $RESOURCE_GROUP_NAME --query id -o tsv )
 
@@ -14,7 +14,7 @@ for row in $(echo "${JSON}" | jq -r '.RBAC_Assignments[] | @base64'); do
         echo ${row} | base64 --decode | jq -r ${1}
     }
     ROLES_ARRAY="$(_jq '.roles')"
-    echo $ROLES_ARRAY
+    #echo $ROLES_ARRAY
 
     # Before: [ "Contributor", "DBX_Custom_Role", "Key Vault Administrator" ]
     # xargs trims whitespace on either side. -n removes newline characters.
@@ -30,7 +30,8 @@ for row in $(echo "${JSON}" | jq -r '.RBAC_Assignments[] | @base64'); do
         --role "$ROLE" \
         --assignee-object-id $(_jq '.roleBeneficiaryObjID') \
         --assignee-principal-type "$(_jq '.principalType')" \
-        --scope "$RESOURCE_GROUP_ID"
+        --scope "$RESOURCE_GROUP_ID" \
+        -o none
         #--scope "$(_jq '.scope')"
 
     done    
