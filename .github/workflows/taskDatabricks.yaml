@@ -40,7 +40,7 @@ jobs:
 
 
 #################################/
-##  Set Python                                          
+##  Set Python.                                      
 #################################/
       - name:                     Setup Python
         uses:                     actions/setup-python@v4
