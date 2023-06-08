@@ -7,9 +7,15 @@ mlOps/devOps/params/deprecated
 .dbx/sync
 localdev
 azureDevOps
-venv_dbx_connect
-venv_dbx
 .env
+.venv_dbx_con13
+dev.env
+data_science/src_nyc_taxi/build
+data_science/src_nyc_taxi/dist
+data_science/src_nyc_taxi/*/__pycache__ 
+data_science/src_nyc_taxi/src_nyc_taxi.egg-info
+data_science/src_nyc_taxi/src_nyc_taxi-0.0.1
+
 .linux_venv
 
 

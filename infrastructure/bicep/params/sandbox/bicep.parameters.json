@@ -1,0 +1,69 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "TemplateParamFilePath": {
+      "value": "infrastructure/bicep/params/sandbox/bicep.parameters.json"
+    },
+    "TemplateFilePath": {
+      "value": "infrastructure/bicep/main.bicep"
+    },
+    "AZURE_DATABRICKS_APP_ID": {
+      "value": "2ff814a6-3304-4ab8-85cb-cd0e6f879c1d"
+    },
+    "MANAGEMENT_RESOURCE_ENDPOINT": {
+      "value": "https://management.core.windows.net/"
+    },
+    "location": {
+        "value": "eastus"
+    },
+    "environment": {
+        "value": "sandbox"
+    },
+
+    "containerNames": {
+        "value": [
+          "bronze",
+          "silver",
+          "gold"
+        ]
+    },
+    "storageConfig": {
+      "value": {
+        "kind": "StorageV2",
+        "sku_name": "Standard_LRS",
+        "allowBlobPublicAccess": true,
+        "isHnsEnabled": true,
+        "accessTier": "Hot"
+      }
+    },
+    "resourceGroupName" :{
+      "value": "databricks-sandbox-rg"
+    },
+    "workspaceName" : {
+      "value": "dbxwssandbox"
+    },
+    "pricingTier": {
+      "value": "premium"
+    },
+    "ShouldCreateContainers": {
+      "value": true
+    },
+    "loganalyticswsname": {
+      "value": "loganalyticssandbox"
+    },
+    "appInsightswsname": {
+      "value": "appinsightssandbox"
+    },
+    "storageAccountName": {
+      "value": "adlssandbox"
+    },
+    "amlwsname": {
+      "value": "amlsandbox"
+    },
+    "amlblobname": {
+      "value": "amlblobsandbox"
+    }
+  }
+}
+  
