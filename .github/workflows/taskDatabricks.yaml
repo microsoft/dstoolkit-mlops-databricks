@@ -9,8 +9,8 @@ on:
         required: false
         type: string
       SCRIPT_LANGUAGE:
-          required: false
-          type: string
+        required: false
+        type: string
       DevOps_Agent:
         required: true
         type: string 

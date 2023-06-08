@@ -34,6 +34,9 @@ jobs:
     uses:                       ./.github/workflows/taskDatabricks.yaml
     with:
       ENVIRONMENT:              Development
+      RELEASE_BRANCH:           'release/1'
+      SCRIPT_LANGUAGE:          python
+      DevOps_Agent:             GitHub
     secrets:
       ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
@@ -57,6 +60,9 @@ jobs:
     uses:                       ./.github/workflows/taskDatabricks.yaml
     with:
       ENVIRONMENT:              UAT
+      RELEASE_BRANCH:           'release/1'
+      SCRIPT_LANGUAGE:          python
+      DevOps_Agent:             GitHub
     secrets:
       ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
@@ -76,6 +82,8 @@ jobs:
     with:
       ENVIRONMENT:              Production
       RELEASE_BRANCH:           'release/1'
+      SCRIPT_LANGUAGE:          python
+      DevOps_Agent:             GitHub
     secrets:
       ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}    
       ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
