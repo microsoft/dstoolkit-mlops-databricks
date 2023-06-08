@@ -9,7 +9,7 @@ ENVIRONMENT = os.environ['ENVIRONMENT']
 
 class LoadJson():
     def __init__(self):
-        self.json_file = 'mlOps/devOps/infra/master_templates/params/' + ENVIRONMENT + '/bicep.parameters.json'
+        self.json_file = 'infrastructure/bicep/params/' + ENVIRONMENT + '/bicep.parameters.json'
 
     def load_json(self):
         with open(self.json_file, 'r') as f:

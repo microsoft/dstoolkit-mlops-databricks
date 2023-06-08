@@ -33,7 +33,7 @@ resource azResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 //                                                                  KEY VAULT - SELECT KV                                                                                //
 // ################################################################################################################################################################//
 
-module azKeyVault '../az_templates/az_key_vault/az_key_vault.bicep' = {
+module azKeyVault 'az_templates/az_key_vault/az_key_vault.bicep' = {
   dependsOn: [
     azResourceGroup
     
@@ -50,7 +50,7 @@ module azKeyVault '../az_templates/az_key_vault/az_key_vault.bicep' = {
 //                                                                       Module for Create Azure Data Lake Storage
 // RBAC is assigned -> azDatabricks given access to Storage 
 // ################################################################################################################################################################//
-module azDataLake '../az_templates/az_data_lake/az_data_lake.bicep' =  {
+module azDataLake 'az_templates/az_data_lake/az_data_lake.bicep' =  {
   dependsOn: [
     azResourceGroup
   ]
@@ -71,7 +71,7 @@ module azDataLake '../az_templates/az_data_lake/az_data_lake.bicep' =  {
 }
 
 
-module logAnalytics '../az_templates/az_app_insights/az_app_insights.bicep'= {
+module logAnalytics 'az_templates/az_app_insights/az_app_insights.bicep' = {
   dependsOn: [
     azResourceGroup
   ]
@@ -89,7 +89,7 @@ module logAnalytics '../az_templates/az_app_insights/az_app_insights.bicep'= {
 //                                                                       Module for Creating Azure Machine Learning Workspace
 // Outputs AzDatabricks Workspace ID, which is used when Assigning RBACs.
 // ################################################################################################################################################################//
-module azMachineLearning '../az_templates/az_machine_learning/az_machine_learning.bicep' =  {
+module azMachineLearning 'az_templates/az_machine_learning/az_machine_learning.bicep' =  {
   dependsOn: [
     logAnalytics
     azDataLake
@@ -114,7 +114,7 @@ module azMachineLearning '../az_templates/az_machine_learning/az_machine_learnin
 //                                                                       Module for Creating Azure Databricks Workspace
 // Outputs AzDatabricks Workspace ID, which is used when Assigning RBACs
 // ################################################################################################################################################################//
-module azDatabricks '../az_templates/az_databricks/az_databricks.bicep' =  {
+module azDatabricks 'az_templates/az_databricks/az_databricks.bicep' =  {
   dependsOn: [
     azMachineLearning
   ]

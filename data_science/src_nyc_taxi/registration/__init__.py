@@ -109,13 +109,6 @@ def evaluation(
         # Get the latest model version in the production stage
 
         mlflow_client = MlflowClient()
-        #latest_production_version = mlflow_client.get_latest_versions(
-        #    name=model_name,
-        #    stages=[production_stage],
-        #    order_by=['creation_time desc'],
-        #    max_results=1
-        #)[0].version
-
 
         latest_production_version = mlflow_client.get_latest_versions(
             name=model_name,
@@ -126,9 +119,10 @@ def evaluation(
 
 
         # Promote Latest Model To Production
+        latest_model_version = get_latest_model_version(model_name)
         mlflow_client.transition_model_version_stage(
                 name=model_name,
-                version=latest_production_version,
+                version=latest_model_version,
                 stage="production",
                 archive_existing_versions = True
         )
