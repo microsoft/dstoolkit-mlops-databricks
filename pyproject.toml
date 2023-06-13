@@ -21,10 +21,9 @@ keywords = ["packaging", "poetry"]
 packages = [
     {include = "utils", from = "data_science/src_nyc_taxi"},
     {include = "ciaran_experiments", from = "experiments/notebooks"},
-    {include = "training", from = "data_science/src_nyc_taxi"}
+    {include = "training", from = "data_science/src_nyc_taxi"},
+    {include = "featurization", from = "data_science/src_nyc_taxi"}
 ]
-#from ciaran_experiments import test_function
-
 
 
 [tool.poetry.dependencies]
