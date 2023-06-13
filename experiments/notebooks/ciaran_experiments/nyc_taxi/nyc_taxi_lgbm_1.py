@@ -1,12 +1,12 @@
 # Databricks notebook source
-
 from featurization import run_feature_store_refresh
 run_feature_store_refresh()
 
 # COMMAND ----------
+
 from training import run_training 
 
-num_rounds_arr = [20,40,60,80,100,120,140]
+num_rounds_arr = [20,40,60,80,100,120,160]
 
 for num_rounds in num_rounds_arr:
     run_training(
