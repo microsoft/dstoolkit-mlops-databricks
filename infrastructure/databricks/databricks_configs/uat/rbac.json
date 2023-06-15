@@ -14,7 +14,7 @@
                                                "Key Vault Administrator",
                                                "Storage Blob Data Contributor"
                                            ],
-                                 "roleBeneficiaryObjID":  "06578f2b-fdf3-4f4a-be81-52a82d2bfbee",
+                                 "roleBeneficiaryObjID":  "8ad9c3b6-7025-4b9b-96c1-3feb980c7ead",
                                  "Description":  "Databricks SPN",
                                  "principalType":  "ServicePrincipal"
                              }
