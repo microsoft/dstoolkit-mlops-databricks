@@ -7,10 +7,10 @@
                           ],
     "Repo_Configuration":  [
                                {
-                                   "url": "https://github.com/ciaran28/dstoolkit-mlops-databricks",
-                                   "provider": "gitHub",
-                                   "path": "UATFolder",
-                                    "branch": "main"
+                                   "url":  "https://github.com/ciaran28/dstoolkit-mlops-databricks",
+                                   "provider":  "gitHub",
+                                   "path":  "UATFolder",
+                                   "branch":  "main"
                                }
                            ]
 }

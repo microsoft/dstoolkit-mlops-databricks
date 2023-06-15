@@ -10,7 +10,7 @@
                                    "url":  "https://github.com/ciaran28/dstoolkit-mlops-databricks",
                                    "provider":  "gitHub",
                                    "path":  "ProductionFolder",
-                                    "branch":  "main"
+                                   "branch":  "main"
                                }
                            ]
 }
