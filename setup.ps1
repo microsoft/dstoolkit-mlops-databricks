@@ -37,7 +37,7 @@ echo "Update The Variable Files"
 $environments = @('sandbox', 'development', 'uat', 'production')
 foreach ($environment in $environments)
 {
-   $JsonData = Get-Content mlOps/devOps/params/$environment/repos.json -raw | ConvertFrom-Json
+   $JsonData = Get-Content infrastructure/databricks/databricks_configs/$environment/repos.json -raw | ConvertFrom-Json
    foreach ($Obj in $JsonData.Git_Configuration)
    {
        ($Obj.git_username = $Git_Configuration )
@@ -46,15 +46,15 @@ foreach ($environment in $environments)
    {
        ($Obj.url = $Repo_ConfigurationURL )
    }
-   $JsonData | ConvertTo-Json -Depth 4  | set-content mlOps/devOps/params/$environment/repos.json -NoNewline
+   $JsonData | ConvertTo-Json -Depth 4  | set-content infrastructure/databricks/databricks_configs/$environment/repos.json -NoNewline
 }
  
 foreach ($environment in $environments)
 {
-  $JsonData = Get-Content mlOps/devOps/params/$environment/rbac.json -raw | ConvertFrom-Json
+  $JsonData = Get-Content infrastructure/databricks/databricks_configs/$environment/rbac.json -raw | ConvertFrom-Json
   $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Your Object ID'){$_.roleBeneficiaryObjID=$User_ObjID}}
   $JsonData.RBAC_Assignments | % {if($_.Description -eq 'Databricks SPN'){$_.roleBeneficiaryObjID=$main_sp_name_obj_id}}
-  $JsonData | ConvertTo-Json -Depth 4  | set-content mlOps/devOps/params/$environment/rbac.json -NoNewline
+  $JsonData | ConvertTo-Json -Depth 4  | set-content infrastructure/databricks/databricks_configs/$environment/rbac.json -NoNewline
 }
 
 git add . 
@@ -67,7 +67,7 @@ git push
 
 # Secret Configuration
 
-clear
+#clear
 
 echo "Credentials Used In Later Step - Do Not Delete"
 echo $DBX_CREDENTIALS
