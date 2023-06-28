@@ -252,56 +252,30 @@ jobs:
 #################################/
 ##  Install Wheel On Interactive Cluster                                            
 #################################/
-      - name:                     'Install NYC Taxi Package Wheel File On Interactive Cluster'
-        run: |
+      #- name:                     'Install NYC Taxi Package Wheel File On Interactive Cluster'
+      #  run: |
 
           #python setup.py sdist bdist_wheel
 
-          cd data_science/src_nyc_taxi/dist
-          ls # List the contents of the directory - Wheel File Should Exist Here
+      #    cd data_science/src_nyc_taxi/dist
+      #    ls # List the contents of the directory - Wheel File Should Exist Here
 
-          wheel_file_name=$( ls -d -- *.whl )
-          echo "Wheel File Name: $wheel_file_name"
+      #    wheel_file_name=$( ls -d -- *.whl )
+      #    echo "Wheel File Name: $wheel_file_name"
 
-          databricks fs rm dbfs:/FileStore/wheel_files/$wheel_file_name
-          databricks fs cp $wheel_file_name dbfs:/FileStore/wheel_files/$wheel_file_name --overwrite
-
-
-          databricks clusters list --output JSON
-          CLUSTER_ID=$(databricks clusters list --output JSON | jq -r '.clusters[] | select(.cluster_name == "ml_cluster") | .cluster_id')
-
-          # Check if the cluster is running
-          cluster_status=$(databricks clusters get --cluster-id $CLUSTER_ID --output JSON | jq -r '.state')
-
-          # Function to check if the cluster is running
-          function is_cluster_running() {
-            cluster_status=$(databricks clusters get --cluster-id $CLUSTER_ID --output JSON | jq -r '.state')
-            if [[ "$cluster_status" == "RUNNING" ]]; then
-                return 0
-            else
-                return 1
-            fi }
-
-          # Start the cluster if it's not running
-          if ! is_cluster_running; then
-              echo "Cluster is not running. Starting the cluster..."
-              databricks clusters start --cluster-id $CLUSTER_ID
-          fi
-
-          # Wait until the cluster is running
-          while ! is_cluster_running; do
-              echo "Waiting for the cluster to start..."
-              sleep 10
-          done
-
-          # Next stages of the code
-          echo "Cluster is running. Proceeding to the next stages..."
+      #    databricks fs rm dbfs:/FileStore/wheel_files/$wheel_file_name
+      #    databricks fs cp $wheel_file_name dbfs:/FileStore/wheel_files/$wheel_file_name --overwrite
 
 
-          databricks libraries uninstall --cluster-id "$CLUSTER_ID" --whl dbfs:/FileStore/wheel_files/$wheel_file_name
-          databricks libraries install --cluster-id $CLUSTER_ID --whl dbfs:/FileStore/wheel_files/$wheel_file_name
+      #    databricks clusters list --output JSON
+      #    CLUSTER_ID=$(databricks clusters list --output JSON | jq -r '.clusters[] | select(.cluster_name == "ml_cluster") | .cluster_id')
+
+          # TO DO CHECK IF CLUSTER IS ON, AND IF NOT, TURN IT ON
+
+      #    databricks libraries uninstall --cluster-id "$CLUSTER_ID" --whl dbfs:/FileStore/wheel_files/$wheel_file_name
+      #    databricks libraries install --cluster-id $CLUSTER_ID --whl dbfs:/FileStore/wheel_files/$wheel_file_name
           
-          databricks clusters restart --cluster-id $CLUSTER_ID
+      #    databricks clusters restart --cluster-id $CLUSTER_ID
 
 
 
