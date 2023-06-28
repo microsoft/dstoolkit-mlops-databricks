@@ -1,9 +1,11 @@
 ![Banner](docs/images/MLOps_for_databricks_Solution_Acclerator_logo.JPG)
 
 
+
+ ## MLOps Gify Visual (Allow 20 Seconds To Load)
+
 ![](https://github.com/ciaran28/dstoolkit-mlops-databricks/blob/main/docs/images/Azure_Machine_Learning_GIF.gif) 
 
----
 ---
  <br>
 
