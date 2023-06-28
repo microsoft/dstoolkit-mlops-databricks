@@ -24,7 +24,7 @@ resource amlBlob 'Microsoft.Storage/storageAccounts@2021-08-01' =  {
 }
 
 
-resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2022-10-01' = {
+resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2023-04-01' = {
   name: varamlwsname
   location: location
 
@@ -37,9 +37,11 @@ resource AzMachineLearning 'Microsoft.MachineLearningServices/workspaces@2022-10
     storageAccount: amlBlob.id
     keyVault: azKeyVaultID
   }
+  
   sku: {
     name: 'Enterprise'
-  }  
+  }
+    
 }
 
 output azMachineLearningWSId string = AzMachineLearning.id

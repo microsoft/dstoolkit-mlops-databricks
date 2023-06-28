@@ -8,6 +8,38 @@
                 "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks"
             }
         },
+        "sandbox": {
+            "profile": "sandbox",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/dbx/projects/dstoolkit-mlops-databricks",
+                "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks"
+            }
+        },
+        "development": {
+            "profile": "development",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/dbx/projects/dstoolkit-mlops-databricks",
+                "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks"
+            }
+        },
+        "uat": {
+            "profile": "uat",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/dbx/projects/dstoolkit-mlops-databricks",
+                "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks"
+            }
+        },
+        "production": {
+            "profile": "production",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/dbx/projects/dstoolkit-mlops-databricks",
+                "artifact_location": "dbfs:/dbx/dstoolkit-mlops-databricks"
+            }
+        },
         "ciaran_sandbox": {
             "profile": "ciaran_sandbox",
             "workspace_dir": "/Shared/ciaran_sandbox",
