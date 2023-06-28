@@ -5,7 +5,7 @@ on:
       ENVIRONMENT:
         required: true
         type: string
-      RELEASE_BRANCH:
+      DBX_REPO_BRANCH:
         required: false
         type: string
       SCRIPT_LANGUAGE:
@@ -24,8 +24,7 @@ on:
         required: true
       PAT_GITHUB:
         required: true
-      RELEASE_BRANCH:
-        required: false
+
 
 jobs:
   build:
@@ -190,7 +189,7 @@ jobs:
         run:                      bash infrastructure/databricks/databricks_utils/bash/utilsRepoPull.sh
         env:
           PULL_BRANCH:            ${{ github.ref_name }}
-          RELEASE_BRANCH:         ${{ inputs.RELEASE_BRANCH}} 
+          DBX_REPO_BRANCH:        ${{ inputs.DBX_REPO_BRANCH}} 
 
 
 #################################/

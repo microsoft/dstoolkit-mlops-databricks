@@ -19,7 +19,7 @@ for row in $(echo "${JSON}" | jq -r '.Repo_Configuration[] | @base64'); do
 
     if [ -z "$PULL_BRANCH" ];
     then
-        PULL_BRANCH=$RELEASE_BRANCH
+        PULL_BRANCH=$DBX_REPO_BRANCH
         "Use Release Branch: $PULL_BRANCH"
     fi
 

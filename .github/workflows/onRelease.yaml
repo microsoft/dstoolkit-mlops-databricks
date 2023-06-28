@@ -33,8 +33,8 @@ jobs:
     if:                         github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && contains(github.head_ref, 'feature') && github.base_ref == 'main'
     uses:                       ./.github/workflows/taskDatabricks.yaml
     with:
-      ENVIRONMENT:              Development
-      RELEASE_BRANCH:           'release/1'
+      ENVIRONMENT:              development
+      DBX_REPO_BRANCH:          main
       SCRIPT_LANGUAGE:          python
       DevOps_Agent:             GitHub
     secrets:
@@ -59,8 +59,8 @@ jobs:
     if:                         github.event_name == 'pull_request' && github.event.action == 'closed' && github.head_ref == 'main' && contains(github.base_ref, 'release')
     uses:                       ./.github/workflows/taskDatabricks.yaml
     with:
-      ENVIRONMENT:              UAT
-      RELEASE_BRANCH:           'release/1'
+      ENVIRONMENT:              uat
+      DBX_REPO_BRANCH:          'release/1'
       SCRIPT_LANGUAGE:          python
       DevOps_Agent:             GitHub
     secrets:
@@ -80,8 +80,8 @@ jobs:
     if:                         ${{ startsWith(github.ref, 'refs/tags/v') }}
     uses:                       ./.github/workflows/taskDatabricks.yaml
     with:
-      ENVIRONMENT:              Production
-      RELEASE_BRANCH:           'release/1'
+      ENVIRONMENT:              production
+      DBX_REPO_BRANCH:          'release/1'
       SCRIPT_LANGUAGE:          python
       DevOps_Agent:             GitHub
     secrets:

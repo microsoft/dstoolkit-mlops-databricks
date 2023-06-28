@@ -16,11 +16,11 @@ jobs:
     name:                     Master Deployment
     strategy:
       matrix:
-        targetEnvironment:    [ sandbox] #[ sandbox, development, uat, production ]
+        targetEnvironment:    [ sandbox, development, uat, production ]
     uses:                     ./.github/workflows/taskDatabricks.yaml
     with:
       ENVIRONMENT:            ${{ matrix.targetEnvironment }}
-      RELEASE_BRANCH:         'release/1'
+      DBX_REPO_BRANCH:        'main'
       SCRIPT_LANGUAGE:        ${{ github.event.inputs.script_language }}
       DevOps_Agent:           GitHub
     secrets:
