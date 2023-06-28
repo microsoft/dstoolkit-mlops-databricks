@@ -6,7 +6,7 @@ run_feature_store_refresh()
 
 from training import run_training 
 
-num_rounds_arr = [20,40,60,80,100,120,160]
+num_rounds_arr = [20,40,60,80,100,120,170]
 
 for num_rounds in num_rounds_arr:
     run_training(
