@@ -31,7 +31,9 @@ environments:
             <<: *dev-cluster-config
             spark_python_task:
               python_file: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['FILE_PATH']}}"
-              parameters: ["{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['WHL_PATH']}}" 
+            ]
 
           - task_key: "NYC_TAXI"
             <<: *dev-cluster-config
