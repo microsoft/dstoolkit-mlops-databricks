@@ -8,7 +8,7 @@
  # Version History And Updates 
 
 ## Azure ML Integration Now Live For GitHub Deployment.
-Development for Azure DevOps Deployment in Progress (expect instability until end of April)
+Development for Azure DevOps Deployment in Progress
 
  # MLOps for Databricks with CI/CD (GitHub Actions)
 ---
@@ -18,7 +18,7 @@ Development for Azure DevOps Deployment in Progress (expect instability until en
 ![image](https://user-images.githubusercontent.com/108273509/207945308-14e4794e-e86b-4bee-aa21-088698983703.png)
 
 Features to be included in future releases:
-- Model testing & promotion 
+- Model testing
 - Metrics & Monitoring 
 ---
 
