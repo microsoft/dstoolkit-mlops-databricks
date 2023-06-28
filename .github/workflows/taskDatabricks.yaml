@@ -235,10 +235,16 @@ jobs:
           databricks -h 
           databricks fs ls
 
-          dbx configure --enable-inplace-jinja-support --profile $ENVIRONMENT
+          dbx configure \
+          --enable-inplace-jinja-support \
+          --profile $ENVIRONMENT
         
-          dbx deploy --workflows NYC_TAXI --no-package --deployment-file mlOps/nyc_taxi/databricks_pipelines/workflow.yaml \
-          -e $ENVIRONMENT --jinja-variables-file=mlOps/nyc_taxi/databricks_pipelines/workflow_params.yaml
+          dbx deploy \
+          --workflows NYC_TAXI_PIPELINE \
+          --no-package \
+          --deployment-file mlOps/nyc_taxi/databricks_pipelines/workflow.yaml \
+          -e $ENVIRONMENT \
+          --jinja-variables-file=mlOps/nyc_taxi/databricks_pipelines/workflow_params.yaml
 
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 
