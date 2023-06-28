@@ -43,4 +43,6 @@ environments:
             libraries: [ 
               whl: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['WHL_PATH']}}" 
             ]
+            depends_on:
+              - task_key: "DATA_ENGINEERING"
 
