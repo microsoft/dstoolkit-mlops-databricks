@@ -46,6 +46,7 @@ if __name__ == "__main__":
         json = json.load(f)
 
     gitConfigs = json['Git_Configuration']
+    print(gitConfigs)
 
     #print(os.environ['WORKSPACE_ID'])
     #print(os.environ['DATABRICKS_INSTANCE'])
