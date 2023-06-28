@@ -23,11 +23,20 @@ build:
   no_build: true
 
 environments:
-  default:
+
+  sandbox:
     workflows:
-      - name: NYC_TAXI     
+      - name: NYC_TAXI_PIPELINE   
         tasks:
-          - task_key: "NYC_TAXI"
+          - task_key: "DATA_ENGINEERING_PIPELINE"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['FILE_PATH']}}"
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['WHL_PATH']}}" 
+            ]
+
+          - task_key: "ML_PIPELINE"
             <<: *dev-cluster-config
             spark_python_task:
               python_file: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['FILE_PATH']}}"
@@ -35,3 +44,100 @@ environments:
             libraries: [ 
               whl: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['WHL_PATH']}}" 
             ]
+            depends_on:
+              - task_key: "DATA_ENGINEERING_PIPELINE"
+  
+  development:
+    workflows:
+      - name: NYC_TAXI_PIPELINE    
+        tasks:
+          - task_key: "DATA_ENGINEERING_PIPELINE"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['FILE_PATH']}}"
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['WHL_PATH']}}" 
+            ]
+
+          - task_key: "ML_PIPELINE"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['NYC_TAXI']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "DATA_ENGINEERING_PIPELINE"
+
+
+  uat:
+    workflows:
+      - name: NYC_TAXI_PIPELINE    
+        tasks:
+          - task_key: "DATA_ENGINEERING_PIPELINE"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['FILE_PATH']}}"
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['WHL_PATH']}}" 
+            ]
+
+          - task_key: "ML_PIPELINE"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['NYC_TAXI']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "DATA_ENGINEERING_PIPELINE"
+
+  production:
+    workflows:
+      - name: NYC_TAXI_PIPELINE    
+        tasks:
+          - task_key: "DATA_ENGINEERING_PIPELINE"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['FILE_PATH']}}"
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['WHL_PATH']}}" 
+            ]
+
+          - task_key: "ML_PIPELINE"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['NYC_TAXI']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "DATA_ENGINEERING_PIPELINE"
+
+  default:
+    workflows:
+      - name: NYC_TAXI_PIPELINE     
+        tasks:
+          - task_key: "DATA_ENGINEERING_PIPELINE"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['FILE_PATH']}}"
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['DATA_ENGINEERING']['WHL_PATH']}}" 
+            ]
+
+          - task_key: "ML_PIPELINE"
+            <<: *dev-cluster-config
+            spark_python_task:
+              python_file: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['FILE_PATH']}}"
+              parameters: ["{{var['ML_PIPELINE_FILES']['NYC_TAXI']['PARAMETERS']['ENV']}}", "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['PARAMETERS']['FILE']}}"]
+            libraries: [ 
+              whl: "{{var['ML_PIPELINE_FILES']['NYC_TAXI']['WHL_PATH']}}" 
+            ]
+            depends_on:
+              - task_key: "DATA_ENGINEERING_PIPELINE"
+      
+

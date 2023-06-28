@@ -5,7 +5,7 @@ on:
       ENVIRONMENT:
         required: true
         type: string
-      RELEASE_BRANCH:
+      DBX_REPO_BRANCH:
         required: false
         type: string
       SCRIPT_LANGUAGE:
@@ -24,8 +24,7 @@ on:
         required: true
       PAT_GITHUB:
         required: true
-      RELEASE_BRANCH:
-        required: false
+
 
 jobs:
   build:
@@ -129,7 +128,7 @@ jobs:
 #################################/
 ##  Generate Python Wheel Files                                            
 #################################/
-      - name:                     'Create Helper_Functions Package Wheel File'
+      - name:                     'Create NYC Taxi Package Wheel File'
         run: |
           pip3 install wheel
           ls
@@ -190,7 +189,7 @@ jobs:
         run:                      bash infrastructure/databricks/databricks_utils/bash/utilsRepoPull.sh
         env:
           PULL_BRANCH:            ${{ github.ref_name }}
-          RELEASE_BRANCH:         ${{ inputs.RELEASE_BRANCH}} 
+          DBX_REPO_BRANCH:        ${{ inputs.DBX_REPO_BRANCH}} 
 
 
 #################################/
@@ -231,26 +230,52 @@ jobs:
         name:                     DBX Deploy - Workflow Artifacts (CD) 
         run: |
 
-          # Environment Variables below will be used for DBX Configure Auth. We are using the Databricks Personal Access Token, and 
-          # not the Databricks AAD Token. 
           pip3 install dbx
-
-          #echo $DATABRICKS_TOKEN
-          #echo $DATABRICKS_HOST
 
           databricks -h 
           databricks fs ls
 
-          dbx configure --enable-inplace-jinja-support --profile default
+          dbx configure \
+          --enable-inplace-jinja-support \
+          --profile $ENVIRONMENT
         
-          # -e replaced with "default" instead of $ENVIRONMENT
-          dbx deploy --workflows NYC_TAXI --no-package --deployment-file mlOps/nyc_taxi/databricks_pipelines/workflow.yaml \
-          -e default --jinja-variables-file=mlOps/nyc_taxi/databricks_pipelines/workflow_params.yaml
+          dbx deploy \
+          --workflows NYC_TAXI_PIPELINE \
+          --no-package \
+          --deployment-file mlOps/nyc_taxi/databricks_pipelines/workflow.yaml \
+          -e $ENVIRONMENT \
+          --jinja-variables-file=mlOps/nyc_taxi/databricks_pipelines/workflow_params.yaml
 
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 
 
-        
+#################################/
+##  Install Wheel On Interactive Cluster                                            
+#################################/
+      #- name:                     'Install NYC Taxi Package Wheel File On Interactive Cluster'
+      #  run: |
+
+          #python setup.py sdist bdist_wheel
+
+      #    cd data_science/src_nyc_taxi/dist
+      #    ls # List the contents of the directory - Wheel File Should Exist Here
+
+      #    wheel_file_name=$( ls -d -- *.whl )
+      #    echo "Wheel File Name: $wheel_file_name"
+
+      #    databricks fs rm dbfs:/FileStore/wheel_files/$wheel_file_name
+      #    databricks fs cp $wheel_file_name dbfs:/FileStore/wheel_files/$wheel_file_name --overwrite
+
+
+      #    databricks clusters list --output JSON
+      #    CLUSTER_ID=$(databricks clusters list --output JSON | jq -r '.clusters[] | select(.cluster_name == "ml_cluster") | .cluster_id')
+
+          # TO DO CHECK IF CLUSTER IS ON, AND IF NOT, TURN IT ON
+
+      #    databricks libraries uninstall --cluster-id "$CLUSTER_ID" --whl dbfs:/FileStore/wheel_files/$wheel_file_name
+      #    databricks libraries install --cluster-id $CLUSTER_ID --whl dbfs:/FileStore/wheel_files/$wheel_file_name
+          
+      #    databricks clusters restart --cluster-id $CLUSTER_ID
 
 
 
