@@ -63,6 +63,7 @@ git commit . -m 'Demo Deployment Commit'
 git config core.autocrlf false
 git rm --cached -r .
 git reset --hard
+git pull
 git push
 
 # Secret Configuration
