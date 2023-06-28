@@ -128,7 +128,7 @@ jobs:
 #################################/
 ##  Generate Python Wheel Files                                            
 #################################/
-      - name:                     'Create Helper_Functions Package Wheel File'
+      - name:                     'Create NYC Taxi Package Wheel File'
         run: |
           pip3 install wheel
           ls
@@ -249,7 +249,31 @@ jobs:
         env:
           ENVIRONMENT:            ${{ inputs.ENVIRONMENT }} 
 
-        
+#################################/
+##  Install Wheel On Interactive Cluster                                            
+#################################/
+      - name:                     'Install NYC Taxi Package Wheel File On Interactive Cluster'
+        run: |
+
+          #python setup.py sdist bdist_wheel
+
+          cd data_science/src_nyc_taxi/dist
+          ls # List the contents of the directory - Wheel File Should Exist Here
+
+          wheel_file_name=$( ls -d -- *.whl )
+          echo "Wheel File Name: $wheel_file_name"
+
+          databricks fs rm dbfs:/FileStore/wheel_files/$wheel_file_name
+          databricks fs cp $wheel_file_name dbfs:/FileStore/wheel_files/$wheel_file_name --overwrite
+
+
+          databricks clusters list --output JSON
+          CLUSTER_ID=$(databricks clusters list --output JSON | jq -r '.clusters[] | select(.cluster_name == "ml_cluster") | .cluster_id')
+
+          databricks libraries uninstall --cluster-id "$CLUSTER_ID" --whl dbfs:/FileStore/wheel_files/$wheel_file_name
+          databricks libraries install --cluster-id $CLUSTER_ID --whl dbfs:/FileStore/wheel_files/$wheel_file_name
+
+          databricks clusters restart --cluster-id $CLUSTER_ID
 
 
 
