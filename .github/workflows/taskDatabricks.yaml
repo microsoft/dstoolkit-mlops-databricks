@@ -270,15 +270,12 @@ jobs:
           databricks clusters list --output JSON
           CLUSTER_ID=$(databricks clusters list --output JSON | jq -r '.clusters[] | select(.cluster_name == "ml_cluster") | .cluster_id')
 
-          databricks libraries uninstall --cluster-id "$CLUSTER_ID" --whl dbfs:/FileStore/wheel_files/$wheel_file_name
-          databricks libraries install --cluster-id $CLUSTER_ID --whl dbfs:/FileStore/wheel_files/$wheel_file_name
-
           # Check if the cluster is running
           cluster_status=$(databricks clusters get --cluster-id $CLUSTER_ID --output JSON | jq -r '.state')
 
           # Function to check if the cluster is running
           function is_cluster_running() {
-            cluster_status=$(databricks clusters get --cluster-id $CLUSTER_ID> --output JSON | jq -r '.state')
+            cluster_status=$(databricks clusters get --cluster-id $CLUSTER_ID --output JSON | jq -r '.state')
             if [[ "$cluster_status" == "RUNNING" ]]; then
                 return 0
             else
@@ -288,7 +285,7 @@ jobs:
           # Start the cluster if it's not running
           if ! is_cluster_running; then
               echo "Cluster is not running. Starting the cluster..."
-              databricks clusters start --cluster-id <cluster_id>
+              databricks clusters start --cluster-id $CLUSTER_ID
           fi
 
           # Wait until the cluster is running
@@ -300,6 +297,10 @@ jobs:
           # Next stages of the code
           echo "Cluster is running. Proceeding to the next stages..."
 
+
+          databricks libraries uninstall --cluster-id "$CLUSTER_ID" --whl dbfs:/FileStore/wheel_files/$wheel_file_name
+          databricks libraries install --cluster-id $CLUSTER_ID --whl dbfs:/FileStore/wheel_files/$wheel_file_name
+          
           databricks clusters restart --cluster-id $CLUSTER_ID
 
 
