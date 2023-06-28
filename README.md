@@ -3,7 +3,7 @@
 ---
 ---
  <br>
-
+![](https://github.com/ciaran28/dstoolkit-mlops-databricks/blob/main/docs/images/Azure_Machine_Learning_GIF.gif)
 
  # Version History And Updates 
 
