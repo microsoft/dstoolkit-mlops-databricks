@@ -423,7 +423,7 @@ def train_model_lgbm(
         )
 
         mlflow.log_param("num_rounds", num_rounds)
-        mlflow.log_param("local_model_file_path", model_file_path)  
+        #mlflow.log_param("local_model_file_path", model_file_path)  
 
         evaulation_dict = evaluate(
             training_df=training_df,
@@ -575,7 +575,7 @@ def run_training(
     mlflow.set_tag("model_version", latest_model_version)
 
 
-    save_model_dbfs(model, model_file_path)
+    #save_model_dbfs(model, model_file_path)
 
 # COMMAND ----------
 

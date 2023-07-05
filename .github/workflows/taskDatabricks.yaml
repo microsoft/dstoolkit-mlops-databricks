@@ -66,7 +66,7 @@ jobs:
 
 
 
-          pip3 install --upgrade azure-cli
+          pip3 install azure-cli == 2.49.0
           pip3 install azure-mgmt-storage==21.0.0
           #pip3 install  azure-databricks-sdk-python
           az config set extension.use_dynamic_install=yes_without_prompt
