@@ -27,18 +27,18 @@ def configureGit(gitConfig, workspaceId, databricksInstance, bearerToken, manage
     #print(DBRKS_REQ_HEADERS)
 
     response = requests.post('https://' + databricksInstance + '/api/2.0/git-credentials', headers=DBRKS_REQ_HEADERS, json=gitConfig)
-    print(response)
-    #print(response.json())
+    #print(response)
+    print(response.json())
 
     if response.status_code != 200:
 
         response = requests.get('https://' + databricksInstance + '/api/2.0/git-credentials', headers=DBRKS_REQ_HEADERS)
-        #print(response.json())
+        print(response.json())
         credential = response.json()["credentials"][0]["credential_id"]
-        #print(f"Credential is {credential}")
+        print(f"Credential is {credential}")
         response = requests.patch('https://' + databricksInstance + '/api/2.0/git-credentials/'+ str(credential), headers=DBRKS_REQ_HEADERS, json=gitConfig)
     
-    #print(response.json())
+    print(response.json())
 
 if __name__ == "__main__":
 
@@ -46,7 +46,7 @@ if __name__ == "__main__":
         json = json.load(f)
 
     gitConfigs = json['Git_Configuration']
-    print(gitConfigs)
+    #print(gitConfigs)
 
     #print(os.environ['WORKSPACE_ID'])
     #print(os.environ['DATABRICKS_INSTANCE'])
@@ -55,10 +55,11 @@ if __name__ == "__main__":
     #print(os.environ['PAT_GITHUB'])
     #print(os.environ['ENVIRONMENT'])
     for gitConfig in gitConfigs:
-        response = configureGit(gitConfig=gitConfig, 
-                                workspaceId=os.environ['WORKSPACE_ID'], 
-                                databricksInstance=os.environ['DATABRICKS_INSTANCE'], 
-                                bearerToken=os.environ['DATABRICKS_AAD_TOKEN'], 
-                                managementToken=os.environ['DATABRICKS_MANAGEMENT_TOKEN'], 
-                                githubToken=os.environ['PAT_GITHUB'], 
-                                environment=os.environ['ENVIRONMENT'])       
+        response = configureGit(
+            gitConfig=gitConfig, 
+            workspaceId=os.environ['WORKSPACE_ID'], 
+            databricksInstance=os.environ['DATABRICKS_INSTANCE'], 
+            bearerToken=os.environ['DATABRICKS_AAD_TOKEN'], 
+            managementToken=os.environ['DATABRICKS_MANAGEMENT_TOKEN'], 
+            githubToken=os.environ['PAT_GITHUB'], 
+            environment=os.environ['ENVIRONMENT'])       
