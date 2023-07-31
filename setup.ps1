@@ -68,7 +68,5 @@ git push
 
 # Secret Configuration
 
-clear
-
 echo "Credentials Used In Later Step - Do Not Delete"
 echo $DBX_CREDENTIALS
