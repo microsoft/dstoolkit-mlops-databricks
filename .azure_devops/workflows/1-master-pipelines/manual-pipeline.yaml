@@ -1,0 +1,60 @@
+name: Service Principal MLOps Databricks Deployment
+
+trigger: none
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- group: ADO-Secrets
+
+parameters:
+- name: environment
+  displayName: Choose Environment 
+  type: string 
+  values:
+  - sandbox
+  - development
+  - uat
+  - production
+
+- name: azureSubscription
+  displayName: Enter Service Connection Name
+  default: DBX_ADO_DSTOOLKIT
+  type: string 
+
+stages:
+  - stage: sandboxDeployment
+    condition: eq('${{ parameters.environment }}', 'Sandbox')             
+    displayName: sandboxDeployment
+    jobs:
+      - template: ..\2-Jobs\jobDatabricks.yaml
+        parameters:
+          environment: sandbox  
+          azureSubscription: ${{ parameters.azureSubscription }}
+          branchName: main
+  
+  - stage: developmentDeployment   
+    condition: eq('${{ parameters.environment }}', 'development')                            
+    displayName: developmentDeployment
+    dependsOn: [] 
+    jobs:
+      - template: ..\2-Jobs\jobDatabricks.yaml
+        parameters:
+          environment: development
+          azureSubscription: ${{ parameters.azureSubscription }}
+          branchName: main
+
+  - stage: uatDeployment 
+    condition: eq('${{ parameters.ENVIRONMENT }}', 'uat')                                 
+    displayName: uatDeployment
+    dependsOn: [] 
+    jobs:
+      - template: ..\2-Jobs\jobDatabricks.yaml
+        parameters:
+          environment: uat
+          azureSubscription: ${{ parameters.azureSubscription }}
+          releaseBranch: 'release/1'
+
+

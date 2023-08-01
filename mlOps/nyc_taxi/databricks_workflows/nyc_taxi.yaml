@@ -1,0 +1,32 @@
+custom:
+  basic-cluster-props: &basic-cluster-props
+    spark_version: "13.0.x-cpu-ml-scala2.12"
+    node_type_id: "Standard_DS3_v2"
+    spark_env_vars:
+      PYSPARK_PYTHON: "/databricks/python3/bin/python3"
+    enable_elastic_disk: true
+    runtime_engine: STANDARD
+    autoscale:
+      min_workers: 2
+      max_workers: 8
+
+
+  nyc_taxi_vars: &nyc_taxi_vars
+    job_clusters:
+      - job_cluster_key: training_job_cluster
+        new_cluster:
+          <<: *basic-cluster-props                        
+    tasks:
+      - task_key: "nyc_taxi_pipeline"
+        job_cluster_key: "training_job_cluster"
+        spark_python_task:
+            python_file: "file://src/pkg/nyc_taxi/entrypoint.py"   
+
+build:
+  python: poetry
+
+environments:
+  default:
+    workflows:
+      - name: "DatabricksArtifacts"
+        <<: *nyc_taxi_vars

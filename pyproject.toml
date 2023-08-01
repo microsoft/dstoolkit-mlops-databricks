@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "dbx_development"
+name = "mlops_for_databricks"
 version = "0.1.0"
-description = "The description of the package"
+description = "Full CICD deployment of mlops for Databricks"
 
 license = "MIT"
 
 authors = [
-    "Sébastien Eustace <sebastien@eustace.io>"
+    "Ciaran Hamill Diamond"
 ]
 
 repository = "https://github.com/python-poetry/poetry"
@@ -19,10 +19,9 @@ readme = ["README.md", "LICENSE"]
 keywords = ["packaging", "poetry"]
 
 packages = [
-    {include = "utils", from = "data_science/src_nyc_taxi"},
-    {include = "ciaran_experiments", from = "experiments/notebooks"},
-    {include = "training", from = "data_science/src_nyc_taxi"},
-    {include = "featurization", from = "data_science/src_nyc_taxi"}
+    {include = "dbx_utils", from = "src/pkg"},
+    {include = "nyc_taxi", from = "src/pkg"},
+    {include = "ciaran_experiments", from = "experiments/notebooks"}
 ]
 
 
@@ -30,12 +29,17 @@ packages = [
 # All Packages Destined For Databricks Cluster
 # Only Install Pacakages Here That Are Not Already Installed On Databricks Cluster
 
-# Compatible Python versions
-python = ">=3.9, <3.11"
-
-
-
-[tool.poetry.extras]
+python = ">=3.8, <3.11"
+numpy = "^1.24.3"
+dbx = "^0.8.16"
+pytest = "^7.3.2"
+pytest-cov = "^4.1.0"
+bandit = "1.7.4"
+pylint = "2.15.0"
+pylint_junit = "0.3.2"
+python-dotenv = "1.0.0"
+pyspark = "3.2.1"
+delta-spark = "1.1.0"
 
 [tool.poetry.group.dev]
 optional = true
@@ -45,19 +49,12 @@ packaging = "21.*"
 numpy = "^1.24.3"
 dbx = "^0.8.14"
 mlflow-databricks-artifacts = "2.0.0"
-#mlflow-skinny = "1.29.0"
 databricks-cli = "0.17.3"
 scikit-learn = "^1.2.2"
 lightgbm = "^3.3.5"
 pyyaml = "^6.0"
 pathlib = "^1.0.1"
 argparse = "^1.4.0"
-#pywin32 = "^306"
-#azureml-core = "^1.51.0"
-
-##requests = "2.24"
-##py4j = "0.10.9.5"
-##pyspark = "3.3.2"
 py4j = "0.10.9.7"
 
 [tool.poetry.group.dbx_connect.dependencies]
@@ -69,10 +66,5 @@ python-dotenv = "^1.0.0"
 wheel = "^0.40.0"
 databricks-connect = "^13.0.1"
 
+[tool.poetry.extras]
 [tool.poetry.scripts]
-
-
-# requests = 2.28.2
-# charset-normalizer = 3.1.0
-# protobuf = 4.23.2
-# requests = 2.28.2

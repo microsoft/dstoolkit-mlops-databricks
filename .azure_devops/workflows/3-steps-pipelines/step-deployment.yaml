@@ -1,0 +1,218 @@
+parameters:
+  azureSubscription:                  String
+  environment:                        String
+  branchName:                         String
+
+steps:
+
+- task:     UsePythonVersion@0
+  inputs:
+    versionSpec: '3.8'
+    architecture: 'x64'
+
+- script: |
+    sudo apt update && sudo apt install jq -y    
+    python -m pip install requests wheel python-dotenv poetry databricks-cli --upgrade
+    python -m pip install azure-cli==2.49.0 azure-mgmt-storage==21.0.0
+    az extension add -n azure-cli-ml
+    #python -m pip install azureml azureml-core azureml-pipeline
+  displayName: Install Packages
+
+- script: |
+    az config set extension.use_dynamic_install=yes_without_prompt
+    az extension add --name databricks
+  displayName: Configure Azure CLI
+
+- script: |
+    python3.9 -m poetry install
+  displayName: 'Install Testing Requirements locally'
+
+- bash: |
+    mkdir -p tests
+  displayName: 'Create Unit Test Directory'
+
+- script: |
+    python -m poetry run pylint --output-format=pylint_junit.JUnitReporter:tests/testresults.xml src/pkg/dbx_utils
+  displayName: 'Pylinting dbx_utils'
+
+- script: |
+    python -m poetry run bandit -rv src/pkg/
+  displayName: 'Security Checks Bandit'
+
+- task: AzureCLI@2
+  displayName: Set Environment Variables  
+  name: "env_variables"
+  inputs:
+    scriptType: bash
+    scriptLocation: scriptPath 
+    azureSubscription: ${{ parameters.azureSubscription }}
+    scriptPath: $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_set_env_vars.sh
+  env:
+    ENVIRONMENT: ${{ parameters.environment }}
+
+- task: AzureCLI@2
+  displayName: Generate AAD Tokens
+  name: aad_tokens
+  inputs:
+    azureSubscription: ${{ parameters.azureSubscription }}
+    scriptType: bash
+    scriptLocation: scriptPath
+    scriptPath: $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_aad_tokens.sh
+  env:
+    DBX_RESOURCE_ID: "2ff814a6-3304-4ab8-85cb-cd0e6f879c1d"
+
+- script: |
+    python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_azure_login.py
+  displayName: Azure Login
+  env:
+    ARM_CLIENT_ID : $(ARM_CLIENT_ID)
+    ARM_TENANT_ID: $(ARM_TENANT_ID)
+    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+
+- script: |
+    python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_azure_login.py
+  displayName: Azure Login
+  env:
+    ARM_CLIENT_ID : $(ARM_CLIENT_ID)
+    ARM_TENANT_ID: $(ARM_TENANT_ID)
+    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+
+- script: |
+    python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_azure_resources.py
+  displayName: Azure Azure Resources
+  env:
+    ENVIRONMENT: ${{ parameters.environment }}
+
+- task: AzureCLI@2
+  displayName: RBAC Assignments
+  inputs:
+    scriptType: bash
+    scriptLocation: scriptPath
+    azureSubscription: ${{ parameters.azureSubscription }}
+    scriptPath: $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_role_based_access.sh
+  env:
+    ENVIRONMENT: ${{ parameters.environment }}
+    RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
+
+- script: |
+    python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_cluster.py
+  displayName: Create DBX Cluster
+  env:    
+    ENVIRONMENT: ${{ parameters.ENVIRONMENT }}
+    DATABRICKS_AAD_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
+    DATABRICKS_MANAGEMENT_TOKEN: $(aad_tokens.DATABRICKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
+    RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
+
+- task: AzureCLI@2
+  displayName: PAT Token
+  inputs:
+    scriptType: bash
+    scriptLocation: scriptPath
+    azureSubscription: ${{ parameters.azureSubscription }}
+    scriptPath: $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_databricks_token.sh
+
+- script: |
+    python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_git_configuration.py
+  displayName: Git Configuration
+  env:    
+    PAT_GITHUB: ${{ parameters.ENVIRONMENT }}
+    DATABRICKS_AAD_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
+    DATABRICKS_MANAGEMENT_TOKEN: $(aad_tokens.DATABRICKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
+    RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
+
+- script: |
+    python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_repo_folder.py
+  displayName: Link Databricks Repos
+  env:    
+    DATABRICKS_AAD_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
+    DATABRICKS_MANAGEMENT_TOKEN: $(aad_tokens.DATABRICKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
+    RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
+
+- script: |
+    python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_secret_scopes.py
+  displayName: Create Secret Scopes
+  env:    
+    DATABRICKS_AAD_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
+    DATABRICKS_MANAGEMENT_TOKEN: $(aad_tokens.DATABRICKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
+    RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
+    ARM_CLIENT_ID : $(ARM_CLIENT_ID)
+    ARM_TENANT_ID: $(ARM_TENANT_ID)
+    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+
+- task: AzureCLI@2
+  displayName: Repo Pull
+  inputs:
+    scriptType: bash
+    scriptLocation: scriptPath
+    azureSubscription: ${{ parameters.azureSubscription }}
+    scriptPath: $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_repo_pull.sh
+  env:    
+    DATABRICKS_AAD_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
+    DATABRICKS_MANAGEMENT_TOKEN: $(aad_tokens.DATABRICKS_MANAGEMENT_TOKEN)
+    WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
+    DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
+    RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
+
+- script: |
+    python -m poetry run dbx configure
+    python -m poetry dbx deploy --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml DatabricksArtifacts
+  displayName: 'Deploy Workflows'
+  env: 
+    DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
+    DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST) 
+
+- script: |
+    set -e
+    python -m poetry run dbx configure
+
+    python -m poetry run dbx execute DatabricksUtilsTesting \
+      --deployment-file mlops/nyc_taxi/databricks_workflows/unit_tests.yaml \
+      --cluster-name=ml_cluster
+      
+    databricks fs cp dbfs:/FileStore/databricks_utils_unit_testresults.xml $(Build.ArtifactStagingDirectory)/databricks_utils_unit_testresults.xml 
+    databricks fs cp dbfs:/FileStore/cms_unit_testresults.xml $(Build.ArtifactStagingDirectory)/cms_unit_testresults.xml 
+    
+    databricks fs cp dbfs:/FileStore/databricks_utils_cov_report.xml $(Build.ArtifactStagingDirectory)/databricks_utils_cov_report.xml
+    databricks fs cp dbfs:/FileStore/cms_cov_report.xml $(Build.ArtifactStagingDirectory)/cms_cov_report.xml
+
+  displayName: Unit Testing - DBX Cluster
+  env: 
+    DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
+    DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST)
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '$(Build.ArtifactStagingDirectory)/*_testresults.xml'
+    testRunTitle: '$(Agent.OS) - $(Build.BuildNumber)[$(Agent.JobName)] - Python $(python.version) - Unit Test results'
+  condition: succeededOrFailed()
+  displayName: 'Publish Unit Test Results'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/*_testresults.xml'
+    testRunTitle: '$(Agent.OS) - $(Build.BuildNumber)[$(Agent.JobName)] - Python $(python.version) - Linting Test results'
+  condition: succeededOrFailed()
+  displayName: 'Publish Linting Test Results'
+
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(Build.ArtifactStagingDirectory)/*_cov_report.xml'
+  displayName: 'Publish Coverage Results'
+
+
+
+
+
+
