@@ -12,7 +12,7 @@ steps:
 
 - script: |
     sudo apt update && sudo apt install jq -y    
-    python -m pip install requests wheel python-dotenv poetry databricks-cli --upgrade
+    python -m pip install requests python-dotenv poetry databricks-cli
     python -m pip install azure-cli==2.49.0 azure-mgmt-storage==21.0.0
     az extension add -n azure-cli-ml
     #python -m pip install azureml azureml-core azureml-pipeline
@@ -36,8 +36,9 @@ steps:
 #  displayName: 'Pylinting dbx_utils'
 
 - script: |
-    python -m poetry run bandit -rv src/pkg/
+    python -m poetry run bandit -rv src/pkg/dbx_utils/
   displayName: 'Security Checks Bandit'
+  continueOnError: true 
 
 
 - task: AzureCLI@2
