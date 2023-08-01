@@ -27,7 +27,7 @@ parameters:
 
 stages:
   - stage: sandboxDeployment
-    condition: eq('${{ parameters.environment }}', 'Sandbox')             
+    condition: eq('${{ parameters.environment }}', 'sandbox')             
     displayName: sandboxDeployment
     jobs:
       - template: ..\2-Jobs-pipelines\job-deployment.yaml
