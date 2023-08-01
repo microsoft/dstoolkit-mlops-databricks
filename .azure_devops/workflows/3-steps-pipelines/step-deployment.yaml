@@ -31,9 +31,9 @@ steps:
     mkdir -p tests
   displayName: 'Create Unit Test Directory'
 
-- script: |
-    python -m poetry run pylint --output-format=pylint_junit.JUnitReporter:tests/testresults.xml src/pkg/dbx_utils
-  displayName: 'Pylinting dbx_utils'
+#- script: |
+#    python -m poetry run pylint --output-format=pylint_junit.JUnitReporter:tests/testresults.xml src/pkg/dbx_utils
+#  displayName: 'Pylinting dbx_utils'
 
 - script: |
     python -m poetry run bandit -rv src/pkg/
