@@ -63,11 +63,11 @@ steps:
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
 
 ## This 
-- script: |
-    python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_azure_resources.py
-  displayName: Azure Azure Resources
-  env:
-    ENVIRONMENT: ${{ parameters.environment }}
+#- script: |
+#    python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_azure_resources.py
+#  displayName: Azure Azure Resources
+#  env:
+#    ENVIRONMENT: ${{ parameters.environment }}
   
 - task: AzureCLI@2
   displayName: Set Environment Variables  
@@ -124,7 +124,7 @@ steps:
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_git_configuration.py
   displayName: Git Configuration
   env:    
-    PAT_GITHUB: ${{ parameters.ENVIRONMENT }}
+    PAT_GITHUB: $(PAT_GITHUB)
     DATABRICKS_AAD_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
     DATABRICKS_MANAGEMENT_TOKEN: $(aad_tokens.DATABRICKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
