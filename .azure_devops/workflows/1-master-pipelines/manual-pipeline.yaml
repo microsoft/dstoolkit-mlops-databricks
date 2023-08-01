@@ -30,7 +30,7 @@ stages:
     condition: eq('${{ parameters.environment }}', 'Sandbox')             
     displayName: sandboxDeployment
     jobs:
-      - template: ..\2-Jobs\jobDatabricks.yaml
+      - template: ..\2-Jobs-pipelines\job-deployment.yaml
         parameters:
           environment: sandbox  
           azureSubscription: ${{ parameters.azureSubscription }}
@@ -41,7 +41,7 @@ stages:
     displayName: developmentDeployment
     dependsOn: [] 
     jobs:
-      - template: ..\2-Jobs\jobDatabricks.yaml
+      - template: ..\2-Jobs-pipelines\job-deployment.yaml
         parameters:
           environment: development
           azureSubscription: ${{ parameters.azureSubscription }}
@@ -52,7 +52,7 @@ stages:
     displayName: uatDeployment
     dependsOn: [] 
     jobs:
-      - template: ..\2-Jobs\jobDatabricks.yaml
+      - template: ..\2-Jobs-pipelines\job-deployment.yaml
         parameters:
           environment: uat
           azureSubscription: ${{ parameters.azureSubscription }}
