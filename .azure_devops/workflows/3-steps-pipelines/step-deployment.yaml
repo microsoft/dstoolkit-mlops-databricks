@@ -24,7 +24,7 @@ steps:
   displayName: Configure Azure CLI
 
 - script: |
-    python3.9 -m poetry install
+    python -m poetry install
   displayName: 'Install Testing Requirements locally'
 
 - bash: |
@@ -69,14 +69,7 @@ steps:
     ARM_TENANT_ID: $(ARM_TENANT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
 
-- script: |
-    python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_azure_login.py
-  displayName: Azure Login
-  env:
-    ARM_CLIENT_ID : $(ARM_CLIENT_ID)
-    ARM_TENANT_ID: $(ARM_TENANT_ID)
-    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-
+## This 
 - script: |
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_azure_resources.py
   displayName: Azure Azure Resources
