@@ -135,7 +135,8 @@ steps:
 - script: |
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_repo_folder.py
   displayName: Link Databricks Repos
-  env:    
+  env:
+    ENVIRONMENT: ${{ parameters.environment }}
     DATABRICKS_AAD_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
     DATABRICKS_MANAGEMENT_TOKEN: $(aad_tokens.DATABRICKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
