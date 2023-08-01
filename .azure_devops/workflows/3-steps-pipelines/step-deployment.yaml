@@ -221,7 +221,7 @@ steps:
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(Build.ArtifactStagingDirectory)/*_cov_report.xml'
   displayName: 'Publish Coverage Results'
-
+  condition: succeededOrFailed()
 
 
 
