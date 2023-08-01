@@ -142,6 +142,26 @@ steps:
     DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
     RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
 
+
+- script: |
+    set -e
+    python -m poetry run dbx configure
+
+    python -m poetry run dbx execute DatabricksUtilsTesting \
+      --deployment-file mlops/nyc_taxi/databricks_workflows/unit_tests.yaml \
+      --cluster-name=ml_cluster
+      
+    databricks fs cp dbfs:/FileStore/databricks_utils_unit_testresults.xml $(Build.ArtifactStagingDirectory)/databricks_utils_unit_testresults.xml 
+    databricks fs cp dbfs:/FileStore/cms_unit_testresults.xml $(Build.ArtifactStagingDirectory)/cms_unit_testresults.xml 
+    
+    databricks fs cp dbfs:/FileStore/databricks_utils_cov_report.xml $(Build.ArtifactStagingDirectory)/databricks_utils_cov_report.xml
+    databricks fs cp dbfs:/FileStore/cms_cov_report.xml $(Build.ArtifactStagingDirectory)/cms_cov_report.xml
+
+  displayName: Unit Testing - DBX Cluster
+  env: 
+    DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
+    DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST)
+
 - script: |
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_secret_scopes.py
   displayName: Create Secret Scopes
@@ -177,24 +197,6 @@ steps:
     DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
     DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST) 
 
-- script: |
-    set -e
-    python -m poetry run dbx configure
-
-    python -m poetry run dbx execute DatabricksUtilsTesting \
-      --deployment-file mlops/nyc_taxi/databricks_workflows/unit_tests.yaml \
-      --cluster-name=ml_cluster
-      
-    databricks fs cp dbfs:/FileStore/databricks_utils_unit_testresults.xml $(Build.ArtifactStagingDirectory)/databricks_utils_unit_testresults.xml 
-    databricks fs cp dbfs:/FileStore/cms_unit_testresults.xml $(Build.ArtifactStagingDirectory)/cms_unit_testresults.xml 
-    
-    databricks fs cp dbfs:/FileStore/databricks_utils_cov_report.xml $(Build.ArtifactStagingDirectory)/databricks_utils_cov_report.xml
-    databricks fs cp dbfs:/FileStore/cms_cov_report.xml $(Build.ArtifactStagingDirectory)/cms_cov_report.xml
-
-  displayName: Unit Testing - DBX Cluster
-  env: 
-    DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
-    DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST)
 
 - task: PublishTestResults@2
   inputs:
