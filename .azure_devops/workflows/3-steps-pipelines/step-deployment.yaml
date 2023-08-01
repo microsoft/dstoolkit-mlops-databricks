@@ -123,7 +123,8 @@ steps:
 - script: |
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_git_configuration.py
   displayName: Git Configuration
-  env:    
+  env:
+    ENVIRONMENT: ${{ parameters.environment }}
     PAT_GITHUB: $(PAT_GITHUB)
     DATABRICKS_AAD_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
     DATABRICKS_MANAGEMENT_TOKEN: $(aad_tokens.DATABRICKS_MANAGEMENT_TOKEN)
