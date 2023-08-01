@@ -19,6 +19,7 @@ parameters:
   - development
   - uat
   - production
+  - all 
 
 - name: azureSubscription
   displayName: Enter Service Connection Name
@@ -27,7 +28,7 @@ parameters:
 
 stages:
   - stage: sandboxDeployment
-    condition: eq('${{ parameters.environment }}', 'sandbox')             
+    condition: or( eq('${{ parameters.environment }}', 'sandbox'), eq('${{ parameters.environment }}', 'all'))          
     displayName: sandboxDeployment
     jobs:
       - template: ..\2-jobs-pipelines\job-deployment.yaml
@@ -37,7 +38,7 @@ stages:
           branchName: main
   
   - stage: developmentDeployment   
-    condition: eq('${{ parameters.environment }}', 'development')                            
+    condition: or( eq('${{ parameters.environment }}', 'development'), eq('${{ parameters.environment }}', 'all'))                    
     displayName: developmentDeployment
     dependsOn: [] 
     jobs:
@@ -48,7 +49,7 @@ stages:
           branchName: main
 
   - stage: uatDeployment 
-    condition: eq('${{ parameters.ENVIRONMENT }}', 'uat')                                 
+    condition: or( eq('${{ parameters.ENVIRONMENT }}', 'uat'), eq('${{ parameters.ENVIRONMENT }}', 'all'))
     displayName: uatDeployment
     dependsOn: [] 
     jobs:

@@ -29,6 +29,8 @@ packages = [
 # All Packages Destined For Databricks Cluster
 # Only Install Pacakages Here That Are Not Already Installed On Databricks Cluster
 
+
+[tool.poetry.group.ado.dependencies]
 python = ">=3.8, <3.11"
 numpy = "^1.24.3"
 dbx = "^0.8.16"
@@ -55,7 +57,7 @@ lightgbm = "^3.3.5"
 pyyaml = "^6.0"
 pathlib = "^1.0.1"
 argparse = "^1.4.0"
-py4j = "0.10.9.3"
+py4j = "0.10.9.7"
 
 [tool.poetry.group.dbx_connect.dependencies]
 dbx = "^0.8.14"
