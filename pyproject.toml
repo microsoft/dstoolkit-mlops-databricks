@@ -29,8 +29,6 @@ packages = [
 # All Packages Destined For Databricks Cluster
 # Only Install Pacakages Here That Are Not Already Installed On Databricks Cluster
 
-
-[tool.poetry.group.ado.dependencies]
 python = ">=3.8, <3.11"
 numpy = "^1.24.3"
 dbx = "^0.8.16"
@@ -42,11 +40,6 @@ pylint_junit = "0.3.2"
 python-dotenv = "1.0.0"
 pyspark = "3.2.1"
 delta-spark = "1.1.0"
-
-[tool.poetry.group.dev]
-optional = true
-
-[tool.poetry.group.dev.dependencies]
 packaging = "21.*"
 numpy = "^1.24.3"
 dbx = "^0.8.14"
@@ -59,14 +52,6 @@ pathlib = "^1.0.1"
 argparse = "^1.4.0"
 py4j = "0.10.9.7"
 
-[tool.poetry.group.dbx_connect.dependencies]
-dbx = "^0.8.14"
-databricks-feature-store = "^0.12.1"
-lightgbm = "^3.3.5"
-azureml-core = "^1.51.0"
-python-dotenv = "^1.0.0"
-wheel = "^0.40.0"
-databricks-connect = "^13.0.1"
 
 [tool.poetry.extras]
 [tool.poetry.scripts]
