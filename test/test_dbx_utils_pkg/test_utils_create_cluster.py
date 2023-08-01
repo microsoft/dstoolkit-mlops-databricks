@@ -61,7 +61,7 @@ class TestListExistingClusters(unittest.TestCase):
         mock_get.return_value.status_code = 400
         
         with pytest.raises(Exception) as e:
-            _, status_code = _list_existing_clusters()
+            _, status_code = list_existing_clusters()
 
                
 class TestGetClusterNames(unittest.TestCase):
@@ -78,7 +78,7 @@ class TestGetClusterNames(unittest.TestCase):
                 }
             ]
         }
-        result = _get_cluster_names(mock_existing_clusters)
+        result = get_cluster_names(mock_existing_clusters)
 
         assert result == ["test-cluster-1", "test-cluster-2"]
 
@@ -95,7 +95,7 @@ class TestGetClusterNames(unittest.TestCase):
                 }
             ]
         }
-        result = _get_cluster_names(mock_existing_clusters)
+        result = get_cluster_names(mock_existing_clusters)
 
         assert result != ["test-cluster-1", "test-cluster-3"]
 
@@ -130,7 +130,7 @@ class TestIngestClusterParamFile(unittest.TestCase):
         monkeypatch.setenv('ENVIRONMENT', 'test_environment')
         #cluster = Cluster()
 
-        result = _ingest_cluster_param_file( "test_cluster_param_file.json")
+        result = ingest_cluster_param_file( "test_cluster_param_file.json")
         
         # Expected result is an array and not an object
         expected_result = [
@@ -178,7 +178,7 @@ class TestCreateCluster(unittest.TestCase):
                             }
             }
         ]
-        status_code, _ = _create_cluster(mock_json_cluster)
+        status_code, _ = create_cluster(mock_json_cluster)
 
         assert status_code == 200
 
@@ -215,7 +215,7 @@ class TestCreateCluster(unittest.TestCase):
         ]
 
         with pytest.raises(Exception) as e:
-            _, status_code = _create_cluster(mock_json_cluster)
+            _, status_code = create_cluster(mock_json_cluster)
             #assert status_code == 500
 
 
@@ -241,7 +241,7 @@ class TestGetDatabricksClusterInfo(unittest.TestCase):
   
 
         cluster_id = 'fake_cluster_id'
-        actual_response_content = _get_databricks_cluster_info(cluster_id)
+        actual_response_content = get_databricks_cluster_info(cluster_id)
 
         assert actual_response_content == expected_response
 
