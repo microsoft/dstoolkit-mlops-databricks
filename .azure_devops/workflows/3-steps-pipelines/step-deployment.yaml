@@ -151,12 +151,11 @@ steps:
     python -m poetry run dbx execute DatabricksUtilsTesting \
       --deployment-file mlops/nyc_taxi/databricks_workflows/unit_tests.yaml \
       --cluster-name=ml_cluster
-      
+      /dbfs/FileStore/databricks_utils_unit_testresults.xml
     databricks fs cp dbfs:/FileStore/databricks_utils_unit_testresults.xml $(Build.ArtifactStagingDirectory)/databricks_utils_unit_testresults.xml 
-    databricks fs cp dbfs:/FileStore/cms_unit_testresults.xml $(Build.ArtifactStagingDirectory)/cms_unit_testresults.xml 
-    
+
     databricks fs cp dbfs:/FileStore/databricks_utils_cov_report.xml $(Build.ArtifactStagingDirectory)/databricks_utils_cov_report.xml
-    databricks fs cp dbfs:/FileStore/cms_cov_report.xml $(Build.ArtifactStagingDirectory)/cms_cov_report.xml
+
 
   displayName: Unit Testing - DBX Cluster
   env: 

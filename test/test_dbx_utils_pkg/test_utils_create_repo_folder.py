@@ -6,7 +6,7 @@ from _pytest.monkeypatch import MonkeyPatch
 import json 
 import requests
 
-from python.utils_create_repo_folder import _ingest_repo_param_file, create_databricks_repos
+from dbx_utils.utils_create_repo_folder import _ingest_repo_param_file, create_databricks_repos
 
 
 class TestCreateRepoFolder(unittest.TestCase):

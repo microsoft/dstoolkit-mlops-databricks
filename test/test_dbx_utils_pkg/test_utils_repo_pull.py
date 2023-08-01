@@ -6,7 +6,7 @@ from _pytest.monkeypatch import MonkeyPatch
 import json 
 import requests
 
-from python.utils_repo_pull import _ingest_repo_param_file, get_repos_with_management_permissions, update_repo, main
+from dbx_utils.utils_repo_pull import _ingest_repo_param_file, get_repos_with_management_permissions, update_repo, main
 
 
 class TestIngestRepoParamFile(unittest.TestCase):

@@ -3,7 +3,7 @@ import subprocess
 import unittest
 from unittest.mock import patch
 
-from python.utils_azure_login import start_azure_login, run_cmd
+from dbx_utils.utils_azure_login import start_azure_login, run_cmd
 
 
 class TestRunCmd(unittest.TestCase):

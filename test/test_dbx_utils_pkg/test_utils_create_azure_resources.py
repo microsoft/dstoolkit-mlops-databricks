@@ -4,7 +4,7 @@ import subprocess
 import unittest
 import pytest
 from unittest.mock import patch, mock_open
-from python.utils_create_azure_resources import deploy_azure_resources, run_cmd, LoadJson
+from dbx_utils.utils_create_azure_resources import deploy_azure_resources, run_cmd, LoadJson
 
 
 

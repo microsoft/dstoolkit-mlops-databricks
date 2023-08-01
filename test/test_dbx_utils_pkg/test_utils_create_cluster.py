@@ -8,7 +8,7 @@ import requests
 
 
 
-from python.utils_create_cluster import _list_existing_clusters, _get_cluster_names, _ingest_cluster_param_file, _create_cluster, _manage_cluster_state, _get_databricks_cluster_info # _list_clusters
+from dbx_utils.utils_create_cluster import _list_existing_clusters, _get_cluster_names, _ingest_cluster_param_file, _create_cluster, _manage_cluster_state, _get_databricks_cluster_info # _list_clusters
 
 
 class TestListExistingClusters(unittest.TestCase):
