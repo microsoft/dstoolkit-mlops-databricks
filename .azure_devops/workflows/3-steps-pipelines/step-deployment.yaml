@@ -76,6 +76,7 @@ steps:
     scriptPath: $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_set_env_vars.sh
   env:
     ENVIRONMENT: ${{ parameters.environment }}
+    DevOps_Agent: "Azure DevOps Agent"
   
 - task: AzureCLI@2
   displayName: RBAC Assignments

@@ -14,5 +14,8 @@ DATABRICKS_MANAGEMENT_TOKEN=$( \
         --output tsv \
 )
 
+echo $DATABRICKS_AAD_TOKEN
+echo $DATABRICKS_MANAGEMENT_TOKEN
+
 echo "##vso[task.setvariable variable="DATABRICKS_MANAGEMENT_TOKEN";isOutput=true;]$DATABRICKS_MANAGEMENT_TOKEN"
 echo "##vso[task.setvariable variable="DATABRICKS_AAD_TOKEN";isOutput=true;]$DATABRICKS_AAD_TOKEN" 
