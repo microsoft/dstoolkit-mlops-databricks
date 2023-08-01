@@ -12,7 +12,8 @@ variables:
 parameters:
 - name: environment
   displayName: Choose Environment 
-  type: string 
+  type: string
+  default: sandbox
   values:
   - sandbox
   - development
