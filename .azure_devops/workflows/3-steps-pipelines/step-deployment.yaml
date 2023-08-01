@@ -163,9 +163,18 @@ steps:
     DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST)
 
 - script: |
+    python -m poetry run dbx configure
+    python -m poetry dbx deploy --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml DatabricksArtifacts
+  displayName: 'Deploy Machine Learning Workflows'
+  env: 
+    DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
+    DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST) 
+
+- script: |
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_secret_scopes.py
   displayName: Create Secret Scopes
-  env:    
+  env:
+    SUBSCRIPTION_ID: $(env_variables.SUBSCRIPTION_ID)
     DATABRICKS_AAD_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
     DATABRICKS_MANAGEMENT_TOKEN: $(aad_tokens.DATABRICKS_MANAGEMENT_TOKEN)
     WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
@@ -188,14 +197,6 @@ steps:
     WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
     DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
     RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
-
-- script: |
-    python -m poetry run dbx configure
-    python -m poetry dbx deploy --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml DatabricksArtifacts
-  displayName: 'Deploy Workflows'
-  env: 
-    DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
-    DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST) 
 
 
 - task: PublishTestResults@2
