@@ -39,16 +39,6 @@ steps:
     python -m poetry run bandit -rv src/pkg/
   displayName: 'Security Checks Bandit'
 
-- task: AzureCLI@2
-  displayName: Set Environment Variables  
-  name: "env_variables"
-  inputs:
-    scriptType: bash
-    scriptLocation: scriptPath 
-    azureSubscription: ${{ parameters.azureSubscription }}
-    scriptPath: $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_set_env_vars.sh
-  env:
-    ENVIRONMENT: ${{ parameters.environment }}
 
 - task: AzureCLI@2
   displayName: Generate AAD Tokens
@@ -59,7 +49,7 @@ steps:
     scriptLocation: scriptPath
     scriptPath: $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_aad_tokens.sh
   env:
-    DBX_RESOURCE_ID: "2ff814a6-3304-4ab8-85cb-cd0e6f879c1d"
+    DBX_RESOURCE_ID: 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d
 
 - script: |
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_azure_login.py
@@ -75,7 +65,18 @@ steps:
   displayName: Azure Azure Resources
   env:
     ENVIRONMENT: ${{ parameters.environment }}
-
+  
+- task: AzureCLI@2
+  displayName: Set Environment Variables  
+  name: "env_variables"
+  inputs:
+    scriptType: bash
+    scriptLocation: scriptPath 
+    azureSubscription: ${{ parameters.azureSubscription }}
+    scriptPath: $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_set_env_vars.sh
+  env:
+    ENVIRONMENT: ${{ parameters.environment }}
+  
 - task: AzureCLI@2
   displayName: RBAC Assignments
   inputs:

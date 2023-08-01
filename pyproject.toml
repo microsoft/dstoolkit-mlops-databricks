@@ -55,7 +55,7 @@ lightgbm = "^3.3.5"
 pyyaml = "^6.0"
 pathlib = "^1.0.1"
 argparse = "^1.4.0"
-py4j = "0.10.9.7"
+py4j = "0.10.9.3"
 
 [tool.poetry.group.dbx_connect.dependencies]
 dbx = "^0.8.14"
