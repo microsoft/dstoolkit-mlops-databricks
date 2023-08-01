@@ -49,7 +49,7 @@ def create_clusters():
     environment = os.environ.get("ENVIRONMENT")
 
     cluster_param_file = ingest_cluster_param_file(
-        'AdvancedCacheManagementService/Build/databricks/configs/'
+        'infrastructure/databricks/databricks_configs/'
         + environment +
         '/clusters.json'
     )
