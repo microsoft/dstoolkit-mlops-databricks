@@ -24,7 +24,7 @@ steps:
   displayName: Configure Azure CLI
 
 - script: |
-    python -m poetry install --with ado
+    python -m poetry install
   displayName: 'Install Testing Requirements locally'
 
 - bash: |
