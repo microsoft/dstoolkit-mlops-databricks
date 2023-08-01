@@ -17,7 +17,7 @@ custom:
         new_cluster:
           <<: *basic-cluster-props                        
     tasks:
-      - task_key: "unit tests"
+      - task_key: "unittests"
         job_cluster_key: "training_job_cluster"
         spark_python_task:
             python_file: "file://test/entrypoint.py"

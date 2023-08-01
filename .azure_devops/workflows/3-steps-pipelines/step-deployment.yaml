@@ -12,7 +12,7 @@ steps:
 
 - script: |
     sudo apt update && sudo apt install jq -y    
-    python -m pip install requests python-dotenv poetry databricks-cli
+    python -m pip install requests python-dotenv poetry databricks-cli setuptools
     python -m pip install azure-cli==2.49.0 azure-mgmt-storage==21.0.0
     az extension add -n azure-cli-ml
     #python -m pip install azureml azureml-core azureml-pipeline
