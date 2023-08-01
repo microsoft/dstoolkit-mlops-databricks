@@ -23,7 +23,7 @@ custom:
             python_file: "file://test/entrypoint.py"
             # this call supports all standard pytest arguments
             parameters: [
-              "file:fuse://test/test_dbx_utils_pkg",
+              "file:fuse://test/test_dbx_utils_pkg/test_utils_create_cluster.py",
               "-o",
               "cache_dir=/dbfs/FileStore/",
               "--cov=dbx_utils",
