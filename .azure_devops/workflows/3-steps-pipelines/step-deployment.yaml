@@ -164,7 +164,7 @@ steps:
 
 - script: |
     python -m poetry run dbx configure
-    python -m poetry dbx deploy --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml DatabricksArtifacts
+    python -m poetry run dbx deploy --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml DatabricksArtifacts
   displayName: 'Deploy Machine Learning Workflows'
   env: 
     DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
