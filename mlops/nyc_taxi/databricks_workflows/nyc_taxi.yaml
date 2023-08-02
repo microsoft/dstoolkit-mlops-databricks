@@ -36,7 +36,7 @@ custom:
           - task_key: "nyc_taxi_pipeline_data_engineering"
 
 build:
-  python: poetry
+  no_build: true
 
 environments:
   default:
