@@ -201,7 +201,7 @@ steps:
     DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
     RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
     PULL_BRANCH: main #$(Build.TargetBranch)
-
+    ENVIRONMENT: ${{ parameters.environment }}
 
 - task: PublishTestResults@2
   inputs:
