@@ -166,6 +166,18 @@ steps:
 
 
 - script: |
+    #python -m poetry run dbx configure
+    #python -m poetry run dbx deploy --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml DatabricksArtifacts
+
+    python -m dbx configure
+    python -m dbx deploy --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml DatabricksArtifacts
+  displayName: 'Deploy Machine Learning Workflows'
+  env: 
+    DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
+    DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST) 
+
+    
+- script: |
     set -e
     python -m poetry run dbx configure
 
@@ -181,18 +193,6 @@ steps:
   env: 
     DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
     DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST)
-
-
-- script: |
-    #python -m poetry run dbx configure
-    #python -m poetry run dbx deploy --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml DatabricksArtifacts
-
-    python -m dbx configure
-    python -m dbx deploy --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml DatabricksArtifacts
-  displayName: 'Deploy Machine Learning Workflows'
-  env: 
-    DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
-    DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST) 
 
 
 - script: |
