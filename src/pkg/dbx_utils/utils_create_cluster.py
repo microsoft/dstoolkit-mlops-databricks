@@ -1,16 +1,3 @@
-"""
-<copyright file="create_dbx_clusters.py" company="MicrosoftAndTheMetOffice">
-Copyright (c) Microsoft Corporation and the Met Office. All rights reserved.
-
-This file is classed as Specially Written Software
-(as defined in Schedule 4.5 of the contract) and is
-subject to the IPR clauses defined in Schedule 4, 8 and 12.
-
-Code contained within this file must not be used outside of the Met Office
-Supercomputer 2020+ Programme without explicit agreement from the IPR Team.
-</copyright>
-"""
-
 import os
 import json
 import time

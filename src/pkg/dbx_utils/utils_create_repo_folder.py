@@ -1,6 +1,3 @@
-# TESTING STILL REQUIRED - DO NOT USE
-
-
 import requests
 import time
 import os
