@@ -10,6 +10,7 @@ steps:
     versionSpec: '3.8'
     architecture: 'x64'
 
+
 - script: |
     sudo apt update && sudo apt install jq -y    
     python -m pip install requests python-dotenv poetry databricks-cli setuptools
@@ -18,22 +19,27 @@ steps:
     #python -m pip install azureml azureml-core azureml-pipeline
   displayName: Install Packages
 
+
 - script: |
     az config set extension.use_dynamic_install=yes_without_prompt
     az extension add --name databricks
   displayName: Configure Azure CLI
 
+
 - script: |
     python -m poetry install
   displayName: 'Install Testing Requirements locally'
+
 
 - bash: |
     mkdir -p tests
   displayName: 'Create Unit Test Directory'
 
+
 #- script: |
 #    python -m poetry run pylint --output-format=pylint_junit.JUnitReporter:tests/testresults.xml src/pkg/dbx_utils
 #  displayName: 'Pylinting dbx_utils'
+
 
 - script: |
     python -m poetry run bandit -rv src/pkg/dbx_utils/
@@ -53,6 +59,7 @@ steps:
   env:
     DBX_RESOURCE_ID: 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d
 
+
 - script: |
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_azure_login.py
   displayName: Azure Login
@@ -62,13 +69,15 @@ steps:
     ARM_TENANT_ID: $(ARM_TENANT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
 
+
 ## This 
 #- script: |
 #    python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_azure_resources.py
 #  displayName: Azure Azure Resources
 #  env:
 #    ENVIRONMENT: ${{ parameters.environment }}
-  
+
+
 - task: AzureCLI@2
   displayName: Set Environment Variables  
   name: "env_variables"
@@ -80,7 +89,8 @@ steps:
   env:
     ENVIRONMENT: ${{ parameters.environment }}
     DevOps_Agent: "Azure DevOps Agent"
-  
+
+
 - task: AzureCLI@2
   displayName: RBAC Assignments
   inputs:
@@ -92,6 +102,7 @@ steps:
     ENVIRONMENT: ${{ parameters.environment }}
     RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
 
+
 - script: |
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_cluster.py
   displayName: Create DBX Cluster
@@ -102,6 +113,7 @@ steps:
     WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
     DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
     RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
+
 
 - task: AzureCLI@2
   displayName: PAT Token
@@ -120,6 +132,7 @@ steps:
     DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
     RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
 
+
 - script: |
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_git_configuration.py
   displayName: Git Configuration
@@ -131,6 +144,7 @@ steps:
     WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
     DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
     RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
+
 
 - script: |
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_repo_folder.py
@@ -156,11 +170,17 @@ steps:
 
     databricks fs cp dbfs:/FileStore/databricks_utils_cov_report.xml $(Build.ArtifactStagingDirectory)/databricks_utils_cov_report.xml
 
-
   displayName: Unit Testing - DBX Cluster
   env: 
     DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
     DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST)
+
+
+- name:                     'Create NYC Taxi Package Wheel File'
+  run: |
+    cd src/pkg/nyc_taxi
+    python -m poetry run python setup.py sdist bdist_wheel
+
 
 - script: |
     python -m poetry run dbx configure
@@ -169,6 +189,7 @@ steps:
   env: 
     DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
     DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST) 
+
 
 - script: |
     python -m poetry run python $(Build.SourcesDirectory)/src/pkg/dbx_utils/utils_create_secret_scopes.py
@@ -184,7 +205,6 @@ steps:
     ARM_TENANT_ID: $(ARM_TENANT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
     AML_WS_NAME: $(env_variables.AML_WS_NAME)
-
 
 
 - task: AzureCLI@2
@@ -203,6 +223,7 @@ steps:
     PULL_BRANCH: main #$(Build.TargetBranch)
     ENVIRONMENT: ${{ parameters.environment }}
 
+
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
@@ -210,6 +231,7 @@ steps:
     testRunTitle: '$(Agent.OS) - $(Build.BuildNumber)[$(Agent.JobName)] - Python $(python.version) - Unit Test results'
   condition: succeededOrFailed()
   displayName: 'Publish Unit Test Results'
+
 
 - task: PublishTestResults@2
   inputs:
@@ -226,8 +248,3 @@ steps:
     summaryFileLocation: '$(Build.ArtifactStagingDirectory)/*_cov_report.xml'
   displayName: 'Publish Coverage Results'
   condition: succeededOrFailed()
-
-
-
-
-

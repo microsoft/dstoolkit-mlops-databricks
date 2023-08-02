@@ -21,11 +21,17 @@ custom:
         job_cluster_key: "training_job_cluster"
         spark_python_task:
             python_file: "file://dataops/src_nyc_taxi/transform.py" 
+        libraries: [ 
+          whl: "file://src/pkg/nyc_taxi/dist/src_nyc_taxi-0.0.1-py3-none-any.whl" 
+        ]
 
       - task_key: "nyc_taxi_pipeline_machine_learning"
         job_cluster_key: "training_job_cluster"
         spark_python_task:
             python_file: "file://src/pkg/nyc_taxi/entrypoint.py"
+        libraries: [ 
+          whl: "file://src/pkg/nyc_taxi/dist/src_nyc_taxi-0.0.1-py3-none-any.whl" 
+        ]
         depends_on:
           - task_key: "nyc_taxi_pipeline_data_engineering"
 
