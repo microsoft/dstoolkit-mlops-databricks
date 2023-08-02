@@ -178,7 +178,8 @@ steps:
 
 - script: |
     cd src/pkg/nyc_taxi
-    python -m poetry run python setup.py sdist bdist_wheel
+    #python -m poetry run python setup.py sdist bdist_wheel
+    python setup.py sdist bdist_wheel
   displayName: 'Create NYC Taxi Package Wheel File'
 
 
