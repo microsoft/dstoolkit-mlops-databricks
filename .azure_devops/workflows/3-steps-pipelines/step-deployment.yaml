@@ -159,6 +159,13 @@ steps:
 
 
 - script: |
+    cd src/pkg/nyc_taxi
+    #python -m poetry run python setup.py sdist bdist_wheel
+    python setup.py sdist bdist_wheel
+  displayName: 'Create NYC Taxi Package Wheel File'
+
+
+- script: |
     set -e
     python -m poetry run dbx configure
 
@@ -174,13 +181,6 @@ steps:
   env: 
     DATABRICKS_TOKEN: $(aad_tokens.DATABRICKS_AAD_TOKEN)
     DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST)
-
-
-- script: |
-    cd src/pkg/nyc_taxi
-    #python -m poetry run python setup.py sdist bdist_wheel
-    python setup.py sdist bdist_wheel
-  displayName: 'Create NYC Taxi Package Wheel File'
 
 
 - script: |
