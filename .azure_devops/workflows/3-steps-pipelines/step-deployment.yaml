@@ -200,6 +200,7 @@ steps:
     WORKSPACE_ID: $(env_variables.WORKSPACE_ID)
     DATABRICKS_INSTANCE: $(env_variables.DATABRICKS_INSTANCE)   
     RESOURCE_GROUP_NAME: $(env_variables.RESOURCE_GROUP_NAME)
+    PULL_BRANCH: $(Build.SourceBranchName)
 
 
 - task: PublishTestResults@2
