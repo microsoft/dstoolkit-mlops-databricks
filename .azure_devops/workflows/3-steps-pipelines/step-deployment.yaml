@@ -183,6 +183,9 @@ steps:
     ARM_CLIENT_ID : $(ARM_CLIENT_ID)
     ARM_TENANT_ID: $(ARM_TENANT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+    AML_WS_NAME: $(env_variables.AML_WS_NAME)
+
+
 
 - task: AzureCLI@2
   displayName: Repo Pull
