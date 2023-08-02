@@ -176,10 +176,10 @@ steps:
     DATABRICKS_HOST: $(env_variables.DATABRICKS_HOST)
 
 
-- name:                     'Create NYC Taxi Package Wheel File'
-  run: |
+- script: |
     cd src/pkg/nyc_taxi
     python -m poetry run python setup.py sdist bdist_wheel
+  displayName: 'Create NYC Taxi Package Wheel File'
 
 
 - script: |
