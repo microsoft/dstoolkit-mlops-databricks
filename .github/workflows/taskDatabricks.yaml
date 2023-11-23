@@ -128,7 +128,7 @@ jobs:
         run: |
           pip3 install wheel
           ls
-          cd data_science/src_nyc_taxi
+          cd src/pkg/nyc_taxi
           ls
           python setup.py sdist bdist_wheel
 
