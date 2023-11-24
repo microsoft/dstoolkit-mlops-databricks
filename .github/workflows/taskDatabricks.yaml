@@ -94,7 +94,7 @@ jobs:
 #################################/
 
       - shell: bash
-        name:  'Install Testing Requirements locally'
+        name:  'Azure Login'
         run: |
           python -m poetry run python src/pkg/dbx_utils/utils_azure_login.py
         env:
@@ -256,15 +256,15 @@ jobs:
           databricks -h 
           databricks fs ls
 
-          python -m dbx configure \
-          --enable-inplace-jinja-support \
-          --profile $ENVIRONMENT
+          python -m dbx configure 
+          #--enable-inplace-jinja-support \
+          #--profile $ENVIRONMENT
         
-          python -m dbx deploy \
-          --workflows NYC_TAXI_PIPELINE \
-          --no-package \
-          --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml \
-          -e $ENVIRONMENT \
+          python -m dbx deploy --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml DatabricksArtifacts
+          #--workflows NYC_TAXI_PIPELINE \
+          #--no-package \
+          #--deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml \
+          #-e $ENVIRONMENT \
           #--jinja-variables-file=mlOps/nyc_taxi/databricks_pipelines/workflow_params.yaml
 
         env:
