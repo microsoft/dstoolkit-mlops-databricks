@@ -1,0 +1,103 @@
+# UPDATES PENDING - MAY NOT WORK
+
+
+name:                                     Databricks Deployment
+
+trigger:
+  branches:
+    include:
+    - main
+    - dev
+    #- features/*
+    - releases/*
+  paths:
+    exclude:
+    - README.md
+
+#pr: none
+
+pool:
+  vmImage:                                'ubuntu-latest'
+
+
+#Secrets
+variables:
+- group: ADO-Secrets
+- name: isPR
+  value: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
+
+- name: isMain
+  value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+
+- name: isPRFeatureOnMain
+  value: $[eq(variables['System.PullRequest.SourceBranch'], 'features/*')]
+
+
+#resources:
+#  repositories:
+#  - repository: self
+#    ref: 'refs/heads/$(branchName)'
+
+# PROTECT THE MAIN BRANCH SO YOU CANT PUSH DIRECTLY TO IT 
+stages:
+  - stage: developmentDeploy  
+    condition: and(eq(variables['Build.SourceBranchName'], 'dev'), eq(variables['Build.Reason'], 'IndividualCI'))                            
+    displayName: developmentDeploy
+    jobs:
+      - template: ..\2-jobs-pipelines\job-deployment.yaml
+        parameters:
+          environment: development
+          azureSubscription: DBX_ADO_DSTOOLKIT
+          branchName: $(Build.SourceBranchName)
+
+# This will deploy code on the source branch for the PR. If PR from Feature to Dev, then this will deploy Feature. 
+  - stage: pullRequestChecks
+    condition: and(startsWith(variables['system.pullRequest.sourceBranch'], 'features/'), eq(variables['system.pullRequest.targetBranch'], 'dev'))                      
+    displayName: pullRequestChecks
+    jobs:
+      - template: ..\3-steps-pipelines\step-pr-tests.yaml
+        parameters:
+          environment: development
+          azureSubscription: DBX_ADO_DSTOOLKIT
+          branchName: $(Build.SourceBranchName)
+
+
+# Change To Main Branch --> Deploy To Test Environment
+  - stage: uatDeploy                                   
+    displayName: uatDeploy
+    condition: and(eq(variables['Build.SourceBranchName'], 'main'), eq(variables['Build.Reason'], 'IndividualCI'))  
+    jobs:
+      - template:  ..\2-jobs-pipelines\job-deployment.yaml
+        parameters:
+          environment: uat
+          azureSubscription: DBX_ADO_DSTOOLKIT
+          branchName: $(Build.SourceBranchName)
+  
+
+  - stage: pullRequestChecks_dev_to_main
+    condition: and(eq(variables['system.pullRequest.sourceBranch'], 'dev'), eq(variables['system.pullRequest.targetBranch'], 'main'))                      
+    displayName: pullRequestChecks
+    jobs:
+      - template: ..\3-steps-pipelines\step-pr-tests.yaml
+        parameters:
+          environment: uat
+          azureSubscription: DBX_ADO_DSTOOLKIT
+          branchName: $(Build.SourceBranchName)
+
+
+# Tag Release Branch --> Deploy To Production Environment
+#  - stage:                                ProductionDeploy                                   
+#    displayName:                          ProductionDeploy
+#    condition: and(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), eq(variables['Build.Reason'], 'IndividualCI')) 
+#    jobs:
+#      - template:                         ..\2-Jobs\Job-Databricks.yaml
+#        parameters:
+#          Environment:                    Production
+#          azureSubscription:              DBX_ADO_DSTOOLKIT
+#          enableRepoPull:                 true
+#          branchName:                     $(Build.SourceBranchName)
+#          updateFolder:                   DevelopmentFolder 
+
+
+# Implement a condition to ignore a azure resource deployment if Infra folder is unchanged. 
+# https://pumpingco.de/blog/run-an-azure-pipelines-job-only-if-source-code-has-changed/

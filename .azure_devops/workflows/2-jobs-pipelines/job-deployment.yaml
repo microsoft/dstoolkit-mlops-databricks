@@ -1,0 +1,25 @@
+parameters: 
+  environment:                                String
+  azureSubscription:                          String
+  branchName:                                 String
+
+jobs:                  
+  - deployment:                               databricks_mlops_${{ parameters.environment }}
+    displayName:                              databricks_mlops_${{ parameters.environment }}
+    variables:
+      - name: PYSPARK_PYTHON
+        value: python3.9
+    environment:                              ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout:                         self
+            fetchDepth:                       2
+            #ref:                              ${{ parameters.branchName }}
+            # Paramount for fetchDepth to 2 for Git File Changes Check
+          - template:                         ../3-steps-pipelines/step-deployment.yaml
+            parameters:
+              azureSubscription:              ${{ parameters.azureSubscription }}       
+              environment:                    ${{ parameters.environment }}
+              branchName:                     ${{ parameters.branchName }}

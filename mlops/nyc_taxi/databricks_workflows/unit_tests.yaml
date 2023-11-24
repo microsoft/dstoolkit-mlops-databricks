@@ -1,0 +1,43 @@
+custom:
+
+  basic-cluster-props: &basic-cluster-props
+    spark_version: "13.0.x-cpu-ml-scala2.12"
+    node_type_id: "Standard_DS3_v2"
+    spark_env_vars:
+      PYSPARK_PYTHON: "/databricks/python3/bin/python3"
+    enable_elastic_disk: true
+    runtime_engine: STANDARD
+    autoscale:
+      min_workers: 2
+      max_workers: 8
+
+  databricks_utils_testing_vars: &databricks_utils_testing_vars
+    job_clusters:
+      - job_cluster_key: training_job_cluster
+        new_cluster:
+          <<: *basic-cluster-props                        
+    tasks:
+      - task_key: "unittests"
+        job_cluster_key: "training_job_cluster"
+        spark_python_task:
+            python_file: "file://test/entrypoint.py"
+            # this call supports all standard pytest arguments
+            parameters: [
+              "file:fuse://test/test_dbx_utils_pkg/test_utils_create_cluster.py",
+              "-o",
+              "cache_dir=/dbfs/FileStore/",
+              "--cov=dbx_utils",
+              "--cov-append",
+              "--cov-report=xml:/dbfs/FileStore/databricks_utils_cov_report.xml",
+              "--cov-report=html:/dbfs/FileStore/htmlcov",
+              "--junitxml=/dbfs/FileStore/databricks_utils_unit_testresults.xml"
+              ]    
+
+build:
+  python: poetry
+
+environments:
+  default:
+    workflows:
+      - name: "DatabricksUtilsTesting"
+        <<: *databricks_utils_testing_vars

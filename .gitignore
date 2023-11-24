@@ -15,7 +15,7 @@ data_science/src_nyc_taxi/dist
 data_science/src_nyc_taxi/*/__pycache__ 
 data_science/src_nyc_taxi/src_nyc_taxi.egg-info
 data_science/src_nyc_taxi/src_nyc_taxi-0.0.1
-
+poetry.lock
 .linux_venv
 
 
