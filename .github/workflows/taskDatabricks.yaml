@@ -53,34 +53,61 @@ jobs:
         name:  Tests and Dependency Install
         run: |
 
-          pip3 install --upgrade pip
+          sudo apt update && sudo apt install jq -y 
+          python -m pip install requests python-dotenv poetry databricks-cli setuptools wheel dbx
+          python -m pip install azure-cli==2.49.0 azure-mgmt-storage==21.0.0
+          
 
-          #sudo apt update && sudo apt upgrade && sudo apt install jq -y
+          az config set extension.use_dynamic_install=yes_without_prompt
+          az extension add --name databricks
           az extension add -n azure-cli-ml
 
-          # Do a python pip install so that modules can be found from python tasks
-          python -m pip install requests
-          python -m pip install python-dotenv
+          # Previous
+          #pip3 install --upgrade pip
 
-          pip3 install azure-cli==2.49.0
-          pip3 install azure-mgmt-storage==21.0.0
+          #sudo apt update && sudo apt upgrade && sudo apt install jq -y
+          #az extension add -n azure-cli-ml
+
+          # Do a python pip install so that modules can be found from python tasks
+          #python -m pip install requests
+          #python -m pip install python-dotenv
+
+          #pip3 install azure-cli==2.49.0
+          #pip3 install azure-mgmt-storage==21.0.0
           #pip3 install  azure-databricks-sdk-python
-          az config set extension.use_dynamic_install=yes_without_prompt
+          #az config set extension.use_dynamic_install=yes_without_prompt
           
-          pip3 install azureml
-          pip3 install azureml-core
-          pip3 install azureml.pipeline
-          
+          #pip3 install azureml
+          #pip3 install azureml-core
+          #pip3 install azureml.pipeline
+
+#################################/
+##  Poetry Install                                              
+#################################/
+      - shell: bash
+        name:  'Install Testing Requirements locally'
+        run: |
+          python -m poetry install  
 
 #################################/
 ##  Authenticate/Login To Azure                                               
 #################################/
-      - name:                     Service Principal Login
-        run:                      python src/pkg/dbx_utils/utils_azure_login.py
+
+      - shell: bash
+        name:  'Install Testing Requirements locally'
+        run: |
+          python -m poetry run python src/pkg/dbx_utils/utils_azure_login.py
         env:
           ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
           ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
+
+      # - name:                     Service Principal Login
+      #   run:                      python src/pkg/dbx_utils/utils_azure_login.py
+      #   env:
+      #     ARM_CLIENT_ID:          ${{ secrets.ARM_CLIENT_ID }}    
+      #     ARM_CLIENT_SECRET:      ${{ secrets.ARM_CLIENT_SECRET }}
+      #     ARM_TENANT_ID:          ${{ secrets.ARM_TENANT_ID }}
 
 #################################/
 ## Deploy Azure Infrastructure.                                               
@@ -128,7 +155,7 @@ jobs:
         run: |
           pip3 install wheel
           ls
-          cd data_science/src_nyc_taxi
+          cd src/pkg/nyc_taxi
           ls
           python setup.py sdist bdist_wheel
 
@@ -184,8 +211,13 @@ jobs:
 #################################/
 ##  Create Cluster                                           
 #################################/
-      - name:                     Create Databricks Clusters
-        run:                      python src/pkg/dbx_utils/utils_create_cluster.py
+      - shell: bash
+        name:  'Create Databricks Cluster'
+        run: |
+          python -m poetry run python src/pkg/dbx_utils/utils_create_cluster.py
+      
+      # - name:                     Create Databricks Clusters
+      #   run:                      python src/pkg/dbx_utils/utils_create_cluster.py
 
 
         
@@ -194,14 +226,14 @@ jobs:
 ## Functionality Under Development (Not yet parameterized to work on general deployments)                                        
 #################################/
 # 15. AML Pipeline
-      - name:                       Azure Machine Learning Pipeline For DBX Notebooks
-        run:                        python mlOps/nyc_taxi/aml_pipelines/v1/nyc_pipeline.py
-        env:
-          DATABRICKS_COMPUTE_NAME:  'mlclusterlink'
-          DATABRICKS_CLUSTER_NAME:  'Unity_Cluster_13_ML'
-          ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
+      # - name:                       Azure Machine Learning Pipeline For DBX Notebooks
+      #   run:                        python mlOps/nyc_taxi/aml_pipelines/v1/nyc_pipeline.py
+      #   env:
+      #     DATABRICKS_COMPUTE_NAME:  'mlclusterlink'
+      #     DATABRICKS_CLUSTER_NAME:  'Unity_Cluster_13_ML'
+      #     ARM_CLIENT_ID:            ${{ secrets.ARM_CLIENT_ID }}
+      #     ARM_CLIENT_SECRET:        ${{ secrets.ARM_CLIENT_SECRET }}
+      #     ARM_TENANT_ID:            ${{ secrets.ARM_TENANT_ID }}
 
 
       - shell:                    bash
@@ -219,16 +251,16 @@ jobs:
         name:                     DBX Deploy - Workflow Artifacts (CD) 
         run: |
 
-          pip3 install dbx
+          #pip3 install dbx
 
           databricks -h 
           databricks fs ls
 
-          dbx configure \
+          python -m dbx configure \
           --enable-inplace-jinja-support \
           --profile $ENVIRONMENT
         
-          dbx deploy \
+          python -m dbx deploy \
           --workflows NYC_TAXI_PIPELINE \
           --no-package \
           --deployment-file mlops/nyc_taxi/databricks_workflows/nyc_taxi.yaml \
