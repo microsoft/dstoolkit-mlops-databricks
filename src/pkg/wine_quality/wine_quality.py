@@ -30,6 +30,7 @@ from common import * # Custom Package
 import base64
 import datetime
 from pyspark.dbutils import DBUtils
+import seaborn as sns
 
 # COMMAND ----------
 
@@ -253,6 +254,12 @@ def run_training(
     white_wine = pd.read_csv("/dbfs/databricks-datasets/wine-quality/winequality-white.csv", sep=";")
     red_wine = pd.read_csv("/dbfs/databricks-datasets/wine-quality/winequality-red.csv", sep=";")
 
+    print("white wine df")
+    print(white_wine)
+
+    print("red wine")
+    print(red_wine)
+
 
     red_wine['is_red'] = 1
     white_wine['is_red'] = 0
@@ -264,30 +271,40 @@ def run_training(
 
     print(data)
     #import seaborn as sns
-    #sns.distplot(data.quality, kde=False)
+    # sns.distplot(data.quality, kde=False)
 
     high_quality = (data.quality >= 7).astype(int)
     data.quality = high_quality
 
-    import matplotlib.pyplot as plt
+    # import matplotlib.pyplot as plt
  
-    dims = (3, 4)
+    # dims = (3, 4)
  
-    f, axes = plt.subplots(dims[0], dims[1], figsize=(25, 15))
-    axis_i, axis_j = 0, 0
-    for col in data.columns:
-        if col == 'is_red' or col == 'quality':
-            continue # Box plots cannot be used on indicator variables
-    #sns.boxplot(x=high_quality, y=data[col], ax=axes[axis_i, axis_j])
-    axis_j += 1
-    if axis_j == dims[1]:
-        axis_i += 1
-        axis_j = 0
+    # f, axes = plt.subplots(dims[0], dims[1], figsize=(25, 15))
+    # axis_i, axis_j = 0, 0
+    # for col in data.columns:
+    #     if col == 'is_red' or col == 'quality':
+    #         continue # Box plots cannot be used on indicator variables
+    # sns.boxplot(x=high_quality, y=data[col], ax=axes[axis_i, axis_j])
+    # axis_j += 1
+    # if axis_j == dims[1]:
+    #     axis_i += 1
+    #     axis_j = 0
 
     from sklearn.model_selection import train_test_split
     
-    X = data.drop(["quality"], axis=1)
+    print("Data")
+    print(data)
+
     y = data.quality
+
+    X = data.drop(["quality"], axis=1)
+
+    print("X")
+    print(X)
+
+    print("y: Quality")
+    print(y)
     
     # Split out the training data
     X_train, X_rem, y_train, y_rem = train_test_split(X, y, train_size=0.6, random_state=123)
@@ -304,12 +321,19 @@ def run_training(
     mlflow.autolog(exclusive=False)
     with mlflow.start_run(run_name='untuned_random_forest'):
         n_estimators = 10
-        model = RandomForestClassifier(n_estimators=n_estimators, random_state=np.random.RandomState(123))
+        model = RandomForestClassifier(n_estimators=n_estimators, random_state=np.random.RandomState(123) )
         model.fit(X_train, y_train)
         
         # predict_proba returns [prob_negative, prob_positive], so slice the output with [:, 1]
+
+        predictions_delete =  model.predict(X_test)
         predictions_test = model.predict_proba(X_test)[:,1]
+        print(predictions_test) 
+        print(predictions_delete)
+
         auc_score = roc_auc_score(y_test, predictions_test)
+
+        #auc_score = roc_auc_score(y_test, predictions_test)
         mlflow.log_param('n_estimators', n_estimators)
         # Use the area under the ROC curve as a metric.
         mlflow.log_metric('auc', auc_score)
@@ -320,88 +344,18 @@ def run_training(
         
         # MLflow contains utilities to create a conda environment used to serve models.
         # The necessary dependencies are added to a conda.yaml file which is logged along with the model.
+
         conda_env =  _mlflow_conda_env(
-                additional_conda_deps=None,
-                additional_pip_deps=["cloudpickle=={}".format(cloudpickle.__version__), "scikit-learn=={}".format(sklearn.__version__)],
-                additional_conda_channels=None,
-            )
+                 additional_conda_deps=None,
+                 additional_pip_deps=["cloudpickle=={}".format(cloudpickle.__version__), "scikit-learn=={}".format(sklearn.__version__)],
+                 additional_conda_channels=None,
+             )
         mlflow.pyfunc.log_model("random_forest_model", python_model=wrappedModel, conda_env=conda_env, signature=signature)
         run_id = mlflow.active_run().info.run_id
         model_name = "random_forest_model"
         artifact_path = "random_forest_model"
         model_uri = "runs:/{run_id}/{artifact_path}".format(run_id=run_id, artifact_path=artifact_path)
         model_details = mlflow.register_model(model_uri=model_uri, name=model_name)
-
-
-
-
-
-
-    # #data_path
-    # dbx_dbfs_data_location = "dbfs:/user/hive/warehouse/feature_store_taxi_example.db/nyc_yellow_taxi_with_zips"
-    # taxi_data = load_data(
-    #     spark,
-    #     dbx_dbfs_data_location=dbx_dbfs_data_location, 
-    #     fs_data_version=0 # First Version Of Data 
-    #     )
-    
-
-    # fs = feature_store.FeatureStoreClient() # Feature Store Client
-    
-    # pickup_feature_lookups = feature_lookup(
-    #     feature_table_name="feature_store_taxi_example.trip_pickup_features", 
-    #     feature_lookups=["mean_fare_window_1h_pickup_zip", "count_trips_window_1h_pickup_zip"],
-    #     lookup_key=["pickup_zip", "rounded_pickup_datetime"]  
-    # )
-
-    # #import pdb; pdb.set_trace()
-
-    # dropoff_feature_lookups = feature_lookup(
-    #     feature_table_name="feature_store_taxi_example.trip_dropoff_features", 
-    #     feature_lookups=["count_trips_window_30m_dropoff_zip", "dropoff_is_weekend"],
-    #     lookup_key=["dropoff_zip", "rounded_dropoff_datetime"]  
-    #     )
-
-    # training_df, training_set = get_training_data(
-    #     spark=spark,
-    #     fs=fs,
-    #     data=taxi_data,
-    #     feature_lookups=pickup_feature_lookups + dropoff_feature_lookups,
-    #     label="fare_amount",
-    #     exclude_columns=[
-    #         "rounded_pickup_datetime",
-    #         "rounded_dropoff_datetime"
-    #     ]
-    # )
-
-    # model_folder_name = "cached_models"
-    # create_model_folder(
-    #     spark=spark,
-    #     model_folder_name=model_folder_name
-    #     )
-    
-    # model_file_path = get_model_file_path(
-    #     spark=spark,
-    #     model_folder_name=model_folder_name,
-    #     model_name="taxi_example_fare_packaged_2"
-    # )
-
-    # model = train_model_lgbm(
-    #     spark=spark,
-    #     model_file_path=model_file_path,
-    #     training_df=training_df, 
-    #     training_set=training_set, # Feature Store Object Prior to df conversion (above)
-    #     fs=fs,
-    #     model_params=model_params,
-    #     model_name=model_name
-    # )
-
-    # latest_model_version = get_latest_model_version(model_name)
-    # #mlflow.log_param("model_version", latest_model_version)
-    # mlflow.set_tag("model_version", latest_model_version)
-
-
-    # #save_model_dbfs(model, model_file_path)
 
 
 # COMMAND ----------
@@ -449,7 +403,7 @@ def databricks_sdk_secrets(scope, secret_name):
 # COMMAND ----------
 
 run_training(
-    experiment_name = "wine_experiment",
+    experiment_name = "experiments_debugging",
     model_name = "wine_quality_model",
     model_params = {
         "objective": "regression",
