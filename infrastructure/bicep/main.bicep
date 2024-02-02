@@ -114,23 +114,22 @@ module azMachineLearning 'az_templates/az_machine_learning/az_machine_learning.b
 //                                                                       Module for Creating Azure Databricks Workspace
 // Outputs AzDatabricks Workspace ID, which is used when Assigning RBACs
 // ################################################################################################################################################################//
-module azDatabricks 'az_templates/az_databricks/az_databricks.bicep' =  {
+
+module azDatabricks 'br/public:avm/res/databricks/workspace:0.1.0' = {
   dependsOn: [
     azMachineLearning
   ]
   scope: resourceGroup(resourceGroupName)
-  name: 'azDatabricks' 
+  name: 'azDatabricks-dbrws'
   params: {
+    name: workspaceName
     location: location
-    workspaceName: workspaceName
-    pricingTier: pricingTier
-    azMachineLearningWSId: azMachineLearning.outputs.azMachineLearningWSId
+    skuName: pricingTier
   }
 }
 
 
-
-output azDatabricksWorkspaceID string = azDatabricks.outputs.azDatabricksWorkspaceID 
+output azDatabricksWorkspaceID string = azDatabricks.outputs.resourceId 
 
 
 
