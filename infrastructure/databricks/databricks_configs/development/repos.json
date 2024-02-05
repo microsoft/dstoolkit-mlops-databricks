@@ -1,13 +1,13 @@
 {
     "Git_Configuration":  [
                               {
-                                  "git_username":  null,
+                                  "git_username":  "clintgrove",
                                   "git_provider":  "gitHub"
                               }
                           ],
     "Repo_Configuration":  [
                                {
-                                   "url":  null,
+                                   "url":  "https://github.com/clintgrove/dstoolkit-mlops-databricks",
                                    "provider":  "gitHub",
                                    "path":  "DevelopmentFolder",
                                    "branch":  "main"
