@@ -30,7 +30,7 @@ Features to be included in future releases:
 
 ## Youtube Demo - Slightly Outdated
 
-The deployment instructions for the video are slightly outdated (albeit still usefull). 
+The deployment instructions for the video are slightly outdated (albeit still useful). 
 Please follow instructions below instead. The video still provides useful content for concepts outwith the deployment. 
 
 [![Youtube Demo](docs/images/YoutubeThumbNail.png)](https://youtu.be/g57N3GYXuDI)
@@ -183,7 +183,7 @@ Secrets in GitHub should look exactly like below. The secrets are case sensitive
 
 ## Running Pipelines
 
-- The end to end machine learning pipleine will be pre-configured in the "workflows" section in databricks. This utilises a Job Cluster which will automatically upload the necessary dependencies contained within a python wheel file 
+- The end to end machine learning pipeline will be pre-configured in the "workflows" section in databricks. This utilises a Job Cluster which will automatically upload the necessary dependencies contained within a python wheel file 
 
 - If you wish to run the machine learning scripts from the Notebook instead, first upload the dependencies (automatic upload is in development). Simply navigate to python wheel file contained within the dist/ folder. Manually upload the python wheel file to the cluster that you wish to run for the Notebook. 
 
