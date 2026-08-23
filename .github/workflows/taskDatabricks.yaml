@@ -34,7 +34,7 @@ jobs:
     environment:                  ${{ inputs.ENVIRONMENT }}
     steps:      
       - name:                     Checkout
-        uses:                     actions/checkout@v2
+        uses:                     actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2.8.0
 
 
 
@@ -42,7 +42,7 @@ jobs:
 ##  Set Python.                                      
 #################################/
       - name:                     Setup Python
-        uses:                     actions/setup-python@v4
+        uses:                     actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c # v4.9.1
         with:
           python-version:         "3.8"
     
